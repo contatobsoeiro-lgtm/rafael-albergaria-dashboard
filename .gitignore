@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+
+# Temporários
+history/temp_sheet.xlsx
+
+# Editor
+.vscode/
+.idea/
+*.swp
