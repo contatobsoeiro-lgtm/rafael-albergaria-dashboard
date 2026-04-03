@@ -18,6 +18,7 @@ VARIÃÂÃÂVEIS DE AMBIENTE:
 
 import os
 import json
+import unicodedata
 import requests
 import pandas as pd
 from datetime import datetime
@@ -87,7 +88,8 @@ MES_ORDER = list(MES_MAP.values())
 # Os nomes abaixo sÃÂÃÂ£o usados como fallback para ordenaÃÂÃÂ§ÃÂÃÂ£o nos grÃÂÃÂ¡ficos
 VENDORS_DISPLAY_ORDER = ["RAQUEL", "RAFAEL", "JUNIO", "DUDA"]
 VENDORS_EXPECTED      = VENDORS_DISPLAY_ORDER  # serÃÂÃÂ¡ atualizado dinamicamente em build_data_object()
-MODAIS_EXPECTED  = ["MENSAL", "TRIMESTRAL", "SEMESTRAL", "ANUAL", "BÃÂÃÂSICO", "DESAFIO", "VIP", "PREMIUM"]
+MODAIS_EXPECTED  = ["MENSAL", "TRIMESTRAL", "SEMESTRAL", "ANUAL", "BÃÂÃÂSICO", "DESAFIO", "VIP", "PREMIUM", "BASICO"]
+MODAIS_EXPECTED  = [m for m in MODAIS_EXPECTED if m.isascii()]
 
 
 # ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ DOWNLOAD ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
@@ -171,8 +173,9 @@ def download_sheet(url: str, sheet_type: str) -> pd.DataFrame:
 # ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ NORMALIZAÃÂÃÂÃÂÃÂO ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 
 def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
-    df.columns = [str(c).lower().strip() for c in df.columns]
-    rename = {c: COL_MAP[c] for c in df.columns if c in COL_MAP}
+    df.columns = [unicodedata.normalize('NFKD',str(c)).encode('ascii','ignore').decode('ascii').lower().strip() for c in df.columns]
+    _cmap = {unicodedata.normalize('NFKD',k).encode('ascii','ignore').decode('ascii').lower().strip():v for k,v in COL_MAP.items()}
+    rename = {c: _cmap[c] for c in df.columns if c in _cmap}
     df = df.rename(columns=rename)
 
     # Checa colunas obrigatÃÂÃÂ³rias
@@ -193,7 +196,7 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     df["com_vend"]   = pd.to_numeric(df["com_vend"],   errors="coerce").fillna(0)
     df["com_treino"] = pd.to_numeric(df["com_treino"], errors="coerce").fillna(0)
     df["vendedor"]   = df["vendedor"].astype(str).str.upper().str.strip()
-    df["modalidade"] = df["modalidade"].astype(str).str.upper().str.strip()
+    df["modalidade"] = df["modalidade"].astype(str).str.upper().str.strip().apply(lambda s: unicodedata.normalize('NFKD',s).encode('ascii','ignore').decode('ascii'))
 
     df = df.dropna(subset=["data"]).query("valor > 0").copy()
 
