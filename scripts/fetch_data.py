@@ -196,7 +196,7 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     df["com_vend"]   = pd.to_numeric(df["com_vend"],   errors="coerce").fillna(0)
     df["com_treino"] = pd.to_numeric(df["com_treino"], errors="coerce").fillna(0)
     df["vendedor"]   = df["vendedor"].astype(str).str.upper().str.strip()
-    df["modalidade"] = df["modalidade"].astype(str).str.upper().str.strip().apply(lambda s: unicodedata.normalize('NFKD',s).encode('ascii','ignore').decode('ascii'))
+    df["modalidade"] = df["modalidade"].astype(str).str.upper().str.strip().apply(lambda s: unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode('ascii'))
 
     df = df.dropna(subset=["data"]).query("valor > 0").copy()
 
