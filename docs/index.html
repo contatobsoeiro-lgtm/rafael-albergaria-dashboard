@@ -4,216 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Comercial — Rafael Albergaria Nutrição</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js">
-// =====================================================================
-// DASHBOARD MULTI-ANO ÃÂ¢ÃÂÃÂ lÃÂÃÂ³gica de rendering
-// =====================================================================
-
-// Lista de vendedores dinÃÂÃÂ¢mica (vem do Python via DATA.meta.vendors)
-const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
-
-// Paleta de cores para vendedores extras (alÃÂÃÂ©m dos 3 originais)
-const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
-VENDORS_LIST.forEach((v, i) => {
-  if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
-  if (!VEND_NAMES[v])  VEND_NAMES[v]  = v.charAt(0) + v.slice(1).toLowerCase();
-});
-
-// Substitui updateDashboard para usar dados do ano ativo
-const _origUpdateDashboard = updateDashboard;
-function updateDashboard() {
-  if (activeAno === 'compare') { renderCompare(); return; }
-  const anoData = getAnoData();
-  const key = getKey();
-  const d = anoData[key] || anoData['all'] || {};
-
-  if (!d || Object.keys(d).length === 0) return;
-
-  // KPIs
-  document.getElementById('kpi-fat').textContent      = 'R$ ' + fmt(d.fat || 0);
-  document.getElementById('kpi-vendas').textContent   = d.n || 0;
-  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : 'ÃÂ¢ÃÂÃÂ';
-  const margem    = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
-  const margemPct = d.fat > 0 ? Math.round(margem/d.fat*100) : 0;
-  document.getElementById('kpi-margem').textContent     = 'R$ ' + fmt(margem);
-  document.getElementById('kpi-margem-pct-val').textContent = margemPct + '%';
-  document.getElementById('kpi-cvend-card').textContent = 'R$ ' + fmt(d.cvend||0);
-  document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
-
-  const ano    = activeAno === 'latest' ? LATEST_ANO : activeAno;
-  const mesLbl = {all:ano+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
-                  abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
-                  ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
-  // Gera mapeamento vendÃÂ¢ÃÂÃÂ²label dinamicamente
-  const vLblMap = {all:''};
-  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' ÃÂÃÂ· ' + v.charAt(0) + v.slice(1).toLowerCase(); });
-  document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||ano) + (vLblMap[activeVend]||'');
-
-  // Meses com dados
-  const mesKeys = Object.keys(d.mes||{}).filter(m => (d.mes[m].v||0) > 0);
-  const mesVals = mesKeys.map(m => d.mes[m].v);
-  const mesLbls = mesKeys.map(m => ({jan:'Jan',fev;'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'[m]||m));
-
-  chartMes.data.labels   = mesLbls;
-  chartMes.data.datasets[0].data = mesVals;
-  chartMes.data.datasets[0].backgroundColor = mesLbls.map((_,i)=>['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)','rgba(139,92,246,.85)','rgba(236,72,153,.85)','rgba(20,184,166,.85)'][i%6]);
-  chartMes.update();
-
-  chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m=>(d.modal&&d.modal[m])?d.modal[m].c:0);
-  chartModal.update();
-
-  chartVend.data.labels = VENDORS_LIST;
-  chartVend.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v])?d.vend[v].v:0);
-  chartVend.update();
-
-  chartTicket.data.labels = VENDORS_LIST;
-  chartTicket.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v]&&d.vend[v].tkt)?d.vend[v].tkt:0);
-  chartTicket.update();
-
-  // ComissÃÂÃÂµes ÃÂ¢ÃÂÃÂ todos os vendedores dinÃÂÃÂ¢micos
-  let totN=0,totV=0,totCv=0,totCt=0, rows='';
-  VENDORS_LIST.forEach(v=>{
-    const vd=(d.vend&&d.vend[v]);
-    if(!vd||vd.c===0) return;
-    totN+=vd.c;totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
-    const cor = VEND_COLORS[v] || '#94a3b8';
-    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
-    rows+=`<tr>
-      <td><span class="vend-badge"><span class="vend-dot" style="background:${cor}"></span>${nome}</span></td>
-      <td>${vd.c}</td><td>R$ ${fmt(vd.v)}</td>
-      <td class="num-green">R$ ${fmt(vd.cv)}</td>
-      <td>R$ ${fmt(vd.ct)}</td>
-      <td><strong>R$ ${fmt(vd.cv+vd.ct)}</strong></td></tr>`;
-  });
-  document.getElementById('comissoes-tbody').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px">Sem dados</td></tr>';
-  document.getElementById('comissoes-tfoot').innerHTML=totN>0?`<tr>
-    <td><strong>Total</strong></td><td><strong>${totN}</strong></td>
-    <td><strong>R$ ${fmt(totV)}</strong></td>
-    <td class="num-green"><strong>R$ ${fmt(totCv)}</strong></td>
-    <td><strong>R$ ${fmt(totCt)}</strong></td>
-    <td><strong>R$ ${fmt(totCv+totCt)}</strong></td></tr>`:'';
-
-  if(typeof updateAdvanced === 'function') updateAdvanced();
-}
-
-// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ GrÃÂÃÂ¡fico YoY (criado uma vez, atualizado ao entrar em Comparar) ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
-let chartYoY = null;
-
-function renderCompare() {
-  document.getElementById('compare-section').classList.add('show');
-  const cmp = DATA.compare;
-  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃÂÃÂ§ÃÂÃÂ£o nÃÂÃÂ£o disponÃÂÃÂ­veis (ÃÂÃÂ© necessÃÂÃÂ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
-
-  // GrÃÂÃÂ¡fico de barras lado-a-lado por mÃÂÃÂªs
-  const mesesCmp = Object.keys(cmp.mensal||{});
-  const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
-  const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
-  const v26 = mesesCmp.map(m=>(cmp.mensal[m].fat.v26||0));
-
-  if (!chartYoY) {
-    const ctx = document.getElementById('chartYoY').getContext('2d');
-    chartYoY = new Chart(ctx, {
-      type:'bar',
-      data:{labels:mesLbls,datasets:[
-        {label:'2025',data:v25,backgroundColor:'rgba(59,130,246,.7)',borderRadius:6,borderSkipped:false},
-        {label:'2026',data:v26,backgroundColor:'rgba(34,197,94,.85)',borderRadius:6,borderSkipped:false}
-      ]},
-      options:{
-        responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{position:'top'},tooltip:{callbacks:{label:ctx=>' R$ '+fmt(ctx.parsed.y)}}},
-        scales:{
-          y:{ticks:{callback:v=>'R$'+fmtK(v),font:{size:11}},grid:{color:'#f1f5f9'}},
-          x:{grid:{display:false}}
-        }
-      }
-    });
-  } else {
-    chartYoY.data.labels=mesLbls;
-    chartYoY.data.datasets[0].data=v25;
-    chartYoY.data.datasets[1].data=v26;
-    chartYoY.update();
-  }
-
-  // Tabela YoY por mÃÂÃÂªs
-  let rowsMes='';
-  mesesCmp.forEach(m=>{
-    const r=cmp.mensal[m];
-    const pct=r.fat.pct;
-    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
-    rowsMes+=`<tr>
-      <td><strong>${mesLbls[mesesCmp.indexOf(m)]}</strong></td>
-      <td>R$ ${fmt(r.fat.v25)}</td>
-      <td>R$ ${fmt(r.fat.v26)}</td>
-      <td class="${cls}">${arrow}</td>
-    </tr>`;
-  });
-  document.getElementById('yoy-mes-table-wrap').innerHTML=`
-    <table class="yoy-table">
-      <thead><tr><th>MÃÂÃÂªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
-      <tbody>${rowsMes}</tbody>
-    </table>`;
-
-  // Tabela YoY por vendedor
-  let rowsVend='';
-  Object.entries(cmp.vend||{}).forEach(([v,r])=>{
-    const pct=r.fat.pct;
-    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
-    rowsVend+=`<tr>
-      <td><span class="vend-badge"><span class="vend-dot" style="background:${VEND_COLORS[v]||'#94a3b8'}"></span>${VEND_NAMES[v]||v}</span></td>
-      <td>R$ ${fmt(r.fat.v25)}</td>
-      <td>R$ ${fmt(r.fat.v26)}</td>
-      <td class="${cls}">${arrow}</td>
-      <td>R$ ${fmt(r.tkt.v25)}</td>
-      <td>R$ ${fmt(r.tkt.v26)}</td>
-    </tr>`;
-  });
-  document.getElementById('yoy-vend-table-wrap').innerHTML=`
-    <table class="yoy-table">
-      <thead><tr><th>Vendedor</th><th>Fat. 2025</th><th>Fat. 2026</th><th>Var. %</th><th>Tkt. 2025</th><th>Tkt. 2026</th></tr></thead>
-      <tbody>${rowsVend}</tbody>
-    </table>`;
-
-  // KPIs gerais
-  const tot=cmp.total;
-  const kpis=[
-    {label:'Faturamento',r:tot.fat,fmt:'R$ '},
-    {label:'NÃÂÃÂº Vendas',  r:tot.n,  fmt:''},
-    {label:'Ticket MÃÂÃÂ©dio',r:tot.tkt,fmt:'R$ '},
-  ];
-  let kpiHtml='<div style="display:grid;gap:12px">';
-  kpis.forEach(k=>{
-    const pct=k.r.pct;
-    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
-    kpiHtml+=`<div style="background:var(--cinza);border-radius:10px;padding:12px 16px">
-      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${k.label}</div>
-      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <span style="font-size:14px;color:var(--text-muted)">2025: <strong>${k.fmt}${fmt(k.r.v25)}</strong></span>
-        <span style="font-size:14px;color:var(--text)">2026: <strong>${k.fmt}${fmt(k.r.v26)}</strong></span>
-        <span class="${cls}" style="font-size:15px">${arrow}</span>
-      </div>
-    </div>`;
-  });
-  kpiHtml+='</div>';
-  document.getElementById('yoy-kpi-wrap').innerHTML=kpiHtml;
-}
-
-function hideCompare() {
-  document.getElementById('compare-section').classList.remove('show');
-}
-
-function refreshData() {
-  document.getElementById('loadingOverlay').classList.add('show');
-  setTimeout(() => { document.getElementById('loadingOverlay').classList.remove('show'); }, 800);
-  updateDashboard();
-}
-
-// Inicializa dashboard
-updateDashboard();
-
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --verde: #22c55e;
@@ -12075,8 +11866,6 @@ function updateDashboard() {
 const XLSX_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 const DOWNLOAD_URL = 'https://onedrive.live.com/personal/924648235f649026/_layouts/15/download.aspx?UniqueId=fd1c2d94-c320-42a4-964f-a8551aca2f92';
 
-async }
-
 function getXLSX() {
   return new Promise((resolve, reject) => {
     if (window.XLSX && window.XLSX.read) { resolve(window.XLSX); return; }
@@ -12168,6 +11957,215 @@ function fmt(n) { return n ? Math.round(n).toLocaleString('pt-BR') : '0'; }
 function fmtK(n) { return n>=1000 ? (n/1000).toFixed(0)+'k' : n; }
 
 // Inicializa
+
+// =====================================================================
+// DASHBOARD MULTI-ANO ÃÂ¢ÃÂÃÂ lÃÂÃÂ³gica de rendering
+// =====================================================================
+
+// Lista de vendedores dinÃÂÃÂ¢mica (vem do Python via DATA.meta.vendors)
+const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
+
+// Paleta de cores para vendedores extras (alÃÂÃÂ©m dos 3 originais)
+const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
+VENDORS_LIST.forEach((v, i) => {
+  if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
+  if (!VEND_NAMES[v])  VEND_NAMES[v]  = v.charAt(0) + v.slice(1).toLowerCase();
+});
+
+// Substitui updateDashboard para usar dados do ano ativo
+const _origUpdateDashboard = updateDashboard;
+function updateDashboard() {
+  if (activeAno === 'compare') { renderCompare(); return; }
+  const anoData = getAnoData();
+  const key = getKey();
+  const d = anoData[key] || anoData['all'] || {};
+
+  if (!d || Object.keys(d).length === 0) return;
+
+  // KPIs
+  document.getElementById('kpi-fat').textContent      = 'R$ ' + fmt(d.fat || 0);
+  document.getElementById('kpi-vendas').textContent   = d.n || 0;
+  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : 'ÃÂ¢ÃÂÃÂ';
+  const margem    = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
+  const margemPct = d.fat > 0 ? Math.round(margem/d.fat*100) : 0;
+  document.getElementById('kpi-margem').textContent     = 'R$ ' + fmt(margem);
+  document.getElementById('kpi-margem-pct-val').textContent = margemPct + '%';
+  document.getElementById('kpi-cvend-card').textContent = 'R$ ' + fmt(d.cvend||0);
+  document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
+
+  const ano    = activeAno === 'latest' ? LATEST_ANO : activeAno;
+  const mesLbl = {all:ano+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
+                  abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
+                  ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
+  // Gera mapeamento vendÃÂ¢ÃÂÃÂ²label dinamicamente
+  const vLblMap = {all:''};
+  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' ÃÂÃÂ· ' + v.charAt(0) + v.slice(1).toLowerCase(); });
+  document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||ano) + (vLblMap[activeVend]||'');
+
+  // Meses com dados
+  const mesKeys = Object.keys(d.mes||{}).filter(m => (d.mes[m].v||0) > 0);
+  const mesVals = mesKeys.map(m => d.mes[m].v);
+  const mesLbls = mesKeys.map(m => ({jan:'Jan',fev;'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'[m]||m));
+
+  chartMes.data.labels   = mesLbls;
+  chartMes.data.datasets[0].data = mesVals;
+  chartMes.data.datasets[0].backgroundColor = mesLbls.map((_,i)=>['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)','rgba(139,92,246,.85)','rgba(236,72,153,.85)','rgba(20,184,166,.85)'][i%6]);
+  chartMes.update();
+
+  chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m=>(d.modal&&d.modal[m])?d.modal[m].c:0);
+  chartModal.update();
+
+  chartVend.data.labels = VENDORS_LIST;
+  chartVend.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v])?d.vend[v].v:0);
+  chartVend.update();
+
+  chartTicket.data.labels = VENDORS_LIST;
+  chartTicket.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v]&&d.vend[v].tkt)?d.vend[v].tkt:0);
+  chartTicket.update();
+
+  // ComissÃÂÃÂµes ÃÂ¢ÃÂÃÂ todos os vendedores dinÃÂÃÂ¢micos
+  let totN=0,totV=0,totCv=0,totCt=0, rows='';
+  VENDORS_LIST.forEach(v=>{
+    const vd=(d.vend&&d.vend[v]);
+    if(!vd||vd.c===0) return;
+    totN+=vd.c;totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
+    const cor = VEND_COLORS[v] || '#94a3b8';
+    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
+    rows+=`<tr>
+      <td><span class="vend-badge"><span class="vend-dot" style="background:${cor}"></span>${nome}</span></td>
+      <td>${vd.c}</td><td>R$ ${fmt(vd.v)}</td>
+      <td class="num-green">R$ ${fmt(vd.cv)}</td>
+      <td>R$ ${fmt(vd.ct)}</td>
+      <td><strong>R$ ${fmt(vd.cv+vd.ct)}</strong></td></tr>`;
+  });
+  document.getElementById('comissoes-tbody').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px">Sem dados</td></tr>';
+  document.getElementById('comissoes-tfoot').innerHTML=totN>0?`<tr>
+    <td><strong>Total</strong></td><td><strong>${totN}</strong></td>
+    <td><strong>R$ ${fmt(totV)}</strong></td>
+    <td class="num-green"><strong>R$ ${fmt(totCv)}</strong></td>
+    <td><strong>R$ ${fmt(totCt)}</strong></td>
+    <td><strong>R$ ${fmt(totCv+totCt)}</strong></td></tr>`:'';
+
+  if(typeof updateAdvanced === 'function') updateAdvanced();
+}
+
+// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ GrÃÂÃÂ¡fico YoY (criado uma vez, atualizado ao entrar em Comparar) ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
+let chartYoY = null;
+
+function renderCompare() {
+  document.getElementById('compare-section').classList.add('show');
+  const cmp = DATA.compare;
+  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃÂÃÂ§ÃÂÃÂ£o nÃÂÃÂ£o disponÃÂÃÂ­veis (ÃÂÃÂ© necessÃÂÃÂ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
+
+  // GrÃÂÃÂ¡fico de barras lado-a-lado por mÃÂÃÂªs
+  const mesesCmp = Object.keys(cmp.mensal||{});
+  const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
+  const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
+  const v26 = mesesCmp.map(m=>(cmp.mensal[m].fat.v26||0));
+
+  if (!chartYoY) {
+    const ctx = document.getElementById('chartYoY').getContext('2d');
+    chartYoY = new Chart(ctx, {
+      type:'bar',
+      data:{labels:mesLbls,datasets:[
+        {label:'2025',data:v25,backgroundColor:'rgba(59,130,246,.7)',borderRadius:6,borderSkipped:false},
+        {label:'2026',data:v26,backgroundColor:'rgba(34,197,94,.85)',borderRadius:6,borderSkipped:false}
+      ]},
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'top'},tooltip:{callbacks:{label:ctx=>' R$ '+fmt(ctx.parsed.y)}}},
+        scales:{
+          y:{ticks:{callback:v=>'R$'+fmtK(v),font:{size:11}},grid:{color:'#f1f5f9'}},
+          x:{grid:{display:false}}
+        }
+      }
+    });
+  } else {
+    chartYoY.data.labels=mesLbls;
+    chartYoY.data.datasets[0].data=v25;
+    chartYoY.data.datasets[1].data=v26;
+    chartYoY.update();
+  }
+
+  // Tabela YoY por mÃÂÃÂªs
+  let rowsMes='';
+  mesesCmp.forEach(m=>{
+    const r=cmp.mensal[m];
+    const pct=r.fat.pct;
+    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
+    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
+    rowsMes+=`<tr>
+      <td><strong>${mesLbls[mesesCmp.indexOf(m)]}</strong></td>
+      <td>R$ ${fmt(r.fat.v25)}</td>
+      <td>R$ ${fmt(r.fat.v26)}</td>
+      <td class="${cls}">${arrow}</td>
+    </tr>`;
+  });
+  document.getElementById('yoy-mes-table-wrap').innerHTML=`
+    <table class="yoy-table">
+      <thead><tr><th>MÃÂÃÂªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
+      <tbody>${rowsMes}</tbody>
+    </table>`;
+
+  // Tabela YoY por vendedor
+  let rowsVend='';
+  Object.entries(cmp.vend||{}).forEach(([v,r])=>{
+    const pct=r.fat.pct;
+    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
+    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
+    rowsVend+=`<tr>
+      <td><span class="vend-badge"><span class="vend-dot" style="background:${VEND_COLORS[v]||'#94a3b8'}"></span>${VEND_NAMES[v]||v}</span></td>
+      <td>R$ ${fmt(r.fat.v25)}</td>
+      <td>R$ ${fmt(r.fat.v26)}</td>
+      <td class="${cls}">${arrow}</td>
+      <td>R$ ${fmt(r.tkt.v25)}</td>
+      <td>R$ ${fmt(r.tkt.v26)}</td>
+    </tr>`;
+  });
+  document.getElementById('yoy-vend-table-wrap').innerHTML=`
+    <table class="yoy-table">
+      <thead><tr><th>Vendedor</th><th>Fat. 2025</th><th>Fat. 2026</th><th>Var. %</th><th>Tkt. 2025</th><th>Tkt. 2026</th></tr></thead>
+      <tbody>${rowsVend}</tbody>
+    </table>`;
+
+  // KPIs gerais
+  const tot=cmp.total;
+  const kpis=[
+    {label:'Faturamento',r:tot.fat,fmt:'R$ '},
+    {label:'NÃÂÃÂº Vendas',  r:tot.n,  fmt:''},
+    {label:'Ticket MÃÂÃÂ©dio',r:tot.tkt,fmt:'R$ '},
+  ];
+  let kpiHtml='<div style="display:grid;gap:12px">';
+  kpis.forEach(k=>{
+    const pct=k.r.pct;
+    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
+    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
+    kpiHtml+=`<div style="background:var(--cinza);border-radius:10px;padding:12px 16px">
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${k.label}</div>
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="font-size:14px;color:var(--text-muted)">2025: <strong>${k.fmt}${fmt(k.r.v25)}</strong></span>
+        <span style="font-size:14px;color:var(--text)">2026: <strong>${k.fmt}${fmt(k.r.v26)}</strong></span>
+        <span class="${cls}" style="font-size:15px">${arrow}</span>
+      </div>
+    </div>`;
+  });
+  kpiHtml+='</div>';
+  document.getElementById('yoy-kpi-wrap').innerHTML=kpiHtml;
+}
+
+function hideCompare() {
+  document.getElementById('compare-section').classList.remove('show');
+}
+
+function refreshData() {
+  document.getElementById('loadingOverlay').classList.add('show');
+  setTimeout(() => { document.getElementById('loadingOverlay').classList.remove('show'); }, 800);
+  updateDashboard();
+}
+
+// Inicializa dashboard
+updateDashboard();
+
 </script>
 </body>
 </html>
