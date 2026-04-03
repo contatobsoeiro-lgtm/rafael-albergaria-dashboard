@@ -63,7 +63,7 @@ def update_year_filter(html: str, anos: list) -> str:
             f'<button class="filter-btn" data-ano="{ano}" onclick="setAno(\'{ano}\')">{ano}</button>'
         )
     year_buttons.append(
-        '<button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">ÃÂ°ÃÂÃÂÃÂ Comparar Anos</button>'
+        '<button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">\U0001F4CA Comparar Anos</button>'
     )
 
     year_block = (
@@ -529,4 +529,5 @@ if __name__ == "__main__":
     snap = json.loads(snaps[-1].read_text(encoding="utf-8"))
     out  = generate(snap["data"], snap["records"], snap["timestamp"])
     print(f"\nÃÂ¢ÃÂÃÂ Dashboard gerado: {out}")
+
 
