@@ -12235,7 +12235,7 @@ updateDashboard();
     return _orig.call(this);
   };
   window.buildTodosData = function() {
-    var anos = Object.keys(DATA).filter(function(k){return /^\\d{4}$/.test(k);});
+    var anos = Object.keys(DATA).filter(function(k){return k.length===4 && !isNaN(k);});
     if (!anos.length) return {};
     var allKeys = {};
     anos.forEach(function(a){ Object.keys(DATA[a]).forEach(function(k){ allKeys[k]=1; }); });
