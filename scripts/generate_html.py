@@ -1,11 +1,11 @@
 """
-generate_html.py — versão multi-ano (2025 + 2026 + YoY)
-─────────────────────────────────────────────────────────────
+generate_html.py â versÃ£o multi-ano (2025 + 2026 + YoY)
+âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 Injeta o objeto DATA multi-ano no template HTML e:
-  - Atualiza filtros de período e ano dinamicamente
-  - Atualiza metadados (data, registros, rodapé)
-  - Preserva toda a lógica JS existente do dashboard
-─────────────────────────────────────────────────────────────
+  - Atualiza filtros de perÃ­odo e ano dinamicamente
+  - Atualiza metadados (data, registros, rodapÃ©)
+  - Preserva toda a lÃ³gica JS existente do dashboard
+âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 """
 
 import re
@@ -20,7 +20,7 @@ OUTPUT_PATH.parent.mkdir(exist_ok=True)
 
 MES_ORDER = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"]
 MES_LABEL = {
-    "jan":"Janeiro","fev":"Fevereiro","mar":"Março","abr":"Abril",
+    "jan":"Janeiro","fev":"Fevereiro","mar":"MarÃ§o","abr":"Abril",
     "mai":"Maio","jun":"Junho","jul":"Julho","ago":"Agosto",
     "set":"Setembro","out":"Outubro","nov":"Novembro","dez":"Dezembro"
 }
@@ -33,7 +33,7 @@ DATA_PATTERN = re.compile(
 
 
 def build_js_data(data: dict) -> str:
-    """Serializa DATA para JS com formatação legível."""
+    """Serializa DATA para JS com formataÃ§Ã£o legÃ­vel."""
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     js = re.sub(r',(?="[^"]+":)', ',\n  ', js)
     return f"const DATA = {js[0]}\n  {js[1:-1]}\n{js[-1]};\n"
@@ -53,17 +53,17 @@ def inject_data(html: str, data: dict) -> str:
 
 def update_year_filter(html: str, anos: list) -> str:
     """
-    Injeta (ou atualiza) os botões de filtro de ANO no HTML.
-    Adiciona logo após o bloco de filtros de mês existente.
+    Injeta (ou atualiza) os botÃµes de filtro de ANO no HTML.
+    Adiciona logo apÃ³s o bloco de filtros de mÃªs existente.
     """
-    # Monta botões de ano
+    # Monta botÃµes de ano
     year_buttons = ['<button class="filter-btn active" data-ano="latest" onclick="setAno(\'latest\')">Atual</button>']
     for ano in sorted(anos, reverse=True):
         year_buttons.append(
             f'<button class="filter-btn" data-ano="{ano}" onclick="setAno(\'{ano}\')">{ano}</button>'
         )
     year_buttons.append(
-        '<button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">📊 Comparar Anos</button>'
+        '<button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">ð Comparar Anos</button>'
     )
 
     year_block = (
@@ -74,7 +74,7 @@ def update_year_filter(html: str, anos: list) -> str:
         '    </div>'
     )
 
-    # Substitui bloco de ano se já existir, senão insere antes do fechamento da filter-section
+    # Substitui bloco de ano se jÃ¡ existir, senÃ£o insere antes do fechamento da filter-section
     if 'id="year-filter-group"' in html:
         html = re.sub(
             r'<div class="filter-group" id="year-filter-group">[\s\S]*?</div>',
@@ -90,7 +90,7 @@ def update_year_filter(html: str, anos: list) -> str:
 
 
 def update_month_filter(html: str, data: dict, anos: list) -> str:
-    """Atualiza botões de mês para os meses com dados (união de todos os anos)."""
+    """Atualiza botÃµes de mÃªs para os meses com dados (uniÃ£o de todos os anos)."""
     active_months = set()
     for ano in anos:
         for m in MES_ORDER:
@@ -106,7 +106,7 @@ def update_month_filter(html: str, data: dict, anos: list) -> str:
 
     new_buttons = "\n      ".join(buttons)
     html = re.sub(
-        r'(<span class="filter-label">Per[íi]odo</span>\s*)([\s\S]*?)(\s*</div>\s*<div class="filter-divider">)',
+        r'(<span class="filter-label">Per[Ã­i]odo</span>\s*)([\s\S]*?)(\s*</div>\s*<div class="filter-divider">)',
         lambda m: m.group(1) + "\n      " + new_buttons + "\n    " + m.group(3),
         html,
         count=1
@@ -115,10 +115,10 @@ def update_month_filter(html: str, data: dict, anos: list) -> str:
 
 
 def update_meta(html: str, records: int, timestamp: str, anos: list) -> str:
-    """Atualiza data, registros e rodapé."""
+    """Atualiza data, registros e rodapÃ©."""
     dt       = datetime.fromisoformat(timestamp)
-    date_str = dt.strftime("%d/%m/%Y — dados reais")
-    time_str = f"{records} registros · {', '.join(sorted(anos))}"
+    date_str = dt.strftime("%d/%m/%Y â dados reais")
+    time_str = f"{records} registros Â· {', '.join(sorted(anos))}"
     full_date = dt.strftime("%d/%m/%Y")
     anos_str  = " + ".join(sorted(anos))
 
@@ -127,8 +127,8 @@ def update_meta(html: str, records: int, timestamp: str, anos: list) -> str:
     html = re.sub(r'(<span id="updateTime">)[^<]*(</span>)',
                   f'\\g<1>{time_str}\\g<2>', html)
     html = re.sub(r'(<strong id="footer-records">)[^<]*(</strong>)',
-                  f'\\g<1>{records} registros · {anos_str}\\g<2>', html)
-    html = re.sub(r'(Última atualização: <strong>)[^<]*(</strong>)',
+                  f'\\g<1>{records} registros Â· {anos_str}\\g<2>', html)
+    html = re.sub(r'(Ãltima atualizaÃ§Ã£o: <strong>)[^<]*(</strong>)',
                   f'\\g<1>{full_date}\\g<2>', html)
     html = re.sub(r'(Controle de Vendas )\d{4}',
                   f'\\g<1>{anos_str}', html)
@@ -137,14 +137,14 @@ def update_meta(html: str, records: int, timestamp: str, anos: list) -> str:
 
 def inject_multiyear_js(html: str, anos: list) -> str:
     """
-    Injeta/substitui a lógica JS de controle multi-ano no dashboard.
-    Adiciona: activeAno, setAno(), getKey() compatível com anos, seção YoY.
+    Injeta/substitui a lÃ³gica JS de controle multi-ano no dashboard.
+    Adiciona: activeAno, setAno(), getKey() compatÃ­vel com anos, seÃ§Ã£o YoY.
     """
     latest = sorted(anos)[-1]
 
     js_multiyr = f"""
 // =====================================================================
-// CONTROLE MULTI-ANO — {" + ".join(sorted(anos))}
+// CONTROLE MULTI-ANO â {" + ".join(sorted(anos))}
 // =====================================================================
 let activeAno  = 'latest';   // 'latest' | '2025' | '2026' | 'compare'
 let activeMes  = 'all';
@@ -158,7 +158,7 @@ function setAno(ano) {{
   document.querySelectorAll('[data-ano]').forEach(b =>
     b.classList.toggle('active', b.dataset.ano === ano));
 
-  // No modo comparação, limpa filtros de mês/vendedor
+  // No modo comparaÃ§Ã£o, limpa filtros de mÃªs/vendedor
   if (ano === 'compare') {{
     activeMes  = 'all';
     activeVend = 'all';
@@ -198,7 +198,7 @@ function getKey() {{
 }}
 """
 
-    # CSS para botão comparar
+    # CSS para botÃ£o comparar
     css_compare = """
   .filter-btn-compare { border-color: #8b5cf6 !important; color: #7c3aed !important; }
   .filter-btn-compare.active { background: #8b5cf6 !important; border-color: #8b5cf6 !important; color: #fff !important; }
@@ -216,36 +216,36 @@ function getKey() {{
     # Injeta CSS
     html = html.replace("</style>", css_compare + "\n</style>", 1)
 
-    # Injeta seção HTML de comparação antes do rodapé
+    # Injeta seÃ§Ã£o HTML de comparaÃ§Ã£o antes do rodapÃ©
     compare_section = """
-<!-- ══════════════════════════════════════════════════════════════════
-     SEÇÃO COMPARATIVO YoY (2025 vs 2026)
-     ══════════════════════════════════════════════════════════════════ -->
+<!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+     SEÃÃO COMPARATIVO YoY (2025 vs 2026)
+     ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
 <div id="compare-section" class="main" style="padding-top:0">
   <div class="section-header">
-    <div class="section-header-title">📊 Comparativo 2025 vs 2026</div>
-    <div class="section-header-sub">Evolução mensal · YoY por vendedor · Crescimento</div>
+    <div class="section-header-title">ð Comparativo 2025 vs 2026</div>
+    <div class="section-header-sub">EvoluÃ§Ã£o mensal Â· YoY por vendedor Â· Crescimento</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Faturamento por Mês — 2025 vs 2026</div>
-      <div class="chart-sub">Comparação mês a mês dos dois anos</div>
+      <div class="chart-title">Faturamento por MÃªs â 2025 vs 2026</div>
+      <div class="chart-sub">ComparaÃ§Ã£o mÃªs a mÃªs dos dois anos</div>
       <div class="chart-wrap h260"><canvas id="chartYoY"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Crescimento YoY por Mês</div>
-      <div class="chart-sub">Variação percentual mês a mês (%)</div>
+      <div class="chart-title">Crescimento YoY por MÃªs</div>
+      <div class="chart-sub">VariaÃ§Ã£o percentual mÃªs a mÃªs (%)</div>
       <div id="yoy-mes-table-wrap"></div>
     </div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Vendedores — 2025 vs 2026</div>
+      <div class="chart-title">Vendedores â 2025 vs 2026</div>
       <div class="chart-sub">Faturamento total por vendedor em cada ano</div>
       <div id="yoy-vend-table-wrap"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">KPIs Gerais — Evolução Anual</div>
+      <div class="chart-title">KPIs Gerais â EvoluÃ§Ã£o Anual</div>
       <div class="chart-sub">Totais consolidados dos dois anos</div>
       <div id="yoy-kpi-wrap"></div>
     </div>
@@ -262,20 +262,20 @@ function getKey() {{
         count=1
     )
 
-    # Substitui getKey() e setMes/setVend se ainda existirem como funções isoladas
+    # Substitui getKey() e setMes/setVend se ainda existirem como funÃ§Ãµes isoladas
     for fn in ["function setMes", "function setVend", "function getKey"]:
-        html = re.sub(ref'{fn}\s*\([^)]*\)\s*\{{[\s\S]*?\n\}}', '', html)
+        html = re.sub(rf'{fn}\s*\([^)]*\)\s*\{{[\s\S]*?\n\}}', '', html)
 
-    # Injeta chart YoY e funções renderCompare/hideCompare antes do fechamento do script
+    # Injeta chart YoY e funÃ§Ãµes renderCompare/hideCompare antes do fechamento do script
     yoy_js = """
 // =====================================================================
-// DASHBOARD MULTI-ANO — lógica de rendering
+// DASHBOARD MULTI-ANO â lÃ³gica de rendering
 // =====================================================================
 
-// Lista de vendedores dinâmica (vem do Python via DATA.meta.vendors)
+// Lista de vendedores dinÃ¢mica (vem do Python via DATA.meta.vendors)
 const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
 
-// Paleta de cores para vendedores extras (além dos 3 originais)
+// Paleta de cores para vendedores extras (alÃ©m dos 3 originais)
 const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
 VENDORS_LIST.forEach((v, i) => {
   if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
@@ -295,7 +295,7 @@ function updateDashboard() {
   // KPIs
   document.getElementById('kpi-fat').textContent      = 'R$ ' + fmt(d.fat || 0);
   document.getElementById('kpi-vendas').textContent   = d.n || 0;
-  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : '—';
+  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : 'â';
   const margem    = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
   const margemPct = d.fat > 0 ? Math.round(margem/d.fat*100) : 0;
   document.getElementById('kpi-margem').textContent     = 'R$ ' + fmt(margem);
@@ -307,9 +307,9 @@ function updateDashboard() {
   const mesLbl = {all:ano+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
                   abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
                   ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
-  // Gera mapeamento vend↲label dinamicamente
+  // Gera mapeamento vendâ²label dinamicamente
   const vLblMap = {all:''};
-  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + v.charAt(0) + v.slice(1).toLowerCase(); });
+  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' Â· ' + v.charAt(0) + v.slice(1).toLowerCase(); });
   document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||ano) + (vLblMap[activeVend]||'');
 
   // Meses com dados
@@ -333,7 +333,7 @@ function updateDashboard() {
   chartTicket.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v]&&d.vend[v].tkt)?d.vend[v].tkt:0);
   chartTicket.update();
 
-  // Comissões — todos os vendedores dinâmicos
+  // ComissÃµes â todos os vendedores dinÃ¢micos
   let totN=0,totV=0,totCv=0,totCt=0, rows='';
   VENDORS_LIST.forEach(v=>{
     const vd=(d.vend&&d.vend[v]);
@@ -359,15 +359,15 @@ function updateDashboard() {
   if(typeof updateAdvanced === 'function') updateAdvanced();
 }
 
-// ── Gráfico YoY (criado uma vez, atualizado ao entrar em Comparar) ──
+// ââ GrÃ¡fico YoY (criado uma vez, atualizado ao entrar em Comparar) ââ
 let chartYoY = null;
 
 function renderCompare() {
   document.getElementById('compare-section').classList.add('show');
   const cmp = DATA.compare;
-  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparação não disponíveis (é necessário ter 2025 e 2026 na planilha).</p>'; return; }
+  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃ§Ã£o nÃ£o disponÃ­veis (Ã© necessÃ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
 
-  // Gráfico de barras lado-a-lado por mês
+  // GrÃ¡fico de barras lado-a-lado por mÃªs
   const mesesCmp = Object.keys(cmp.mensal||{});
   const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
   const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
@@ -397,13 +397,13 @@ function renderCompare() {
     chartYoY.update();
   }
 
-  // Tabela YoY por mês
+  // Tabela YoY por mÃªs
   let rowsMes='';
   mesesCmp.forEach(m=>{
     const r=cmp.mensal[m];
     const pct=r.fat.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'â':pct>=0?'â² '+pct+'%':'â¼ '+Math.abs(pct)+'%';
     rowsMes+=`<tr>
       <td><strong>${mesLbls[mesesCmp.indexOf(m)]}</strong></td>
       <td>R$ ${fmt(r.fat.v25)}</td>
@@ -413,7 +413,7 @@ function renderCompare() {
   });
   document.getElementById('yoy-mes-table-wrap').innerHTML=`
     <table class="yoy-table">
-      <thead><tr><th>Mês</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
+      <thead><tr><th>MÃªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
       <tbody>${rowsMes}</tbody>
     </table>`;
 
@@ -422,7 +422,7 @@ function renderCompare() {
   Object.entries(cmp.vend||{}).forEach(([v,r])=>{
     const pct=r.fat.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'â':pct>=0?'â² '+pct+'%':'â¼ '+Math.abs(pct)+'%';
     rowsVend+=`<tr>
       <td><span class="vend-badge"><span class="vend-dot" style="background:${VEND_COLORS[v]||'#94a3b8'}"></span>${VEND_NAMES[v]||v}</span></td>
       <td>R$ ${fmt(r.fat.v25)}</td>
@@ -442,14 +442,14 @@ function renderCompare() {
   const tot=cmp.total;
   const kpis=[
     {label:'Faturamento',r:tot.fat,fmt:'R$ '},
-    {label:'Nº Vendas',  r:tot.n,  fmt:''},
-    {label:'Ticket Médio',r:tot.tkt,fmt:'R$ '},
+    {label:'NÂº Vendas',  r:tot.n,  fmt:''},
+    {label:'Ticket MÃ©dio',r:tot.tkt,fmt:'R$ '},
   ];
   let kpiHtml='<div style="display:grid;gap:12px">';
   kpis.forEach(k=>{
     const pct=k.r.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'â':pct>=0?'â² '+pct+'%':'â¼ '+Math.abs(pct)+'%';
     kpiHtml+=`<div style="background:var(--cinza);border-radius:10px;padding:12px 16px">
       <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${k.label}</div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
@@ -486,10 +486,10 @@ updateDashboard();
 
 
 def generate(data: dict, records: int, timestamp: str) -> Path:
-    """Pipeline completo de geração do HTML."""
+    """Pipeline completo de geraÃ§Ã£o do HTML."""
     if not TEMPLATE_PATH.exists():
         raise FileNotFoundError(
-            f"Template não encontrado: {TEMPLATE_PATH}\n"
+            f"Template nÃ£o encontrado: {TEMPLATE_PATH}\n"
             "Coloque o arquivo original em 'templates/dashboard.html'."
         )
 
@@ -509,12 +509,12 @@ def generate(data: dict, records: int, timestamp: str) -> Path:
     print("[generate] Atualizando metadados...")
     html = update_meta(html, records, timestamp, anos)
 
-    print("[generate] Injetando lógica JS multi-ano + YoY...")
+    print("[generate] Injetando lÃ³gica JS multi-ano + YoY...")
     html = inject_multiyear_js(html, anos)
 
     OUTPUT_PATH.write_text(html, encoding="utf-8")
     size_kb = OUTPUT_PATH.stat().st_size / 1024
-    print(f"[generate] ✅ HTML gerado: {OUTPUT_PATH.name} ({size_kb:.1f} KB)")
+    print(f"[generate] â HTML gerado: {OUTPUT_PATH.name} ({size_kb:.1f} KB)")
 
     return OUTPUT_PATH
 
@@ -528,4 +528,4 @@ if __name__ == "__main__":
         sys.exit(1)
     snap = json.loads(snaps[-1].read_text(encoding="utf-8"))
     out  = generate(snap["data"], snap["records"], snap["timestamp"])
-    print(f"\n✅ Dashboard gerado: {out}")
+    print(f"\nâ Dashboard gerado: {out}")
