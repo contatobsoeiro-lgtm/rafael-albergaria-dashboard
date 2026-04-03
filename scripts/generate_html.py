@@ -556,7 +556,60 @@ def generate(data: dict, records: int, timestamp: str) -> Path:
     html = inject_multiyear_js(html, anos)
 
     # Inject Todos aggregation JS
-    _todos_js = "<script>\n(function(){\n  var _orig = getAnoData;\n  getAnoData = function() {\n    if (activeAno === 'todos') return buildTodosData();\n    return _orig.call(this);\n  };\n  window.buildTodosData = function() {\n    var anos = Object.keys(DATA).filter(function(k){return k.length===4 && !isNaN(k);});\n    if (!anos.length) return {};\n    var allKeys = {};\n    anos.forEach(function(a){ Object.keys(DATA[a]).forEach(function(k){ allKeys[k]=1; }); });\n    function mergeBlock(a, b) {\n      if (!a && !b) return {n:0,fat:0,tkt:0,cvend:0,ctreino:0,modal:{},vend:{},mes:{}};\n      if (!a) return JSON.parse(JSON.stringify(b));\n      if (!b) return JSON.parse(JSON.stringify(a));\n      var n=+(a.n||0)+ +(b.n||0), fat=+(a.fat||0)+ +(b.fat||0);\n      var cv=+(a.cvend||0)+ +(b.cvend||0), ct=+(a.ctreino||0)+ +(b.ctreino||0);\n      var modal={}, vend={}, mes={}, tmp={};\n      Object.keys(a.modal||{}).forEach(function(m){tmp[m]=1;});\n      Object.keys(b.modal||{}).forEach(function(m){tmp[m]=1;});\n      Object.keys(tmp).forEach(function(m){\n        var am=a.modal&&a.modal[m]||{c:0,v:0}, bm=b.modal&&b.modal[m]||{c:0,v:0};\n        modal[m]={c:am.c+bm.c, v:am.v+bm.v};\n      });\n      tmp={};\n      Object.keys(a.vend||{}).forEach(function(v){tmp[v]=1;});\n      Object.keys(b.vend||{}).forEach(function(v){tmp[v]=1;});\n      Object.keys(tmp).forEach(function(v){\n        var av=a.vend&&a.vend[v]||{c:0,v:0,tkt:0,cv:0,ct:0};\n        var bv=b.vend&&b.vend[v]||{c:0,v:0,tkt:0,cv:0,ct:0};\n        var vc=av.c+bv.c, vf=av.v+bv.v;\n        vend[v]={c:vc,v:vf,tkt:vc?Math.round(vf/vc):0,cv:(av.cv||0)+(bv.cv||0),ct:(av.ct||0)+(bv.ct||0)};\n      });\n      tmp={};\n      Object.keys(a.mes||{}).forEach(function(m){tmp[m]=1;});\n      Object.keys(b.mes||{}).forEach(function(m){tmp[m]=1;});\n      Object.keys(tmp).forEach(function(m){\n        var am=a.mes&&a.mes[m]||{c:0,v:0}, bm=b.mes&&b.mes[m]||{c:0,v:0};\n        mes[m]={c:am.c+bm.c, v:am.v+bm.v};\n      });\n      return {n:n,fat:fat,tkt:n?Math.round(fat/n):0,cvend:cv,ctreino:ct,modal:modal,vend:vend,mes:mes};\n    }\n    var result={};\n    Object.keys(allKeys).forEach(function(key){\n      var merged=null;\n      anos.forEach(function(ano){ merged=mergeBlock(merged, DATA[ano][key]); });\n      result[key]=merged;\n    });\n    return result;\n  };\n})();\n</script>"
+    # Injeta script de agregação "Todos" (soma todos os anos)
+    _todos_js = """<script>
+(function(){
+  var _origGetAnoData = getAnoData;
+  getAnoData = function() {
+    if (activeAno === 'todos') return buildTodosData();
+    return _origGetAnoData.call(this);
+  };
+  window.buildTodosData = function() {
+    var anos = Object.keys(DATA).filter(function(k){ return k.length===4 && !isNaN(k); });
+    if (!anos.length) return {};
+    var allKeys = {};
+    anos.forEach(function(a){ Object.keys(DATA[a]).forEach(function(k){ allKeys[k]=1; }); });
+    function mergeBlock(a, b) {
+      if (!a && !b) return {n:0,fat:0,tkt:0,cvend:0,ctreino:0,modal:{},vend:{},mes:{}};
+      if (!a) return JSON.parse(JSON.stringify(b));
+      if (!b) return JSON.parse(JSON.stringify(a));
+      var n=+(a.n||0)+ +(b.n||0), fat=+(a.fat||0)+ +(b.fat||0);
+      var cv=+(a.cvend||0)+ +(b.cvend||0), ct=+(a.ctreino||0)+ +(b.ctreino||0);
+      var modal={}, vend={}, mes={};
+      [a.modal||{}, b.modal||{}].forEach(function(obj){
+        Object.keys(obj).forEach(function(k){ modal[k]=(modal[k]||0)+(obj[k]||0); });
+      });
+      [a.vend||{}, b.vend||{}].forEach(function(obj){
+        Object.keys(obj).forEach(function(k){
+          if (!vend[k]) vend[k]={c:0,v:0,tkt:0,cv:0,ct:0};
+          vend[k].c += (obj[k] ? obj[k].c||0 : 0);
+          vend[k].v += (obj[k] ? obj[k].v||0 : 0);
+          vend[k].cv += (obj[k] ? obj[k].cv||0 : 0);
+          vend[k].ct += (obj[k] ? obj[k].ct||0 : 0);
+        });
+      });
+      Object.keys(vend).forEach(function(k){
+        vend[k].tkt = vend[k].c ? Math.round(vend[k].v/vend[k].c) : 0;
+      });
+      [a.mes||{}, b.mes||{}].forEach(function(obj){
+        Object.keys(obj).forEach(function(k){
+          if (!mes[k]) mes[k]={c:0,v:0};
+          mes[k].c += (obj[k] ? obj[k].c||0 : 0);
+          mes[k].v += (obj[k] ? obj[k].v||0 : 0);
+        });
+      });
+      return {n:n,fat:fat,tkt:n?Math.round(fat/n):0,cvend:cv,ctreino:ct,modal:modal,vend:vend,mes:mes};
+    }
+    var result={};
+    Object.keys(allKeys).forEach(function(key){
+      var merged=null;
+      anos.forEach(function(ano){ merged=mergeBlock(merged, DATA[ano][key]); });
+      result[key]=merged;
+    });
+    return result;
+  };
+})();
+</script>"""
     html = html.replace('</body>', _todos_js + '\n</body>')
 
     OUTPUT_PATH.write_text(html, encoding="utf-8")
