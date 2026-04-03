@@ -12106,6 +12106,7 @@ let chartYoY = null;
 
 function renderCompare() {
   document.getElementById('compare-section').classList.add('show');
+  document.getElementById('compare-section').scrollIntoView({{behavior:'smooth',block:'start'}});
   const cmp = DATA.compare;
   if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃ§ão não disponÃ­veis (Ã© necessÃ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
 
