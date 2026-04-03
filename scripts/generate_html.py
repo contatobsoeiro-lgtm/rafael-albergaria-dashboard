@@ -1,5 +1,5 @@
 """
-generate_html.py â versÃ£o multi-ano (2025 + 2026 + YoY)
+generate_html.py â versão multi-ano (2025 + 2026 + YoY)
 âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 Injeta o objeto DATA multi-ano no template HTML e:
   - Atualiza filtros de perÃ­odo e ano dinamicamente
@@ -33,7 +33,7 @@ DATA_PATTERN = re.compile(
 
 
 def build_js_data(data: dict) -> str:
-    """Serializa DATA para JS com formataÃ§Ã£o legÃ­vel."""
+    """Serializa DATA para JS com formataÃ§ão legÃ­vel."""
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     js = re.sub(r',(?="[^"]+":)', ',\n  ', js)
     return f"const DATA = {js[0]}\n  {js[1:-1]}\n{js[-1]};\n"
@@ -54,7 +54,7 @@ def inject_data(html: str, data: dict) -> str:
 def update_year_filter(html: str, anos: list) -> str:
     """
     Injeta (ou atualiza) os botÃµes de filtro de ANO no HTML.
-    Adiciona logo apÃ³s o bloco de filtros de mÃªs existente.
+    Adiciona logo apÃ³s o bloco de filtros de mês existente.
     """
     # Monta botÃµes de ano
     year_buttons = ['<button class="filter-btn active" data-ano="latest" onclick="setAno(\'latest\')">Atual</button>']
@@ -63,7 +63,7 @@ def update_year_filter(html: str, anos: list) -> str:
             f'<button class="filter-btn" data-ano="{ano}" onclick="setAno(\'{ano}\')">{ano}</button>'
         )
     year_buttons.append(
-        '<button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">ð Comparar Anos</button>'
+        '<button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">📊 Comparar Anos</button>'
     )
 
     year_block = (
@@ -74,7 +74,7 @@ def update_year_filter(html: str, anos: list) -> str:
         '    </div>'
     )
 
-    # Substitui bloco de ano se jÃ¡ existir, senÃ£o insere antes do fechamento da filter-section
+    # Substitui bloco de ano se jÃ¡ existir, senão insere antes do fechamento da filter-section
     if 'id="year-filter-group"' in html:
         html = re.sub(
             r'<div class="filter-group" id="year-filter-group">[\s\S]*?</div>',
@@ -90,7 +90,7 @@ def update_year_filter(html: str, anos: list) -> str:
 
 
 def update_month_filter(html: str, data: dict, anos: list) -> str:
-    """Atualiza botÃµes de mÃªs para os meses com dados (uniÃ£o de todos os anos)."""
+    """Atualiza botÃµes de mês para os meses com dados (união de todos os anos)."""
     active_months = set()
     for ano in anos:
         for m in MES_ORDER:
@@ -128,7 +128,7 @@ def update_meta(html: str, records: int, timestamp: str, anos: list) -> str:
                   f'\\g<1>{time_str}\\g<2>', html)
     html = re.sub(r'(<strong id="footer-records">)[^<]*(</strong>)',
                   f'\\g<1>{records} registros Â· {anos_str}\\g<2>', html)
-    html = re.sub(r'(Ãltima atualizaÃ§Ã£o: <strong>)[^<]*(</strong>)',
+    html = re.sub(r'(Ãltima atualizaÃ§ão: <strong>)[^<]*(</strong>)',
                   f'\\g<1>{full_date}\\g<2>', html)
     html = re.sub(r'(Controle de Vendas )\d{4}',
                   f'\\g<1>{anos_str}', html)
@@ -138,7 +138,7 @@ def update_meta(html: str, records: int, timestamp: str, anos: list) -> str:
 def inject_multiyear_js(html: str, anos: list) -> str:
     """
     Injeta/substitui a lÃ³gica JS de controle multi-ano no dashboard.
-    Adiciona: activeAno, setAno(), getKey() compatÃ­vel com anos, seÃ§Ã£o YoY.
+    Adiciona: activeAno, setAno(), getKey() compatÃ­vel com anos, seÃ§ão YoY.
     """
     latest = sorted(anos)[-1]
 
@@ -158,7 +158,7 @@ function setAno(ano) {{
   document.querySelectorAll('[data-ano]').forEach(b =>
     b.classList.toggle('active', b.dataset.ano === ano));
 
-  // No modo comparaÃ§Ã£o, limpa filtros de mÃªs/vendedor
+  // No modo comparaÃ§ão, limpa filtros de mês/vendedor
   if (ano === 'compare') {{
     activeMes  = 'all';
     activeVend = 'all';
@@ -202,7 +202,7 @@ const VEND_COLORS = {{RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b'}};
 const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
 """
 
-    # CSS para botÃ£o comparar
+    # CSS para botão comparar
     css_compare = """
   .filter-btn-compare { border-color: #8b5cf6 !important; color: #7c3aed !important; }
   .filter-btn-compare.active { background: #8b5cf6 !important; border-color: #8b5cf6 !important; color: #fff !important; }
@@ -220,25 +220,25 @@ const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
     # Injeta CSS
     html = html.replace("</style>", css_compare + "\n</style>", 1)
 
-    # Injeta seÃ§Ã£o HTML de comparaÃ§Ã£o antes do rodapÃ©
+    # Injeta seÃ§ão HTML de comparaÃ§ão antes do rodapÃ©
     compare_section = """
 <!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
      SEÃÃO COMPARATIVO YoY (2025 vs 2026)
      ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
 <div id="compare-section" class="main" style="padding-top:0">
   <div class="section-header">
-    <div class="section-header-title">ð Comparativo 2025 vs 2026</div>
-    <div class="section-header-sub">EvoluÃ§Ã£o mensal Â· YoY por vendedor Â· Crescimento</div>
+    <div class="section-header-title">📊 Comparativo 2025 vs 2026</div>
+    <div class="section-header-sub">EvoluÃ§ão mensal Â· YoY por vendedor Â· Crescimento</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Faturamento por MÃªs â 2025 vs 2026</div>
-      <div class="chart-sub">ComparaÃ§Ã£o mÃªs a mÃªs dos dois anos</div>
+      <div class="chart-title">Faturamento por Mês â 2025 vs 2026</div>
+      <div class="chart-sub">ComparaÃ§ão mês a mês dos dois anos</div>
       <div class="chart-wrap h260"><canvas id="chartYoY"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Crescimento YoY por MÃªs</div>
-      <div class="chart-sub">VariaÃ§Ã£o percentual mÃªs a mÃªs (%)</div>
+      <div class="chart-title">Crescimento YoY por Mês</div>
+      <div class="chart-sub">VariaÃ§ão percentual mês a mês (%)</div>
       <div id="yoy-mes-table-wrap"></div>
     </div>
   </div>
@@ -249,7 +249,7 @@ const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
       <div id="yoy-vend-table-wrap"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">KPIs Gerais â EvoluÃ§Ã£o Anual</div>
+      <div class="chart-title">KPIs Gerais â EvoluÃ§ão Anual</div>
       <div class="chart-sub">Totais consolidados dos dois anos</div>
       <div id="yoy-kpi-wrap"></div>
     </div>
@@ -403,9 +403,9 @@ let chartYoY = null;
 function renderCompare() {
   document.getElementById('compare-section').classList.add('show');
   const cmp = DATA.compare;
-  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃ§Ã£o nÃ£o disponÃ­veis (Ã© necessÃ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
+  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃ§ão não disponÃ­veis (Ã© necessÃ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
 
-  // GrÃ¡fico de barras lado-a-lado por mÃªs
+  // GrÃ¡fico de barras lado-a-lado por mês
   const mesesCmp = Object.keys(cmp.mensal||{});
   const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
   const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
@@ -435,7 +435,7 @@ function renderCompare() {
     chartYoY.update();
   }
 
-  // Tabela YoY por mÃªs
+  // Tabela YoY por mês
   let rowsMes='';
   mesesCmp.forEach(m=>{
     const r=cmp.mensal[m];
@@ -451,7 +451,7 @@ function renderCompare() {
   });
   document.getElementById('yoy-mes-table-wrap').innerHTML=`
     <table class="yoy-table">
-      <thead><tr><th>MÃªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
+      <thead><tr><th>Mês</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
       <tbody>${rowsMes}</tbody>
     </table>`;
 
@@ -525,10 +525,10 @@ updateDashboard();
 
 
 def generate(data: dict, records: int, timestamp: str) -> Path:
-    """Pipeline completo de geraÃ§Ã£o do HTML."""
+    """Pipeline completo de geraÃ§ão do HTML."""
     if not TEMPLATE_PATH.exists():
         raise FileNotFoundError(
-            f"Template nÃ£o encontrado: {TEMPLATE_PATH}\n"
+            f"Template não encontrado: {TEMPLATE_PATH}\n"
             "Coloque o arquivo original em 'templates/dashboard.html'."
         )
 
