@@ -211,6 +211,7 @@
     <div class="filter-group" id="year-filter-group">
       <span class="filter-label">Ano</span>
       <button class="filter-btn active" data-ano="latest" onclick="setAno('latest')">Atual</button>
+      <button class="filter-btn" data-ano="todos" onclick="setAno('todos')">Todos</button>
       <button class="filter-btn" data-ano="2026" onclick="setAno('2026')">2026</button>
       <button class="filter-btn" data-ano="2025" onclick="setAno('2025')">2025</button>
       <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">📊 Comparar Anos</button>
@@ -12225,6 +12226,59 @@ function refreshData() {
 // Inicializa dashboard
 updateDashboard();
 
+</script>
+<script>
+(function(){
+  var _orig = getAnoData;
+  getAnoData = function() {
+    if (activeAno === 'todos') return buildTodosData();
+    return _orig.call(this);
+  };
+  window.buildTodosData = function() {
+    var anos = Object.keys(DATA).filter(function(k){return /^\\d{4}$/.test(k);});
+    if (!anos.length) return {};
+    var allKeys = {};
+    anos.forEach(function(a){ Object.keys(DATA[a]).forEach(function(k){ allKeys[k]=1; }); });
+    function mergeBlock(a, b) {
+      if (!a && !b) return {n:0,fat:0,tkt:0,cvend:0,ctreino:0,modal:{},vend:{},mes:{}};
+      if (!a) return JSON.parse(JSON.stringify(b));
+      if (!b) return JSON.parse(JSON.stringify(a));
+      var n=+(a.n||0)+ +(b.n||0), fat=+(a.fat||0)+ +(b.fat||0);
+      var cv=+(a.cvend||0)+ +(b.cvend||0), ct=+(a.ctreino||0)+ +(b.ctreino||0);
+      var modal={}, vend={}, mes={}, tmp={};
+      Object.keys(a.modal||{}).forEach(function(m){tmp[m]=1;});
+      Object.keys(b.modal||{}).forEach(function(m){tmp[m]=1;});
+      Object.keys(tmp).forEach(function(m){
+        var am=a.modal&&a.modal[m]||{c:0,v:0}, bm=b.modal&&b.modal[m]||{c:0,v:0};
+        modal[m]={c:am.c+bm.c, v:am.v+bm.v};
+      });
+      tmp={};
+      Object.keys(a.vend||{}).forEach(function(v){tmp[v]=1;});
+      Object.keys(b.vend||{}).forEach(function(v){tmp[v]=1;});
+      Object.keys(tmp).forEach(function(v){
+        var av=a.vend&&a.vend[v]||{c:0,v:0,tkt:0,cv:0,ct:0};
+        var bv=b.vend&&b.vend[v]||{c:0,v:0,tkt:0,cv:0,ct:0};
+        var vc=av.c+bv.c, vf=av.v+bv.v;
+        vend[v]={c:vc,v:vf,tkt:vc?Math.round(vf/vc):0,cv:(av.cv||0)+(bv.cv||0),ct:(av.ct||0)+(bv.ct||0)};
+      });
+      tmp={};
+      Object.keys(a.mes||{}).forEach(function(m){tmp[m]=1;});
+      Object.keys(b.mes||{}).forEach(function(m){tmp[m]=1;});
+      Object.keys(tmp).forEach(function(m){
+        var am=a.mes&&a.mes[m]||{c:0,v:0}, bm=b.mes&&b.mes[m]||{c:0,v:0};
+        mes[m]={c:am.c+bm.c, v:am.v+bm.v};
+      });
+      return {n:n,fat:fat,tkt:n?Math.round(fat/n):0,cvend:cv,ctreino:ct,modal:modal,vend:vend,mes:mes};
+    }
+    var result={};
+    Object.keys(allKeys).forEach(function(key){
+      var merged=null;
+      anos.forEach(function(ano){ merged=mergeBlock(merged, DATA[ano][key]); });
+      result[key]=merged;
+    });
+    return result;
+  };
+})();
 </script>
 </body>
 </html>
