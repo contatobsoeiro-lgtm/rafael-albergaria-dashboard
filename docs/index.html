@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Comercial â Rafael Albergaria NutriÃ§Ã£o</title>
+<title>Dashboard Comercial — Rafael Albergaria Nutrição</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js">
 // =====================================================================
-// DASHBOARD MULTI-ANO Ã¢ÂÂ lÃÂ³gica de rendering
+// DASHBOARD MULTI-ANO ÃÂ¢ÃÂÃÂ lÃÂÃÂ³gica de rendering
 // =====================================================================
 
-// Lista de vendedores dinÃÂ¢mica (vem do Python via DATA.meta.vendors)
+// Lista de vendedores dinÃÂÃÂ¢mica (vem do Python via DATA.meta.vendors)
 const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
 
-// Paleta de cores para vendedores extras (alÃÂ©m dos 3 originais)
+// Paleta de cores para vendedores extras (alÃÂÃÂ©m dos 3 originais)
 const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
 VENDORS_LIST.forEach((v, i) => {
   if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
@@ -32,7 +32,7 @@ function updateDashboard() {
   // KPIs
   document.getElementById('kpi-fat').textContent      = 'R$ ' + fmt(d.fat || 0);
   document.getElementById('kpi-vendas').textContent   = d.n || 0;
-  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : 'Ã¢ÂÂ';
+  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : 'ÃÂ¢ÃÂÃÂ';
   const margem    = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
   const margemPct = d.fat > 0 ? Math.round(margem/d.fat*100) : 0;
   document.getElementById('kpi-margem').textContent     = 'R$ ' + fmt(margem);
@@ -44,9 +44,9 @@ function updateDashboard() {
   const mesLbl = {all:ano+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
                   abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
                   ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
-  // Gera mapeamento vendÃ¢ÂÂ²label dinamicamente
+  // Gera mapeamento vendÃÂ¢ÃÂÃÂ²label dinamicamente
   const vLblMap = {all:''};
-  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' ÃÂ· ' + v.charAt(0) + v.slice(1).toLowerCase(); });
+  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' ÃÂÃÂ· ' + v.charAt(0) + v.slice(1).toLowerCase(); });
   document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||ano) + (vLblMap[activeVend]||'');
 
   // Meses com dados
@@ -70,7 +70,7 @@ function updateDashboard() {
   chartTicket.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v]&&d.vend[v].tkt)?d.vend[v].tkt:0);
   chartTicket.update();
 
-  // ComissÃÂµes Ã¢ÂÂ todos os vendedores dinÃÂ¢micos
+  // ComissÃÂÃÂµes ÃÂ¢ÃÂÃÂ todos os vendedores dinÃÂÃÂ¢micos
   let totN=0,totV=0,totCv=0,totCt=0, rows='';
   VENDORS_LIST.forEach(v=>{
     const vd=(d.vend&&d.vend[v]);
@@ -96,15 +96,15 @@ function updateDashboard() {
   if(typeof updateAdvanced === 'function') updateAdvanced();
 }
 
-// Ã¢ÂÂÃ¢ÂÂ GrÃÂ¡fico YoY (criado uma vez, atualizado ao entrar em Comparar) Ã¢ÂÂÃ¢ÂÂ
+// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ GrÃÂÃÂ¡fico YoY (criado uma vez, atualizado ao entrar em Comparar) ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 let chartYoY = null;
 
 function renderCompare() {
   document.getElementById('compare-section').classList.add('show');
   const cmp = DATA.compare;
-  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃÂ§ÃÂ£o nÃÂ£o disponÃÂ­veis (ÃÂ© necessÃÂ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
+  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃÂÃÂ§ÃÂÃÂ£o nÃÂÃÂ£o disponÃÂÃÂ­veis (ÃÂÃÂ© necessÃÂÃÂ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
 
-  // GrÃÂ¡fico de barras lado-a-lado por mÃÂªs
+  // GrÃÂÃÂ¡fico de barras lado-a-lado por mÃÂÃÂªs
   const mesesCmp = Object.keys(cmp.mensal||{});
   const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
   const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
@@ -134,13 +134,13 @@ function renderCompare() {
     chartYoY.update();
   }
 
-  // Tabela YoY por mÃÂªs
+  // Tabela YoY por mÃÂÃÂªs
   let rowsMes='';
   mesesCmp.forEach(m=>{
     const r=cmp.mensal[m];
     const pct=r.fat.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'Ã¢ÂÂ':pct>=0?'Ã¢ÂÂ² '+pct+'%':'Ã¢ÂÂ¼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
     rowsMes+=`<tr>
       <td><strong>${mesLbls[mesesCmp.indexOf(m)]}</strong></td>
       <td>R$ ${fmt(r.fat.v25)}</td>
@@ -150,7 +150,7 @@ function renderCompare() {
   });
   document.getElementById('yoy-mes-table-wrap').innerHTML=`
     <table class="yoy-table">
-      <thead><tr><th>MÃÂªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
+      <thead><tr><th>MÃÂÃÂªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
       <tbody>${rowsMes}</tbody>
     </table>`;
 
@@ -159,7 +159,7 @@ function renderCompare() {
   Object.entries(cmp.vend||{}).forEach(([v,r])=>{
     const pct=r.fat.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'Ã¢ÂÂ':pct>=0?'Ã¢ÂÂ² '+pct+'%':'Ã¢ÂÂ¼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
     rowsVend+=`<tr>
       <td><span class="vend-badge"><span class="vend-dot" style="background:${VEND_COLORS[v]||'#94a3b8'}"></span>${VEND_NAMES[v]||v}</span></td>
       <td>R$ ${fmt(r.fat.v25)}</td>
@@ -179,14 +179,14 @@ function renderCompare() {
   const tot=cmp.total;
   const kpis=[
     {label:'Faturamento',r:tot.fat,fmt:'R$ '},
-    {label:'NÃÂº Vendas',  r:tot.n,  fmt:''},
-    {label:'Ticket MÃÂ©dio',r:tot.tkt,fmt:'R$ '},
+    {label:'NÃÂÃÂº Vendas',  r:tot.n,  fmt:''},
+    {label:'Ticket MÃÂÃÂ©dio',r:tot.tkt,fmt:'R$ '},
   ];
   let kpiHtml='<div style="display:grid;gap:12px">';
   kpis.forEach(k=>{
     const pct=k.r.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'Ã¢ÂÂ':pct>=0?'Ã¢ÂÂ² '+pct+'%':'Ã¢ÂÂ¼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'ÃÂ¢ÃÂÃÂ':pct>=0?'ÃÂ¢ÃÂÃÂ² '+pct+'%':'ÃÂ¢ÃÂÃÂ¼ '+Math.abs(pct)+'%';
     kpiHtml+=`<div style="background:var(--cinza);border-radius:10px;padding:12px 16px">
       <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${k.label}</div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
@@ -296,7 +296,7 @@ updateDashboard();
 
   .footer { text-align: center; padding: 20px 32px 28px; font-size: 12px; color: var(--text-muted); }
 
-  /* ââ ANÃLISES AVANÃADAS ââ */
+  /* ── ANÁLISES AVANÇADAS ── */
   .section-header { display: flex; align-items: baseline; gap: 10px; margin: 24px 0 14px; }
   .section-header-title { font-size: 15px; font-weight: 800; color: var(--text); }
   .section-header-sub { font-size: 12px; color: var(--text-muted); }
@@ -376,13 +376,13 @@ updateDashboard();
     <div class="logo">RA</div>
     <div class="header-title">
       <h1>Dashboard Comercial</h1>
-      <p>Nutricionista Rafael Albergaria â Controle de Vendas 2025 + 2026</p>
+      <p>Nutricionista Rafael Albergaria — Controle de Vendas 2025 + 2026</p>
     </div>
   </div>
   <div class="header-right">
     <div class="update-info">
-      <strong id="updateDate">03/04/2026 Ã¢ÂÂ dados reais</strong>
-      <span id="updateTime">943 registros ÃÂ· 2025, 2026</span>
+      <strong id="updateDate">03/04/2026 ÃÂ¢ÃÂÃÂ dados reais</strong>
+      <span id="updateTime">943 registros ÃÂÃÂ· 2025, 2026</span>
     </div>
     <button class="btn-refresh" onclick="refreshData()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
@@ -395,11 +395,11 @@ updateDashboard();
 
   <div class="filters-section">
     <div class="filter-group">
-      <span class="filter-label">PerÃ­odo</span>
+      <span class="filter-label">Período</span>
       <button class="filter-btn active" data-mes="all"    onclick="setMes('all')">Todos</button>
       <button class="filter-btn"        data-mes="jan"    onclick="setMes('jan')">Janeiro</button>
       <button class="filter-btn"        data-mes="fev"    onclick="setMes('fev')">Fevereiro</button>
-      <button class="filter-btn"        data-mes="mar"    onclick="setMes('mar')">MarÃ§o</button>
+      <button class="filter-btn"        data-mes="mar"    onclick="setMes('mar')">Março</button>
     </div>
     <div class="filter-divider"></div>
     <div class="filter-group">
@@ -416,43 +416,43 @@ updateDashboard();
       <button class="filter-btn active" data-ano="latest" onclick="setAno('latest')">Atual</button>
       <button class="filter-btn" data-ano="2026" onclick="setAno('2026')">2026</button>
       <button class="filter-btn" data-ano="2025" onclick="setAno('2025')">2025</button>
-      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">Ã°ÂÂÂ Comparar Anos</button>
+      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">ÃÂ°ÃÂÃÂÃÂ Comparar Anos</button>
     </div>
   </div>
 
   <div class="kpi-grid">
     <div class="kpi-card">
-      <div class="kpi-icon green">ð°</div>
+      <div class="kpi-icon green">💰</div>
       <div class="kpi-label">Faturamento Total</div>
       <div class="kpi-value" id="kpi-fat">R$ 243.531</div>
       <div class="kpi-sub"><span class="kpi-badge" id="kpi-fat-badge">2026 acumulado</span></div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon blue">ð</div>
+      <div class="kpi-icon blue">📋</div>
       <div class="kpi-label">Vendas Realizadas</div>
       <div class="kpi-value" id="kpi-vendas">491</div>
       <div class="kpi-sub" id="kpi-vendas-sub">pacientes atendidos</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon purple">ð¯</div>
-      <div class="kpi-label">Ticket MÃ©dio</div>
+      <div class="kpi-icon purple">🎯</div>
+      <div class="kpi-label">Ticket Médio</div>
       <div class="kpi-value" id="kpi-ticket">R$ 496</div>
       <div class="kpi-sub" id="kpi-ticket-sub">por venda</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon teal">ð</div>
+      <div class="kpi-icon teal">📊</div>
       <div class="kpi-label">Margem Bruta</div>
       <div class="kpi-value teal" id="kpi-margem">R$ 199.695</div>
-      <div class="kpi-sub" id="kpi-margem-pct">fat â comissÃµes Â· <strong id="kpi-margem-pct-val">82%</strong> do faturamento</div>
+      <div class="kpi-sub" id="kpi-margem-pct">fat − comissões · <strong id="kpi-margem-pct-val">82%</strong> do faturamento</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon orange">â­</div>
-      <div class="kpi-label">ComissÃ£o Vendedor</div>
+      <div class="kpi-icon orange">⭐</div>
+      <div class="kpi-label">Comissão Vendedor</div>
       <div class="kpi-value" id="kpi-cvend-card">R$ 7.306</div>
-      <div class="kpi-sub" id="kpi-cvend-sub">a pagar no perÃ­odo</div>
+      <div class="kpi-sub" id="kpi-cvend-sub">a pagar no período</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-icon red">ðï¸</div>
+      <div class="kpi-icon red">🏋️</div>
       <div class="kpi-label">Custo Personal</div>
       <div class="kpi-value red" id="kpi-personal">R$ 36.530</div>
       <div class="kpi-sub" id="kpi-personal-sub">repasse adicional treino</div>
@@ -461,13 +461,13 @@ updateDashboard();
 
   <div class="charts-row charts-row-1">
     <div class="chart-card">
-      <div class="chart-title">Faturamento por MÃªs</div>
-      <div class="chart-sub" id="sub-mes">Janeiro Â· Fevereiro Â· MarÃ§o 2026</div>
+      <div class="chart-title">Faturamento por Mês</div>
+      <div class="chart-sub" id="sub-mes">Janeiro · Fevereiro · Março 2026</div>
       <div class="chart-wrap h220"><canvas id="chartMes"></canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Por Modalidade</div>
-      <div class="chart-sub" id="sub-modal">DistribuiÃ§Ã£o por nÃºmero de vendas</div>
+      <div class="chart-sub" id="sub-modal">Distribuição por número de vendas</div>
       <div class="chart-wrap h220"><canvas id="chartModal"></canvas></div>
     </div>
     <div class="chart-card">
@@ -479,8 +479,8 @@ updateDashboard();
 
   <div class="charts-row charts-row-2">
     <div class="chart-card">
-      <div class="chart-title">ComissÃµes por Vendedor</div>
-      <div class="chart-sub">ComissÃ£o vendedor + treino no perÃ­odo selecionado</div>
+      <div class="chart-title">Comissões por Vendedor</div>
+      <div class="chart-sub">Comissão vendedor + treino no período selecionado</div>
       <table class="comissoes-table">
         <thead>
           <tr>
@@ -497,33 +497,33 @@ updateDashboard();
       </table>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Ticket MÃ©dio por Vendedor</div>
-      <div class="chart-sub">Valor mÃ©dio por venda (R$) no perÃ­odo</div>
+      <div class="chart-title">Ticket Médio por Vendedor</div>
+      <div class="chart-sub">Valor médio por venda (R$) no período</div>
       <div class="chart-wrap h260"><canvas id="chartTicket"></canvas></div>
     </div>
   </div>
 
 </div>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-     ANÃLISES ESTRATÃGICAS
-     ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
+<!-- ══════════════════════════════════════════════════════════════════
+     ANÁLISES ESTRATÉGICAS
+     ══════════════════════════════════════════════════════════════════ -->
 <div class="main" style="padding-top:0">
 
   <div class="section-header">
-    <div class="section-header-title">ð AnÃ¡lises EstratÃ©gicas</div>
-    <div class="section-header-sub">LTV Â· Ticket real por modalidade Â· Upsell Â· MRR estimado Â· Insights</div>
+    <div class="section-header-title">📈 Análises Estratégicas</div>
+    <div class="section-header-sub">LTV · Ticket real por modalidade · Upsell · MRR estimado · Insights</div>
   </div>
 
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
 
-    <!-- TICKET REAL & LTV POR MODALIDADE (estÃ¡tico â dados totais do trimestre) -->
+    <!-- TICKET REAL & LTV POR MODALIDADE (estático — dados totais do trimestre) -->
     <div class="chart-card">
       <div class="chart-title">Ticket Real & LTV por Modalidade</div>
-      <div class="chart-sub">Valor mÃ©dio por contrato Â· receita gerada por mÃªs de serviÃ§o Â· % do faturamento total</div>
+      <div class="chart-sub">Valor médio por contrato · receita gerada por mês de serviço · % do faturamento total</div>
       <table class="analytics-table">
         <thead><tr>
-          <th>Plano</th><th>Vendas</th><th>Ticket MÃ©dio</th><th>R$/mÃªs</th><th>% Fat.</th>
+          <th>Plano</th><th>Vendas</th><th>Ticket Médio</th><th>R$/mês</th><th>% Fat.</th>
         </tr></thead>
         <tbody>
           <tr>
@@ -565,14 +565,14 @@ updateDashboard();
         </tr></tfoot>
       </table>
       <div style="margin-top:12px;padding:10px 12px;background:#f0fdf4;border-radius:8px;font-size:12px;color:#15803d;line-height:1.5">
-        ð¡ <strong>Insight LTV:</strong> um paciente mensal vale R$190 por perÃ­odo. Migrando para trimestral, o LTV sobe 2,6Ã (R$495) sem aumentar o esforÃ§o de venda. Semestral = 3,4Ã e anual = 5,3Ã.
+        💡 <strong>Insight LTV:</strong> um paciente mensal vale R$190 por período. Migrando para trimestral, o LTV sobe 2,6× (R$495) sem aumentar o esforço de venda. Semestral = 3,4× e anual = 5,3×.
       </div>
     </div>
 
-    <!-- UPSELL POR VENDEDOR (dinÃ¢mico) -->
+    <!-- UPSELL POR VENDEDOR (dinâmico) -->
     <div class="chart-card">
       <div class="chart-title">Mix de Planos & Upsell por Vendedor</div>
-      <div class="chart-sub">% de cada modalidade por vendedor â dados totais do trimestre (2026)</div>
+      <div class="chart-sub">% de cada modalidade por vendedor — dados totais do trimestre (2026)</div>
       <table class="analytics-table">
         <thead><tr>
           <th>Vendedor</th><th>Mensal</th><th>Trimestral</th><th>Semestral</th><th>Anual</th><th>% Plano Longo</th>
@@ -580,7 +580,7 @@ updateDashboard();
         <tbody id="upsell-tbody"></tbody>
       </table>
       <div style="margin-top:12px;padding:10px 12px;background:#fafafa;border-radius:8px;font-size:12px;color:var(--text-muted);line-height:1.5">
-        ð <strong>% Plano Longo</strong> = (semestral + anual) Ã· total de vendas do vendedor. Quanto maior, melhor upsell.
+        📌 <strong>% Plano Longo</strong> = (semestral + anual) ÷ total de vendas do vendedor. Quanto maior, melhor upsell.
       </div>
     </div>
 
@@ -590,23 +590,23 @@ updateDashboard();
 
     <!-- MRR ESTIMADO -->
     <div class="chart-card">
-      <div class="chart-title">MRR Estimado â Abril 2026</div>
-      <div class="chart-sub">Receita mensal garantida dos contratos nÃ£o-mensais do trimestre</div>
+      <div class="chart-title">MRR Estimado — Abril 2026</div>
+      <div class="chart-sub">Receita mensal garantida dos contratos não-mensais do trimestre</div>
       <div class="mrr-grid">
         <div class="mrr-item">
           <div class="mrr-item-label">Trimestral</div>
           <div class="mrr-item-value">R$ 24.903</div>
-          <div class="mrr-item-sub">R$74.709 Ã· 3 meses</div>
+          <div class="mrr-item-sub">R$74.709 ÷ 3 meses</div>
         </div>
         <div class="mrr-item">
           <div class="mrr-item-label">Semestral</div>
           <div class="mrr-item-value">R$ 7.482</div>
-          <div class="mrr-item-sub">R$44.894 Ã· 6 meses</div>
+          <div class="mrr-item-sub">R$44.894 ÷ 6 meses</div>
         </div>
         <div class="mrr-item">
           <div class="mrr-item-label">Anual</div>
           <div class="mrr-item-value">R$ 6.794</div>
-          <div class="mrr-item-sub">R$81.532 Ã· 12 meses</div>
+          <div class="mrr-item-sub">R$81.532 ÷ 12 meses</div>
         </div>
         <div class="mrr-item" style="border:1.5px dashed var(--cinza-border)">
           <div class="mrr-item-label">Mensal (renov. 60%)</div>
@@ -623,30 +623,30 @@ updateDashboard();
       </div>
     </div>
 
-    <!-- INSIGHTS DE DECISÃO IMEDIATA -->
+    <!-- INSIGHTS DE DECISÃO IMEDIATA -->
     <div class="chart-card">
-      <div class="chart-title">â¡ Insights de DecisÃ£o Imediata</div>
-      <div class="chart-sub">AnÃ¡lise dos dados reais Â· Q1 2026 Â· 499 registros</div>
+      <div class="chart-title">⚡ Insights de Decisão Imediata</div>
+      <div class="chart-sub">Análise dos dados reais · Q1 2026 · 499 registros</div>
       <ul class="insight-list">
         <li class="insight-item">
-          <div class="insight-icon">ð</div>
-          <div class="insight-text"><strong>Fevereiro caiu 52%</strong> â de R$118k para R$57k. MarÃ§o recuperou 21%, mas a queda Ã© um sinal crÃ­tico. Avaliar: sazonalidade, mudanÃ§a na oferta, ou desempenho da equipe em fev.</div>
+          <div class="insight-icon">📉</div>
+          <div class="insight-text"><strong>Fevereiro caiu 52%</strong> — de R$118k para R$57k. Março recuperou 21%, mas a queda é um sinal crítico. Avaliar: sazonalidade, mudança na oferta, ou desempenho da equipe em fev.</div>
         </li>
         <li class="insight-item">
-          <div class="insight-icon">ð</div>
-          <div class="insight-text"><strong>Junio chegou forte em marÃ§o</strong> â R$44.301 no 1Âº mÃªs, ticket R$633 (52% acima da Raquel no mesmo mÃªs, R$418). Perfil de alto valor. Prioridade: aumentar volume e proteger esse ticket.</div>
+          <div class="insight-icon">🚀</div>
+          <div class="insight-text"><strong>Junio chegou forte em março</strong> — R$44.301 no 1º mês, ticket R$633 (52% acima da Raquel no mesmo mês, R$418). Perfil de alto valor. Prioridade: aumentar volume e proteger esse ticket.</div>
         </li>
         <li class="insight-item">
-          <div class="insight-icon">ð¯</div>
-          <div class="insight-text"><strong>33% das vendas sÃ£o mensais</strong> â menor LTV da carteira (R$190). Converter 20% desses pacientes para trimestral gera +R$6k de faturamento sem nenhuma nova captaÃ§Ã£o.</div>
+          <div class="insight-icon">🎯</div>
+          <div class="insight-text"><strong>33% das vendas são mensais</strong> — menor LTV da carteira (R$190). Converter 20% desses pacientes para trimestral gera +R$6k de faturamento sem nenhuma nova captação.</div>
         </li>
         <li class="insight-item">
-          <div class="insight-icon">ð¡</div>
-          <div class="insight-text"><strong>Rafael tem o maior ticket: R$665</strong> (vs. R$453 Raquel e R$633 Junio). Com apenas 8% do volume total, hÃ¡ um playbook de upsell aqui. Mapear o script dele pode elevar o ticket mÃ©dio do time.</div>
+          <div class="insight-icon">💡</div>
+          <div class="insight-text"><strong>Rafael tem o maior ticket: R$665</strong> (vs. R$453 Raquel e R$633 Junio). Com apenas 8% do volume total, há um playbook de upsell aqui. Mapear o script dele pode elevar o ticket médio do time.</div>
         </li>
         <li class="insight-item">
-          <div class="insight-icon">ð°</div>
-          <div class="insight-text"><strong>Semestral + anual = 31% das vendas, mas 51% do faturamento.</strong> Cada contrato longo vale 3â5Ã um mensal. Meta acionÃ¡vel: elevar % de planos longos de 31% â 40% atÃ© junho.</div>
+          <div class="insight-icon">💰</div>
+          <div class="insight-text"><strong>Semestral + anual = 31% das vendas, mas 51% do faturamento.</strong> Cada contrato longo vale 3–5× um mensal. Meta acionável: elevar % de planos longos de 31% → 40% até junho.</div>
         </li>
       </ul>
     </div>
@@ -656,34 +656,34 @@ updateDashboard();
 </div>
 
 
-<!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
-     SEÃÂÃÂO COMPARATIVO YoY (2025 vs 2026)
-     Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
+     SEÃÂÃÂÃÂÃÂO COMPARATIVO YoY (2025 vs 2026)
+     ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div id="compare-section" class="main" style="padding-top:0">
   <div class="section-header">
-    <div class="section-header-title">Ã°ÂÂÂ Comparativo 2025 vs 2026</div>
-    <div class="section-header-sub">EvoluÃÂ§ÃÂ£o mensal ÃÂ· YoY por vendedor ÃÂ· Crescimento</div>
+    <div class="section-header-title">ÃÂ°ÃÂÃÂÃÂ Comparativo 2025 vs 2026</div>
+    <div class="section-header-sub">EvoluÃÂÃÂ§ÃÂÃÂ£o mensal ÃÂÃÂ· YoY por vendedor ÃÂÃÂ· Crescimento</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Faturamento por MÃÂªs Ã¢ÂÂ 2025 vs 2026</div>
-      <div class="chart-sub">ComparaÃÂ§ÃÂ£o mÃÂªs a mÃÂªs dos dois anos</div>
+      <div class="chart-title">Faturamento por MÃÂÃÂªs ÃÂ¢ÃÂÃÂ 2025 vs 2026</div>
+      <div class="chart-sub">ComparaÃÂÃÂ§ÃÂÃÂ£o mÃÂÃÂªs a mÃÂÃÂªs dos dois anos</div>
       <div class="chart-wrap h260"><canvas id="chartYoY"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Crescimento YoY por MÃÂªs</div>
-      <div class="chart-sub">VariaÃÂ§ÃÂ£o percentual mÃÂªs a mÃÂªs (%)</div>
+      <div class="chart-title">Crescimento YoY por MÃÂÃÂªs</div>
+      <div class="chart-sub">VariaÃÂÃÂ§ÃÂÃÂ£o percentual mÃÂÃÂªs a mÃÂÃÂªs (%)</div>
       <div id="yoy-mes-table-wrap"></div>
     </div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Vendedores Ã¢ÂÂ 2025 vs 2026</div>
+      <div class="chart-title">Vendedores ÃÂ¢ÃÂÃÂ 2025 vs 2026</div>
       <div class="chart-sub">Faturamento total por vendedor em cada ano</div>
       <div id="yoy-vend-table-wrap"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">KPIs Gerais Ã¢ÂÂ EvoluÃÂ§ÃÂ£o Anual</div>
+      <div class="chart-title">KPIs Gerais ÃÂ¢ÃÂÃÂ EvoluÃÂÃÂ§ÃÂÃÂ£o Anual</div>
       <div class="chart-sub">Totais consolidados dos dois anos</div>
       <div id="yoy-kpi-wrap"></div>
     </div>
@@ -691,15 +691,15 @@ updateDashboard();
 </div>
 
 <div class="footer">
-  Dados extraÃ­dos diretamente de <strong>Controle de Vendas e PÃ³s-Venda.xlsx</strong> via OneDrive &nbsp;Â·&nbsp;
-  <strong id="footer-records">943 registros ÃÂ· 2025 + 2026</strong> &nbsp;Â·&nbsp;
-  Ãltima atualizaÃ§Ã£o: <strong>02/04/2026</strong>
+  Dados extraídos diretamente de <strong>Controle de Vendas e Pós-Venda.xlsx</strong> via OneDrive &nbsp;·&nbsp;
+  <strong id="footer-records">943 registros ÃÂÃÂ· 2025 + 2026</strong> &nbsp;·&nbsp;
+  Última atualização: <strong>02/04/2026</strong>
 </div>
 
 <script>
 // =====================================================================
-// DADOS REAIS â planilha OneDrive, extraÃ­dos em 02/04/2026
-// 510 registros Â· CONTROLE DE VENDAS (2026)
+// DADOS REAIS — planilha OneDrive, extraídos em 02/04/2026
+// 510 registros · CONTROLE DE VENDAS (2026)
 // =====================================================================
 const DATA = {
   "meta":{"anos":["2025","2026"],
@@ -11874,7 +11874,7 @@ const DATA = {
 
 
 // =====================================================================
-// CONTROLE MULTI-ANO Ã¢ÂÂ 2025 + 2026
+// CONTROLE MULTI-ANO ÃÂ¢ÃÂÃÂ 2025 + 2026
 // =====================================================================
 let activeAno  = 'latest';   // 'latest' | '2025' | '2026' | 'compare'
 let activeMes  = 'all';
@@ -11888,7 +11888,7 @@ function setAno(ano) {
   document.querySelectorAll('[data-ano]').forEach(b =>
     b.classList.toggle('active', b.dataset.ano === ano));
 
-  // No modo comparaÃÂ§ÃÂ£o, limpa filtros de mÃÂªs/vendedor
+  // No modo comparaÃÂÃÂ§ÃÂÃÂ£o, limpa filtros de mÃÂÃÂªs/vendedor
   if (ano === 'compare') {
     activeMes  = 'all';
     activeVend = 'all';
@@ -11923,7 +11923,7 @@ const ctxTicket = document.getElementById('chartTicket').getContext('2d');
 const chartMes = new Chart(ctxMes, {
   type: 'bar',
   data: {
-    labels: ['Janeiro','Fevereiro','MarÃ§o'],
+    labels: ['Janeiro','Fevereiro','Março'],
     datasets: [{
       label: 'Faturamento (R$)',
       data: [118329, 56698, 72383],
@@ -11980,7 +11980,7 @@ const chartTicket = new Chart(ctxTicket, {
   type: 'bar',
   data: {
     labels: ['Raquel','Rafael','Junio'],
-    datasets: [{ label:'Ticket MÃ©dio', data:[453,665,629], backgroundColor:['#22c55e','#3b82f6','#f59e0b'], borderRadius:8, borderSkipped:false }]
+    datasets: [{ label:'Ticket Médio', data:[453,665,629], backgroundColor:['#22c55e','#3b82f6','#f59e0b'], borderRadius:8, borderSkipped:false }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
@@ -12011,7 +12011,7 @@ function updateDashboard() {
   // KPIs
   document.getElementById('kpi-fat').textContent       = 'R$ ' + fmt(d.fat);
   document.getElementById('kpi-vendas').textContent    = d.n;
-  document.getElementById('kpi-ticket').textContent    = d.tkt ? 'R$ ' + fmt(d.tkt) : 'â';
+  document.getElementById('kpi-ticket').textContent    = d.tkt ? 'R$ ' + fmt(d.tkt) : '—';
   const margem = d.fat - d.cvend - d.ctreino;
   const margemPct = d.fat > 0 ? Math.round((margem / d.fat) * 100) : 0;
   document.getElementById('kpi-margem').textContent      = 'R$ ' + fmt(margem);
@@ -12019,11 +12019,11 @@ function updateDashboard() {
   document.getElementById('kpi-cvend-card').textContent  = 'R$ ' + fmt(d.cvend);
   document.getElementById('kpi-personal').textContent    = 'R$ ' + fmt(d.ctreino);
 
-  const mesLabel  = {all:'2026 acumulado', jan:'Janeiro 2026', fev:'Fevereiro 2026', mar:'MarÃ§o 2026'};
-  const vendLabel = {all:'', raquel:' Â· Raquel', rafael:' Â· Rafael', junio:' Â· Junio'};
+  const mesLabel  = {all:'2026 acumulado', jan:'Janeiro 2026', fev:'Fevereiro 2026', mar:'Março 2026'};
+  const vendLabel = {all:'', raquel:' · Raquel', rafael:' · Rafael', junio:' · Junio'};
   document.getElementById('kpi-fat-badge').textContent = (mesLabel[activeMes]||'') + (vendLabel[activeVend]||'');
 
-  // Chart MÃªs
+  // Chart Mês
   chartMes.data.datasets[0].data = [d.mes.jan.v, d.mes.fev.v, d.mes.mar.v];
   chartMes.update();
 
@@ -12039,7 +12039,7 @@ function updateDashboard() {
   chartTicket.data.datasets[0].data = ['RAQUEL','RAFAEL','JUNIO'].map(v => (d.vend[v] && d.vend[v].tkt) ? d.vend[v].tkt : 0);
   chartTicket.update();
 
-  // ComissÃµes
+  // Comissões
   const vends = ['RAQUEL','RAFAEL','JUNIO'];
   let totN=0, totV=0, totCv=0, totCt=0;
   let rows = '';
@@ -12070,7 +12070,7 @@ function updateDashboard() {
 }
 
 // =====================================================================
-// REFRESH â re-fetch da planilha OneDrive
+// REFRESH — re-fetch da planilha OneDrive
 // =====================================================================
 const XLSX_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 const DOWNLOAD_URL = 'https://onedrive.live.com/personal/924648235f649026/_layouts/15/download.aspx?UniqueId=fd1c2d94-c320-42a4-964f-a8551aca2f92';
@@ -12099,13 +12099,13 @@ function buildData(rows) {
   if(hi<0) return {};
   const h=rows[hi],cData=h.indexOf('DATA DA VENDA'),cPac=h.indexOf('PACIENTE'),
     cMod=h.indexOf('MODALIDADE'),cVal=h.indexOf('VALOR'),cVend=h.indexOf('VENDEDOR'),
-    cCv=h.indexOf('R$ COMISSÃO VENDEDOR'),cCt=h.indexOf('R$ COMISSÃO TREINO');
+    cCv=h.indexOf('R$ COMISSÃO VENDEDOR'),cCt=h.indexOf('R$ COMISSÃO TREINO');
   const cAdicional=h.indexOf('adicional Treino');
   const vs=[];
   for(let i=hi+1;i<rows.length;i++){
 
     const r=rows[i]; if(!r[cPac]) continue;
-    // Custo Personal: sÃ³ conta R$ COMISSÃO TREINO se a linha tiver "adicional Treino" preenchido
+    // Custo Personal: só conta R$ COMISSÃO TREINO se a linha tiver "adicional Treino" preenchido
     const temTreino = cAdicional >= 0 && r[cAdicional] !== '' && r[cAdicional] !== 0;
     vs.push({mes:dateOf(r[cData]),mod:String(r[cMod]||'').trim(),
       val:parseFloat(r[cVal])||0,vend:String(r[cVend]||'').trim(),
@@ -12128,7 +12128,7 @@ function buildData(rows) {
 }
 
 // =====================================================================
-// UPSELL TABLE â sempre usa dados globais por vendedor (nÃ£o filtra)
+// UPSELL TABLE — sempre usa dados globais por vendedor (não filtra)
 // =====================================================================
 function updateAdvanced() {
   const VKEYS  = ['raquel','rafael','junio'];
