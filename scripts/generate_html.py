@@ -1,5 +1,5 @@
 """
-wenerate_html.py — versão multi-ano (2025 + 2026 + YoY)
+generate_html.py — versão multi-ano (2025 + 2026 + YoY)
 ─────────────────────────────────────────────────────────────
 Injeta o objeto DATA multi-ano no template HTML e:
   - Atualiza filtros de período e ano dinamicamente
@@ -266,7 +266,21 @@ const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
     # Injeta JS multi-ano substituindo o bloco ESTADO (agora com as novas funcoes)
     html = re.sub(
         r'// ={5,}\s*\n// ESTADO[\s\S]*?// ={5,}\s*\n// CHARTS',
-        js_multiyr + "\n// ========================================s (além dos 3 originais)
+        js_multiyr + "\n// =====================================================================\n// CHARTS",
+        html,
+        count=1
+    )
+
+    # Injeta chart YoY e funções renderCompare/hideCompare antes do fechamento do script
+    yoy_js = """
+// =====================================================================
+// DASHBOARD MULTI-ANO — lógica de rendering
+// =====================================================================
+
+// Lista de vendedores dinâmica (vem do Python via DATA.meta.vendors)
+const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
+
+// Paleta de cores para vendedores extras (além dos 3 originais)
 const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
 VENDORS_LIST.forEach((v, i) => {
   if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
@@ -330,7 +344,7 @@ function updateDashboard() {
   VENDORS_LIST.forEach(v=>{
     const vd=(d.vend&&d.vend[v]);
     if(!vd||vd.c===0) return;
-    totN+=vd.c;totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
+    totN+=vd.c{totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
     const cor = VEND_COLORS[v] || '#94a3b8';
     const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
     rows+=`<tr>
@@ -514,25 +528,7 @@ def generate(data: dict, records: int, timestamp: str) -> Path:
     """Pipeline completo de geração do HTML."""
     if not TEMPLATE_PATH.exists():
         raise FileNotFoundError(
-            f"Template não encontrado: {TEMPE�TEE_PATH}\n"
-            "Coloque o arquivo original em 'templates/dashboard.html'."
-        )
-
-    anos = [k for k in data.keys() if k.isdigit()]
-    if not anos:
-        anos = ["2026"]
-
-    html = TEMPLATE_PATH.read_text(encoding="utf-8")
-
-    print("[generate] Injetando dados multi-ano...")
-    html = inject_data(html, data)
-
-    print(f"[generate] Atualizando filtros de ano ({', '.join(sorted(anos))})...")
-    html = update_year_filter(html, anos)
-    html = update_month_filter(html, data, anos)
-
-    print("[generate] Atualizando metadados...")
-    html = update_meta(html, records, TEMPLATE_PATH}\n"
+            f"Template não encontrado: {TEMPLATE_PATH}\n"
             "Coloque o arquivo original em 'templates/dashboard.html'."
         )
 
