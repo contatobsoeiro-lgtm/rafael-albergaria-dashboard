@@ -196,6 +196,10 @@ function getKey() {{
   if (activeMes==='all' && activeVend!=='all') return activeVend;
   return activeVend + '_' + activeMes;
 }}
+
+const VEND_NAMES  = {{RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio'}};
+const VEND_COLORS = {{RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b'}};
+const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
 """
 
     # CSS para botÃÂÃÂ£o comparar
