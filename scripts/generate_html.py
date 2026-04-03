@@ -315,7 +315,7 @@ function updateDashboard() {
   // Meses com dados
   const mesKeys = Object.keys(d.mes||{}).filter(m => (d.mes[m].v||0) > 0);
   const mesVals = mesKeys.map(m => d.mes[m].v);
-  const mesLbls = mesKeys.map(m => ({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'[m]||m));
+  const mesLbls = mesKeys.map(m => ({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
 
   chartMes.data.labels   = mesLbls;
   chartMes.data.datasets[0].data = mesVals;
