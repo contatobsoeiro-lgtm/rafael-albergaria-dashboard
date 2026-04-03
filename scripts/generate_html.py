@@ -478,9 +478,10 @@ updateDashboard();
 """
 
     # Substitui o bloco refreshData e a chamada inicial se existirem
-    html = re.sub(r'function refreshData\(\)\s*\{[\s\S]*?\}\s*\n', '', html)
+    html = re.sub(r'\nasync function refreshData\(\)\s*\{[\s\S]*?\n\}\s*\n', '\n', html)
     html = re.sub(r'\n\s*updateDashboard\(\);\s*\n\s*</script>', '\n</script>', html)
-    html = html.replace('</script>', yoy_js + '\n</script>', 1)
+    parts = html.rsplit('</script>', 1)
+    html = parts[0] + yoy_js + '\n</script>' + parts[1]
 
     return html
 
