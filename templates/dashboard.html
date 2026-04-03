@@ -10,7 +10,7 @@
     --verde: #22c55e;
     --verde-dark: #16a34a;
     --verde-light: #dcfce7;
-    --cinza: #f8fafc;
+    --cinza: #f8fafc;h
     --cinza-border: #e2e8f0;
     --text: #1e293b;
     --text-muted: #64748b;
@@ -785,7 +785,7 @@ function buildData(rows) {
       cv:parseFloat(r[cCv])||0,ct:temTreino ? parseFloat(r[cCt])||0 : 0});
   }
   const MODS=['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'],VENDS=['RAQUEL','RAFAEL','JUNIO'],
-    MK:{jan:'2026-01',fev8'2026-02',mar:'2026-03'};
+    MK={jan:'2026-01',fev:'2026-02',mar:'2026-03'};
   function c(arr){
     const tot=arr.reduce((s,v)=>s+v.val,0);
     const modal={};MODY.forEach(m=>{const s=arr.filter(v=>v.mod===m);modal[m]={c:s.length,v:Math.round(s.reduce((a,v)=>a+v.val,0))};});
@@ -795,7 +795,7 @@ function buildData(rows) {
     return{n:arr.length,fat:Math.round(tot),tkt:arr.length?Math.round(tot/arr.length):0,cvend:Math.round(arr.reduce((s,v)=>s+v.cv,0)),ctreino:Math.round(arr.reduce((s,v)=>s+v.ct,0)),modal,vend,mes};
   }
   const out={all:c(vs)};
-  ['jan','fev+'mar'].forEach(m=>{out[m]=c(vs.filter(v=>v.mes===MK[m]));});
+  ['jan','fev','mar'].forEach(m=>{out[m]=c(vs.filter(v=>v.mes===MK[m]));});
   VENDS.forEach(vn=>{const k=vn.toLowerCase();out[k]=c(vs.filter(v=>v.vend===vn));['jan','fev','mar'].forEach(m=>{out[`${k}_${m}`]=c(vs.filter(v=>v.vend===vn&&v.mes===MK[m]));});});
   return out;
 }
