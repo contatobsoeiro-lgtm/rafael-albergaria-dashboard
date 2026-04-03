@@ -117,8 +117,8 @@ def update_month_filter(html: str, data: dict, anos: list) -> str:
 def update_meta(html: str, records: int, timestamp: str, anos: list) -> str:
     """Atualiza data, registros e rodapÃÂÃÂ©."""
     dt       = datetime.fromisoformat(timestamp)
-    date_str = dt.strftime("%d/%m/%Y ÃÂ¢ÃÂÃÂ dados reais")
-    time_str = f"{records} registros ÃÂÃÂ· {', '.join(sorted(anos))}"
+    date_str = dt.strftime("%d/%m/%Y \u2014 dados reais")
+    time_str = f"{records} registros \u00b7 {', '.join(sorted(anos))}"
     full_date = dt.strftime("%d/%m/%Y")
     anos_str  = " + ".join(sorted(anos))
 
@@ -127,8 +127,8 @@ def update_meta(html: str, records: int, timestamp: str, anos: list) -> str:
     html = re.sub(r'(<span id="updateTime">)[^<]*(</span>)',
                   f'\\g<1>{time_str}\\g<2>', html)
     html = re.sub(r'(<strong id="footer-records">)[^<]*(</strong>)',
-                  f'\\g<1>{records} registros ÃÂÃÂ· {anos_str}\\g<2>', html)
-    html = re.sub(r'(ÃÂÃÂltima atualizaÃÂÃÂ§ÃÂÃÂ£o: <strong>)[^<]*(</strong>)',
+                  f'\\g<1>{records} registros \u00b7 {anos_str}\\g<2>', html)
+    html = re.sub(r'(Ültima atualização: <strong>)[^<]*(</strong>)',
                   f'\\g<1>{full_date}\\g<2>', html)
     html = re.sub(r'(Controle de Vendas )\d{4}',
                   f'\\g<1>{anos_str}', html)
@@ -529,3 +529,4 @@ if __name__ == "__main__":
     snap = json.loads(snaps[-1].read_text(encoding="utf-8"))
     out  = generate(snap["data"], snap["records"], snap["timestamp"])
     print(f"\nÃÂ¢ÃÂÃÂ Dashboard gerado: {out}")
+
