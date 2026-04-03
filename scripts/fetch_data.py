@@ -1,19 +1,19 @@
 """
-fetch_data.py â versÃ£o multi-ano (2025 + 2026 + YoY)
-âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-Baixa a planilha, separa por ANO, calcula todas as combinaÃ§Ãµes
+fetch_data.py Ã¢ÂÂ versÃÂ£o multi-ano (2025 + 2026 + YoY)
+Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+Baixa a planilha, separa por ANO, calcula todas as combinaÃÂ§ÃÂµes
 de filtro por ano, e gera comparativo YoY (year-over-year).
 
-Estrutura de saÃ­da do DATA:
-  DATA["2026"]         â dados 2026 (all, jan, fev, mar, vendedores...)
-  DATA["2025"]         â dados 2025 (all, jan..dez, vendedores...)
-  DATA["compare"]      â comparativos YoY por mÃªs e por vendedor
-  DATA["meta"]         â metadados: anos disponÃ­veis, meses, etc.
+Estrutura de saÃÂ­da do DATA:
+  DATA["2026"]         Ã¢ÂÂ dados 2026 (all, jan, fev, mar, vendedores...)
+  DATA["2025"]         Ã¢ÂÂ dados 2025 (all, jan..dez, vendedores...)
+  DATA["compare"]      Ã¢ÂÂ comparativos YoY por mÃÂªs e por vendedor
+  DATA["meta"]         Ã¢ÂÂ metadados: anos disponÃÂ­veis, meses, etc.
 
-VARIÃVEIS DE AMBIENTE:
-  SHEET_URL   â link de download da planilha (.xlsx)
-  SHEET_TYPE  â "onedrive" | "google" | "url"
-âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+VARIÃÂVEIS DE AMBIENTE:
+  SHEET_URL   Ã¢ÂÂ link de download da planilha (.xlsx)
+  SHEET_TYPE  Ã¢ÂÂ "onedrive" | "google" | "url"
+Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 """
 
 import os
@@ -23,53 +23,53 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
-# ââ CONFIGURAÃÃO ââââââââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ CONFIGURAÃÂÃÂO Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 SHEET_URL   = os.getenv("SHEET_URL", "")
 SHEET_TYPE  = os.getenv("SHEET_TYPE", "onedrive")
 HISTORY_DIR = Path(__file__).parent.parent / "history"
 HISTORY_DIR.mkdir(exist_ok=True)
 
-# ââ NOMES EXATOS DAS COLUNAS (confirmados na planilha em 02/04/2026) ââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ NOMES EXATOS DAS COLUNAS (confirmados na planilha em 02/04/2026) Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 # Estrutura do arquivo: header na LINHA 6 (header=5 em pandas, 0-indexed)
 # Abas: "CONTROLE DE VENDAS (2025)" e "CONTROLE DE VENDAS (2026)"
 # Colunas: DATA DA VENDA | PACIENTE | TIPO | MODALIDADE | CONSULTA ONLINE |
-#           ADICIONAL | VALOR | VENDEDOR | R$ COMISSÃO VENDEDOR | R$ COMISSÃO TREINO |
-#           CÃD. INDICAÃÃO | HISTÃRICO
-HEADER_ROW   = 5        # linha 6 da planilha = Ã­ndice 5 em pandas (0-based)
+#           ADICIONAL | VALOR | VENDEDOR | R$ COMISSÃÂO VENDEDOR | R$ COMISSÃÂO TREINO |
+#           CÃÂD. INDICAÃÂÃÂO | HISTÃÂRICO
+HEADER_ROW   = 5        # linha 6 da planilha = ÃÂ­ndice 5 em pandas (0-based)
 SHEET_NAMES  = [
     "CONTROLE DE VENDAS (2025)",
     "CONTROLE DE VENDAS (2026)",
 ]
 
 COL_MAP = {
-    # ââ Data ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+    # Ã¢ÂÂÃ¢ÂÂ Data Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     "data da venda":           "data",
     "data":                    "data",
     "dt":                      "data",
     "data venda":              "data",
-    # ââ Vendedor ââââââââââââââââââââââââââââââââââââââââââââââââââ
+    # Ã¢ÂÂÃ¢ÂÂ Vendedor Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     "vendedor":                "vendedor",
     "vend":                    "vendedor",
     "nome vendedor":           "vendedor",
-    # ââ Modalidade ââââââââââââââââââââââââââââââââââââââââââââââââ
+    # Ã¢ÂÂÃ¢ÂÂ Modalidade Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     "modalidade":              "modalidade",
     "plano":                   "modalidade",
     "tipo de plano":           "modalidade",
-    # ââ Valor âââââââââââââââââââââââââââââââââââââââââââââââââââââ
+    # Ã¢ÂÂÃ¢ÂÂ Valor Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     "valor":                   "valor",
     "valor pago":              "valor",
     "receita":                 "valor",
     "valor total":             "valor",
-    # ââ ComissÃ£o Vendedor (com e sem "R$") ââââââââââââââââââââââââ
-    "r$ comissÃ£o vendedor":    "com_vend",   # â nome exato da planilha
+    # Ã¢ÂÂÃ¢ÂÂ ComissÃÂ£o Vendedor (com e sem "R$") Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+    "r$ comissÃÂ£o vendedor":    "com_vend",   # Ã¢ÂÂ nome exato da planilha
     "r$ comissao vendedor":    "com_vend",
-    "comissÃ£o vendedor":       "com_vend",
+    "comissÃÂ£o vendedor":       "com_vend",
     "comissao vendedor":       "com_vend",
     "com. vendedor":           "com_vend",
-    # ââ ComissÃ£o Treino (com e sem "R$") ââââââââââââââââââââââââââ
-    "r$ comissÃ£o treino":      "com_treino", # â nome exato da planilha
+    # Ã¢ÂÂÃ¢ÂÂ ComissÃÂ£o Treino (com e sem "R$") Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+    "r$ comissÃÂ£o treino":      "com_treino", # Ã¢ÂÂ nome exato da planilha
     "r$ comissao treino":      "com_treino",
-    "comissÃ£o treino":         "com_treino",
+    "comissÃÂ£o treino":         "com_treino",
     "comissao treino":         "com_treino",
     "custo personal":          "com_treino",
     "com. treino":             "com_treino",
@@ -78,52 +78,41 @@ COL_MAP = {
 
 MES_MAP   = {1:"jan",2:"fev",3:"mar",4:"abr",5:"mai",6:"jun",
              7:"jul",8:"ago",9:"set",10:"out",11:"nov",12:"dez"}
-MES_LABEL = {"jan":"Janeiro","fev":"Fevereiro","mar":"MarÃ§o","abr":"Abril",
+MES_LABEL = {"jan":"Janeiro","fev":"Fevereiro","mar":"MarÃÂ§o","abr":"Abril",
              "mai":"Maio","jun":"Junho","jul":"Julho","ago":"Agosto",
              "set":"Setembro","out":"Outubro","nov":"Novembro","dez":"Dezembro"}
 MES_ORDER = list(MES_MAP.values())
 
-# Vendedores detectados dinamicamente na planilha â nÃ£o mais hardcoded
-# Os nomes abaixo sÃ£o usados como fallback para ordenaÃ§Ã£o nos grÃ¡ficos
+# Vendedores detectados dinamicamente na planilha Ã¢ÂÂ nÃÂ£o mais hardcoded
+# Os nomes abaixo sÃÂ£o usados como fallback para ordenaÃÂ§ÃÂ£o nos grÃÂ¡ficos
 VENDORS_DISPLAY_ORDER = ["RAQUEL", "RAFAEL", "JUNIO", "DUDA"]
-VENDORS_EXPECTED      = VENDORS_DISPLAY_ORDER  # serÃ¡ atualizado dinamicamente em build_data_object()
-MODAIS_EXPECTED  = ["MENSAL", "TRIMESTRAL", "SEMESTRAL", "ANUAL", "BÃSICO", "DESAFIO", "VIP", "PREMIUM"]
+VENDORS_EXPECTED      = VENDORS_DISPLAY_ORDER  # serÃÂ¡ atualizado dinamicamente em build_data_object()
+MODAIS_EXPECTED  = ["MENSAL", "TRIMESTRAL", "SEMESTRAL", "ANUAL", "BÃÂSICO", "DESAFIO", "VIP", "PREMIUM"]
 
 
-# ââ DOWNLOAD ââââââââââââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ DOWNLOAD Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
-def build_download_url(raw_url: str, sheet_type: str) -> str:
+def build_download_url(url: str, sheet_type: str) -> str:
     """
-    Converte links de compartilhamento em links de download direto.
-
-    OneDrive: use o link gerado por Compartilhar â Copiar link (nÃ£o o doc.aspx!)
-    O link de compartilhamento tem formato: https://1drv.ms/x/... ou
-    https://onedrive.live.com/:x:/...
+    Converte qualquer URL de compartilhamento do OneDrive/SharePoint
+    para URL de download direto usando a API de shares do OneDrive.
+    Suporta: 1drv.ms, onedrive.live.com, sharepoint.com
     """
-    if sheet_type == "onedrive":
-        # Link de compartilhamento OneDrive pessoal (1drv.ms ou onedrive.live.com)
-        if "1drv.ms" in raw_url:
-            return raw_url  # serÃ¡ redirecionado automaticamente
-        if "onedrive.live.com" in raw_url and "resid=" in raw_url:
-            # Extrai resid e cid do URL de compartilhamento
-            sep = "&" if "?" in raw_url else "?"
-            if "download=1" not in raw_url:
-                return raw_url + sep + "download=1"
-        if "sharepoint.com" in raw_url:
-            sep = "&" if "?" in raw_url else "?"
-            return raw_url + sep + "download=1"
-    elif sheet_type == "google":
-        if "/edit" in raw_url:
-            return raw_url.replace("/edit", "/export?format=xlsx")
-        if "docs.google.com/spreadsheets" in raw_url and "export" not in raw_url:
-            sheet_id = raw_url.split("/d/")[1].split("/")[0]
-            return f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=xlsx"
-    return raw_url
+    import base64 as _b64
+    
+    # Tenta converter para URL de download direto via API de shares
+    try:
+        encoded = _b64.b64encode(url.encode()).decode()
+        encoded = 'u!' + encoded.rstrip('=').replace('+', '-').replace('/', '_')
+        direct = f"https://api.onedrive.com/v1.0/shares/{encoded}/root/content"
+        return direct
+    except Exception:
+        return url
 
 
 def download_sheet(url: str, sheet_type: str) -> pd.DataFrame:
     """
-    Baixa o XLSX e lÃª APENAS as abas de vendas (2025 e 2026),
+    Baixa o XLSX e lÃÂª APENAS as abas de vendas (2025 e 2026),
     com header na linha 6 (header=5, 0-indexed) conforme estrutura da planilha.
     """
     download_url = build_download_url(url, sheet_type)
@@ -139,11 +128,11 @@ def download_sheet(url: str, sheet_type: str) -> pd.DataFrame:
     print(f"[fetch] Baixado: {len(resp.content)/1024:.1f} KB")
 
     xl = pd.ExcelFile(tmp, engine="openpyxl")
-    print(f"[fetch] Abas disponÃ­veis: {xl.sheet_names}")
+    print(f"[fetch] Abas disponÃÂ­veis: {xl.sheet_names}")
 
     frames = []
 
-    # 1Âª tentativa: abas com nomes exatos confirmados na planilha
+    # 1ÃÂª tentativa: abas com nomes exatos confirmados na planilha
     for sheet_name in SHEET_NAMES:
         if sheet_name in xl.sheet_names:
             try:
@@ -151,13 +140,13 @@ def download_sheet(url: str, sheet_type: str) -> pd.DataFrame:
                 df = df.dropna(how="all")
                 if len(df) > 5:
                     frames.append(df)
-                    print(f"[fetch]   â Aba '{sheet_name}': {len(df)} linhas")
+                    print(f"[fetch]   Ã¢ÂÂ Aba '{sheet_name}': {len(df)} linhas")
             except Exception as e:
-                print(f"[fetch]   â Aba '{sheet_name}': {e}")
+                print(f"[fetch]   Ã¢ÂÂ Aba '{sheet_name}': {e}")
 
-    # 2Âª tentativa: heurÃ­stica por nome (qualquer aba com "VENDAS" no nome)
+    # 2ÃÂª tentativa: heurÃÂ­stica por nome (qualquer aba com "VENDAS" no nome)
     if not frames:
-        print("[fetch] Nomes exatos nÃ£o encontrados â tentando heurÃ­stica...")
+        print("[fetch] Nomes exatos nÃÂ£o encontrados Ã¢ÂÂ tentando heurÃÂ­stica...")
         for sheet in xl.sheet_names:
             if any(k in sheet.upper() for k in ["VENDAS", "VENDA", "SALES"]):
                 try:
@@ -165,40 +154,40 @@ def download_sheet(url: str, sheet_type: str) -> pd.DataFrame:
                     df = df.dropna(how="all")
                     if len(df) > 5:
                         frames.append(df)
-                        print(f"[fetch]   â '{sheet}' (heurÃ­stica): {len(df)} linhas")
+                        print(f"[fetch]   Ã¢ÂÂ '{sheet}' (heurÃÂ­stica): {len(df)} linhas")
                 except Exception:
                     pass
 
-    # 3Âº fallback: primeira aba com header=5
+    # 3ÃÂº fallback: primeira aba com header=5
     if not frames:
         print("[fetch] Fallback: lendo primeira aba com header=5...")
         df = xl.parse(0, header=HEADER_ROW)
         df = df.dropna(how="all")
         frames.append(df)
-        print(f"[fetch]   â Aba 0 (fallback): {len(df)} linhas")
+        print(f"[fetch]   Ã¢ÂÂ Aba 0 (fallback): {len(df)} linhas")
 
     if not frames:
-        raise RuntimeError("Nenhuma aba vÃ¡lida encontrada na planilha.")
+        raise RuntimeError("Nenhuma aba vÃÂ¡lida encontrada na planilha.")
 
     combined = pd.concat(frames, ignore_index=True)
     print(f"[fetch] Total: {len(combined)} linhas de {len(frames)} aba(s)")
     return combined
 
 
-# ââ NORMALIZAÃÃO ââââââââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ NORMALIZAÃÂÃÂO Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = [str(c).lower().strip() for c in df.columns]
     rename = {c: COL_MAP[c] for c in df.columns if c in COL_MAP}
     df = df.rename(columns=rename)
 
-    # Checa colunas obrigatÃ³rias
+    # Checa colunas obrigatÃÂ³rias
     required = {"data", "vendedor", "modalidade", "valor"}
     missing  = required - set(df.columns)
     if missing:
         raise ValueError(
-            f"Colunas nÃ£o encontradas: {missing}\n"
-            f"Colunas disponÃ­veis: {list(df.columns)}\n"
+            f"Colunas nÃÂ£o encontradas: {missing}\n"
+            f"Colunas disponÃÂ­veis: {list(df.columns)}\n"
             f"Ajuste COL_MAP em fetch_data.py."
         )
 
@@ -220,14 +209,14 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
 
     anos = sorted(df["ano"].unique())
     print(f"[fetch] Anos encontrados: {anos}")
-    print(f"[fetch] {len(df)} registros vÃ¡lidos")
+    print(f"[fetch] {len(df)} registros vÃÂ¡lidos")
     return df
 
 
-# ââ CÃLCULO POR BLOCO âââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ CÃÂLCULO POR BLOCO Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
-    """Calcula KPIs e distribuiÃ§Ãµes para um subconjunto de dados."""
+    """Calcula KPIs e distribuiÃÂ§ÃÂµes para um subconjunto de dados."""
     if sub.empty:
         return {
             "n": 0, "fat": 0, "tkt": 0, "cvend": 0, "ctreino": 0,
@@ -264,12 +253,12 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
             "modal":modal,"vend":vend,"mes":mes}
 
 
-# ââ COMPARATIVO YoY âââââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ COMPARATIVO YoY Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 def calc_yoy(data_2025: dict, data_2026: dict) -> dict:
     """
-    Gera comparativo year-over-year para cada mÃªs e para totais.
-    Para cada mÃ©trica: valor 2025, valor 2026, variaÃ§Ã£o % e absoluta.
+    Gera comparativo year-over-year para cada mÃÂªs e para totais.
+    Para cada mÃÂ©trica: valor 2025, valor 2026, variaÃÂ§ÃÂ£o % e absoluta.
     """
     def diff(v26, v25):
         pct = round(((v26 - v25) / v25 * 100)) if v25 > 0 else None
@@ -288,7 +277,7 @@ def calc_yoy(data_2025: dict, data_2026: dict) -> dict:
         "ctreino": diff(d26.get("ctreino",0), d25.get("ctreino",0)),
     }
 
-    # Por mÃªs
+    # Por mÃÂªs
     for m in MES_ORDER:
         m25 = data_2025.get(m, {})
         m26 = data_2026.get(m, {})
@@ -316,16 +305,16 @@ def calc_yoy(data_2025: dict, data_2026: dict) -> dict:
     return compare
 
 
-# ââ BUILD COMPLETO ââââââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ BUILD COMPLETO Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 def build_data_object(df: pd.DataFrame) -> dict:
     """
-    ConstrÃ³i DATA completo com todos os anos, combinaÃ§Ãµes e YoY.
+    ConstrÃÂ³i DATA completo com todos os anos, combinaÃÂ§ÃÂµes e YoY.
     """
     global VENDORS_EXPECTED
     # Detecta vendedores presentes na planilha (pode incluir DUDA, novos, etc.)
     vendors_na_planilha = sorted(df["vendedor"].dropna().unique().tolist())
-    # MantÃ©m ordem preferencial p/ grÃ¡ficos, depois adiciona novos ao final
+    # MantÃÂ©m ordem preferencial p/ grÃÂ¡ficos, depois adiciona novos ao final
     VENDORS_EXPECTED = [v for v in VENDORS_DISPLAY_ORDER if v in vendors_na_planilha] + \
                        [v for v in vendors_na_planilha if v not in VENDORS_DISPLAY_ORDER]
     print(f"[fetch] Vendedores detectados: {VENDORS_EXPECTED}")
@@ -340,7 +329,7 @@ def build_data_object(df: pd.DataFrame) -> dict:
         # Total do ano
         ano_data["all"] = calc_block(df_ano, df_ano)
 
-        # Por mÃªs
+        # Por mÃÂªs
         for m in MES_ORDER:
             sub = df_ano[df_ano["mes"] == m]
             ano_data[m] = calc_block(sub, df_ano)
@@ -351,7 +340,7 @@ def build_data_object(df: pd.DataFrame) -> dict:
             sub = df_ano[df_ano["vendedor"] == v]
             ano_data[vk] = calc_block(sub, df_ano)
 
-        # Vendedor Ã MÃªs
+        # Vendedor ÃÂ MÃÂªs
         for v in VENDORS_EXPECTED:
             for m in MES_ORDER:
                 key = f"{v.lower()}_{m}"
@@ -359,21 +348,21 @@ def build_data_object(df: pd.DataFrame) -> dict:
                 ano_data[key] = calc_block(sub, df_ano)
 
         data[ano] = ano_data
-        print(f"[fetch] Ano {ano}: {len(df_ano)} registros Â· {len(ano_data)} combinaÃ§Ãµes")
+        print(f"[fetch] Ano {ano}: {len(df_ano)} registros ÃÂ· {len(ano_data)} combinaÃÂ§ÃÂµes")
 
-    # Comparativo YoY (se hÃ¡ 2025 e 2026)
+    # Comparativo YoY (se hÃÂ¡ 2025 e 2026)
     if "2025" in data and "2026" in data:
         data["compare"] = calc_yoy(data["2025"], data["2026"])
         print(f"[fetch] Comparativo YoY calculado.")
 
-    # Compat: mantÃ©m "all" no nÃ­vel raiz apontando para o ano mais recente
+    # Compat: mantÃÂ©m "all" no nÃÂ­vel raiz apontando para o ano mais recente
     latest = anos[-1]
     data["all"] = data[latest]["all"]
 
     return data
 
 
-# ââ HISTÃRICO âââââââââââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ HISTÃÂRICO Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 def save_history(data: dict, df: pd.DataFrame) -> dict:
     anos = sorted(df["ano"].unique())
@@ -388,19 +377,19 @@ def save_history(data: dict, df: pd.DataFrame) -> dict:
     out = HISTORY_DIR / f"snapshot_{ts}.json"
     out.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    # MantÃ©m os Ãºltimos 72 snapshots
+    # MantÃÂ©m os ÃÂºltimos 72 snapshots
     for old in sorted(HISTORY_DIR.glob("snapshot_*.json"))[:-72]:
         old.unlink()
 
-    print(f"[fetch] HistÃ³rico salvo: {out.name}")
+    print(f"[fetch] HistÃÂ³rico salvo: {out.name}")
     return snapshot
 
 
-# ââ MAIN ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+# Ã¢ÂÂÃ¢ÂÂ MAIN Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 def main() -> dict:
     if not SHEET_URL:
-        raise EnvironmentError("SHEET_URL nÃ£o configurado!")
+        raise EnvironmentError("SHEET_URL nÃÂ£o configurado!")
 
     df   = download_sheet(SHEET_URL, SHEET_TYPE)
     df   = normalize_df(df)
@@ -418,4 +407,4 @@ def main() -> dict:
 
 if __name__ == "__main__":
     r = main()
-    print(f"\nâ Processado: {r['records']} registros Â· anos: {r['anos']} Â· fat: R$ {r['fat_total']:,.0f}")
+    print(f"\nÃ¢ÂÂ Processado: {r['records']} registros ÃÂ· anos: {r['anos']} ÃÂ· fat: R$ {r['fat_total']:,.0f}")
