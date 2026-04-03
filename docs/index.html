@@ -207,7 +207,7 @@
       <button class="filter-btn active" data-ano="latest" onclick="setAno('latest')">Atual</button>
       <button class="filter-btn" data-ano="2026" onclick="setAno('2026')">2026</button>
       <button class="filter-btn" data-ano="2025" onclick="setAno('2025')">2025</button>
-      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">ð Comparar Anos</button>
+      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">📊 Comparar Anos</button>
     </div>
   </div>
 
@@ -452,18 +452,18 @@
      ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
 <div id="compare-section" class="main" style="padding-top:0">
   <div class="section-header">
-    <div class="section-header-title">ð Comparativo 2025 vs 2026</div>
-    <div class="section-header-sub">EvoluÃ§Ã£o mensal Â· YoY por vendedor Â· Crescimento</div>
+    <div class="section-header-title">📊 Comparativo 2025 vs 2026</div>
+    <div class="section-header-sub">EvoluÃ§ão mensal Â· YoY por vendedor Â· Crescimento</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Faturamento por MÃªs â 2025 vs 2026</div>
-      <div class="chart-sub">ComparaÃ§Ã£o mÃªs a mÃªs dos dois anos</div>
+      <div class="chart-title">Faturamento por Mês â 2025 vs 2026</div>
+      <div class="chart-sub">ComparaÃ§ão mês a mês dos dois anos</div>
       <div class="chart-wrap h260"><canvas id="chartYoY"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Crescimento YoY por MÃªs</div>
-      <div class="chart-sub">VariaÃ§Ã£o percentual mÃªs a mÃªs (%)</div>
+      <div class="chart-title">Crescimento YoY por Mês</div>
+      <div class="chart-sub">VariaÃ§ão percentual mês a mês (%)</div>
       <div id="yoy-mes-table-wrap"></div>
     </div>
   </div>
@@ -474,7 +474,7 @@
       <div id="yoy-vend-table-wrap"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">KPIs Gerais â EvoluÃ§Ã£o Anual</div>
+      <div class="chart-title">KPIs Gerais â EvoluÃ§ão Anual</div>
       <div class="chart-sub">Totais consolidados dos dois anos</div>
       <div id="yoy-kpi-wrap"></div>
     </div>
@@ -11679,7 +11679,7 @@ function setAno(ano) {
   document.querySelectorAll('[data-ano]').forEach(b =>
     b.classList.toggle('active', b.dataset.ano === ano));
 
-  // No modo comparaÃ§Ã£o, limpa filtros de mÃªs/vendedor
+  // No modo comparaÃ§ão, limpa filtros de mês/vendedor
   if (ano === 'compare') {
     activeMes  = 'all';
     activeVend = 'all';
@@ -12107,9 +12107,9 @@ let chartYoY = null;
 function renderCompare() {
   document.getElementById('compare-section').classList.add('show');
   const cmp = DATA.compare;
-  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃ§Ã£o nÃ£o disponÃ­veis (Ã© necessÃ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
+  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃ§ão não disponÃ­veis (Ã© necessÃ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
 
-  // GrÃ¡fico de barras lado-a-lado por mÃªs
+  // GrÃ¡fico de barras lado-a-lado por mês
   const mesesCmp = Object.keys(cmp.mensal||{});
   const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
   const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
@@ -12139,7 +12139,7 @@ function renderCompare() {
     chartYoY.update();
   }
 
-  // Tabela YoY por mÃªs
+  // Tabela YoY por mês
   let rowsMes='';
   mesesCmp.forEach(m=>{
     const r=cmp.mensal[m];
@@ -12155,7 +12155,7 @@ function renderCompare() {
   });
   document.getElementById('yoy-mes-table-wrap').innerHTML=`
     <table class="yoy-table">
-      <thead><tr><th>MÃªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
+      <thead><tr><th>Mês</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
       <tbody>${rowsMes}</tbody>
     </table>`;
 
