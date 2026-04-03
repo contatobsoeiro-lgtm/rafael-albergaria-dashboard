@@ -75,6 +75,7 @@ COL_MAP = {
     "custo personal":          "com_treino",
     "com. treino":             "com_treino",
     "personal":                "com_treino",
+    "adicional":               "adicional",
 }
 
 MES_MAP   = {1:"jan",2:"fev",3:"mar",4:"abr",5:"mai",6:"jun",
@@ -190,6 +191,7 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
 
     if "com_vend"   not in df.columns: df["com_vend"]   = 0.0
     if "com_treino" not in df.columns: df["com_treino"] = 0.0
+    if "adicional"  not in df.columns: df["adicional"]  = ""
 
     df["data"]       = pd.to_datetime(df["data"], dayfirst=True, errors="coerce")
     df["valor"]      = pd.to_numeric(df["valor"],      errors="coerce").fillna(0)
@@ -226,7 +228,8 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
     fat     = round(sub["valor"].sum())
     tkt     = round(fat / n) if n > 0 else 0
     cvend   = round(sub["com_vend"].sum())
-    ctreino = round(sub["com_treino"].sum())
+    _treino_mask = sub["adicional"].astype(str).str.upper().str.strip() == "TREINO"
+    ctreino = round(sub[_treino_mask]["com_treino"].sum())
 
     modal = {}
     for m in MODAIS_EXPECTED:
@@ -239,7 +242,7 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
         sv = round(s["valor"].sum())
         sc = len(s)
         vend[v] = {"c":sc,"v":sv,"tkt":round(sv/sc) if sc>0 else 0,
-                   "cv":round(s["com_vend"].sum()),"ct":round(s["com_treino"].sum())}
+                   "cv":round(s["com_vend"].sum()),"ct":round(s[s["adicional"].astype(str).str.upper().str.strip()=="TREINO"]["com_treino"].sum())}
 
     mes = {}
     for m in MES_ORDER:
