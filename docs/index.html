@@ -172,8 +172,8 @@
   </div>
   <div class="header-right">
     <div class="update-info">
-      <strong id="updateDate">03/04/2026 — dados reais</strong>
-      <span id="updateTime">943 registros · 2025, 2026</span>
+      <strong id="updateDate">03/04/2026 â dados reais</strong>
+      <span id="updateTime">943 registros Â· 2025, 2026</span>
     </div>
     <button class="btn-refresh" onclick="refreshData()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
@@ -187,16 +187,10 @@
   <div class="filters-section">
     <div class="filter-group">
       <span class="filter-label">Período</span>
-      
-      <button class="filter-btn active" data-mes="all" onclick="setMes('all')">Todos</button>
-      <button class="filter-btn" data-mes="jan" onclick="setMes('jan')">Janeiro</button>
-      <button class="filter-btn" data-mes="fev" onclick="setMes('fev')">Fevereiro</button>
-      <button class="filter-btn" data-mes="mar" onclick="setMes('mar')">Março</button>
-      <button class="filter-btn" data-mes="set" onclick="setMes('set')">Setembro</button>
-      <button class="filter-btn" data-mes="out" onclick="setMes('out')">Outubro</button>
-      <button class="filter-btn" data-mes="nov" onclick="setMes('nov')">Novembro</button>
-      <button class="filter-btn" data-mes="dez" onclick="setMes('dez')">Dezembro</button>
-    
+      <button class="filter-btn active" data-mes="all"    onclick="setMes('all')">Todos</button>
+      <button class="filter-btn"        data-mes="jan"    onclick="setMes('jan')">Janeiro</button>
+      <button class="filter-btn"        data-mes="fev"    onclick="setMes('fev')">Fevereiro</button>
+      <button class="filter-btn"        data-mes="mar"    onclick="setMes('mar')">Março</button>
     </div>
     <div class="filter-divider"></div>
     <div class="filter-group">
@@ -213,7 +207,7 @@
       <button class="filter-btn active" data-ano="latest" onclick="setAno('latest')">Atual</button>
       <button class="filter-btn" data-ano="2026" onclick="setAno('2026')">2026</button>
       <button class="filter-btn" data-ano="2025" onclick="setAno('2025')">2025</button>
-      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">📊 Comparar Anos</button>
+      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">ð Comparar Anos</button>
     </div>
   </div>
 
@@ -453,34 +447,34 @@
 </div>
 
 
-<!-- ══════════════════════════════════════════════════════════════════
-     SEÇÃO COMPARATIVO YoY (2025 vs 2026)
-     ══════════════════════════════════════════════════════════════════ -->
+<!-- ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+     SEÃÃO COMPARATIVO YoY (2025 vs 2026)
+     ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ -->
 <div id="compare-section" class="main" style="padding-top:0">
   <div class="section-header">
-    <div class="section-header-title">📊 Comparativo 2025 vs 2026</div>
-    <div class="section-header-sub">Evolução mensal · YoY por vendedor · Crescimento</div>
+    <div class="section-header-title">ð Comparativo 2025 vs 2026</div>
+    <div class="section-header-sub">EvoluÃ§Ã£o mensal Â· YoY por vendedor Â· Crescimento</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Faturamento por Mês — 2025 vs 2026</div>
-      <div class="chart-sub">Comparação mês a mês dos dois anos</div>
+      <div class="chart-title">Faturamento por MÃªs â 2025 vs 2026</div>
+      <div class="chart-sub">ComparaÃ§Ã£o mÃªs a mÃªs dos dois anos</div>
       <div class="chart-wrap h260"><canvas id="chartYoY"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Crescimento YoY por Mês</div>
-      <div class="chart-sub">Variação percentual mês a mês (%)</div>
+      <div class="chart-title">Crescimento YoY por MÃªs</div>
+      <div class="chart-sub">VariaÃ§Ã£o percentual mÃªs a mÃªs (%)</div>
       <div id="yoy-mes-table-wrap"></div>
     </div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Vendedores — 2025 vs 2026</div>
+      <div class="chart-title">Vendedores â 2025 vs 2026</div>
       <div class="chart-sub">Faturamento total por vendedor em cada ano</div>
       <div id="yoy-vend-table-wrap"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">KPIs Gerais — Evolução Anual</div>
+      <div class="chart-title">KPIs Gerais â EvoluÃ§Ã£o Anual</div>
       <div class="chart-sub">Totais consolidados dos dois anos</div>
       <div id="yoy-kpi-wrap"></div>
     </div>
@@ -489,8 +483,8 @@
 
 <div class="footer">
   Dados extraídos diretamente de <strong>Controle de Vendas e Pós-Venda.xlsx</strong> via OneDrive &nbsp;·&nbsp;
-  <strong id="footer-records">943 registros · 2025 + 2026</strong> &nbsp;·&nbsp;
-  Última atualização: <strong>03/04/2026</strong>
+  <strong id="footer-records">943 registros Â· 2025 + 2026</strong> &nbsp;·&nbsp;
+  Última atualização: <strong>02/04/2026</strong>
 </div>
 
 <script>
@@ -11671,7 +11665,7 @@ const DATA = {
 
 
 // =====================================================================
-// CONTROLE MULTI-ANO — 2025 + 2026
+// CONTROLE MULTI-ANO â 2025 + 2026
 // =====================================================================
 let activeAno  = 'latest';   // 'latest' | '2025' | '2026' | 'compare'
 let activeMes  = 'all';
@@ -11685,7 +11679,7 @@ function setAno(ano) {
   document.querySelectorAll('[data-ano]').forEach(b =>
     b.classList.toggle('active', b.dataset.ano === ano));
 
-  // No modo comparação, limpa filtros de mês/vendedor
+  // No modo comparaÃ§Ã£o, limpa filtros de mÃªs/vendedor
   if (ano === 'compare') {
     activeMes  = 'all';
     activeVend = 'all';
@@ -11984,13 +11978,13 @@ function fmtK(n) { return n>=1000 ? (n/1000).toFixed(0)+'k' : n; }
 // Inicializa
 
 // =====================================================================
-// DASHBOARD MULTI-ANO — lógica de rendering
+// DASHBOARD MULTI-ANO â lÃ³gica de rendering
 // =====================================================================
 
-// Lista de vendedores dinâmica (vem do Python via DATA.meta.vendors)
+// Lista de vendedores dinÃ¢mica (vem do Python via DATA.meta.vendors)
 const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
 
-// Paleta de cores para vendedores extras (além dos 3 originais)
+// Paleta de cores para vendedores extras (alÃ©m dos 3 originais)
 const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
 VENDORS_LIST.forEach((v, i) => {
   if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
@@ -12010,7 +12004,7 @@ function updateDashboard() {
   // KPIs
   document.getElementById('kpi-fat').textContent      = 'R$ ' + fmt(d.fat || 0);
   document.getElementById('kpi-vendas').textContent   = d.n || 0;
-  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : '—';
+  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : 'â';
   const margem    = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
   const margemPct = d.fat > 0 ? Math.round(margem/d.fat*100) : 0;
   document.getElementById('kpi-margem').textContent     = 'R$ ' + fmt(margem);
@@ -12022,9 +12016,9 @@ function updateDashboard() {
   const mesLbl = {all:ano+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
                   abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
                   ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
-  // Gera mapeamento vend→label dinamicamente
+  // Gera mapeamento vendâlabel dinamicamente
   const vLblMap = {all:''};
-  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + v.charAt(0) + v.slice(1).toLowerCase(); });
+  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' Â· ' + v.charAt(0) + v.slice(1).toLowerCase(); });
   document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||ano) + (vLblMap[activeVend]||'');
 
   // Meses com dados
@@ -12049,12 +12043,12 @@ function updateDashboard() {
   chartTicket.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v]&&d.vend[v].tkt)?d.vend[v].tkt:0);
   chartTicket.update();
 
-  // Comissões — todos os vendedores dinâmicos
+  // ComissÃµes â todos os vendedores dinÃ¢micos
   let totN=0,totV=0,totCv=0,totCt=0, rows='';
   VENDORS_LIST.forEach(v=>{
     const vd=(d.vend&&d.vend[v]);
     if(!vd||vd.c===0) return;
-    totN+=vd.c{totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
+    totN+=vd.c;totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
     const cor = VEND_COLORS[v] || '#94a3b8';
     const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
     rows+=`<tr>
@@ -12107,15 +12101,15 @@ function updateAdvanced() {
   if (el) el.innerHTML = rows;
 }
 
-// -- Grafico YoY (criado uma vez, atualizado ao entrar em Comparar) ──
+// -- Grafico YoY (criado uma vez, atualizado ao entrar em Comparar) ââ
 let chartYoY = null;
 
 function renderCompare() {
   document.getElementById('compare-section').classList.add('show');
   const cmp = DATA.compare;
-  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparação não disponíveis (é necessário ter 2025 e 2026 na planilha).</p>'; return; }
+  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparaÃ§Ã£o nÃ£o disponÃ­veis (Ã© necessÃ¡rio ter 2025 e 2026 na planilha).</p>'; return; }
 
-  // Gráfico de barras lado-a-lado por mês
+  // GrÃ¡fico de barras lado-a-lado por mÃªs
   const mesesCmp = Object.keys(cmp.mensal||{});
   const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
   const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
@@ -12145,13 +12139,13 @@ function renderCompare() {
     chartYoY.update();
   }
 
-  // Tabela YoY por mês
+  // Tabela YoY por mÃªs
   let rowsMes='';
   mesesCmp.forEach(m=>{
     const r=cmp.mensal[m];
     const pct=r.fat.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'â':pct>=0?'â² '+pct+'%':'â¼ '+Math.abs(pct)+'%';
     rowsMes+=`<tr>
       <td><strong>${mesLbls[mesesCmp.indexOf(m)]}</strong></td>
       <td>R$ ${fmt(r.fat.v25)}</td>
@@ -12161,7 +12155,7 @@ function renderCompare() {
   });
   document.getElementById('yoy-mes-table-wrap').innerHTML=`
     <table class="yoy-table">
-      <thead><tr><th>Mês</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
+      <thead><tr><th>MÃªs</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
       <tbody>${rowsMes}</tbody>
     </table>`;
 
@@ -12170,7 +12164,7 @@ function renderCompare() {
   Object.entries(cmp.vend||{}).forEach(([v,r])=>{
     const pct=r.fat.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'â':pct>=0?'â² '+pct+'%':'â¼ '+Math.abs(pct)+'%';
     rowsVend+=`<tr>
       <td><span class="vend-badge"><span class="vend-dot" style="background:${VEND_COLORS[v]||'#94a3b8'}"></span>${VEND_NAMES[v]||v}</span></td>
       <td>R$ ${fmt(r.fat.v25)}</td>
@@ -12190,14 +12184,14 @@ function renderCompare() {
   const tot=cmp.total;
   const kpis=[
     {label:'Faturamento',r:tot.fat,fmt:'R$ '},
-    {label:'Nº Vendas',  r:tot.n,  fmt:''},
-    {label:'Ticket Médio',r:tot.tkt,fmt:'R$ '},
+    {label:'NÂº Vendas',  r:tot.n,  fmt:''},
+    {label:'Ticket MÃ©dio',r:tot.tkt,fmt:'R$ '},
   ];
   let kpiHtml='<div style="display:grid;gap:12px">';
   kpis.forEach(k=>{
     const pct=k.r.pct;
     const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    const arrow=pct===null?'â':pct>=0?'â² '+pct+'%':'â¼ '+Math.abs(pct)+'%';
     kpiHtml+=`<div style="background:var(--cinza);border-radius:10px;padding:12px 16px">
       <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${k.label}</div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
