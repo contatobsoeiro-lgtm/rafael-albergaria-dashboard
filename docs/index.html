@@ -12195,25 +12195,29 @@ function updateDashboard() {
   if(typeof updateInsights === 'function') updateInsights();
 }
 
-// Override updateAdvanced to use multi-year data structure
+// Override updateAdvanced — respeita filtros de ano, mes e vendedor
 function updateAdvanced() {
   const anoData = getAnoData();
   let rows = '';
   VENDORS_LIST.forEach(v => {
     const vk = v.toLowerCase();
-    const vd = anoData[vk];
+    // Se filtro de vendedor ativo, pula os outros
+    if (activeVend !== 'all' && activeVend !== vk) return;
+    // Usa chave com mês quando filtro de mês está ativo
+    const dataKey = activeMes !== 'all' ? vk + '_' + activeMes : vk;
+    const vd = anoData[dataKey] || (activeMes !== 'all' ? anoData[vk] : null);
     if (!vd || !vd.n) return;
     const m = vd.modal || {};
     const n = vd.n;
     const pct = val => n > 0 ? Math.round((val||0) / n * 100) : 0;
-    const cM = (m.MENSAL    && m.MENSAL.c)    || 0;
-    const cT = (m.TRIMESTRAL && m.TRIMESTRAL.c) || 0;
-    const cS = (m.SEMESTRAL  && m.SEMESTRAL.c)  || 0;
-    const cA = (m.ANUAL      && m.ANUAL.c)      || 0;
+    const cM = (m.MENSAL      && m.MENSAL.c)      || 0;
+    const cT = (m.TRIMESTRAL  && m.TRIMESTRAL.c)  || 0;
+    const cS = (m.SEMESTRAL   && m.SEMESTRAL.c)   || 0;
+    const cA = (m.ANUAL       && m.ANUAL.c)       || 0;
     const pLongo = pct(cS + cA);
     const pillClass = pLongo >= 35 ? 'pill-green' : pLongo >= 25 ? 'pill-blue' : 'pill-gray';
-    const cor = VEND_COLORS[v] || '#94a3b8';
-    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
+    const cor  = VEND_COLORS[v] || '#94a3b8';
+    const nome = VEND_NAMES[v]  || (v.charAt(0) + v.slice(1).toLowerCase());
     rows += '<tr>' +
       '<td><span class="vend-badge"><span class="vend-dot" style="background:' + cor + '"></span>' + nome + '</span></td>' +
       '<td>' + pct(cM) + '% <small style="color:var(--text-muted)">(' + cM + ')</small></td>' +
@@ -12224,7 +12228,7 @@ function updateAdvanced() {
       '</tr>';
   });
   const el = document.getElementById('upsell-tbody');
-  if (el) el.innerHTML = rows;
+  if (el) el.innerHTML = rows || '<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:16px">Sem dados para o filtro selecionado</td></tr>';
 }
 
 // -- Grafico YoY (criado uma vez, atualizado ao entrar em Comparar) ââ
