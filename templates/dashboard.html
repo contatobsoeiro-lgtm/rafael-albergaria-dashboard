@@ -123,6 +123,11 @@
   .insight-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
   .insight-text { font-size: 13px; color: var(--text); line-height: 1.5; }
   .insight-text strong { color: var(--text); }
+  .meta-progress { margin-top: 8px; width: 100%; }
+  .meta-bar-wrap { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 4px 0; }
+  .meta-bar { height: 100%; border-radius: 3px; transition: width .45s; background: var(--verde); }
+  .meta-bar.over { background: #16a34a; }
+  .meta-bar-labels { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; }
   /* ── RESPONSIVO ── */
   @media (max-width: 1100px) {
     .kpi-grid        { grid-template-columns: repeat(3, 1fr); }
@@ -234,6 +239,7 @@
       <div class="kpi-label">Faturamento Total</div>
       <div class="kpi-value" id="kpi-fat">R$ 243.531</div>
       <div class="kpi-sub"><span class="kpi-badge" id="kpi-fat-badge">2026 acumulado</span></div>
+      <div class="meta-progress" id="meta-progress-wrap" style="display:none"><div class="meta-bar-wrap"><div class="meta-bar" id="meta-progress-bar" style="width:0%"></div></div><div class="meta-bar-labels"><span id="meta-pct-label"></span><span>Meta: R$60k</span></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon blue">📋</div>
@@ -543,6 +549,7 @@ const DATA = {
 // =====================================================================
 let activeMes = 'all';
 let activeVend = 'all';
+const META_MENSAL = 60000;
 
 const VEND_NAMES  = {RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio'};
 const VEND_COLORS = {RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b'};
@@ -564,7 +571,12 @@ const chartMes = new Chart(ctxMes, {
       label: 'Faturamento (R$)',
       data: [118329, 56698, 72383],
       backgroundColor: ['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)'],
-      borderRadius: 8, borderSkipped: false
+      borderRadius: 8, borderSkipped: false, order: 2
+    },{
+      type: 'line', label: 'Meta R$60k',
+      data: [60000,60000,60000],
+      borderColor: 'rgba(239,68,68,0.75)', borderDash: [6,4], borderWidth: 1.5,
+      pointRadius: 0, fill: false, tension: 0, order: 1
     }]
   },
   options: {
@@ -672,9 +684,29 @@ function updateDashboard() {
   const vendLabel = {all:'', raquel:' · Raquel', rafael:' · Rafael', junio:' · Junio'};
   document.getElementById('kpi-fat-badge').textContent = (mesLabel[activeMes]||'') + (vendLabel[activeVend]||'');
 
-  // Chart Mês
+  // Chart Mês + linha de meta
   chartMes.data.datasets[0].data = [d.mes.jan.v, d.mes.fev.v, d.mes.mar.v];
+  chartMes.data.datasets[1].data = [META_MENSAL, META_MENSAL, META_MENSAL];
   chartMes.update();
+
+  // Barra de progresso da meta mensal
+  (function() {
+    const wrap  = document.getElementById('meta-progress-wrap');
+    const bar   = document.getElementById('meta-progress-bar');
+    const pctEl = document.getElementById('meta-pct-label');
+    if (!wrap) return;
+    if (activeMes !== 'all') {
+      const fat = d.fat || 0;
+      const pct = Math.min(Math.round(fat / META_MENSAL * 100), 100);
+      const over = fat >= META_MENSAL;
+      bar.style.width = pct + '%';
+      bar.className   = 'meta-bar' + (over ? ' over' : '');
+      pctEl.textContent = pct + '%' + (over ? ' meta batida!' : ' da meta');
+      wrap.style.display = '';
+    } else {
+      wrap.style.display = 'none';
+    }
+  })();
 
   // Chart Modal
   chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m => d.modal[m] ? d.modal[m].c : 0);
