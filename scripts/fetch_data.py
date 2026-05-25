@@ -26,7 +26,7 @@ from pathlib import Path
 
 # ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ CONFIGURAÃÂÃÂÃÂÃÂO ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 SHEET_URL   = os.getenv("SHEET_URL", "")
-SHEET_TYPE  = os.getenv("SHEET_TYPE", "onedrive")
+SHEET_TYPE  = os.getenv("SHEET_TYPE", "google")
 HISTORY_DIR = Path(__file__).parent.parent / "history"
 HISTORY_DIR.mkdir(exist_ok=True)
 
@@ -36,10 +36,11 @@ HISTORY_DIR.mkdir(exist_ok=True)
 # Colunas: DATA DA VENDA | PACIENTE | TIPO | MODALIDADE | CONSULTA ONLINE |
 #           ADICIONAL | VALOR | VENDEDOR | R$ COMISSÃÂÃÂO VENDEDOR | R$ COMISSÃÂÃÂO TREINO |
 #           CÃÂÃÂD. INDICAÃÂÃÂÃÂÃÂO | HISTÃÂÃÂRICO
-HEADER_ROW   = 5        # linha 6 da planilha = ÃÂÃÂ­ndice 5 em pandas (0-based)
+HEADER_ROW   = 0        # Google Sheets: header na linha 1 (index 0)
 SHEET_NAMES  = [
-    "CONTROLE DE VENDAS (2025)",
-    "CONTROLE DE VENDAS (2026)",
+    "Vendas",                       # Google Sheets (nova fonte)
+    "CONTROLE DE VENDAS (2025)",    # Excel OneDrive (legado)
+    "CONTROLE DE VENDAS (2026)",    # Excel OneDrive (legado)
 ]
 
 COL_MAP = {
@@ -76,6 +77,10 @@ COL_MAP = {
     "com. treino":             "com_treino",
     "personal":                "com_treino",
     "adicional":               "adicional",
+    # Google Sheets: colunas com sufixo "(R$)"
+    "valor (r$)":              "valor",
+    "comissao vendedor (r$)":  "com_vend",
+    "comissao treino (r$)":    "com_treino",
 }
 
 MES_MAP   = {1:"jan",2:"fev",3:"mar",4:"abr",5:"mai",6:"jun",
@@ -97,13 +102,20 @@ MODAIS_EXPECTED  = [m for m in MODAIS_EXPECTED if m.isascii()]
 
 def build_download_url(url: str, sheet_type: str) -> str:
     """
-    Converte URL de compartilhamento OneDrive/SharePoint para download direto.
-    Adiciona ?download=1 para forcar download do arquivo sem autenticacao.
+    Converte URL de compartilhamento para download direto.
+    - OneDrive/SharePoint: adiciona ?download=1
+    - Google Sheets (edit/view/sharing): extrai ID e gera URL de export XLSX
     """
+    import re
     # Para links OneDrive/1drv.ms/SharePoint
     if any(x in url for x in ['1drv.ms', 'onedrive.live.com', 'sharepoint.com', 'my.sharepoint']):
         sep = '&' if '?' in url else '?'
         return url + sep + 'download=1'
+    # Para links Google Sheets (edit, view, sharing)
+    if 'docs.google.com/spreadsheets' in url:
+        m = re.search(r'/spreadsheets/d/([a-zA-Z0-9_-]+)', url)
+        if m:
+            return f"https://docs.google.com/spreadsheets/d/{m.group(1)}/export?format=xlsx"
     return url
 
 
@@ -193,7 +205,12 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     if "com_treino" not in df.columns: df["com_treino"] = 0.0
     if "adicional"  not in df.columns: df["adicional"]  = ""
 
-    df["data"]       = pd.to_datetime(df["data"], dayfirst=True, errors="coerce")
+    # Converte datas: aceita datetime nativo, strings ou seriais numéricos do Excel
+    _data_col = df["data"]
+    if pd.api.types.is_numeric_dtype(_data_col):
+        df["data"] = pd.to_datetime(_data_col, unit="D", origin="1899-12-30", errors="coerce")
+    else:
+        df["data"] = pd.to_datetime(_data_col, dayfirst=True, errors="coerce")
     df["valor"]      = pd.to_numeric(df["valor"],      errors="coerce").fillna(0)
     df["com_vend"]   = pd.to_numeric(df["com_vend"],   errors="coerce").fillna(0)
     df["com_treino"] = pd.to_numeric(df["com_treino"], errors="coerce").fillna(0)
