@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -457,28 +457,9 @@
     <!-- INSIGHTS DE DECISÃO IMEDIATA -->
     <div class="chart-card">
       <div class="chart-title">⚡ Insights de Decisão Imediata</div>
-      <div class="chart-sub">Análise dos dados reais · Q1 2026 · 499 registros</div>
-      <ul class="insight-list">
-        <li class="insight-item">
-          <div class="insight-icon">📉</div>
-          <div class="insight-text"><strong>Fevereiro caiu 52%</strong> — de R$118k para R$57k. Março recuperou 21%, mas a queda é um sinal crítico. Avaliar: sazonalidade, mudança na oferta, ou desempenho da equipe em fev.</div>
-        </li>
-        <li class="insight-item">
-          <div class="insight-icon">🚀</div>
-          <div class="insight-text"><strong>Junio chegou forte em março</strong> — R$44.301 no 1º mês, ticket R$633 (52% acima da Raquel no mesmo mês, R$418). Perfil de alto valor. Prioridade: aumentar volume e proteger esse ticket.</div>
-        </li>
-        <li class="insight-item">
-          <div class="insight-icon">🎯</div>
-          <div class="insight-text"><strong>33% das vendas são mensais</strong> — menor LTV da carteira (R$190). Converter 20% desses pacientes para trimestral gera +R$6k de faturamento sem nenhuma nova captação.</div>
-        </li>
-        <li class="insight-item">
-          <div class="insight-icon">💡</div>
-          <div class="insight-text"><strong>Rafael tem o maior ticket: R$665</strong> (vs. R$453 Raquel e R$633 Junio). Com apenas 8% do volume total, há um playbook de upsell aqui. Mapear o script dele pode elevar o ticket médio do time.</div>
-        </li>
-        <li class="insight-item">
-          <div class="insight-icon">💰</div>
-          <div class="insight-text"><strong>Semestral + anual = 31% das vendas, mas 51% do faturamento.</strong> Cada contrato longo vale 3–5× um mensal. Meta acionável: elevar % de planos longos de 31% → 40% até junho.</div>
-        </li>
+      <div class="chart-sub" id="insight-sub">Análise dos dados reais · atualiza com os filtros</div>
+      <ul class="insight-list" id="insight-list">
+        <li class="insight-item"><div class="insight-icon">⏳</div><div class="insight-text">Calculando insights…</div></li>
       </ul>
     </div>
 
@@ -12039,6 +12020,86 @@ function updateAdvanced() {
 function fmt(n) { return n ? Math.round(n).toLocaleString('pt-BR') : '0'; }
 function fmtK(n) { return n>=1000 ? (n/1000).toFixed(0)+'k' : n; }
 
+// =====================================================================
+// INSIGHTS DINAMICOS
+// =====================================================================
+function updateInsights() {
+  const key = getKey();
+  const anoData = (typeof getAnoData === 'function') ? getAnoData() : DATA;
+  const d = anoData[key] || anoData['all'] || {};
+  const items = [];
+
+  // 1. Melhor vendedor por faturamento
+  const VNAMES_I = {};
+  (VENDORS_LIST || ['RAQUEL','RAFAEL','JUNIO']).forEach(v => {
+    VNAMES_I[v] = v.charAt(0) + v.slice(1).toLowerCase();
+  });
+  let topVend = null, topVendV = 0;
+  Object.entries(d.vend || {}).forEach(([vk, vd]) => {
+    if (vd && vd.v > topVendV) { topVendV = vd.v; topVend = vk; }
+  });
+  const dn = d.n || 0;
+  if (topVend && dn > 0) {
+    const pct = Math.round((d.vend[topVend].c / dn) * 100);
+    const nome = VNAMES_I[topVend] || topVend;
+    items.push({icon:'🏆', text:`<strong>${nome}</strong> lidera com R$ ${fmt(topVendV)} (${pct}% das vendas do período)`});
+  }
+
+  // 2. Plano mais vendido
+  const MNAMES_I = {MENSAL:'Mensal', TRIMESTRAL:'Trimestral', SEMESTRAL:'Semestral', ANUAL:'Anual'};
+  let topMod = null, topModC = 0;
+  Object.entries(d.modal || {}).forEach(([mk, mv]) => {
+    if (mv && mv.c > topModC) { topModC = mv.c; topMod = mk; }
+  });
+  if (topMod) {
+    const pct = dn > 0 ? Math.round(topModC / dn * 100) : 0;
+    items.push({icon:'📦', text:`Plano <strong>${MNAMES_I[topMod]||topMod}</strong> é o mais contratado (${topModC} vendas, ${pct}% do total)`});
+  }
+
+  // 3. Margem operacional
+  const margem = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
+  const margemPct = d.fat > 0 ? Math.round(margem / d.fat * 100) : 0;
+  if (d.fat > 0) {
+    const icon = margemPct >= 70 ? '✅' : margemPct >= 50 ? '⚠️' : '🔴';
+    items.push({icon, text:`Margem de <strong>${margemPct}%</strong> (R$ ${fmt(margem)}) — comissões somam R$ ${fmt((d.cvend||0)+(d.ctreino||0))}`});
+  }
+
+  // 4. Ticket médio vs media geral
+  const dAll = anoData['all'] || {};
+  if (d.tkt && dn > 0) {
+    const tktAll = dAll.tkt || 0;
+    if (tktAll && Math.abs(d.tkt - tktAll) > 1) {
+      const diff = Math.round(d.tkt - tktAll);
+      const icon = diff >= 0 ? '📈' : '📉';
+      const sinal = diff >= 0 ? '+' : '';
+      items.push({icon, text:`Ticket médio de <strong>R$ ${fmt(d.tkt)}</strong> (${sinal}R$ ${fmt(Math.abs(diff))} em relação à média geral de R$ ${fmt(tktAll)})`});
+    } else {
+      items.push({icon:'🎯', text:`Ticket médio de <strong>R$ ${fmt(d.tkt)}</strong> com ${dn} venda${dn!==1?'s':''} no período`});
+    }
+  }
+
+  const ul  = document.getElementById('insight-list');
+  const sub = document.getElementById('insight-sub');
+  if (!ul) return;
+
+  if (!items.length) {
+    ul.innerHTML = '<li class="insight-item"><div class="insight-icon">📭</div><div class="insight-text">Sem dados suficientes para gerar insights.</div></li>';
+    return;
+  }
+
+  const mesLabel  = {all:'acumulado',jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',
+                     mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',
+                     nov:'Novembro',dez:'Dezembro'};
+  const vLblMap = {all:''};
+  (VENDORS_LIST||[]).forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + (v.charAt(0)+v.slice(1).toLowerCase()); });
+  const anoLabel = (activeAno === 'latest' ? LATEST_ANO : activeAno) || '';
+  if (sub) sub.textContent = 'Análise de ' + (mesLabel[activeMes]||'acumulado') + (vLblMap[activeVend]||'') + ' · ' + anoLabel;
+
+  ul.innerHTML = items.map(i =>
+    `<li class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></li>`
+  ).join('');
+}
+
 // Inicializa
 
 // =====================================================================
@@ -12131,6 +12192,7 @@ function updateDashboard() {
     <td><strong>R$ ${fmt(totCv+totCt)}</strong></td></tr>`:'';
 
   if(typeof updateAdvanced === 'function') updateAdvanced();
+  if(typeof updateInsights === 'function') updateInsights();
 }
 
 // Override updateAdvanced to use multi-year data structure
