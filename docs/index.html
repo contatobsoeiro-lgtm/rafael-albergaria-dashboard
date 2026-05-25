@@ -362,7 +362,7 @@
         <thead><tr>
           <th>Plano</th><th>Vendas</th><th>Ticket Médio</th><th>R$/mês</th><th>% Fat.</th>
         </tr></thead>
-        <tbody>
+        <tbody id="ltv-tbody">
           <tr>
             <td><span class="pill pill-blue">Mensal</span></td>
             <td>185</td><td>R$ 190</td><td>R$ 190</td>
@@ -396,12 +396,12 @@
             </td>
           </tr>
         </tbody>
-        <tfoot><tr>
+        <tfoot id="ltv-tfoot"><tr>
           <td><strong>Total</strong></td><td><strong>491</strong></td>
           <td><strong>R$ 496</strong></td><td><strong>R$ 120</strong></td><td><strong>100%</strong></td>
         </tr></tfoot>
       </table>
-      <div style="margin-top:12px;padding:10px 12px;background:#f0fdf4;border-radius:8px;font-size:12px;color:#15803d;line-height:1.5">
+      <div id="ltv-insight" style="margin-top:12px;padding:10px 12px;background:#f0fdf4;border-radius:8px;font-size:12px;color:#15803d;line-height:1.5">
         💡 <strong>Insight LTV:</strong> um paciente mensal vale R$190 por período. Migrando para trimestral, o LTV sobe 2,6× (R$495) sem aumentar o esforço de venda. Semestral = 3,4× e anual = 5,3×.
       </div>
     </div>
@@ -12231,8 +12231,82 @@ function updateDashboard() {
     }
   })();
   if(typeof updateInsights === 'function') updateInsights();
+  if(typeof updateLTV === 'function') updateLTV();
 }
 
+
+// =====================================================================
+// LTV TABLE — respeita filtros de ano, mes e vendedor
+// =====================================================================
+function updateLTV() {
+  const anoData = getAnoData();
+  const key = getKey();
+  const d = anoData[key] || anoData['all'] || {};
+  if (!d || !d.modal) return;
+
+  const MODS = [
+    {key:'MENSAL',     label:'Mensal',     meses:1,  color:'#3b82f6', pill:'pill-blue'},
+    {key:'TRIMESTRAL', label:'Trimestral', meses:3,  color:'#22c55e', pill:'pill-green'},
+    {key:'SEMESTRAL',  label:'Semestral',  meses:6,  color:'#8b5cf6', pill:'pill-purple'},
+    {key:'ANUAL',      label:'Anual',      meses:12, color:'#f59e0b', pill:'pill-orange'}
+  ];
+
+  const totalFat = d.fat || 0;
+  let totalN = 0, totalTktSum = 0, totalRpmSum = 0;
+  MODS.forEach(m => {
+    const md = d.modal[m.key];
+    if (md && md.c > 0) {
+      totalN    += md.c;
+      totalTktSum += md.v;
+      totalRpmSum += Math.round(md.v / md.c / m.meses) * md.c;
+    }
+  });
+
+  let rows = '';
+  MODS.forEach(m => {
+    const md  = d.modal[m.key] || {c:0, v:0};
+    const tkt = md.c > 0 ? Math.round(md.v / md.c) : 0;
+    const rpm = tkt > 0 ? Math.round(tkt / m.meses) : 0;
+    const pct = totalFat > 0 ? Math.round(md.v / totalFat * 100) : 0;
+    rows += '<tr>' +
+      '<td><span class="pill ' + m.pill + '">' + m.label + '</span></td>' +
+      '<td>' + md.c + '</td>' +
+      '<td>R$ ' + fmt(tkt) + '</td>' +
+      '<td>R$ ' + fmt(rpm) + '</td>' +
+      '<td><div style="font-size:12px;font-weight:700">' + pct + '%</div>' +
+      '<div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%;background:' + m.color + '"></div></div></td>' +
+      '</tr>';
+  });
+
+  const totalTkt = totalN > 0 ? Math.round(totalTktSum / totalN) : 0;
+  const avgRpm   = totalN > 0 ? Math.round(totalRpmSum / totalN) : 0;
+
+  const tbody = document.getElementById('ltv-tbody');
+  const tfoot = document.getElementById('ltv-tfoot');
+  if (tbody) tbody.innerHTML = rows || '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Sem dados para o filtro selecionado</td></tr>';
+  if (tfoot) tfoot.innerHTML = '<tr><td><strong>Total</strong></td><td><strong>' + totalN + '</strong></td>' +
+    '<td><strong>R$ ' + fmt(totalTkt) + '</strong></td><td><strong>R$ ' + fmt(avgRpm) + '</strong></td><td><strong>100%</strong></td></tr>';
+
+  const ltvEl = document.getElementById('ltv-insight');
+  if (ltvEl) {
+    const mM = d.modal['MENSAL']    || {c:0,v:0};
+    const mT = d.modal['TRIMESTRAL']|| {c:0,v:0};
+    const mS = d.modal['SEMESTRAL'] || {c:0,v:0};
+    const mA = d.modal['ANUAL']     || {c:0,v:0};
+    const tM = mM.c > 0 ? Math.round(mM.v / mM.c) : 0;
+    const tT = mT.c > 0 ? Math.round(mT.v / mT.c) : 0;
+    const tS = mS.c > 0 ? Math.round(mS.v / mS.c) : 0;
+    const tA = mA.c > 0 ? Math.round(mA.v / mA.c) : 0;
+    if (tM > 0) {
+      const mTx = tT > 0 ? (tT/tM).toFixed(1)+'×' : '—';
+      const mSx = tS > 0 ? (tS/tM).toFixed(1)+'×' : '—';
+      const mAx = tA > 0 ? (tA/tM).toFixed(1)+'×' : '—';
+      ltvEl.innerHTML = '<strong>Insight LTV:</strong> paciente mensal = R$ ' + fmt(tM) +
+        '. Migrando para trimestral: ' + mTx + ' (R$ ' + fmt(tT) +
+        '). Semestral: ' + mSx + '. Anual: ' + mAx + '.';
+    }
+  }
+}
 // Override updateAdvanced — respeita filtros de ano, mes e vendedor
 function updateAdvanced() {
   const anoData = getAnoData();
