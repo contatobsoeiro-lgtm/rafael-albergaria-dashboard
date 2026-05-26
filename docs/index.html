@@ -456,15 +456,21 @@
 
   <div class="charts-row charts-row-2">
     <div class="chart-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">
         <div>
-          <div class="chart-title">Comissões por Vendedor</div>
-          <div class="chart-sub">Comissão vendedor + treino no período selecionado</div>
+          <div class="chart-title">Comissões a Pagar</div>
+          <div class="chart-sub">Vendedor (3% sobre vendas) + Personal (15% sobre treinos)</div>
         </div>
-        <button class="btn-pdf" onclick="openCommissionPDF()" style="flex-shrink:0">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
-          Comprovante PDF
-        </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-pdf" onclick="openCommissionPDF('vendedor')" style="flex-shrink:0" title="Comprovante de comissão do vendedor (3%)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            PDF Vendedor
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Comprovante de comissão do personal (15% sobre treinos)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
+            PDF Personal
+          </button>
+        </div>
       </div>
       <table class="comissoes-table">
         <thead>
@@ -13918,10 +13924,12 @@ updateDashboard();
 <!-- Modal de seleção -->
 <div class="commission-modal-overlay" id="commission-modal">
   <div class="commission-modal">
-    <h3>📄 Gerar Comprovante de Comissão</h3>
-    <p>Escolha o vendedor e o mês. O PDF será gerado com a lista de vendas e o total a pagar — pronto pra enviar como comprovante.</p>
-    <label>Vendedor</label>
-    <select id="comm-vendedor"></select>
+    <h3 id="comm-modal-title">📄 Gerar Comprovante de Comissão</h3>
+    <p id="comm-modal-desc">Escolha o mês de referência. O PDF será gerado com a lista de vendas e o total a pagar.</p>
+    <div id="comm-vendedor-group">
+      <label>Vendedor</label>
+      <select id="comm-vendedor"></select>
+    </div>
     <label>Mês de referência</label>
     <select id="comm-mes"></select>
     <label>Ano</label>
@@ -13942,24 +13950,38 @@ updateDashboard();
   const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
   const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
 
-  window.openCommissionPDF = function() {
+  // tipo: 'vendedor' (default) ou 'personal'
+  let currentCommType = 'vendedor';
+  window.openCommissionPDF = function(tipo) {
     if (!window.VENDAS_DATA) { alert('Aguarde os dados terminarem de carregar e tente de novo.'); return; }
+    currentCommType = (tipo === 'personal') ? 'personal' : 'vendedor';
+
     const modal = document.getElementById('commission-modal');
     const selV = document.getElementById('comm-vendedor');
     const selM = document.getElementById('comm-mes');
     const selA = document.getElementById('comm-ano');
+    const title = document.getElementById('comm-modal-title');
+    const desc = document.getElementById('comm-modal-desc');
+    const vendGroup = document.getElementById('comm-vendedor-group');
 
-    // Vendedores únicos com vendas
-    const vendsSet = new Set();
-    window.VENDAS_DATA.forEach(r => { if (r.vendedor) vendsSet.add(r.vendedor); });
-    const vends = Array.from(vendsSet).sort();
-    selV.innerHTML = vends.map(v => '<option value="' + v + '">' + (VEND_DISPLAY[v] || v) + '</option>').join('');
-    // Pre-seleciona Junio se tiver
-    if (vends.includes('junio')) selV.value = 'junio';
+    if (currentCommType === 'personal') {
+      title.textContent = '🏋️ Comprovante do Personal (Gustavo)';
+      desc.textContent = 'Lista de vendas COM adicional "Treino" no mês selecionado. Comissão de 15% sobre cada venda, independente de qual vendedor fechou.';
+      vendGroup.style.display = 'none';
+    } else {
+      title.textContent = '📄 Comprovante de Comissão do Vendedor';
+      desc.textContent = 'Lista TODAS as vendas do vendedor no mês selecionado, com comissão de 3% sobre cada uma.';
+      vendGroup.style.display = '';
+      // Vendedores únicos com vendas
+      const vendsSet = new Set();
+      window.VENDAS_DATA.forEach(r => { if (r.vendedor) vendsSet.add(r.vendedor); });
+      const vends = Array.from(vendsSet).sort();
+      selV.innerHTML = vends.map(v => '<option value="' + v + '">' + (VEND_DISPLAY[v] || v) + '</option>').join('');
+      if (vends.includes('junio')) selV.value = 'junio';
+    }
 
     // Meses
     selM.innerHTML = Object.entries(MES_LBL_FULL).map(([k,v]) => '<option value="' + k + '">' + v + '</option>').join('');
-    // Pre-seleciona ultimo mes com dado
     const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
     let lastMes = 'mai';
     const ano = (typeof activeAno !== 'undefined' && activeAno === 'latest') ? (typeof LATEST_ANO !== 'undefined' ? LATEST_ANO : '2026') : (typeof activeAno !== 'undefined' ? activeAno : '2026');
@@ -13983,67 +14005,83 @@ updateDashboard();
   };
 
   window.generateCommissionPDF = function() {
-    const vend = document.getElementById('comm-vendedor').value;
     const mes = document.getElementById('comm-mes').value;
     const ano = document.getElementById('comm-ano').value;
-    const vendName = VEND_DISPLAY[vend] || vend;
     const mesName = MES_LBL_FULL[mes];
-
-    // Filtra vendas do vendedor + mes + ano
-    const vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.mes === mes && r.ano === ano);
-    const pagas = vendas.filter(r => r.valor > 0);
-
-    // Comissões por venda paga (do dado original ja calculado pelo Sheets)
-    // Como o CSV nao tem essa coluna estruturada, recalculamos com 3% (valor padrao Wellts)
-    // e 15% sobre treino (regra que ela me passou)
-    const COM_VEND_PCT = 0.03;
-    const COM_TREINO_PCT = 0.15;
-    let totalFat = 0, totalComV = 0, totalComT = 0;
-
-    let rowsHtml = '';
-    pagas.forEach((r, i) => {
-      const comV = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
-      const comT = (r.adic === 'Treino') ? Math.round(r.valor * COM_TREINO_PCT * 100) / 100 : 0;
-      totalFat += r.valor; totalComV += comV; totalComT += comT;
-      rowsHtml += '<tr>' +
-        '<td>' + (i+1) + '</td>' +
-        '<td>' + (r.data || '') + '</td>' +
-        '<td>' + r.paciente + '</td>' +
-        '<td>' + (r.tipo || '') + '</td>' +
-        '<td>' + (r.mod || '') + '</td>' +
-        '<td>' + (r.adic || 'Nenhum') + '</td>' +
-        '<td style="text-align:right">R$ ' + r.valor.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '</td>' +
-        '<td style="text-align:right">R$ ' + comV.toFixed(2).replace('.', ',') + '</td>' +
-        '<td style="text-align:right">R$ ' + comT.toFixed(2).replace('.', ',') + '</td>' +
-        '</tr>';
-    });
-
-    const totalCom = totalComV + totalComT;
     const fmtBR = n => 'R$ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-    const html = '<div class="header-print">' +
-      '<h1>Comprovante de Comissão · ' + vendName + '</h1>' +
-      '<div class="header-print-sub">' + mesName + ' / ' + ano + ' · Nutricionista Rafael Albergaria · gerado em ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
-      '</div>' +
-      '<div class="summary-card">' +
-        '<div class="summary-item"><div class="lbl">Vendas pagas</div><div class="val">' + pagas.length + '</div></div>' +
+    const COM_VEND_PCT = 0.03;
+    const COM_TREINO_PCT = 0.15;
+
+    let title, beneficiario, vendas, headers, makeRow, totalLabel, total, summary, footer;
+
+    if (currentCommType === 'personal') {
+      // PERSONAL: 15% sobre TODAS as vendas com Treino, de qualquer vendedor
+      vendas = window.VENDAS_DATA.filter(r => r.adic === 'Treino' && r.valor > 0 && r.mes === mes && r.ano === ano);
+      title = 'Comprovante de Comissão · Personal (Gustavo)';
+      beneficiario = 'Gustavo (Personal Trainer)';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Vendedor</th><th>Valor</th><th>Com. 15%</th></tr>';
+      let totalFat = 0, totalCom = 0;
+      let rowsHtml = '';
+      vendas.forEach((r, i) => {
+        const com = Math.round(r.valor * COM_TREINO_PCT * 100) / 100;
+        totalFat += r.valor; totalCom += com;
+        const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1);
+        rowsHtml += '<tr>' +
+          '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+          '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + vendNome + '</td>' +
+          '<td style="text-align:right">' + fmtBR(r.valor) + '</td>' +
+          '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
+      });
+      makeRow = rowsHtml;
+      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+      total = totalCom;
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Vendas c/ Treino</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Total dos planos</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Comissão (15%)</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
+        '</div>';
+      footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano vendido com adicional "Treino" no mês de referência. Calculado direto da planilha oficial de vendas.';
+
+    } else {
+      // VENDEDOR: 3% sobre TODAS as vendas do vendedor
+      const vend = document.getElementById('comm-vendedor').value;
+      const vendName = VEND_DISPLAY[vend] || vend;
+      vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano);
+      title = 'Comprovante de Comissão · ' + vendName + ' (Vendedor)';
+      beneficiario = vendName + ' (Vendedor)';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Valor</th><th>Com. 3%</th></tr>';
+      let totalFat = 0, totalCom = 0;
+      let rowsHtml = '';
+      vendas.forEach((r, i) => {
+        const com = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
+        totalFat += r.valor; totalCom += com;
+        rowsHtml += '<tr>' +
+          '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+          '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td>' +
+          '<td style="text-align:right">' + fmtBR(r.valor) + '</td>' +
+          '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
+      });
+      makeRow = rowsHtml;
+      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+      total = totalCom;
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Vendas no mês</div><div class="val">' + vendas.length + '</div></div>' +
         '<div class="summary-item"><div class="lbl">Faturamento</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Comissão</div><div class="val" style="color:#15803d">' + fmtBR(totalComV) + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Treino</div><div class="val" style="color:#b91c1c">' + fmtBR(totalComT) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Comissão (3%)</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
+        '</div>';
+      footer = '<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de 3% sobre cada venda paga no mês de referência. Calculado direto da planilha oficial de vendas.';
+    }
+
+    const html = '<div class="header-print">' +
+      '<h1>' + title + '</h1>' +
+      '<div class="header-print-sub">' + mesName + ' / ' + ano + ' · Nutricionista Rafael Albergaria · Beneficiário: ' + beneficiario + ' · gerado em ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
       '</div>' +
-      (pagas.length === 0
-        ? '<p style="text-align:center;color:#94a3b8;padding:40px 0">Sem vendas pagas no período.</p>'
-        : '<table>' +
-          '<thead><tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Valor</th><th>Com. Vend.</th><th>Com. Treino</th></tr></thead>' +
-          '<tbody>' + rowsHtml + '</tbody>' +
-          '<tfoot><tr>' +
-          '<td colspan="6" style="text-align:right">TOTAL</td>' +
-          '<td style="text-align:right">' + fmtBR(totalFat) + '</td>' +
-          '<td style="text-align:right">' + fmtBR(totalComV) + '</td>' +
-          '<td style="text-align:right">' + fmtBR(totalComT) + '</td>' +
-          '</tr></tfoot>' +
-          '</table>') +
-      '<div class="footer-print"><strong>Total a pagar: ' + fmtBR(totalCom) + '</strong> · Comissão vendedor 3% sobre vendas pagas. Comissão treino 15% sobre planos com adicional "Treino". Os valores foram calculados a partir da planilha de vendas oficial.</div>';
+      summary +
+      (vendas.length === 0
+        ? '<p style="text-align:center;color:#94a3b8;padding:40px 0">Sem vendas no período.</p>'
+        : '<table><thead>' + headers + '</thead><tbody>' + makeRow + '</tbody><tfoot>' + totalLabel + '</tfoot></table>') +
+      '<div class="footer-print">' + footer + '</div>';
 
     const view = document.getElementById('commission-print-view');
     view.innerHTML = html;
