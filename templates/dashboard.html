@@ -439,17 +439,21 @@
     <div class="chart-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">
         <div>
-          <div class="chart-title">Comissões a Pagar</div>
-          <div class="chart-sub">Vendedor (3% sobre vendas) + Personal (15% sobre treinos)</div>
+          <div class="chart-title">Comissões & Cobranças</div>
+          <div class="chart-sub">A pagar (vendedor / personal) + A cobrar (parceiros)</div>
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="btn-pdf" onclick="openCommissionPDF('vendedor')" style="flex-shrink:0" title="Comprovante de comissão do vendedor (3%)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            PDF Vendedor
+            Vendedor
           </button>
           <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Comprovante de comissão do personal (15% sobre treinos)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
-            PDF Personal
+            Personal
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('parceiro')" style="flex-shrink:0;border-color:rgba(139,92,246,.3);color:#7c3aed" title="Cobrança de parceiros (Plano Eliseu, Plano Gustavo)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Parceiros
           </button>
         </div>
       </div>
@@ -2088,6 +2092,11 @@ updateDashboard();
 })();
 </script>
 
+    return result;
+  };
+})();
+</script>
+
 <!-- ══════════════════════════════════════════════════════════════════
      MODAL GENERICO "LISTA COMPLETA" (Consultas/Top Vendas/Churn)
      ══════════════════════════════════════════════════════════════════ -->
@@ -2260,11 +2269,11 @@ updateDashboard();
   const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
   const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
 
-  // tipo: 'vendedor' (default) ou 'personal'
+  // tipo: 'vendedor' (default), 'personal', 'parceiro'
   let currentCommType = 'vendedor';
   window.openCommissionPDF = function(tipo) {
     if (!window.VENDAS_DATA) { alert('Aguarde os dados terminarem de carregar e tente de novo.'); return; }
-    currentCommType = (tipo === 'personal') ? 'personal' : 'vendedor';
+    currentCommType = (['personal','parceiro'].indexOf(tipo) >= 0) ? tipo : 'vendedor';
 
     const modal = document.getElementById('commission-modal');
     const selV = document.getElementById('comm-vendedor');
@@ -2273,15 +2282,30 @@ updateDashboard();
     const title = document.getElementById('comm-modal-title');
     const desc = document.getElementById('comm-modal-desc');
     const vendGroup = document.getElementById('comm-vendedor-group');
+    const vendLabel = vendGroup.querySelector('label');
 
     if (currentCommType === 'personal') {
       title.textContent = '🏋️ Comprovante do Personal (Gustavo)';
       desc.textContent = 'Lista de vendas COM adicional "Treino" no mês selecionado. Comissão de 15% sobre cada venda, independente de qual vendedor fechou.';
       vendGroup.style.display = 'none';
+    } else if (currentCommType === 'parceiro') {
+      title.textContent = '🤝 Cobrança de Parceiro';
+      desc.textContent = 'Lista as vendas do plano do parceiro no mês selecionado. Útil pra conferir e cobrar o repasse no final do mês.';
+      vendGroup.style.display = '';
+      if (vendLabel) vendLabel.textContent = 'Parceiro / Tipo de Plano';
+      // Tipos de plano de parceiros detectados na planilha
+      const tiposParceiros = new Set();
+      window.VENDAS_DATA.forEach(r => {
+        if (r.tipo && /^Plano\s+/i.test(r.tipo)) tiposParceiros.add(r.tipo);
+      });
+      const lista = Array.from(tiposParceiros).sort();
+      selV.innerHTML = lista.map(t => '<option value="' + t + '">' + t + '</option>').join('');
+      if (lista.length === 0) selV.innerHTML = '<option value="">Nenhum plano de parceiro encontrado</option>';
     } else {
       title.textContent = '📄 Comprovante de Comissão do Vendedor';
       desc.textContent = 'Lista TODAS as vendas do vendedor no mês selecionado, com comissão de 3% sobre cada uma.';
       vendGroup.style.display = '';
+      if (vendLabel) vendLabel.textContent = 'Vendedor';
       // Vendedores únicos com vendas
       const vendsSet = new Set();
       window.VENDAS_DATA.forEach(r => { if (r.vendedor) vendsSet.add(r.vendedor); });
@@ -2325,7 +2349,36 @@ updateDashboard();
 
     let title, beneficiario, vendas, headers, makeRow, totalLabel, total, summary, footer;
 
-    if (currentCommType === 'personal') {
+    if (currentCommType === 'parceiro') {
+      // PARCEIRO: lista vendas do plano do parceiro (Plano Eliseu, Plano Gustavo, etc)
+      // Inclui vendas com valor 0 (caso o parceiro cobre direto do paciente)
+      const tipoPlano = document.getElementById('comm-vendedor').value;
+      const partnerName = tipoPlano.replace(/^Plano\s+/i, '') || 'Parceiro';
+      vendas = window.VENDAS_DATA.filter(r => r.tipo === tipoPlano && r.mes === mes && r.ano === ano);
+      title = 'Cobrança · ' + tipoPlano;
+      beneficiario = partnerName + ' (Parceiro)';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Modalidade</th><th>Adicional</th><th>Vendedor</th><th>Valor cobrado</th></tr>';
+      let totalFat = 0;
+      let rowsHtml = '';
+      vendas.forEach((r, i) => {
+        totalFat += r.valor;
+        const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1);
+        rowsHtml += '<tr>' +
+          '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+          '<td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td><td>' + vendNome + '</td>' +
+          '<td style="text-align:right">' + (r.valor > 0 ? fmtBR(r.valor) : '—') + '</td></tr>';
+      });
+      makeRow = rowsHtml;
+      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td></tr>';
+      total = totalFat;
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Pacientes no mês</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Valor cobrado total</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">A acertar com o parceiro</div><div class="val" style="color:#7c3aed">a definir</div></div>' +
+        '</div>';
+      footer = '<strong>Extrato de cobrança · ' + partnerName + '</strong> · Lista os pacientes que contrataram o "' + tipoPlano + '" em ' + mesName + '/' + ano + '. O valor de repasse deve ser combinado com o parceiro com base na regra acordada. Quando o valor aparece como "—" significa que a venda foi registrada sem valor (provavelmente porque o parceiro cobra direto do paciente).';
+
+    } else if (currentCommType === 'personal') {
       // PERSONAL: 15% sobre TODAS as vendas com Treino, de qualquer vendedor
       vendas = window.VENDAS_DATA.filter(r => r.adic === 'Treino' && r.valor > 0 && r.mes === mes && r.ano === ano);
       title = 'Comprovante de Comissão · Personal (Gustavo)';
@@ -2371,53 +2424,5 @@ updateDashboard();
           '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td>' +
           '<td style="text-align:right">' + fmtBR(r.valor) + '</td>' +
           '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
-      });
-      makeRow = rowsHtml;
-      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
-      total = totalCom;
-      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
-        '<div class="summary-item"><div class="lbl">Vendas no mês</div><div class="val">' + vendas.length + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Faturamento</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Comissão (3%)</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
-        '</div>';
-      footer = '<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de 3% sobre cada venda paga no mês de referência. Calculado direto da planilha oficial de vendas.';
-    }
-
-    const html = '<div class="header-print">' +
-      '<h1>' + title + '</h1>' +
-      '<div class="header-print-sub">' + mesName + ' / ' + ano + ' · Nutricionista Rafael Albergaria · Beneficiário: ' + beneficiario + ' · gerado em ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
-      '</div>' +
-      summary +
-      (vendas.length === 0
-        ? '<p style="text-align:center;color:#94a3b8;padding:40px 0">Sem vendas no período.</p>'
-        : '<table><thead>' + headers + '</thead><tbody>' + makeRow + '</tbody><tfoot>' + totalLabel + '</tfoot></table>') +
-      '<div class="footer-print">' + footer + '</div>';
-
-    const view = document.getElementById('commission-print-view');
-    view.innerHTML = html;
-    view.classList.add('show');
-
-    closeCommissionModal();
-    document.body.classList.add('printing-commission');
-    setTimeout(() => {
-      window.print();
-      setTimeout(() => {
-        document.body.classList.remove('printing-commission');
-        view.classList.remove('show');
-        view.innerHTML = '';
-      }, 600);
-    }, 350);
-  };
-
-  // ESC fecha o modal
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeCommissionModal();
-  });
-  // Click no overlay fecha
-  document.getElementById('commission-modal').addEventListener('click', e => {
-    if (e.target.id === 'commission-modal') closeCommissionModal();
-  });
-})();
-</script>
 </body>
 </html>
