@@ -13242,24 +13242,31 @@ initMobileFilters();
     renderChurn();
   }
 
-  // Re-renderiza quando filtros globais mudam (via hook no updateDashboard)
-  const _origUpdate = window.updateDashboard;
-  if (typeof _origUpdate === 'function') {
+  // Re-renderiza quando filtros globais mudam — hook aplicado APOS todos os
+  // scripts subsequentes ja terem feito seus overrides (DOMContentLoaded garante isso).
+  function installHook() {
+    const _origUpdate = window.updateDashboard;
+    if (typeof _origUpdate !== 'function') return;
     window.updateDashboard = function() {
       _origUpdate.apply(this, arguments);
       if (window.VENDAS_DATA) { renderMixTipo(); renderOportunidades(); }
     };
   }
 
-  // Hook no carregamento de Vendas para chamar oportunidades tambem
   const _origFetchVendas = fetchVendas;
   async function fetchVendasAndRender() {
     await _origFetchVendas();
     renderOportunidades();
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fetchVendasAndRender);
-  else fetchVendasAndRender();
+  function bootstrap() {
+    // Garante que todos os outros scripts ja sobrescreveram updateDashboard antes do hook
+    installHook();
+    fetchVendasAndRender();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootstrap);
+  else setTimeout(bootstrap, 0); // setTimeout pra rodar apos os outros scripts top-level
 })();
 </script>
 
@@ -13376,29 +13383,29 @@ function updateDashboard() {
   document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
 
   // Indicador MoM (variacao vs mes anterior) nos 3 KPIs principais
-  (function() {{
+  (function() {
     const MES_ORDER_LOC = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-    const mesData = d.mes || {{}};
+    const mesData = d.mes || {};
     let curMes = null, prevMes = null;
-    if (activeMes === 'all') {{
+    if (activeMes === 'all') {
       const ms = MES_ORDER_LOC.filter(m => mesData[m] && mesData[m].v > 0);
-      if (ms.length >= 2) {{ curMes = ms[ms.length-1]; prevMes = ms[ms.length-2]; }}
-    }} else {{
+      if (ms.length >= 2) { curMes = ms[ms.length-1]; prevMes = ms[ms.length-2]; }
+    } else {
       const idx = MES_ORDER_LOC.indexOf(activeMes);
-      if (idx >= 1) {{ curMes = activeMes; prevMes = MES_ORDER_LOC[idx-1]; }}
-    }}
-    function renderTrend(elId, pct, lbl) {{
+      if (idx >= 1) { curMes = activeMes; prevMes = MES_ORDER_LOC[idx-1]; }
+    }
+    function renderTrend(elId, pct, lbl) {
       const el = document.getElementById(elId);
       if (!el) return;
-      if (pct === null || !isFinite(pct)) {{ el.innerHTML = ''; return; }}
+      if (pct === null || !isFinite(pct)) { el.innerHTML = ''; return; }
       const cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'neu');
       const arrow = pct > 0 ? '▲' : (pct < 0 ? '▼' : '·');
       const sign = pct > 0 ? '+' : '';
       el.innerHTML = ' <span class="kpi-trend ' + cls + '" title="' + lbl + '">' + arrow + ' ' + sign + pct + '%</span>';
-    }}
-    if (curMes && prevMes && mesData[curMes] && mesData[prevMes] && mesData[prevMes].v > 0) {{
+    }
+    if (curMes && prevMes && mesData[curMes] && mesData[prevMes] && mesData[prevMes].v > 0) {
       const cur = mesData[curMes], prev = mesData[prevMes];
-      const MES_LBL_SHORT = {{jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}};
+      const MES_LBL_SHORT = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
       const lbl = (MES_LBL_SHORT[curMes]||curMes) + ' vs ' + (MES_LBL_SHORT[prevMes]||prevMes);
       const fatPct = Math.round((cur.v - prev.v) / prev.v * 100);
       const vendPct = prev.c > 0 ? Math.round((cur.c - prev.c) / prev.c * 100) : null;
@@ -13408,12 +13415,12 @@ function updateDashboard() {
       renderTrend('kpi-fat-trend', fatPct, 'Faturamento ' + lbl);
       renderTrend('kpi-vendas-trend', vendPct, 'Vendas ' + lbl);
       renderTrend('kpi-ticket-trend', tktPct, 'Ticket ' + lbl);
-    }} else {{
-      ['kpi-fat-trend','kpi-vendas-trend','kpi-ticket-trend'].forEach(id => {{
+    } else {
+      ['kpi-fat-trend','kpi-vendas-trend','kpi-ticket-trend'].forEach(id => {
         const el = document.getElementById(id); if (el) el.innerHTML = '';
-      }});
-    }}
-  }})();
+      });
+    }
+  })();
 
   const ano    = activeAno === 'latest' ? LATEST_ANO : activeAno;
   const anoTxt = activeAno === 'todos' ? 'Todos os anos' : ano;
