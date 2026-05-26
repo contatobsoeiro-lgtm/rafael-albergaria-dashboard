@@ -172,6 +172,7 @@ let activeVend = 'all';
 
 const ANOS_DISPONIVEIS = {json.dumps(sorted(anos))};
 const LATEST_ANO = '{latest}';
+const META_MENSAL = 60000;
 
 function setAno(ano) {{
   activeAno = ano;
