@@ -1942,7 +1942,8 @@ updateDashboard();
       html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">'+r.paciente+'</div><div class="opp-row-meta">'+(r.tipo||'')+' · '+(r.mod||'')+'</div></div><div><span class="opp-row-pill warn">0/'+total_c+'</span></div></div>';
     });
     html += '</div>';
-    if (total > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ '+(total-10)+' outros</div>';
+    if (total > 10) html += '<button class="opp-list-link" onclick="openConsultasModal()">Ver todos os ' + total + ' pacientes →</button>';
+    else if (total > 0) html += '<button class="opp-list-link" onclick="openConsultasModal()">Ver lista completa →</button>';
     wrap.innerHTML = html;
   }
   function renderTopVendas() {
@@ -1998,9 +1999,54 @@ updateDashboard();
       html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">'+r.paciente+'</div><div class="opp-row-meta">Última: '+(MES_LBL[r.mes]||r.mes)+' · '+(r.tipo||'')+'</div></div><div><span class="opp-row-pill '+pillCls+'">'+meses+' mês'+(meses!==1?'es':'')+'</span></div></div>';
     });
     html += '</div>';
-    if (risco.length > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ '+(risco.length-10)+' outros</div>';
+    if (risco.length > 10) html += '<button class="opp-list-link" onclick="openChurnModal()">Ver todos os ' + risco.length + ' clientes →</button>';
+    else if (risco.length > 0) html += '<button class="opp-list-link" onclick="openChurnModal()">Ver lista completa →</button>';
     wrap.innerHTML = html;
+    // Guarda referencia pro modal de lista completa
+    window._churnList = risco;
+    window._churnCurrentMonth = currentMonthIdx;
   }
+
+  // Modais "Ver todos" — usa openOppListModal (definido em outro script)
+  window.openConsultasModal = function() {
+    const data = dadosFiltrados(); if (!data) return;
+    const pendentes = data.filter(r => /^0\/\d+$/.test(r.consulta) && r.paciente);
+    window.openOppListModal(
+      'Consultas Online Pendentes',
+      pendentes.length + ' pacientes com consulta inclusa que não agendaram',
+      [
+        { label: 'Paciente', key: 'paciente' },
+        { label: 'Tipo', key: 'tipo' },
+        { label: 'Modalidade', key: 'mod' },
+        { label: 'Consulta', key: 'consulta' },
+        { label: 'Vendedor', render: r => (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1) },
+        { label: 'Mês', key: 'mes' },
+        { label: 'Valor', render: r => 'R$ ' + (r.valor||0).toFixed(2).replace('.', ',') }
+      ],
+      pendentes
+    );
+  };
+  window.openChurnModal = function() {
+    const data = window._churnList || [];
+    const cur = window._churnCurrentMonth || (new Date()).getMonth();
+    const MES_LBL = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+    const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    window.openOppListModal(
+      'Clientes em Risco de Churn',
+      data.length + ' mensais sem renovação há 2+ meses',
+      [
+        { label: 'Paciente', key: 'paciente' },
+        { label: 'Última compra', render: r => MES_LBL[r.mes] || r.mes },
+        { label: 'Meses sem comprar', render: r => (cur - MES_ORDER.indexOf(r.mes)) + ' meses' },
+        { label: 'Tipo', key: 'tipo' },
+        { label: 'Modalidade', key: 'mod' },
+        { label: 'Vendedor', render: r => (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1) },
+        { label: 'Último valor', render: r => 'R$ ' + (r.valor||0).toFixed(2).replace('.', ',') }
+      ],
+      data
+    );
+  };
+
   function renderOportunidades() { renderConsultas(); renderTopVendas(); renderChurn(); }
 
   function installHook() {
