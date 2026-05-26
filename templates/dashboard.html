@@ -386,7 +386,7 @@
     <!-- UPSELL POR VENDEDOR (dinâmico) -->
     <div class="chart-card">
       <div class="chart-title">Mix de Planos & Upsell por Vendedor</div>
-      <div class="chart-sub">% de cada modalidade por vendedor — dados totais do trimestre (2026)</div>
+      <div class="chart-sub" id="upsell-sub">% de cada modalidade por vendedor no período selecionado</div>
       <table class="analytics-table">
         <thead><tr>
           <th>Vendedor</th><th>Mensal</th><th>Trimestral</th><th>Semestral</th><th>Anual</th><th>% Plano Longo</th>
@@ -402,29 +402,29 @@
 
   <div class="charts-row charts-row-4" style="margin-bottom:16px">
 
-    <!-- MRR ESTIMADO -->
+    <!-- MRR ESTIMADO (dinâmico) -->
     <div class="chart-card">
-      <div class="chart-title">MRR Estimado — Abril 2026</div>
-      <div class="chart-sub">Receita mensal garantida dos contratos não-mensais do trimestre</div>
+      <div class="chart-title" id="mrr-title">MRR Estimado</div>
+      <div class="chart-sub" id="mrr-sub">Receita mensal garantida dos contratos não-mensais do período</div>
       <div class="mrr-grid">
         <div class="mrr-item">
           <div class="mrr-item-label">Trimestral</div>
-          <div class="mrr-item-value">R$ 24.903</div>
-          <div class="mrr-item-sub">R$74.709 ÷ 3 meses</div>
+          <div class="mrr-item-value" id="mrr-trim-val">—</div>
+          <div class="mrr-item-sub" id="mrr-trim-sub">calculando…</div>
         </div>
         <div class="mrr-item">
           <div class="mrr-item-label">Semestral</div>
-          <div class="mrr-item-value">R$ 7.482</div>
-          <div class="mrr-item-sub">R$44.894 ÷ 6 meses</div>
+          <div class="mrr-item-value" id="mrr-sem-val">—</div>
+          <div class="mrr-item-sub" id="mrr-sem-sub">calculando…</div>
         </div>
         <div class="mrr-item">
           <div class="mrr-item-label">Anual</div>
-          <div class="mrr-item-value">R$ 6.794</div>
-          <div class="mrr-item-sub">R$81.532 ÷ 12 meses</div>
+          <div class="mrr-item-value" id="mrr-anu-val">—</div>
+          <div class="mrr-item-sub" id="mrr-anu-sub">calculando…</div>
         </div>
         <div class="mrr-item" style="border:1.5px dashed var(--cinza-border)">
           <div class="mrr-item-label">Mensal (renov. 60%)</div>
-          <div class="mrr-item-value" style="color:var(--text-muted)">+ R$ 21.038</div>
+          <div class="mrr-item-value" id="mrr-men-val" style="color:var(--text-muted)">—</div>
           <div class="mrr-item-sub">estimativa conservadora</div>
         </div>
       </div>
@@ -433,7 +433,7 @@
           <div class="mrr-total-label">MRR Garantido (sem novas vendas)</div>
           <div class="mrr-total-sub">trimestral + semestral + anual ativos</div>
         </div>
-        <div class="mrr-total-value">R$ 39.179</div>
+        <div class="mrr-total-value" id="mrr-total-val">—</div>
       </div>
     </div>
 
@@ -750,6 +750,7 @@ function updateDashboard() {
   updateAdvanced();
   updateInsights();
   updateLTV();
+  updateMRR();
 }
 
 // =====================================================================
@@ -880,6 +881,13 @@ function updateAdvanced() {
   });
   const el = document.getElementById('upsell-tbody');
   if (el) el.innerHTML = rows || '<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:16px">Sem dados para o filtro selecionado</td></tr>';
+  const subEl = document.getElementById('upsell-sub');
+  if (subEl) {
+    const mesLbl = {all:'acumulado',jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',
+                    jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+    subEl.textContent = '% de cada modalidade por vendedor — ' + (mesLbl[activeMes]||'acumulado') +
+      (activeVend !== 'all' ? ' · ' + activeVend.charAt(0).toUpperCase() + activeVend.slice(1) : '');
+  }
 }
 
 // =====================================================================
@@ -956,6 +964,43 @@ function updateInsights() {
   ul.innerHTML = items.map(i =>
     `<li class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></li>`
   ).join('');
+}
+
+// =====================================================================
+// MRR ESTIMADO — respeita filtros
+// =====================================================================
+function updateMRR() {
+  const key = getKey();
+  const d = DATA[key] || DATA.all;
+  if (!d || !d.modal) return;
+
+  const mT = d.modal['TRIMESTRAL'] || {c:0, v:0};
+  const mS = d.modal['SEMESTRAL']  || {c:0, v:0};
+  const mA = d.modal['ANUAL']      || {c:0, v:0};
+  const mM = d.modal['MENSAL']     || {c:0, v:0};
+
+  const mrrTrim  = Math.round(mT.v / 3);
+  const mrrSem   = Math.round(mS.v / 6);
+  const mrrAnu   = Math.round(mA.v / 12);
+  const tktMen   = mM.c > 0 ? Math.round(mM.v / mM.c) : 0;
+  const mrrMen   = Math.round(tktMen * mM.c * 0.6);
+  const mrrTotal = mrrTrim + mrrSem + mrrAnu;
+
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  set('mrr-trim-val', mT.v > 0 ? 'R$ ' + fmt(mrrTrim) : '—');
+  set('mrr-trim-sub', mT.v > 0 ? 'R$' + fmt(mT.v) + ' ÷ 3 meses' : 'sem vendas no período');
+  set('mrr-sem-val',  mS.v > 0 ? 'R$ ' + fmt(mrrSem)  : '—');
+  set('mrr-sem-sub',  mS.v > 0 ? 'R$' + fmt(mS.v) + ' ÷ 6 meses' : 'sem vendas no período');
+  set('mrr-anu-val',  mA.v > 0 ? 'R$ ' + fmt(mrrAnu)  : '—');
+  set('mrr-anu-sub',  mA.v > 0 ? 'R$' + fmt(mA.v) + ' ÷ 12 meses' : 'sem vendas no período');
+  set('mrr-men-val',  mM.v > 0 ? '+ R$ ' + fmt(mrrMen) : '—');
+  set('mrr-total-val', mrrTotal > 0 ? 'R$ ' + fmt(mrrTotal) : '—');
+
+  const mesLabel = {all:'acumulado',jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',
+                    jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+  const periodoLabel = (mesLabel[activeMes]||'acumulado') + (activeVend !== 'all' ? ' · '+activeVend.charAt(0).toUpperCase()+activeVend.slice(1) : '');
+  set('mrr-title', 'MRR Estimado — ' + periodoLabel);
+  set('mrr-sub', 'Receita mensal garantida dos contratos não-mensais' + (activeMes !== 'all' ? ' de ' + (mesLabel[activeMes]||'') : ' do período'));
 }
 
 // =====================================================================
