@@ -188,8 +188,9 @@ function setAno(ano) {{
     renderCompare();
     return;
   }}
-  hideCompare();
+  if (typeof hideCompare === 'function') hideCompare();
   updateDashboard();
+  if (typeof updateClearBtn === 'function') updateClearBtn();
 }}
 
 function setMes(mes) {{
@@ -197,6 +198,7 @@ function setMes(mes) {{
   document.querySelectorAll('[data-mes]').forEach(b =>
     b.classList.toggle('active', b.dataset.mes === mes));
   if (activeAno !== 'compare') updateDashboard();
+  if (typeof updateClearBtn === 'function') updateClearBtn();
 }}
 
 function setVend(vend) {{
@@ -204,6 +206,23 @@ function setVend(vend) {{
   document.querySelectorAll('[data-vend]').forEach(b =>
     b.classList.toggle('active', b.dataset.vend === vend));
   if (activeAno !== 'compare') updateDashboard();
+  if (typeof updateClearBtn === 'function') updateClearBtn();
+}}
+
+function updateClearBtn() {{
+  const btn = document.getElementById('btn-clear-filters');
+  if (!btn) return;
+  const hasFilter = (typeof activeMes !== 'undefined' && activeMes !== 'all') ||
+                    (typeof activeVend !== 'undefined' && activeVend !== 'all') ||
+                    (typeof activeAno !== 'undefined' && activeAno !== 'latest');
+  btn.style.display = hasFilter ? 'inline-flex' : 'none';
+}}
+
+function clearFilters() {{
+  if (typeof setMes === 'function') setMes('all');
+  if (typeof setVend === 'function') setVend('all');
+  if (typeof setAno === 'function') setAno('latest');
+  updateClearBtn();
 }}
 
 function getAnoData() {{
