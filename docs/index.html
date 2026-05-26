@@ -273,6 +273,28 @@
     .footer          { padding: 14px 14px 20px; font-size: 11px; }
   }
 
+  /* ── IMPRESSAO / PDF ── */
+  @media print {
+    @page { size: A4; margin: 12mm; }
+    body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .header { padding: 8px 16px; border-bottom: 1px solid #cbd5e1; }
+    .btn-refresh, .btn-pdf, .filters-section, .section-collapse-btn, .filter-btn-compare { display: none !important; }
+    .filter-track { display: none !important; }
+    .main { padding: 8px 12px; max-width: 100%; }
+    .section-body { max-height: none !important; opacity: 1 !important; overflow: visible !important; }
+    .section-header.collapsed .section-collapse-btn { display: none; }
+    .section-header { margin: 16px 0 8px; break-inside: avoid; }
+    .chart-card, .kpi-card, .prev-card { box-shadow: none; border: 1px solid #cbd5e1; break-inside: avoid; }
+    .kpi-grid, .kpi-grid-secondary, .prev-kpis { gap: 8px; }
+    .charts-row { break-inside: avoid; gap: 8px; }
+    .chart-wrap { break-inside: avoid; }
+    .opp-list { max-height: none; overflow: visible; }
+    .prev-cal-grid { break-inside: avoid; }
+    [data-section="previsibilidade"], [data-section="oportunidades"], [data-section="estrategicas"] { break-before: page; }
+    #compare-section { display: none !important; }
+    .footer { font-size: 10px; color: #64748b; }
+  }
+
   .filter-btn-compare { color: #7c3aed !important; background: rgba(139,92,246,.08) !important; padding-left: 14px !important; padding-right: 14px !important; font-weight: 700 !important; margin-left: 6px; }
   .filter-btn-compare:hover { background: rgba(139,92,246,.15) !important; color: #6d28d9 !important; }
   .filter-btn-compare.active { background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important; color: #fff !important; box-shadow: 0 1px 2px rgba(15,23,42,.08), 0 2px 8px rgba(139,92,246,.32) !important; }
@@ -286,31 +308,6 @@
   .yoy-table th { font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.4px; padding:8px 10px; border-bottom:2px solid var(--cinza-border); text-align:left; }
   .yoy-table td { padding:9px 10px; border-bottom:1px solid var(--cinza-border); }
   .yoy-table tbody tr:hover td { background:var(--cinza); }
-
-  /* ── IMPRESSAO / PDF ── */
-  @media print {
-    @page { size: A4; margin: 12mm; }
-    body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .header { padding: 8px 16px; border-bottom: 1px solid #cbd5e1; }
-    .header-right .update-info { display: block; }
-    .btn-refresh, .btn-pdf, .filters-section, .section-collapse-btn, .filter-btn-compare { display: none !important; }
-    .filter-track { display: none !important; }
-    .main { padding: 8px 12px; max-width: 100%; }
-    .section-body { max-height: none !important; opacity: 1 !important; overflow: visible !important; }
-    .section-header.collapsed .section-collapse-btn { display: none; }
-    .section-header { margin: 16px 0 8px; break-inside: avoid; }
-    .chart-card, .kpi-card, .prev-card { box-shadow: none; border: 1px solid #cbd5e1; break-inside: avoid; }
-    .kpi-grid, .kpi-grid-secondary, .prev-kpis { gap: 8px; }
-    .charts-row { break-inside: avoid; gap: 8px; }
-    .chart-wrap { break-inside: avoid; }
-    .opp-list { max-height: none; overflow: visible; }
-    .prev-cal-grid { break-inside: avoid; }
-    /* Quebra de pagina entre as 4 secoes principais */
-    [data-section="previsibilidade"], [data-section="oportunidades"], [data-section="estrategicas"] { break-before: page; }
-    /* Comparar Anos: nao precisa imprimir */
-    #compare-section { display: none !important; }
-    .footer { font-size: 10px; color: #64748b; }
-  }
 
 </style>
 </head>
@@ -500,21 +497,13 @@
 
   <div class="charts-row charts-row-2" style="margin-bottom:16px">
     <div class="chart-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px">
-        <div>
-          <div class="chart-title">Mix por Tipo de Serviço</div>
-          <div class="chart-sub" id="sub-tipo">Foco em escalável (Sem Vídeo) · agrupa &lt;5% em "Outros"</div>
-        </div>
-        <label style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--text-muted);cursor:pointer;flex-shrink:0">
-          <input type="checkbox" id="tipo-expand" onchange="renderMixTipo()" style="cursor:pointer">
-          Expandir todos
-        </label>
-      </div>
-      <div class="chart-wrap h220"><canvas id="chartTipo"></canvas></div>
+      <div class="chart-title">Mix por Tipo de Serviço</div>
+      <div class="chart-sub" id="sub-tipo">Distribuição de vendas por tipo · estratégia: foco em escalável (Sem Vídeo)</div>
+      <div class="chart-wrap h260"><canvas id="chartTipo"></canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Ticket Médio por Tipo</div>
-      <div class="chart-sub">Quanto cada tipo rende em média (R$ por venda paga)</div>
+      <div class="chart-sub">Quanto cada tipo de serviço rende em média (R$ por venda paga)</div>
       <table class="analytics-table">
         <thead><tr><th>Tipo</th><th>Vendas</th><th>Ticket Médio</th><th>Total</th><th>% Fat.</th></tr></thead>
         <tbody id="tipo-tbody"><tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Carregando…</td></tr></tbody>
@@ -625,7 +614,6 @@
 
   <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px">
 
-    <!-- CARD: Consultas Online Pendentes -->
     <div class="chart-card">
       <div class="chart-title">📞 Consultas Online Pendentes</div>
       <div class="chart-sub" id="cons-sub">Pacientes com plano que inclui consulta · ainda não agendaram</div>
@@ -634,7 +622,6 @@
       </div>
     </div>
 
-    <!-- CARD: Top 5 Vendas do Período -->
     <div class="chart-card">
       <div class="chart-title">🏆 Top Vendas do Período</div>
       <div class="chart-sub" id="topv-sub">Maiores tickets · respeita filtros</div>
@@ -643,7 +630,6 @@
       </div>
     </div>
 
-    <!-- CARD: Churn Risk -->
     <div class="chart-card">
       <div class="chart-title">⚠️ Clientes em Risco</div>
       <div class="chart-sub" id="churn-sub">Mensais sem renovação há 30+ dias</div>
@@ -12054,7 +12040,6 @@ function setVend(vend) {
   if (typeof updateClearBtn === 'function') updateClearBtn();
 }
 
-// Botao Limpar Filtros: aparece quando ha qualquer filtro ativo
 function updateClearBtn() {
   const btn = document.getElementById('btn-clear-filters');
   if (!btn) return;
@@ -13018,10 +13003,7 @@ initMobileFilters();
       ano: (r[1]||'').trim(),
       mes: ((r[2]||'').toLowerCase().match(/^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)||[])[1]||'',
       paciente: (r[3]||'').trim(),
-      tipo: (r[4]||'').trim(),
-      mod: (r[5]||'').trim(),
-      adic: (r[6]||'').trim(),
-      valor: parseBRL(r[7]),
+      tipo: (r[4]||'').trim(), mod: (r[5]||'').trim(), adic: (r[6]||'').trim(), valor: parseBRL(r[7]),
       vendedor: (r[8]||'').trim().toLowerCase(),
       consulta: (r[11]||'').trim(),
       operacao: (r[12]||'').trim()
@@ -13051,28 +13033,7 @@ initMobileFilters();
   }
   function renderMixTipo() {
     const agg = aggregarPorTipo(); if (!agg) return;
-    let entriesRaw = Object.entries(agg).sort((a,b) => b[1].c - a[1].c);
-    const totalCntRaw = entriesRaw.reduce((s,e)=>s+e[1].c, 0);
-    const expand = !!(document.getElementById('tipo-expand') && document.getElementById('tipo-expand').checked);
-    // Agrupa tipos com <5% do total em "Outros" (a nao ser que expand)
-    let entries = entriesRaw;
-    if (!expand && totalCntRaw > 0) {
-      const principais = []; const outrosVals = { c: 0, v: 0, c_pago: 0, itens: [] };
-      entriesRaw.forEach(([tipo, vals]) => {
-        const pct = vals.c / totalCntRaw;
-        if (pct >= 0.05 && principais.length < 4) {
-          principais.push([tipo, vals]);
-        } else {
-          outrosVals.c += vals.c; outrosVals.v += vals.v; outrosVals.c_pago += vals.c_pago;
-          outrosVals.itens.push(tipo);
-        }
-      });
-      if (outrosVals.c > 0) {
-        outrosVals.label = 'Outros (' + outrosVals.itens.join(', ') + ')';
-        principais.push(['Outros', outrosVals]);
-      }
-      entries = principais;
-    }
+    const entries = Object.entries(agg).sort((a,b) => b[1].c - a[1].c);
     const labels = entries.map(e => e[0]);
     const counts = entries.map(e => e[1].c);
     const colors = labels.map(l => TIPO_COLORS[l] || '#94a3b8');
@@ -13125,12 +13086,9 @@ initMobileFilters();
       }
     }
   }
-
   // ------------------------------------------------------------
   // OPORTUNIDADES & ACOES (3 cards na nova secao)
   // ------------------------------------------------------------
-
-  // Aplica filtros globais ao dataset
   function dadosFiltrados() {
     const data = window.VENDAS_DATA;
     if (!data) return null;
@@ -13145,99 +13103,54 @@ initMobileFilters();
       return true;
     });
   }
-
-  // Card 1: Consultas Online Pendentes
   function renderConsultas() {
     const wrap = document.getElementById('cons-content');
     if (!wrap) return;
-    const data = dadosFiltrados();
-    if (!data) return;
-    // Pendentes: formato X/Y onde X = 0
+    const data = dadosFiltrados(); if (!data) return;
     const pendentes = data.filter(r => /^0\/\d+$/.test(r.consulta) && r.paciente);
     const total = pendentes.length;
     const subEl = document.getElementById('cons-sub');
     if (subEl) subEl.textContent = total + ' paciente' + (total!==1?'s':'') + ' com consulta inclusa não agendada';
-    if (total === 0) {
-      wrap.innerHTML = '<div style="color:#15803d;font-size:12px;padding:14px;text-align:center;background:#dcfce7;border-radius:8px">✅ Nenhuma consulta pendente</div>';
-      return;
-    }
+    if (total === 0) { wrap.innerHTML = '<div style="color:#15803d;font-size:12px;padding:14px;text-align:center;background:#dcfce7;border-radius:8px">✅ Nenhuma consulta pendente</div>'; return; }
     const totVal = pendentes.reduce((s,r)=>s+(r.valor||0),0);
     let html = '<div class="opp-summary"><div class="opp-summary-num">' + total + '</div><div class="opp-summary-lbl">pacientes · R$ ' + Math.round(totVal).toLocaleString('pt-BR') + ' em planos ativos</div></div>';
     html += '<div class="opp-list">';
     pendentes.slice(0, 10).forEach(r => {
       const m = r.consulta.match(/^0\/(\d+)$/);
       const total_c = m ? m[1] : '?';
-      html += '<div class="opp-row">' +
-        '<div><div class="opp-row-name" title="' + r.paciente + '">' + r.paciente + '</div>' +
-        '<div class="opp-row-meta">' + (r.tipo||'') + ' · ' + (r.mod||'') + '</div></div>' +
-        '<div><span class="opp-row-pill warn">0/' + total_c + '</span></div>' +
-        '</div>';
+      html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">'+r.paciente+'</div><div class="opp-row-meta">'+(r.tipo||'')+' · '+(r.mod||'')+'</div></div><div><span class="opp-row-pill warn">0/'+total_c+'</span></div></div>';
     });
     html += '</div>';
-    if (total > 10) html += '<button class="opp-list-link" onclick="openConsultasModal()">Ver todos os ' + total + ' pacientes →</button>';
-    else if (total > 0) html += '<button class="opp-list-link" onclick="openConsultasModal()">Ver lista completa →</button>';
+    if (total > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ '+(total-10)+' outros</div>';
     wrap.innerHTML = html;
   }
-
-  window.openConsultasModal = function() {
-    const data = dadosFiltrados();
-    if (!data) return;
-    const pendentes = data.filter(r => /^0\/\d+$/.test(r.consulta) && r.paciente);
-    openOppListModal(
-      'Consultas Online Pendentes',
-      pendentes.length + ' pacientes com consulta inclusa que não agendaram',
-      [
-        { label: 'Paciente', key: 'paciente' },
-        { label: 'Tipo', key: 'tipo' },
-        { label: 'Modalidade', key: 'mod' },
-        { label: 'Consulta', key: 'consulta' },
-        { label: 'Vendedor', render: r => (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1) },
-        { label: 'Mês', key: 'mes' },
-        { label: 'Valor', render: r => 'R$ ' + (r.valor||0).toFixed(2).replace('.', ',') }
-      ],
-      pendentes
-    );
-  };
-
-  // Card 2: Top Vendas do periodo
   function renderTopVendas() {
     const wrap = document.getElementById('topv-content');
     if (!wrap) return;
-    const data = dadosFiltrados();
-    if (!data) return;
+    const data = dadosFiltrados(); if (!data) return;
     const pagos = data.filter(r => r.valor > 0 && r.paciente);
     pagos.sort((a,b) => b.valor - a.valor);
     const top = pagos.slice(0, 5);
     const subEl = document.getElementById('topv-sub');
-    if (subEl) subEl.textContent = 'Top 5 · ' + pagos.length + ' vendas pagas no filtro';
-    if (top.length === 0) {
-      wrap.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:14px;text-align:center">Sem vendas no filtro</div>';
-      return;
-    }
+    if (subEl) subEl.textContent = 'Top 5 · '+pagos.length+' vendas pagas no filtro';
+    if (top.length === 0) { wrap.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:14px;text-align:center">Sem vendas no filtro</div>'; return; }
     const totVal = pagos.reduce((s,r)=>s+r.valor, 0);
     const top5Val = top.reduce((s,r)=>s+r.valor, 0);
     const pct = totVal > 0 ? Math.round(top5Val/totVal*100) : 0;
-    let html = '<div class="opp-summary good"><div class="opp-summary-num">' + pct + '%</div><div class="opp-summary-lbl">do faturamento veio do top 5 · R$ ' + Math.round(top5Val).toLocaleString('pt-BR') + '</div></div>';
+    let html = '<div class="opp-summary good"><div class="opp-summary-num">'+pct+'%</div><div class="opp-summary-lbl">do faturamento veio do top 5 · R$ '+Math.round(top5Val).toLocaleString('pt-BR')+'</div></div>';
     html += '<div class="opp-list">';
     const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
     top.forEach((r, i) => {
       const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor ? r.vendedor.charAt(0).toUpperCase()+r.vendedor.slice(1) : '');
-      html += '<div class="opp-row">' +
-        '<div><div class="opp-row-name" title="' + r.paciente + '">#' + (i+1) + ' · ' + r.paciente + '</div>' +
-        '<div class="opp-row-meta">' + (r.mod||'') + ' · ' + vendNome + '</div></div>' +
-        '<div class="opp-row-val">R$ ' + Math.round(r.valor).toLocaleString('pt-BR') + '</div>' +
-        '</div>';
+      html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">#'+(i+1)+' · '+r.paciente+'</div><div class="opp-row-meta">'+(r.mod||'')+' · '+vendNome+'</div></div><div class="opp-row-val">R$ '+Math.round(r.valor).toLocaleString('pt-BR')+'</div></div>';
     });
     html += '</div>';
     wrap.innerHTML = html;
   }
-
-  // Card 3: Churn Risk - mensais sem renovacao
   function renderChurn() {
     const wrap = document.getElementById('churn-content');
     if (!wrap) return;
-    const data = window.VENDAS_DATA;
-    if (!data) return;
+    const data = window.VENDAS_DATA; if (!data) return;
     const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
     function mesIndex(m) { return MES_ORDER.indexOf(m); }
     const ano = (typeof activeAno !== 'undefined' && activeAno === 'latest') ? (typeof LATEST_ANO !== 'undefined' ? LATEST_ANO : '2026') : (typeof activeAno !== 'undefined' ? activeAno : '2026');
@@ -13245,76 +13158,30 @@ initMobileFilters();
     const byPaciente = {};
     mensais.forEach(r => {
       const k = r.paciente.toLowerCase().trim();
-      if (!byPaciente[k] || mesIndex(r.mes) > mesIndex(byPaciente[k].mes)) {
-        byPaciente[k] = r;
-      }
+      if (!byPaciente[k] || mesIndex(r.mes) > mesIndex(byPaciente[k].mes)) byPaciente[k] = r;
     });
-    const currentMonthIdx = (new Date()).getMonth(); // 0..11
-    // Risco: ultimo mes < currentMonth - 1 (ou seja, sem comprar nos ultimos 2 meses)
-    const risco = Object.values(byPaciente).filter(r => {
-      const idx = mesIndex(r.mes);
-      if (idx < 0) return false;
-      return idx < currentMonthIdx - 1; // 30+ dias sem nova compra
-    });
-    risco.sort((a,b) => mesIndex(a.mes) - mesIndex(b.mes)); // mais antigos primeiro
+    const currentMonthIdx = (new Date()).getMonth();
+    const risco = Object.values(byPaciente).filter(r => { const idx = mesIndex(r.mes); if (idx < 0) return false; return idx < currentMonthIdx - 1; });
+    risco.sort((a,b) => mesIndex(a.mes) - mesIndex(b.mes));
     const subEl = document.getElementById('churn-sub');
     if (subEl) subEl.textContent = risco.length + ' mensais sem renovação · risco de churn';
-    if (risco.length === 0) {
-      wrap.innerHTML = '<div style="color:#15803d;font-size:12px;padding:14px;text-align:center;background:#dcfce7;border-radius:8px">✅ Nenhum mensal em risco</div>';
-      return;
-    }
+    if (risco.length === 0) { wrap.innerHTML = '<div style="color:#15803d;font-size:12px;padding:14px;text-align:center;background:#dcfce7;border-radius:8px">✅ Nenhum mensal em risco</div>'; return; }
     const totVal = risco.reduce((s,r)=>s+(r.valor||0), 0);
-    let html = '<div class="opp-summary bad"><div class="opp-summary-num">' + risco.length + '</div><div class="opp-summary-lbl">clientes mensais em risco · ~R$ ' + Math.round(totVal).toLocaleString('pt-BR') + ' em jogo</div></div>';
+    let html = '<div class="opp-summary bad"><div class="opp-summary-num">'+risco.length+'</div><div class="opp-summary-lbl">clientes mensais em risco · ~R$ '+Math.round(totVal).toLocaleString('pt-BR')+' em jogo</div></div>';
     html += '<div class="opp-list">';
     const MES_LBL = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
     risco.slice(0, 10).forEach(r => {
       const idx = mesIndex(r.mes);
       const meses = currentMonthIdx - idx;
       const pillCls = meses >= 3 ? 'bad' : 'warn';
-      html += '<div class="opp-row">' +
-        '<div><div class="opp-row-name" title="' + r.paciente + '">' + r.paciente + '</div>' +
-        '<div class="opp-row-meta">Última: ' + (MES_LBL[r.mes]||r.mes) + ' · ' + (r.tipo||'') + '</div></div>' +
-        '<div><span class="opp-row-pill ' + pillCls + '">' + meses + ' mês' + (meses!==1?'es':'') + '</span></div>' +
-        '</div>';
+      html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">'+r.paciente+'</div><div class="opp-row-meta">Última: '+(MES_LBL[r.mes]||r.mes)+' · '+(r.tipo||'')+'</div></div><div><span class="opp-row-pill '+pillCls+'">'+meses+' mês'+(meses!==1?'es':'')+'</span></div></div>';
     });
     html += '</div>';
-    if (risco.length > 10) html += '<button class="opp-list-link" onclick="openChurnModal()">Ver todos os ' + risco.length + ' clientes →</button>';
-    else if (risco.length > 0) html += '<button class="opp-list-link" onclick="openChurnModal()">Ver lista completa →</button>';
+    if (risco.length > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ '+(risco.length-10)+' outros</div>';
     wrap.innerHTML = html;
-    // Salva referencia pro modal
-    window._churnList = risco;
-    window._churnCurrentMonth = currentMonthIdx;
   }
+  function renderOportunidades() { renderConsultas(); renderTopVendas(); renderChurn(); }
 
-  window.openChurnModal = function() {
-    const data = window._churnList || [];
-    const cur = window._churnCurrentMonth || (new Date()).getMonth();
-    const MES_LBL = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
-    const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-    openOppListModal(
-      'Clientes em Risco de Churn',
-      data.length + ' mensais sem renovação há 2+ meses',
-      [
-        { label: 'Paciente', key: 'paciente' },
-        { label: 'Última compra', render: r => MES_LBL[r.mes] || r.mes },
-        { label: 'Meses sem comprar', render: r => (cur - MES_ORDER.indexOf(r.mes)) + ' meses' },
-        { label: 'Tipo', key: 'tipo' },
-        { label: 'Modalidade', key: 'mod' },
-        { label: 'Vendedor', render: r => (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1) },
-        { label: 'Último valor', render: r => 'R$ ' + (r.valor||0).toFixed(2).replace('.', ',') }
-      ],
-      data
-    );
-  };
-
-  function renderOportunidades() {
-    renderConsultas();
-    renderTopVendas();
-    renderChurn();
-  }
-
-  // Re-renderiza quando filtros globais mudam — hook aplicado APOS todos os
-  // scripts subsequentes ja terem feito seus overrides (DOMContentLoaded garante isso).
   function installHook() {
     const _origUpdate = window.updateDashboard;
     if (typeof _origUpdate !== 'function') return;
@@ -13323,21 +13190,11 @@ initMobileFilters();
       if (window.VENDAS_DATA) { renderMixTipo(); renderOportunidades(); }
     };
   }
-
   const _origFetchVendas = fetchVendas;
-  async function fetchVendasAndRender() {
-    await _origFetchVendas();
-    renderOportunidades();
-  }
-
-  function bootstrap() {
-    // Garante que todos os outros scripts ja sobrescreveram updateDashboard antes do hook
-    installHook();
-    fetchVendasAndRender();
-  }
-
+  async function fetchVendasAndRender() { await _origFetchVendas(); renderOportunidades(); }
+  function bootstrap() { installHook(); fetchVendasAndRender(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootstrap);
-  else setTimeout(bootstrap, 0); // setTimeout pra rodar apos os outros scripts top-level
+  else setTimeout(bootstrap, 0);
 })();
 </script>
 
@@ -13391,22 +13248,17 @@ initMobileFilters();
   // Export PDF: expande temporariamente todas as secoes, chama print, restaura
   window.exportPDF = function() {
     const savedState = loadState();
-    // Expande todas
     document.querySelectorAll('.section-toggle').forEach(h => {
-      const key = h.dataset.section;
-      if (!key) return;
+      const key = h.dataset.section; if (!key) return;
       h.classList.remove('collapsed');
       const body = document.querySelector('.section-body[data-section="' + key + '"]');
       if (body) body.classList.remove('collapsed');
     });
-    // Aguarda repaint e dispara print
     setTimeout(() => {
       window.print();
-      // Restaura estado original apos um pequeno delay
       setTimeout(() => {
         document.querySelectorAll('.section-toggle').forEach(h => {
-          const key = h.dataset.section;
-          if (!key) return;
+          const key = h.dataset.section; if (!key) return;
           if (savedState[key] === true) {
             h.classList.add('collapsed');
             const body = document.querySelector('.section-body[data-section="' + key + '"]');
@@ -13417,366 +13269,8 @@ initMobileFilters();
     }, 350);
   };
 })();
-
-// =====================================================================
-// DASHBOARD MULTI-ANO — lógica de rendering
-// =====================================================================
-
-// Lista de vendedores dinâmica (vem do Python via DATA.meta.vendors)
-const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
-
-// Paleta de cores para vendedores extras (além dos 3 originais)
-const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
-VENDORS_LIST.forEach((v, i) => {
-  if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
-  if (!VEND_NAMES[v])  VEND_NAMES[v]  = v.charAt(0) + v.slice(1).toLowerCase();
-});
-
-// Substitui updateDashboard para usar dados do ano ativo
-const _origUpdateDashboard = updateDashboard;
-function updateDashboard() {
-  if (activeAno === 'compare') { renderCompare(); return; }
-  const anoData = getAnoData();
-  const key = getKey();
-  const d = anoData[key] || anoData['all'] || {};
-
-  if (!d || Object.keys(d).length === 0) return;
-
-  // KPIs
-  document.getElementById('kpi-fat').textContent      = 'R$ ' + fmt(d.fat || 0);
-  document.getElementById('kpi-vendas').textContent   = d.n || 0;
-  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : '—';
-  const margem    = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
-  const margemPct = d.fat > 0 ? Math.round(margem/d.fat*100) : 0;
-  document.getElementById('kpi-margem').textContent     = 'R$ ' + fmt(margem);
-  document.getElementById('kpi-margem-pct-val').textContent = margemPct + '%';
-  document.getElementById('kpi-cvend-card').textContent = 'R$ ' + fmt(d.cvend||0);
-  document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
-
-  // Indicador MoM (variacao vs mes anterior) nos 3 KPIs principais
-  (function() {
-    const MES_ORDER_LOC = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-    const mesData = d.mes || {};
-    let curMes = null, prevMes = null;
-    if (activeMes === 'all') {
-      const ms = MES_ORDER_LOC.filter(m => mesData[m] && mesData[m].v > 0);
-      if (ms.length >= 2) { curMes = ms[ms.length-1]; prevMes = ms[ms.length-2]; }
-    } else {
-      const idx = MES_ORDER_LOC.indexOf(activeMes);
-      if (idx >= 1) { curMes = activeMes; prevMes = MES_ORDER_LOC[idx-1]; }
-    }
-    function renderTrend(elId, pct, lbl) {
-      const el = document.getElementById(elId);
-      if (!el) return;
-      if (pct === null || !isFinite(pct)) { el.innerHTML = ''; return; }
-      const cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'neu');
-      const arrow = pct > 0 ? '▲' : (pct < 0 ? '▼' : '·');
-      const sign = pct > 0 ? '+' : '';
-      el.innerHTML = ' <span class="kpi-trend ' + cls + '" title="' + lbl + '">' + arrow + ' ' + sign + pct + '%</span>';
-    }
-    if (curMes && prevMes && mesData[curMes] && mesData[prevMes] && mesData[prevMes].v > 0) {
-      const cur = mesData[curMes], prev = mesData[prevMes];
-      const MES_LBL_SHORT = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
-      const lbl = (MES_LBL_SHORT[curMes]||curMes) + ' vs ' + (MES_LBL_SHORT[prevMes]||prevMes);
-      const fatPct = Math.round((cur.v - prev.v) / prev.v * 100);
-      const vendPct = prev.c > 0 ? Math.round((cur.c - prev.c) / prev.c * 100) : null;
-      const curTkt = cur.c > 0 ? cur.v / cur.c : 0;
-      const prevTkt = prev.c > 0 ? prev.v / prev.c : 0;
-      const tktPct = prevTkt > 0 ? Math.round((curTkt - prevTkt) / prevTkt * 100) : null;
-      renderTrend('kpi-fat-trend', fatPct, 'Faturamento ' + lbl);
-      renderTrend('kpi-vendas-trend', vendPct, 'Vendas ' + lbl);
-      renderTrend('kpi-ticket-trend', tktPct, 'Ticket ' + lbl);
-    } else {
-      ['kpi-fat-trend','kpi-vendas-trend','kpi-ticket-trend'].forEach(id => {
-        const el = document.getElementById(id); if (el) el.innerHTML = '';
-      });
-    }
-  })();
-
-  const ano    = activeAno === 'latest' ? LATEST_ANO : activeAno;
-  const anoTxt = activeAno === 'todos' ? 'Todos os anos' : ano;
-  const mesLbl = {all:anoTxt+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
-                  abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
-                  ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
-  // Gera mapeamento vend→label dinamicamente
-  const vLblMap = {all:''};
-  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + v.charAt(0) + v.slice(1).toLowerCase(); });
-  document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||anoTxt) + (vLblMap[activeVend]||'');
-
-  // Sub-titulos dinamicos (refletem filtros)
-  const filterSuffix = (mesLbl[activeMes]||anoTxt) + (vLblMap[activeVend]||'');
-  const subMesEl   = document.getElementById('sub-mes');
-  const subModalEl = document.getElementById('sub-modal');
-  const subVendEl  = document.getElementById('sub-vend');
-  if (subModalEl) subModalEl.textContent = 'Distribuição por número de vendas · ' + filterSuffix;
-  if (subVendEl)  subVendEl.textContent  = 'Faturamento por vendedor · ' + filterSuffix;
-
-  // Meses com dados
-  const mesKeys = Object.keys(d.mes||{}).filter(m => (d.mes[m].v||0) > 0);
-  const mesVals = mesKeys.map(m => d.mes[m].v);
-  const mesNames = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
-  const mesNamesFull = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
-  const mesLbls = mesKeys.map(m => mesNames[m]||m);
-
-  if (subMesEl) {
-    if (activeMes !== 'all') {
-      subMesEl.textContent = (mesNamesFull[activeMes]||activeMes) + ' ' + ano + (vLblMap[activeVend]||'');
-    } else if (mesKeys.length === 0) {
-      subMesEl.textContent = 'Sem dados · ' + anoTxt + (vLblMap[activeVend]||'');
-    } else if (mesKeys.length === 1) {
-      subMesEl.textContent = (mesNamesFull[mesKeys[0]]||mesKeys[0]) + ' · ' + anoTxt + (vLblMap[activeVend]||'');
-    } else {
-      const first = mesNamesFull[mesKeys[0]] || mesKeys[0];
-      const last  = mesNamesFull[mesKeys[mesKeys.length-1]] || mesKeys[mesKeys.length-1];
-      subMesEl.textContent = first + ' a ' + last + ' · ' + anoTxt + (vLblMap[activeVend]||'');
-    }
-  }
-
-  chartMes.data.labels   = mesLbls;
-  chartMes.data.datasets[0].data = mesVals;
-  chartMes.data.datasets[0].backgroundColor = mesLbls.map((_,i)=>['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)','rgba(139,92,246,.85)','rgba(236,72,153,.85)','rgba(20,184,166,.85)'][i%6]);
-  chartMes.data.datasets[1].data = Array(mesLbls.length).fill(META_MENSAL);
-  chartMes.update();
-
-  chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m=>(d.modal&&d.modal[m])?d.modal[m].c:0);
-  chartModal.update();
-
-  chartVend.data.labels = VENDORS_LIST;
-  chartVend.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v])?d.vend[v].v:0);
-  chartVend.update();
-
-  chartTicket.data.labels = VENDORS_LIST;
-  chartTicket.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v]&&d.vend[v].tkt)?d.vend[v].tkt:0);
-  chartTicket.update();
-
-  // Comissões — todos os vendedores dinâmicos
-  let totN=0,totV=0,totCv=0,totCt=0, rows='';
-  VENDORS_LIST.forEach(v=>{
-    const vd=(d.vend&&d.vend[v]);
-    if(!vd||vd.c===0) return;
-    totN+=vd.c;totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
-    const cor = VEND_COLORS[v] || '#94a3b8';
-    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
-    rows+=`<tr>
-      <td><span class="vend-badge"><span class="vend-dot" style="background:${cor}"></span>${nome}</span></td>
-      <td>${vd.c}</td><td>R$ ${fmt(vd.v)}</td>
-      <td class="num-green">R$ ${fmt(vd.cv)}</td>
-      <td>R$ ${fmt(vd.ct)}</td>
-      <td><strong>R$ ${fmt(vd.cv+vd.ct)}</strong></td></tr>`;
-  });
-  document.getElementById('comissoes-tbody').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px">Sem dados</td></tr>';
-  document.getElementById('comissoes-tfoot').innerHTML=totN>0?`<tr>
-    <td><strong>Total</strong></td><td><strong>${totN}</strong></td>
-    <td><strong>R$ ${fmt(totV)}</strong></td>
-    <td class="num-green"><strong>R$ ${fmt(totCv)}</strong></td>
-    <td><strong>R$ ${fmt(totCt)}</strong></td>
-    <td><strong>R$ ${fmt(totCv+totCt)}</strong></td></tr>`:'';
-
-  if(typeof updateAdvanced === 'function') updateAdvanced();
-}
-
-// Override updateAdvanced to use multi-year data structure
-function updateAdvanced() {
-  const anoData = getAnoData();
-  let rows = '';
-  VENDORS_LIST.forEach(v => {
-    const vk = v.toLowerCase();
-    if (activeVend !== 'all' && activeVend !== vk) return;
-    const dataKey = activeMes !== 'all' ? vk + '_' + activeMes : vk;
-    const vd = anoData[dataKey];
-    if (!vd || !vd.n) return;
-    const m = vd.modal || {};
-    const n = vd.n;
-    const pct = val => n > 0 ? Math.round((val||0) / n * 100) : 0;
-    const cM = (m.MENSAL    && m.MENSAL.c)    || 0;
-    const cT = (m.TRIMESTRAL && m.TRIMESTRAL.c) || 0;
-    const cS = (m.SEMESTRAL  && m.SEMESTRAL.c)  || 0;
-    const cA = (m.ANUAL      && m.ANUAL.c)      || 0;
-    const pLongo = pct(cS + cA);
-    const pillClass = pLongo >= 35 ? 'pill-green' : pLongo >= 25 ? 'pill-blue' : 'pill-gray';
-    const cor = VEND_COLORS[v] || '#94a3b8';
-    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
-    rows += '<tr>' +
-      '<td><span class="vend-badge"><span class="vend-dot" style="background:' + cor + '"></span>' + nome + '</span></td>' +
-      '<td>' + pct(cM) + '% <small style="color:var(--text-muted)">(' + cM + ')</small></td>' +
-      '<td>' + pct(cT) + '% <small style="color:var(--text-muted)">(' + cT + ')</small></td>' +
-      '<td>' + pct(cS) + '% <small style="color:var(--text-muted)">(' + cS + ')</small></td>' +
-      '<td>' + pct(cA) + '% <small style="color:var(--text-muted)">(' + cA + ')</small></td>' +
-      '<td><span class="pill ' + pillClass + '">' + pLongo + '%</span></td>' +
-      '</tr>';
-  });
-  const el = document.getElementById('upsell-tbody');
-  if (el) el.innerHTML = rows;
-}
-
-// -- Grafico YoY (criado uma vez, atualizado ao entrar em Comparar) ââ
-let chartYoY = null;
-
-function renderCompare() {
-  document.getElementById('compare-section').classList.add('show');
-  document.getElementById('compare-section').scrollIntoView({behavior:'smooth',block:'start'});
-  const cmp = DATA.compare;
-  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparação não disponíveis (é necessário ter 2025 e 2026 na planilha).</p>'; return; }
-
-  // Gráfico de barras lado-a-lado por mês
-  const mesesCmp = Object.keys(cmp.mensal||{});
-  const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
-  const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
-  const v26 = mesesCmp.map(m=>(cmp.mensal[m].fat.v26||0));
-
-  if (!chartYoY) {
-    const ctx = document.getElementById('chartYoY').getContext('2d');
-    chartYoY = new Chart(ctx, {
-      type:'bar',
-      data:{labels:mesLbls,datasets:[
-        {label:'2025',data:v25,backgroundColor:'rgba(59,130,246,.7)',borderRadius:6,borderSkipped:false},
-        {label:'2026',data:v26,backgroundColor:'rgba(34,197,94,.85)',borderRadius:6,borderSkipped:false}
-      ]},
-      options:{
-        responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{position:'top'},tooltip:{callbacks:{label:ctx=>' R$ '+fmt(ctx.parsed.y)}}},
-        scales:{
-          y:{ticks:{callback:v=>'R$'+fmtK(v),font:{size:11}},grid:{color:'#f1f5f9'}},
-          x:{grid:{display:false}}
-        }
-      }
-    });
-  } else {
-    chartYoY.data.labels=mesLbls;
-    chartYoY.data.datasets[0].data=v25;
-    chartYoY.data.datasets[1].data=v26;
-    chartYoY.update();
-  }
-
-  // Tabela YoY por mês
-  let rowsMes='';
-  mesesCmp.forEach(m=>{
-    const r=cmp.mensal[m];
-    const pct=r.fat.pct;
-    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
-    rowsMes+=`<tr>
-      <td><strong>${mesLbls[mesesCmp.indexOf(m)]}</strong></td>
-      <td>R$ ${fmt(r.fat.v25)}</td>
-      <td>R$ ${fmt(r.fat.v26)}</td>
-      <td class="${cls}">${arrow}</td>
-    </tr>`;
-  });
-  document.getElementById('yoy-mes-table-wrap').innerHTML=`
-    <table class="yoy-table">
-      <thead><tr><th>Mês</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
-      <tbody>${rowsMes}</tbody>
-    </table>`;
-
-  // Tabela YoY por vendedor
-  let rowsVend='';
-  Object.entries(cmp.vend||{}).forEach(([v,r])=>{
-    const pct=r.fat.pct;
-    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
-    rowsVend+=`<tr>
-      <td><span class="vend-badge"><span class="vend-dot" style="background:${VEND_COLORS[v]||'#94a3b8'}"></span>${VEND_NAMES[v]||v}</span></td>
-      <td>R$ ${fmt(r.fat.v25)}</td>
-      <td>R$ ${fmt(r.fat.v26)}</td>
-      <td class="${cls}">${arrow}</td>
-      <td>R$ ${fmt(r.tkt.v25)}</td>
-      <td>R$ ${fmt(r.tkt.v26)}</td>
-    </tr>`;
-  });
-  document.getElementById('yoy-vend-table-wrap').innerHTML=`
-    <table class="yoy-table">
-      <thead><tr><th>Vendedor</th><th>Fat. 2025</th><th>Fat. 2026</th><th>Var. %</th><th>Tkt. 2025</th><th>Tkt. 2026</th></tr></thead>
-      <tbody>${rowsVend}</tbody>
-    </table>`;
-
-  // KPIs gerais
-  const tot=cmp.total;
-  const kpis=[
-    {label:'Faturamento',r:tot.fat,fmt:'R$ '},
-    {label:'Nº Vendas',  r:tot.n,  fmt:''},
-    {label:'Ticket Médio',r:tot.tkt,fmt:'R$ '},
-  ];
-  let kpiHtml='<div style="display:grid;gap:12px">';
-  kpis.forEach(k=>{
-    const pct=k.r.pct;
-    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
-    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
-    kpiHtml+=`<div style="background:var(--cinza);border-radius:10px;padding:12px 16px">
-      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${k.label}</div>
-      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
-        <span style="font-size:14px;color:var(--text-muted)">2025: <strong>${k.fmt}${fmt(k.r.v25)}</strong></span>
-        <span style="font-size:14px;color:var(--text)">2026: <strong>${k.fmt}${fmt(k.r.v26)}</strong></span>
-        <span class="${cls}" style="font-size:15px">${arrow}</span>
-      </div>
-    </div>`;
-  });
-  kpiHtml+='</div>';
-  document.getElementById('yoy-kpi-wrap').innerHTML=kpiHtml;
-}
-
-function hideCompare() {
-  document.getElementById('compare-section').classList.remove('show');
-}
-
-function refreshData() {
-  document.getElementById('loadingOverlay').classList.add('show');
-  setTimeout(() => { document.getElementById('loadingOverlay').classList.remove('show'); }, 800);
-  updateDashboard();
-}
-
-// Inicializa dashboard
-updateDashboard();
-
 </script>
-<script>
-(function(){
-  var _origGetAnoData = getAnoData;
-  getAnoData = function() {
-    if (activeAno === 'todos') return buildTodosData();
-    return _origGetAnoData.call(this);
-  };
-  window.buildTodosData = function() {
-    var anos = Object.keys(DATA).filter(function(k){ return k.length===4 && !isNaN(k); });
-    if (!anos.length) return {};
-    var allKeys = {};
-    anos.forEach(function(a){ Object.keys(DATA[a]).forEach(function(k){ allKeys[k]=1; }); });
-    function mergeBlock(a, b) {
-      if (!a && !b) return {n:0,fat:0,tkt:0,cvend:0,ctreino:0,modal:{},vend:{},mes:{}};
-      if (!a) return JSON.parse(JSON.stringify(b));
-      if (!b) return JSON.parse(JSON.stringify(a));
-      var n=+(a.n||0)+ +(b.n||0), fat=+(a.fat||0)+ +(b.fat||0);
-      var cv=+(a.cvend||0)+ +(b.cvend||0), ct=+(a.ctreino||0)+ +(b.ctreino||0);
-      var modal={}, vend={}, mes={};
-      [a.modal||{}, b.modal||{}].forEach(function(obj){
-        Object.keys(obj).forEach(function(k){ modal[k]=(modal[k]||0)+(obj[k]||0); });
-      });
-      [a.vend||{}, b.vend||{}].forEach(function(obj){
-        Object.keys(obj).forEach(function(k){
-          if (!vend[k]) vend[k]={c:0,v:0,tkt:0,cv:0,ct:0};
-          vend[k].c += (obj[k] ? obj[k].c||0 : 0);
-          vend[k].v += (obj[k] ? obj[k].v||0 : 0);
-          vend[k].cv += (obj[k] ? obj[k].cv||0 : 0);
-          vend[k].ct += (obj[k] ? obj[k].ct||0 : 0);
-        });
-      });
-      Object.keys(vend).forEach(function(k){
-        vend[k].tkt = vend[k].c ? Math.round(vend[k].v/vend[k].c) : 0;
-      });
-      [a.mes||{}, b.mes||{}].forEach(function(obj){
-        Object.keys(obj).forEach(function(k){
-          if (!mes[k]) mes[k]={c:0,v:0};
-          mes[k].c += (obj[k] ? obj[k].c||0 : 0);
-          mes[k].v += (obj[k] ? obj[k].v||0 : 0);
-        });
-      });
-      return {n:n,fat:fat,tkt:n?Math.round(fat/n):0,cvend:cv,ctreino:ct,modal:modal,vend:vend,mes:mes};
-    }
-    var result={};
-    Object.keys(allKeys).forEach(function(key){
-      var merged=null;
-      anos.forEach(function(ano){ merged=mergeBlock(merged, DATA[ano][key]); });
-      result[key]=merged;
-    });
+
     return result;
   };
 })();
@@ -14152,6 +13646,596 @@ updateDashboard();
   document.getElementById('commission-modal').addEventListener('click', e => {
     if (e.target.id === 'commission-modal') closeCommissionModal();
   });
+})();
+
+// =====================================================================
+// DASHBOARD MULTI-ANO — lógica de rendering
+// =====================================================================
+
+// Lista de vendedores dinâmica (vem do Python via DATA.meta.vendors)
+const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
+
+// Paleta de cores para vendedores extras (além dos 3 originais)
+const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
+VENDORS_LIST.forEach((v, i) => {
+  if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
+  if (!VEND_NAMES[v])  VEND_NAMES[v]  = v.charAt(0) + v.slice(1).toLowerCase();
+});
+
+// Substitui updateDashboard para usar dados do ano ativo
+const _origUpdateDashboard = updateDashboard;
+function updateDashboard() {
+  if (activeAno === 'compare') { renderCompare(); return; }
+  const anoData = getAnoData();
+  const key = getKey();
+  const d = anoData[key] || anoData['all'] || {};
+
+  if (!d || Object.keys(d).length === 0) return;
+
+  // KPIs
+  document.getElementById('kpi-fat').textContent      = 'R$ ' + fmt(d.fat || 0);
+  document.getElementById('kpi-vendas').textContent   = d.n || 0;
+  document.getElementById('kpi-ticket').textContent   = d.tkt ? 'R$ ' + fmt(d.tkt) : '—';
+  const margem    = (d.fat||0) - (d.cvend||0) - (d.ctreino||0);
+  const margemPct = d.fat > 0 ? Math.round(margem/d.fat*100) : 0;
+  document.getElementById('kpi-margem').textContent     = 'R$ ' + fmt(margem);
+  document.getElementById('kpi-margem-pct-val').textContent = margemPct + '%';
+  document.getElementById('kpi-cvend-card').textContent = 'R$ ' + fmt(d.cvend||0);
+  document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
+
+  // Indicador MoM (variacao vs mes anterior) nos 3 KPIs principais
+  (function() {
+    const MES_ORDER_LOC = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    const mesData = d.mes || {};
+    let curMes = null, prevMes = null;
+    if (activeMes === 'all') {
+      const ms = MES_ORDER_LOC.filter(m => mesData[m] && mesData[m].v > 0);
+      if (ms.length >= 2) { curMes = ms[ms.length-1]; prevMes = ms[ms.length-2]; }
+    } else {
+      const idx = MES_ORDER_LOC.indexOf(activeMes);
+      if (idx >= 1) { curMes = activeMes; prevMes = MES_ORDER_LOC[idx-1]; }
+    }
+    function renderTrend(elId, pct, lbl) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      if (pct === null || !isFinite(pct)) { el.innerHTML = ''; return; }
+      const cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'neu');
+      const arrow = pct > 0 ? '▲' : (pct < 0 ? '▼' : '·');
+      const sign = pct > 0 ? '+' : '';
+      el.innerHTML = ' <span class="kpi-trend ' + cls + '" title="' + lbl + '">' + arrow + ' ' + sign + pct + '%</span>';
+    }
+    if (curMes && prevMes && mesData[curMes] && mesData[prevMes] && mesData[prevMes].v > 0) {
+      const cur = mesData[curMes], prev = mesData[prevMes];
+      const MES_LBL_SHORT = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+      const lbl = (MES_LBL_SHORT[curMes]||curMes) + ' vs ' + (MES_LBL_SHORT[prevMes]||prevMes);
+      const fatPct = Math.round((cur.v - prev.v) / prev.v * 100);
+      const vendPct = prev.c > 0 ? Math.round((cur.c - prev.c) / prev.c * 100) : null;
+      const curTkt = cur.c > 0 ? cur.v / cur.c : 0;
+      const prevTkt = prev.c > 0 ? prev.v / prev.c : 0;
+      const tktPct = prevTkt > 0 ? Math.round((curTkt - prevTkt) / prevTkt * 100) : null;
+      renderTrend('kpi-fat-trend', fatPct, 'Faturamento ' + lbl);
+      renderTrend('kpi-vendas-trend', vendPct, 'Vendas ' + lbl);
+      renderTrend('kpi-ticket-trend', tktPct, 'Ticket ' + lbl);
+    } else {
+      ['kpi-fat-trend','kpi-vendas-trend','kpi-ticket-trend'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.innerHTML = '';
+      });
+    }
+  })();
+
+  const ano    = activeAno === 'latest' ? LATEST_ANO : activeAno;
+  const anoTxt = activeAno === 'todos' ? 'Todos os anos' : ano;
+  const mesLbl = {all:anoTxt+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
+                  abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
+                  ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
+  // Gera mapeamento vend→label dinamicamente
+  const vLblMap = {all:''};
+  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + v.charAt(0) + v.slice(1).toLowerCase(); });
+  document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||anoTxt) + (vLblMap[activeVend]||'');
+
+  // Sub-titulos dinamicos (refletem filtros)
+  const filterSuffix = (mesLbl[activeMes]||anoTxt) + (vLblMap[activeVend]||'');
+  const subMesEl   = document.getElementById('sub-mes');
+  const subModalEl = document.getElementById('sub-modal');
+  const subVendEl  = document.getElementById('sub-vend');
+  if (subModalEl) subModalEl.textContent = 'Distribuição por número de vendas · ' + filterSuffix;
+  if (subVendEl)  subVendEl.textContent  = 'Faturamento por vendedor · ' + filterSuffix;
+
+  // Meses com dados
+  const mesKeys = Object.keys(d.mes||{}).filter(m => (d.mes[m].v||0) > 0);
+  const mesVals = mesKeys.map(m => d.mes[m].v);
+  const mesNames = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+  const mesNamesFull = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
+  const mesLbls = mesKeys.map(m => mesNames[m]||m);
+
+  if (subMesEl) {
+    if (activeMes !== 'all') {
+      subMesEl.textContent = (mesNamesFull[activeMes]||activeMes) + ' ' + ano + (vLblMap[activeVend]||'');
+    } else if (mesKeys.length === 0) {
+      subMesEl.textContent = 'Sem dados · ' + anoTxt + (vLblMap[activeVend]||'');
+    } else if (mesKeys.length === 1) {
+      subMesEl.textContent = (mesNamesFull[mesKeys[0]]||mesKeys[0]) + ' · ' + anoTxt + (vLblMap[activeVend]||'');
+    } else {
+      const first = mesNamesFull[mesKeys[0]] || mesKeys[0];
+      const last  = mesNamesFull[mesKeys[mesKeys.length-1]] || mesKeys[mesKeys.length-1];
+      subMesEl.textContent = first + ' a ' + last + ' · ' + anoTxt + (vLblMap[activeVend]||'');
+    }
+  }
+
+  chartMes.data.labels   = mesLbls;
+  chartMes.data.datasets[0].data = mesVals;
+  chartMes.data.datasets[0].backgroundColor = mesLbls.map((_,i)=>['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)','rgba(139,92,246,.85)','rgba(236,72,153,.85)','rgba(20,184,166,.85)'][i%6]);
+  chartMes.data.datasets[1].data = Array(mesLbls.length).fill(META_MENSAL);
+  chartMes.update();
+
+  chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m=>(d.modal&&d.modal[m])?d.modal[m].c:0);
+  chartModal.update();
+
+  chartVend.data.labels = VENDORS_LIST;
+  chartVend.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v])?d.vend[v].v:0);
+  chartVend.update();
+
+  chartTicket.data.labels = VENDORS_LIST;
+  chartTicket.data.datasets[0].data = VENDORS_LIST.map(v=>(d.vend&&d.vend[v]&&d.vend[v].tkt)?d.vend[v].tkt:0);
+  chartTicket.update();
+
+  // Comissões — todos os vendedores dinâmicos
+  let totN=0,totV=0,totCv=0,totCt=0, rows='';
+  VENDORS_LIST.forEach(v=>{
+    const vd=(d.vend&&d.vend[v]);
+    if(!vd||vd.c===0) return;
+    totN+=vd.c;totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
+    const cor = VEND_COLORS[v] || '#94a3b8';
+    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
+    rows+=`<tr>
+      <td><span class="vend-badge"><span class="vend-dot" style="background:${cor}"></span>${nome}</span></td>
+      <td>${vd.c}</td><td>R$ ${fmt(vd.v)}</td>
+      <td class="num-green">R$ ${fmt(vd.cv)}</td>
+      <td>R$ ${fmt(vd.ct)}</td>
+      <td><strong>R$ ${fmt(vd.cv+vd.ct)}</strong></td></tr>`;
+  });
+  document.getElementById('comissoes-tbody').innerHTML=rows||'<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px">Sem dados</td></tr>';
+  document.getElementById('comissoes-tfoot').innerHTML=totN>0?`<tr>
+    <td><strong>Total</strong></td><td><strong>${totN}</strong></td>
+    <td><strong>R$ ${fmt(totV)}</strong></td>
+    <td class="num-green"><strong>R$ ${fmt(totCv)}</strong></td>
+    <td><strong>R$ ${fmt(totCt)}</strong></td>
+    <td><strong>R$ ${fmt(totCv+totCt)}</strong></td></tr>`:'';
+
+  if(typeof updateAdvanced === 'function') updateAdvanced();
+}
+
+// Override updateAdvanced to use multi-year data structure
+function updateAdvanced() {
+  const anoData = getAnoData();
+  let rows = '';
+  VENDORS_LIST.forEach(v => {
+    const vk = v.toLowerCase();
+    if (activeVend !== 'all' && activeVend !== vk) return;
+    const dataKey = activeMes !== 'all' ? vk + '_' + activeMes : vk;
+    const vd = anoData[dataKey];
+    if (!vd || !vd.n) return;
+    const m = vd.modal || {};
+    const n = vd.n;
+    const pct = val => n > 0 ? Math.round((val||0) / n * 100) : 0;
+    const cM = (m.MENSAL    && m.MENSAL.c)    || 0;
+    const cT = (m.TRIMESTRAL && m.TRIMESTRAL.c) || 0;
+    const cS = (m.SEMESTRAL  && m.SEMESTRAL.c)  || 0;
+    const cA = (m.ANUAL      && m.ANUAL.c)      || 0;
+    const pLongo = pct(cS + cA);
+    const pillClass = pLongo >= 35 ? 'pill-green' : pLongo >= 25 ? 'pill-blue' : 'pill-gray';
+    const cor = VEND_COLORS[v] || '#94a3b8';
+    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
+    rows += '<tr>' +
+      '<td><span class="vend-badge"><span class="vend-dot" style="background:' + cor + '"></span>' + nome + '</span></td>' +
+      '<td>' + pct(cM) + '% <small style="color:var(--text-muted)">(' + cM + ')</small></td>' +
+      '<td>' + pct(cT) + '% <small style="color:var(--text-muted)">(' + cT + ')</small></td>' +
+      '<td>' + pct(cS) + '% <small style="color:var(--text-muted)">(' + cS + ')</small></td>' +
+      '<td>' + pct(cA) + '% <small style="color:var(--text-muted)">(' + cA + ')</small></td>' +
+      '<td><span class="pill ' + pillClass + '">' + pLongo + '%</span></td>' +
+      '</tr>';
+  });
+  const el = document.getElementById('upsell-tbody');
+  if (el) el.innerHTML = rows;
+}
+
+// -- Grafico YoY (criado uma vez, atualizado ao entrar em Comparar) ââ
+let chartYoY = null;
+
+function renderCompare() {
+  document.getElementById('compare-section').classList.add('show');
+  document.getElementById('compare-section').scrollIntoView({behavior:'smooth',block:'start'});
+  const cmp = DATA.compare;
+  if (!cmp) { document.getElementById('compare-section').innerHTML='<p style="padding:20px;color:#94a3b8">Dados de comparação não disponíveis (é necessário ter 2025 e 2026 na planilha).</p>'; return; }
+
+  // Gráfico de barras lado-a-lado por mês
+  const mesesCmp = Object.keys(cmp.mensal||{});
+  const mesLbls  = mesesCmp.map(m=>({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
+  const v25 = mesesCmp.map(m=>(cmp.mensal[m].fat.v25||0));
+  const v26 = mesesCmp.map(m=>(cmp.mensal[m].fat.v26||0));
+
+  if (!chartYoY) {
+    const ctx = document.getElementById('chartYoY').getContext('2d');
+    chartYoY = new Chart(ctx, {
+      type:'bar',
+      data:{labels:mesLbls,datasets:[
+        {label:'2025',data:v25,backgroundColor:'rgba(59,130,246,.7)',borderRadius:6,borderSkipped:false},
+        {label:'2026',data:v26,backgroundColor:'rgba(34,197,94,.85)',borderRadius:6,borderSkipped:false}
+      ]},
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'top'},tooltip:{callbacks:{label:ctx=>' R$ '+fmt(ctx.parsed.y)}}},
+        scales:{
+          y:{ticks:{callback:v=>'R$'+fmtK(v),font:{size:11}},grid:{color:'#f1f5f9'}},
+          x:{grid:{display:false}}
+        }
+      }
+    });
+  } else {
+    chartYoY.data.labels=mesLbls;
+    chartYoY.data.datasets[0].data=v25;
+    chartYoY.data.datasets[1].data=v26;
+    chartYoY.update();
+  }
+
+  // Tabela YoY por mês
+  let rowsMes='';
+  mesesCmp.forEach(m=>{
+    const r=cmp.mensal[m];
+    const pct=r.fat.pct;
+    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
+    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    rowsMes+=`<tr>
+      <td><strong>${mesLbls[mesesCmp.indexOf(m)]}</strong></td>
+      <td>R$ ${fmt(r.fat.v25)}</td>
+      <td>R$ ${fmt(r.fat.v26)}</td>
+      <td class="${cls}">${arrow}</td>
+    </tr>`;
+  });
+  document.getElementById('yoy-mes-table-wrap').innerHTML=`
+    <table class="yoy-table">
+      <thead><tr><th>Mês</th><th>2025</th><th>2026</th><th>Var. %</th></tr></thead>
+      <tbody>${rowsMes}</tbody>
+    </table>`;
+
+  // Tabela YoY por vendedor
+  let rowsVend='';
+  Object.entries(cmp.vend||{}).forEach(([v,r])=>{
+    const pct=r.fat.pct;
+    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
+    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    rowsVend+=`<tr>
+      <td><span class="vend-badge"><span class="vend-dot" style="background:${VEND_COLORS[v]||'#94a3b8'}"></span>${VEND_NAMES[v]||v}</span></td>
+      <td>R$ ${fmt(r.fat.v25)}</td>
+      <td>R$ ${fmt(r.fat.v26)}</td>
+      <td class="${cls}">${arrow}</td>
+      <td>R$ ${fmt(r.tkt.v25)}</td>
+      <td>R$ ${fmt(r.tkt.v26)}</td>
+    </tr>`;
+  });
+  document.getElementById('yoy-vend-table-wrap').innerHTML=`
+    <table class="yoy-table">
+      <thead><tr><th>Vendedor</th><th>Fat. 2025</th><th>Fat. 2026</th><th>Var. %</th><th>Tkt. 2025</th><th>Tkt. 2026</th></tr></thead>
+      <tbody>${rowsVend}</tbody>
+    </table>`;
+
+  // KPIs gerais
+  const tot=cmp.total;
+  const kpis=[
+    {label:'Faturamento',r:tot.fat,fmt:'R$ '},
+    {label:'Nº Vendas',  r:tot.n,  fmt:''},
+    {label:'Ticket Médio',r:tot.tkt,fmt:'R$ '},
+  ];
+  let kpiHtml='<div style="display:grid;gap:12px">';
+  kpis.forEach(k=>{
+    const pct=k.r.pct;
+    const cls=pct===null?'yoy-neu':pct>=0?'yoy-up':'yoy-down';
+    const arrow=pct===null?'—':pct>=0?'▲ '+pct+'%':'▼ '+Math.abs(pct)+'%';
+    kpiHtml+=`<div style="background:var(--cinza);border-radius:10px;padding:12px 16px">
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${k.label}</div>
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="font-size:14px;color:var(--text-muted)">2025: <strong>${k.fmt}${fmt(k.r.v25)}</strong></span>
+        <span style="font-size:14px;color:var(--text)">2026: <strong>${k.fmt}${fmt(k.r.v26)}</strong></span>
+        <span class="${cls}" style="font-size:15px">${arrow}</span>
+      </div>
+    </div>`;
+  });
+  kpiHtml+='</div>';
+  document.getElementById('yoy-kpi-wrap').innerHTML=kpiHtml;
+}
+
+function hideCompare() {
+  document.getElementById('compare-section').classList.remove('show');
+}
+
+function refreshData() {
+  document.getElementById('loadingOverlay').classList.add('show');
+  setTimeout(() => { document.getElementById('loadingOverlay').classList.remove('show'); }, 800);
+  updateDashboard();
+}
+
+// Inicializa dashboard
+updateDashboard();
+
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAL PDF COMISSÕES (comprovante mensal pro personal/vendedor)
+     ══════════════════════════════════════════════════════════════════ -->
+<style>
+  .commission-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+  .commission-modal-overlay.show { display: flex; }
+  .commission-modal { background: #fff; border-radius: 14px; max-width: 520px; width: 100%; padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+  .commission-modal h3 { font-size: 17px; margin: 0 0 4px; color: var(--text); }
+  .commission-modal p { font-size: 13px; color: var(--text-muted); margin: 0 0 18px; line-height: 1.5; }
+  .commission-modal label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin: 12px 0 4px; }
+  .commission-modal select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--cinza-border); border-radius: 8px; font-size: 14px; font-family: inherit; background: #fff; cursor: pointer; }
+  .commission-modal-actions { display: flex; gap: 10px; margin-top: 22px; justify-content: flex-end; }
+  .commission-modal button { padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+  .commission-modal .btn-cancel { background: #f1f5f9; color: var(--text); }
+  .commission-modal .btn-cancel:hover { background: var(--cinza-border); }
+  .commission-modal .btn-generate { background: var(--verde); color: #fff; }
+  .commission-modal .btn-generate:hover { background: var(--verde-dark); }
+
+  /* View de impressão de comissão */
+  #commission-print-view { display: none; padding: 24px; background: #fff; }
+  #commission-print-view.show { display: block; }
+  #commission-print-view .header-print { border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 18px; }
+  #commission-print-view h1 { font-size: 20px; margin: 0; color: var(--text); }
+  #commission-print-view .header-print-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  #commission-print-view .summary-card { background: var(--cinza); border: 1px solid var(--cinza-border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  #commission-print-view .summary-item .lbl { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+  #commission-print-view .summary-item .val { font-size: 17px; font-weight: 800; color: var(--text); margin-top: 2px; }
+  #commission-print-view table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  #commission-print-view th { padding: 8px 10px; text-align: left; background: var(--cinza); border-bottom: 2px solid var(--cinza-border); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); }
+  #commission-print-view td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
+  #commission-print-view tfoot td { background: var(--verde-light); font-weight: 700; border-top: 2px solid var(--verde); }
+  #commission-print-view .footer-print { font-size: 11px; color: var(--text-muted); margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--cinza-border); }
+
+  @media print {
+    body.printing-commission > *:not(#commission-print-view) { display: none !important; }
+    body.printing-commission #commission-print-view { display: block !important; padding: 0; }
+    body.printing-commission .header-print { padding-bottom: 8px; margin-bottom: 14px; }
+    body.printing-commission .summary-card { box-shadow: none; }
+    body.printing-commission tr { break-inside: avoid; }
+  }
+</style>
+
+<!-- Modal de seleção -->
+<div class="commission-modal-overlay" id="commission-modal">
+  <div class="commission-modal">
+    <h3 id="comm-modal-title">📄 Gerar Comprovante de Comissão</h3>
+    <p id="comm-modal-desc">Escolha o mês de referência. O PDF será gerado com a lista de vendas e o total a pagar.</p>
+    <div id="comm-vendedor-group">
+      <label>Vendedor</label>
+      <select id="comm-vendedor"></select>
+    </div>
+    <label>Mês de referência</label>
+    <select id="comm-mes"></select>
+    <label>Ano</label>
+    <select id="comm-ano"></select>
+    <div class="commission-modal-actions">
+      <button type="button" class="btn-cancel" onclick="closeCommissionModal()">Cancelar</button>
+      <button type="button" class="btn-generate" onclick="generateCommissionPDF()">Gerar PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- View que sai no PDF -->
+<div id="commission-print-view"></div>
+
+<script>
+(function() {
+  const MES_LBL_FULL = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
+  const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
+  const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
+
+  // tipo: 'vendedor' (default), 'personal', 'parceiro'
+  let currentCommType = 'vendedor';
+  window.openCommissionPDF = function(tipo) {
+    if (!window.VENDAS_DATA) { alert('Aguarde os dados terminarem de carregar e tente de novo.'); return; }
+    currentCommType = (['personal','parceiro'].indexOf(tipo) >= 0) ? tipo : 'vendedor';
+
+    const modal = document.getElementById('commission-modal');
+    const selV = document.getElementById('comm-vendedor');
+    const selM = document.getElementById('comm-mes');
+    const selA = document.getElementById('comm-ano');
+    const title = document.getElementById('comm-modal-title');
+    const desc = document.getElementById('comm-modal-desc');
+    const vendGroup = document.getElementById('comm-vendedor-group');
+    const vendLabel = vendGroup.querySelector('label');
+
+    if (currentCommType === 'personal') {
+      title.textContent = '🏋️ Comprovante do Personal (Gustavo)';
+      desc.textContent = 'Lista de vendas COM adicional "Treino" no mês selecionado. Comissão de 15% sobre cada venda, independente de qual vendedor fechou.';
+      vendGroup.style.display = 'none';
+    } else if (currentCommType === 'parceiro') {
+      title.textContent = '🤝 Cobrança de Parceiro';
+      desc.textContent = 'Lista as vendas do plano do parceiro no mês selecionado. Útil pra conferir e cobrar o repasse no final do mês.';
+      vendGroup.style.display = '';
+      if (vendLabel) vendLabel.textContent = 'Parceiro / Tipo de Plano';
+      // Tipos de plano de parceiros detectados na planilha
+      const tiposParceiros = new Set();
+      window.VENDAS_DATA.forEach(r => {
+        if (r.tipo && /^Plano\s+/i.test(r.tipo)) tiposParceiros.add(r.tipo);
+      });
+      const lista = Array.from(tiposParceiros).sort();
+      selV.innerHTML = lista.map(t => '<option value="' + t + '">' + t + '</option>').join('');
+      if (lista.length === 0) selV.innerHTML = '<option value="">Nenhum plano de parceiro encontrado</option>';
+    } else {
+      title.textContent = '📄 Comprovante de Comissão do Vendedor';
+      desc.textContent = 'Lista TODAS as vendas do vendedor no mês selecionado, com comissão de 3% sobre cada uma.';
+      vendGroup.style.display = '';
+      if (vendLabel) vendLabel.textContent = 'Vendedor';
+      // Vendedores únicos com vendas
+      const vendsSet = new Set();
+      window.VENDAS_DATA.forEach(r => { if (r.vendedor) vendsSet.add(r.vendedor); });
+      const vends = Array.from(vendsSet).sort();
+      selV.innerHTML = vends.map(v => '<option value="' + v + '">' + (VEND_DISPLAY[v] || v) + '</option>').join('');
+      if (vends.includes('junio')) selV.value = 'junio';
+    }
+
+    // Meses
+    selM.innerHTML = Object.entries(MES_LBL_FULL).map(([k,v]) => '<option value="' + k + '">' + v + '</option>').join('');
+    const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    let lastMes = 'mai';
+    const ano = (typeof activeAno !== 'undefined' && activeAno === 'latest') ? (typeof LATEST_ANO !== 'undefined' ? LATEST_ANO : '2026') : (typeof activeAno !== 'undefined' ? activeAno : '2026');
+    MES_ORDER.forEach(m => {
+      if (window.VENDAS_DATA.some(r => r.mes === m && r.ano === ano && r.valor > 0)) lastMes = m;
+    });
+    selM.value = lastMes;
+
+    // Anos
+    const anosSet = new Set();
+    window.VENDAS_DATA.forEach(r => { if (r.ano) anosSet.add(r.ano); });
+    const anos = Array.from(anosSet).sort().reverse();
+    selA.innerHTML = anos.map(a => '<option value="' + a + '">' + a + '</option>').join('');
+    selA.value = ano;
+
+    modal.classList.add('show');
+  };
+
+  window.closeCommissionModal = function() {
+    document.getElementById('commission-modal').classList.remove('show');
+  };
+
+  window.generateCommissionPDF = function() {
+    const mes = document.getElementById('comm-mes').value;
+    const ano = document.getElementById('comm-ano').value;
+    const mesName = MES_LBL_FULL[mes];
+    const fmtBR = n => 'R$ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    const COM_VEND_PCT = 0.03;
+    const COM_TREINO_PCT = 0.15;
+
+    let title, beneficiario, vendas, headers, makeRow, totalLabel, total, summary, footer;
+
+    if (currentCommType === 'parceiro') {
+      // PARCEIRO: lista vendas do plano do parceiro (Plano Eliseu, Plano Gustavo, etc)
+      // Inclui vendas com valor 0 (caso o parceiro cobre direto do paciente)
+      const tipoPlano = document.getElementById('comm-vendedor').value;
+      const partnerName = tipoPlano.replace(/^Plano\s+/i, '') || 'Parceiro';
+      vendas = window.VENDAS_DATA.filter(r => r.tipo === tipoPlano && r.mes === mes && r.ano === ano);
+      title = 'Cobrança · ' + tipoPlano;
+      beneficiario = partnerName + ' (Parceiro)';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Modalidade</th><th>Adicional</th><th>Vendedor</th><th>Valor cobrado</th></tr>';
+      let totalFat = 0;
+      let rowsHtml = '';
+      vendas.forEach((r, i) => {
+        totalFat += r.valor;
+        const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1);
+        rowsHtml += '<tr>' +
+          '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+          '<td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td><td>' + vendNome + '</td>' +
+          '<td style="text-align:right">' + (r.valor > 0 ? fmtBR(r.valor) : '—') + '</td></tr>';
+      });
+      makeRow = rowsHtml;
+      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td></tr>';
+      total = totalFat;
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Pacientes no mês</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Valor cobrado total</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">A acertar com o parceiro</div><div class="val" style="color:#7c3aed">a definir</div></div>' +
+        '</div>';
+      footer = '<strong>Extrato de cobrança · ' + partnerName + '</strong> · Lista os pacientes que contrataram o "' + tipoPlano + '" em ' + mesName + '/' + ano + '. O valor de repasse deve ser combinado com o parceiro com base na regra acordada. Quando o valor aparece como "—" significa que a venda foi registrada sem valor (provavelmente porque o parceiro cobra direto do paciente).';
+
+    } else if (currentCommType === 'personal') {
+      // PERSONAL: 15% sobre TODAS as vendas com Treino, de qualquer vendedor
+      vendas = window.VENDAS_DATA.filter(r => r.adic === 'Treino' && r.valor > 0 && r.mes === mes && r.ano === ano);
+      title = 'Comprovante de Comissão · Personal (Gustavo)';
+      beneficiario = 'Gustavo (Personal Trainer)';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Vendedor</th><th>Valor</th><th>Com. 15%</th></tr>';
+      let totalFat = 0, totalCom = 0;
+      let rowsHtml = '';
+      vendas.forEach((r, i) => {
+        const com = Math.round(r.valor * COM_TREINO_PCT * 100) / 100;
+        totalFat += r.valor; totalCom += com;
+        const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1);
+        rowsHtml += '<tr>' +
+          '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+          '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + vendNome + '</td>' +
+          '<td style="text-align:right">' + fmtBR(r.valor) + '</td>' +
+          '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
+      });
+      makeRow = rowsHtml;
+      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+      total = totalCom;
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Vendas c/ Treino</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Total dos planos</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Comissão (15%)</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
+        '</div>';
+      footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano vendido com adicional "Treino" no mês de referência. Calculado direto da planilha oficial de vendas.';
+
+    } else {
+      // VENDEDOR: 3% sobre TODAS as vendas do vendedor
+      const vend = document.getElementById('comm-vendedor').value;
+      const vendName = VEND_DISPLAY[vend] || vend;
+      vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano);
+      title = 'Comprovante de Comissão · ' + vendName + ' (Vendedor)';
+      beneficiario = vendName + ' (Vendedor)';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Valor</th><th>Com. 3%</th></tr>';
+      let totalFat = 0, totalCom = 0;
+      let rowsHtml = '';
+      vendas.forEach((r, i) => {
+        const com = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
+        totalFat += r.valor; totalCom += com;
+        rowsHtml += '<tr>' +
+          '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+          '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td>' +
+          '<td style="text-align:right">' + fmtBR(r.valor) + '</td>' +
+          '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
+<script>
+(function(){
+  var _origGetAnoData = getAnoData;
+  getAnoData = function() {
+    if (activeAno === 'todos') return buildTodosData();
+    return _origGetAnoData.call(this);
+  };
+  window.buildTodosData = function() {
+    var anos = Object.keys(DATA).filter(function(k){ return k.length===4 && !isNaN(k); });
+    if (!anos.length) return {};
+    var allKeys = {};
+    anos.forEach(function(a){ Object.keys(DATA[a]).forEach(function(k){ allKeys[k]=1; }); });
+    function mergeBlock(a, b) {
+      if (!a && !b) return {n:0,fat:0,tkt:0,cvend:0,ctreino:0,modal:{},vend:{},mes:{}};
+      if (!a) return JSON.parse(JSON.stringify(b));
+      if (!b) return JSON.parse(JSON.stringify(a));
+      var n=+(a.n||0)+ +(b.n||0), fat=+(a.fat||0)+ +(b.fat||0);
+      var cv=+(a.cvend||0)+ +(b.cvend||0), ct=+(a.ctreino||0)+ +(b.ctreino||0);
+      var modal={}, vend={}, mes={};
+      [a.modal||{}, b.modal||{}].forEach(function(obj){
+        Object.keys(obj).forEach(function(k){ modal[k]=(modal[k]||0)+(obj[k]||0); });
+      });
+      [a.vend||{}, b.vend||{}].forEach(function(obj){
+        Object.keys(obj).forEach(function(k){
+          if (!vend[k]) vend[k]={c:0,v:0,tkt:0,cv:0,ct:0};
+          vend[k].c += (obj[k] ? obj[k].c||0 : 0);
+          vend[k].v += (obj[k] ? obj[k].v||0 : 0);
+          vend[k].cv += (obj[k] ? obj[k].cv||0 : 0);
+          vend[k].ct += (obj[k] ? obj[k].ct||0 : 0);
+        });
+      });
+      Object.keys(vend).forEach(function(k){
+        vend[k].tkt = vend[k].c ? Math.round(vend[k].v/vend[k].c) : 0;
+      });
+      [a.mes||{}, b.mes||{}].forEach(function(obj){
+        Object.keys(obj).forEach(function(k){
+          if (!mes[k]) mes[k]={c:0,v:0};
+          mes[k].c += (obj[k] ? obj[k].c||0 : 0);
+          mes[k].v += (obj[k] ? obj[k].v||0 : 0);
+        });
+      });
+      return {n:n,fat:fat,tkt:n?Math.round(fat/n):0,cvend:cv,ctreino:ct,modal:modal,vend:vend,mes:mes};
+    }
+    var result={};
+    Object.keys(allKeys).forEach(function(key){
+      var merged=null;
+      anos.forEach(function(ano){ merged=mergeBlock(merged, DATA[ano][key]); });
+      result[key]=merged;
+    });
+    return result;
+  };
 })();
 </script>
 </body>
