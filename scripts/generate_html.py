@@ -331,6 +331,46 @@ function updateDashboard() {
   document.getElementById('kpi-cvend-card').textContent = 'R$ ' + fmt(d.cvend||0);
   document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
 
+  // Indicador MoM (variacao vs mes anterior) nos 3 KPIs principais
+  (function() {{
+    const MES_ORDER_LOC = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    const mesData = d.mes || {{}};
+    let curMes = null, prevMes = null;
+    if (activeMes === 'all') {{
+      const ms = MES_ORDER_LOC.filter(m => mesData[m] && mesData[m].v > 0);
+      if (ms.length >= 2) {{ curMes = ms[ms.length-1]; prevMes = ms[ms.length-2]; }}
+    }} else {{
+      const idx = MES_ORDER_LOC.indexOf(activeMes);
+      if (idx >= 1) {{ curMes = activeMes; prevMes = MES_ORDER_LOC[idx-1]; }}
+    }}
+    function renderTrend(elId, pct, lbl) {{
+      const el = document.getElementById(elId);
+      if (!el) return;
+      if (pct === null || !isFinite(pct)) {{ el.innerHTML = ''; return; }}
+      const cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'neu');
+      const arrow = pct > 0 ? '▲' : (pct < 0 ? '▼' : '·');
+      const sign = pct > 0 ? '+' : '';
+      el.innerHTML = ' <span class="kpi-trend ' + cls + '" title="' + lbl + '">' + arrow + ' ' + sign + pct + '%</span>';
+    }}
+    if (curMes && prevMes && mesData[curMes] && mesData[prevMes] && mesData[prevMes].v > 0) {{
+      const cur = mesData[curMes], prev = mesData[prevMes];
+      const MES_LBL_SHORT = {{jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}};
+      const lbl = (MES_LBL_SHORT[curMes]||curMes) + ' vs ' + (MES_LBL_SHORT[prevMes]||prevMes);
+      const fatPct = Math.round((cur.v - prev.v) / prev.v * 100);
+      const vendPct = prev.c > 0 ? Math.round((cur.c - prev.c) / prev.c * 100) : null;
+      const curTkt = cur.c > 0 ? cur.v / cur.c : 0;
+      const prevTkt = prev.c > 0 ? prev.v / prev.c : 0;
+      const tktPct = prevTkt > 0 ? Math.round((curTkt - prevTkt) / prevTkt * 100) : null;
+      renderTrend('kpi-fat-trend', fatPct, 'Faturamento ' + lbl);
+      renderTrend('kpi-vendas-trend', vendPct, 'Vendas ' + lbl);
+      renderTrend('kpi-ticket-trend', tktPct, 'Ticket ' + lbl);
+    }} else {{
+      ['kpi-fat-trend','kpi-vendas-trend','kpi-ticket-trend'].forEach(id => {{
+        const el = document.getElementById(id); if (el) el.innerHTML = '';
+      }});
+    }}
+  }})();
+
   const ano    = activeAno === 'latest' ? LATEST_ANO : activeAno;
   const anoTxt = activeAno === 'todos' ? 'Todos os anos' : ano;
   const mesLbl = {all:anoTxt+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,

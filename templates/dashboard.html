@@ -46,8 +46,9 @@
   .filter-btn.active:hover { background: linear-gradient(135deg, #16a34a, #15803d); }
   .filter-divider { width: 1px; height: 22px; background: var(--cinza-border); margin: 0 4px; }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
-  .kpi-card { background: var(--card-bg); border: 1px solid var(--cinza-border); border-left: 3px solid #94a3b8; border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); position: relative; transition: transform .15s, box-shadow .15s; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 12px; }
+  .kpi-grid-secondary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi-card { background: var(--card-bg); border: 1px solid var(--cinza-border); border-left: 3px solid #94a3b8; border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); position: relative; transition: transform .15s, box-shadow .15s; }
   .kpi-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(15,23,42,.06); }
   .kpi-card.green  { border-left-color: var(--verde); }
   .kpi-card.blue   { border-left-color: #3b82f6; }
@@ -55,6 +56,12 @@
   .kpi-card.orange { border-left-color: #f59e0b; }
   .kpi-card.teal   { border-left-color: #14b8a6; }
   .kpi-card.red    { border-left-color: #ef4444; }
+  .kpi-card.kpi-sm { padding: 12px 16px; }
+  .kpi-card.kpi-sm .kpi-value { font-size: 19px; }
+  .kpi-card.kpi-sm .kpi-label { font-size: 10px; margin-bottom: 4px; }
+  .kpi-card.kpi-sm .kpi-sub { font-size: 11px; margin-top: 3px; }
+  .kpi-card.kpi-hero .kpi-value { font-size: 32px; }
+  .kpi-card.kpi-hero { padding: 20px 22px; }
   .kpi-icon { display: none; }
   .kpi-emoji { font-size: 13px; margin-right: 4px; opacity: .8; }
   .kpi-value.teal  { color: #0d9488; }
@@ -63,6 +70,10 @@
   .kpi-value { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1.1; }
   .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 5px; line-height: 1.4; }
   .kpi-badge { display: inline-block; background: var(--verde-light); color: var(--verde-dark); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+  .kpi-trend { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 6px; margin-left: 6px; vertical-align: middle; }
+  .kpi-trend.up { background: rgba(34,197,94,.12); color: #15803d; }
+  .kpi-trend.down { background: rgba(239,68,68,.12); color: #b91c1c; }
+  .kpi-trend.neu { background: rgba(100,116,139,.12); color: #475569; }
 
   .charts-row { display: grid; gap: 16px; margin-bottom: 16px; }
   .charts-row-1 { grid-template-columns: 2fr 1fr 1fr; }
@@ -316,33 +327,36 @@
   <div class="section-body" data-section="overview">
 
   <div class="kpi-grid">
-    <div class="kpi-card green">
-      <div class="kpi-label"><span class="kpi-emoji">💰</span>Faturamento Total</div>
+    <div class="kpi-card green kpi-hero">
+      <div class="kpi-label"><span class="kpi-emoji">💰</span>Faturamento Total<span id="kpi-fat-trend"></span></div>
       <div class="kpi-value" id="kpi-fat">R$ 243.531</div>
       <div class="kpi-sub"><span class="kpi-badge" id="kpi-fat-badge">2026 acumulado</span></div>
       <div class="meta-progress" id="meta-progress-wrap" style="display:none"><div class="meta-bar-wrap"><div class="meta-bar" id="meta-progress-bar" style="width:0%"></div></div><div class="meta-bar-labels"><span id="meta-pct-label"></span><span>Meta: R$60k</span></div></div>
     </div>
     <div class="kpi-card blue">
-      <div class="kpi-label"><span class="kpi-emoji">📋</span>Vendas Realizadas</div>
+      <div class="kpi-label"><span class="kpi-emoji">📋</span>Vendas Realizadas<span id="kpi-vendas-trend"></span></div>
       <div class="kpi-value" id="kpi-vendas">491</div>
       <div class="kpi-sub" id="kpi-vendas-sub">pacientes atendidos</div>
     </div>
     <div class="kpi-card purple">
-      <div class="kpi-label"><span class="kpi-emoji">🎯</span>Ticket Médio</div>
+      <div class="kpi-label"><span class="kpi-emoji">🎯</span>Ticket Médio<span id="kpi-ticket-trend"></span></div>
       <div class="kpi-value" id="kpi-ticket">R$ 496</div>
       <div class="kpi-sub" id="kpi-ticket-sub">por venda</div>
     </div>
-    <div class="kpi-card teal">
+  </div>
+
+  <div class="kpi-grid-secondary">
+    <div class="kpi-card teal kpi-sm">
       <div class="kpi-label"><span class="kpi-emoji">📊</span>Margem Bruta</div>
       <div class="kpi-value teal" id="kpi-margem">R$ 199.695</div>
       <div class="kpi-sub" id="kpi-margem-pct">fat − comissões · <strong id="kpi-margem-pct-val">82%</strong> do faturamento</div>
     </div>
-    <div class="kpi-card orange">
+    <div class="kpi-card orange kpi-sm">
       <div class="kpi-label"><span class="kpi-emoji">⭐</span>Comissão Vendedor</div>
       <div class="kpi-value" id="kpi-cvend-card">R$ 7.306</div>
       <div class="kpi-sub" id="kpi-cvend-sub">a pagar no período</div>
     </div>
-    <div class="kpi-card red">
+    <div class="kpi-card red kpi-sm">
       <div class="kpi-label"><span class="kpi-emoji">🏋️</span>Custo Personal</div>
       <div class="kpi-value red" id="kpi-personal">R$ 36.530</div>
       <div class="kpi-sub" id="kpi-personal-sub">repasse adicional treino</div>
@@ -390,6 +404,22 @@
       <div class="chart-title">Ticket Médio por Vendedor</div>
       <div class="chart-sub">Valor médio por venda (R$) no período</div>
       <div class="chart-wrap h260"><canvas id="chartTicket"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-row charts-row-2" style="margin-bottom:16px">
+    <div class="chart-card">
+      <div class="chart-title">Mix por Tipo de Serviço</div>
+      <div class="chart-sub" id="sub-tipo">Distribuição de vendas por tipo · estratégia: foco em escalável (Sem Vídeo)</div>
+      <div class="chart-wrap h260"><canvas id="chartTipo"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Ticket Médio por Tipo</div>
+      <div class="chart-sub">Quanto cada tipo de serviço rende em média (R$ por venda paga)</div>
+      <table class="analytics-table">
+        <thead><tr><th>Tipo</th><th>Vendas</th><th>Ticket Médio</th><th>Total</th><th>% Fat.</th></tr></thead>
+        <tbody id="tipo-tbody"><tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Carregando…</td></tr></tbody>
+      </table>
     </div>
   </div>
 
@@ -456,6 +486,12 @@
       <div class="chart-sub" id="prev-vend-sub">Faturamento individual vs meta cadastrada</div>
       <div id="prev-vend-list" style="margin-top:8px"></div>
     </div>
+  </div>
+
+  <div class="chart-card" id="prev-novavsrenov-wrap" style="margin-top:16px;display:none">
+    <div class="chart-title">Nova Venda vs Renovação · por mês</div>
+    <div class="chart-sub">Receita gerada por novas vendas (verde) e renovações (azul) · taxa de recorrência em linha</div>
+    <div class="chart-wrap h260"><canvas id="chartNovaRenov"></canvas></div>
   </div>
 
   <div class="chart-card" id="prev-cal-wrap" style="margin-top:16px;display:none">
@@ -1595,6 +1631,45 @@ updateDashboard();
     grid.innerHTML = html;
   }
 
+  let chartNovaRenov = null;
+  function renderChartNovaRenov(prev) {
+    if (!prev || !prev.meses) return;
+    const labels = []; const novas = []; const renov = []; const pcts = [];
+    prev.meses.forEach(m => {
+      if (m.fat > 0) {
+        labels.push(m.nome.slice(0,3));
+        novas.push(m.novas || 0);
+        renov.push(m.renov || 0);
+        pcts.push(m.fat > 0 ? Math.round((m.renov||0)/m.fat*100) : 0);
+      }
+    });
+    const ctx = document.getElementById('chartNovaRenov').getContext('2d');
+    if (chartNovaRenov) chartNovaRenov.destroy();
+    chartNovaRenov = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: [
+        { type:'bar', label:'Nova Venda (R$)', data:novas, backgroundColor:'rgba(34,197,94,.85)', borderRadius:6, stack:'fat', yAxisID:'y',
+          datalabels: { display: ctx=>ctx.dataset.data[ctx.dataIndex]>1000, color:'#fff', font:{weight:700,size:10}, formatter: v=>'R$'+fmtBRLk(v).replace('R$','') } },
+        { type:'bar', label:'Renovação (R$)', data:renov, backgroundColor:'rgba(59,130,246,.85)', borderRadius:6, stack:'fat', yAxisID:'y',
+          datalabels: { display: ctx=>ctx.dataset.data[ctx.dataIndex]>1000, color:'#fff', font:{weight:700,size:10}, formatter: v=>'R$'+fmtBRLk(v).replace('R$','') } },
+        { type:'line', label:'% Renovação', data:pcts, borderColor:'#8b5cf6', backgroundColor:'#8b5cf6', tension:.35, pointRadius:4, yAxisID:'y1',
+          datalabels: { display:true, anchor:'end', align:'top', color:'#7c3aed', font:{weight:700,size:11}, formatter: v=>v+'%' } }
+      ]},
+      options: {
+        responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+        layout:{ padding:{top:18} },
+        plugins:{ legend:{position:'bottom',labels:{font:{size:11},padding:8,boxWidth:10}},
+          tooltip:{ callbacks:{ label: ctx => ctx.dataset.label.includes('%') ? ' '+ctx.dataset.label+': '+ctx.parsed.y+'%' : ' '+ctx.dataset.label+': R$ '+fmtN(ctx.parsed.y) }}
+        },
+        scales:{
+          y:{stacked:true, position:'left', ticks:{callback:v=>fmtBRLk(v),font:{size:11}}, grid:{color:'#f1f5f9'}},
+          y1:{position:'right', min:0, max:100, ticks:{callback:v=>v+'%',font:{size:11}}, grid:{display:false}},
+          x:{stacked:true, grid:{display:false}, ticks:{font:{size:11}}}
+        }
+      }
+    });
+  }
+
   function renderAll() {
     const prev = window.PREVISAO_DATA; const dash = window.DASHBOARD_DATA;
     if (!prev) return;
@@ -1602,11 +1677,13 @@ updateDashboard();
     document.getElementById('prev-kpis-wrap').style.display = '';
     document.getElementById('prev-charts-wrap').style.display = '';
     document.getElementById('prev-cal-wrap').style.display = '';
+    const nrEl = document.getElementById('prev-novavsrenov-wrap');
+    if (nrEl) nrEl.style.display = '';
     const dtAtual = serialToDate(prev.diario.dataAtual);
     const dtFmt = dtAtual ? dtAtual.toLocaleDateString('pt-BR') : 'agora';
     document.getElementById('prev-sub').textContent = 'Atualizado em '+dtFmt+' · meta 60% recorrência · meta R$ 60k/mês';
     renderRecorrenciaCard(mc); renderProjecaoCard(prev, mc); renderDiasCard(prev); renderAcumCard(prev);
-    renderChartRecorrencia(prev); renderChartCarteira(prev); renderVendedoresMeta(dash); renderCalendario(prev);
+    renderChartRecorrencia(prev); renderChartCarteira(prev); renderVendedoresMeta(dash); renderChartNovaRenov(prev); renderCalendario(prev);
   }
 
   async function loadPrevisao() {
@@ -1622,6 +1699,127 @@ updateDashboard();
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadPrevisao);
   else loadPrevisao();
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MIX POR TIPO DE SERVICO (fetch direto da aba Vendas, respeita filtros)
+     ══════════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const SHEET_ID = '19RLmBTG5JQ4ocotoX3V0SmHILM2l_7PyMCQ4UJamCjM';
+  const VENDAS_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Vendas';
+  const TIPO_COLORS = {
+    'Consultoria Sem Vídeo': '#22c55e', 'Consultoria com Vídeo': '#3b82f6', 'Presencial': '#8b5cf6',
+    'Plano Gustavo': '#f59e0b', 'Plano Eliseu': '#ec4899', 'Permuta': '#94a3b8', 'ClassFit': '#14b8a6', 'Outro': '#64748b'
+  };
+  window.VENDAS_DATA = null;
+  let chartTipo = null;
+  function parseBRL(raw) {
+    if (!raw) return 0;
+    let s = String(raw).replace(/"/g,'').replace(/R\$/g,'').replace(/\s/g,'').trim();
+    s = s.replace(/\./g,'').replace(',','.');
+    const v = parseFloat(s);
+    return isFinite(v) ? v : 0;
+  }
+  function parseCSV(text) {
+    const lines = text.split(/\r?\n/);
+    const rows = [];
+    for (let i = 1; i < lines.length; i++) {
+      const ln = lines[i].trim(); if (!ln) continue;
+      const cols = ln.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(c => c.replace(/^"|"$/g,''));
+      rows.push(cols);
+    }
+    return rows.map(r => ({
+      ano: (r[1]||'').trim(),
+      mes: ((r[2]||'').toLowerCase().match(/^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)||[])[1]||'',
+      tipo: (r[4]||'').trim(), mod: (r[5]||'').trim(), valor: parseBRL(r[7]),
+      vendedor: (r[8]||'').trim().toLowerCase()
+    }));
+  }
+  async function fetchVendas() {
+    try { const r = await fetch(VENDAS_URL); const txt = await r.text(); window.VENDAS_DATA = parseCSV(txt); renderMixTipo(); }
+    catch(e) { console.warn('fetch vendas failed', e); }
+  }
+  function aggregarPorTipo() {
+    const data = window.VENDAS_DATA; if (!data) return null;
+    const ano = (typeof activeAno !== 'undefined' && activeAno === 'latest') ? (typeof LATEST_ANO !== 'undefined' ? LATEST_ANO : '2026') : (typeof activeAno !== 'undefined' ? activeAno : '2026');
+    const filtroAno = (typeof activeAno !== 'undefined' && activeAno === 'todos') ? null : ano;
+    const filtroMes = (typeof activeMes !== 'undefined' && activeMes !== 'all') ? activeMes : null;
+    const filtroVend = (typeof activeVend !== 'undefined' && activeVend !== 'all') ? activeVend : null;
+    const agg = {};
+    data.forEach(r => {
+      if (filtroAno && r.ano !== filtroAno) return;
+      if (filtroMes && r.mes !== filtroMes) return;
+      if (filtroVend && r.vendedor !== filtroVend) return;
+      if (!r.tipo) return;
+      if (!agg[r.tipo]) agg[r.tipo] = { c:0, v:0, c_pago:0 };
+      agg[r.tipo].c++; agg[r.tipo].v += r.valor;
+      if (r.valor > 0) agg[r.tipo].c_pago++;
+    });
+    return agg;
+  }
+  function renderMixTipo() {
+    const agg = aggregarPorTipo(); if (!agg) return;
+    const entries = Object.entries(agg).sort((a,b) => b[1].c - a[1].c);
+    const labels = entries.map(e => e[0]);
+    const counts = entries.map(e => e[1].c);
+    const colors = labels.map(l => TIPO_COLORS[l] || '#94a3b8');
+    const totalFat = entries.reduce((s,e)=>s+e[1].v, 0);
+    const ctx = document.getElementById('chartTipo');
+    if (ctx) {
+      if (chartTipo) chartTipo.destroy();
+      chartTipo = new Chart(ctx.getContext('2d'), {
+        type: 'doughnut',
+        data: { labels: labels, datasets: [{
+          data: counts, backgroundColor: colors, borderWidth: 2, borderColor: '#fff', hoverOffset: 6,
+          datalabels: {
+            display: ctx => { const t=ctx.dataset.data.reduce((a,b)=>a+b,0); return t>0 && ctx.dataset.data[ctx.dataIndex]/t >= 0.04; },
+            color: '#fff', font: { weight: 800, size: 12 }, textAlign: 'center',
+            formatter: (v, c) => { const t = c.dataset.data.reduce((a,b)=>a+b,0); const pct = t>0 ? Math.round(v/t*100) : 0; return v + '\n' + pct + '%'; }
+          }
+        }]},
+        options: { responsive: true, maintainAspectRatio: false, cutout: '58%',
+          plugins: {
+            legend: { position:'bottom', labels:{ font:{size:11}, padding:8, boxWidth:10, generateLabels: chart => {
+              const ds = chart.data.datasets[0]; const t = ds.data.reduce((a,b)=>a+b,0);
+              return chart.data.labels.map((lbl, i) => { const v = ds.data[i]; const pct = t>0?Math.round(v/t*100):0;
+                return { text: lbl + ' (' + v + ' · ' + pct + '%)', fillStyle: ds.backgroundColor[i], strokeStyle: ds.backgroundColor[i], lineWidth:0, hidden:false, index:i }; });
+            } } },
+            tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + c.parsed + ' vendas' } }
+          }
+        }
+      });
+    }
+    const tbody = document.getElementById('tipo-tbody');
+    if (tbody) {
+      if (entries.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Sem dados para o filtro</td></tr>';
+      } else {
+        let html = '';
+        entries.forEach(([tipo, vals]) => {
+          const cor = TIPO_COLORS[tipo] || '#94a3b8';
+          const tkt = vals.c_pago > 0 ? Math.round(vals.v / vals.c_pago) : 0;
+          const pctFat = totalFat > 0 ? Math.round(vals.v/totalFat*100) : 0;
+          html += '<tr>' +
+            '<td><span class="vend-badge"><span class="vend-dot" style="background:'+cor+'"></span>' + tipo + '</span></td>' +
+            '<td>' + vals.c + '</td>' +
+            '<td>R$ ' + (tkt||0).toLocaleString('pt-BR') + '</td>' +
+            '<td>R$ ' + Math.round(vals.v).toLocaleString('pt-BR') + '</td>' +
+            '<td><div style="font-size:12px;font-weight:700">' + pctFat + '%</div>' +
+            '<div class="bar-wrap"><div class="bar-fill" style="width:' + pctFat + '%;background:' + cor + '"></div></div></td>' +
+            '</tr>';
+        });
+        tbody.innerHTML = html;
+      }
+    }
+  }
+  const _origUpdate = window.updateDashboard;
+  if (typeof _origUpdate === 'function') {
+    window.updateDashboard = function() { _origUpdate.apply(this, arguments); if (window.VENDAS_DATA) renderMixTipo(); };
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fetchVendas);
+  else fetchVendas();
 })();
 </script>
 
