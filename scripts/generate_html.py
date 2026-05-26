@@ -312,19 +312,43 @@ function updateDashboard() {
   document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
 
   const ano    = activeAno === 'latest' ? LATEST_ANO : activeAno;
-  const mesLbl = {all:ano+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
+  const anoTxt = activeAno === 'todos' ? 'Todos os anos' : ano;
+  const mesLbl = {all:anoTxt+' acumulado',jan:'Jan '+ano,fev:'Fev '+ano,mar:'Mar '+ano,
                   abr:'Abr '+ano,mai:'Mai '+ano,jun:'Jun '+ano,jul:'Jul '+ano,
                   ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
   // Gera mapeamento vend→label dinamicamente
   const vLblMap = {all:''};
   VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + v.charAt(0) + v.slice(1).toLowerCase(); });
-  document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||ano) + (vLblMap[activeVend]||'');
+  document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||anoTxt) + (vLblMap[activeVend]||'');
+
+  // Sub-titulos dinamicos (refletem filtros)
+  const filterSuffix = (mesLbl[activeMes]||anoTxt) + (vLblMap[activeVend]||'');
+  const subMesEl   = document.getElementById('sub-mes');
+  const subModalEl = document.getElementById('sub-modal');
+  const subVendEl  = document.getElementById('sub-vend');
+  if (subModalEl) subModalEl.textContent = 'Distribuição por número de vendas · ' + filterSuffix;
+  if (subVendEl)  subVendEl.textContent  = 'Faturamento por vendedor · ' + filterSuffix;
 
   // Meses com dados
   const mesKeys = Object.keys(d.mes||{}).filter(m => (d.mes[m].v||0) > 0);
   const mesVals = mesKeys.map(m => d.mes[m].v);
-  const mesLbls = mesKeys.map(m => ({jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',
-                                      jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'}[m]||m));
+  const mesNames = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+  const mesNamesFull = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
+  const mesLbls = mesKeys.map(m => mesNames[m]||m);
+
+  if (subMesEl) {
+    if (activeMes !== 'all') {
+      subMesEl.textContent = (mesNamesFull[activeMes]||activeMes) + ' ' + ano + (vLblMap[activeVend]||'');
+    } else if (mesKeys.length === 0) {
+      subMesEl.textContent = 'Sem dados · ' + anoTxt + (vLblMap[activeVend]||'');
+    } else if (mesKeys.length === 1) {
+      subMesEl.textContent = (mesNamesFull[mesKeys[0]]||mesKeys[0]) + ' · ' + anoTxt + (vLblMap[activeVend]||'');
+    } else {
+      const first = mesNamesFull[mesKeys[0]] || mesKeys[0];
+      const last  = mesNamesFull[mesKeys[mesKeys.length-1]] || mesKeys[mesKeys.length-1];
+      subMesEl.textContent = first + ' a ' + last + ' · ' + anoTxt + (vLblMap[activeVend]||'');
+    }
+  }
 
   chartMes.data.labels   = mesLbls;
   chartMes.data.datasets[0].data = mesVals;
