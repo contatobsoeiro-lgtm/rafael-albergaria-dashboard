@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -42,20 +42,22 @@
   .filter-btn.active { background: var(--verde); border-color: var(--verde); color: #fff; font-weight: 600; }
   .filter-divider { width: 1px; height: 28px; background: var(--cinza-border); }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
-  .kpi-card { background: var(--card-bg); border: 1px solid var(--cinza-border); border-radius: 12px; padding: 20px 22px; box-shadow: var(--shadow); }
-  .kpi-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 17px; }
-  .kpi-icon.green  { background: var(--verde-light); }
-  .kpi-icon.blue   { background: #dbeafe; }
-  .kpi-icon.purple { background: #ede9fe; }
-  .kpi-icon.orange { background: #ffedd5; }
-  .kpi-icon.teal   { background: #ccfbf1; }
-  .kpi-icon.red    { background: #fee2e2; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi-card { background: var(--card-bg); border: 1px solid var(--cinza-border); border-left: 3px solid #94a3b8; border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); position: relative; transition: transform .15s, box-shadow .15s; }
+  .kpi-card:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(15,23,42,.06); }
+  .kpi-card.green  { border-left-color: var(--verde); }
+  .kpi-card.blue   { border-left-color: #3b82f6; }
+  .kpi-card.purple { border-left-color: #8b5cf6; }
+  .kpi-card.orange { border-left-color: #f59e0b; }
+  .kpi-card.teal   { border-left-color: #14b8a6; }
+  .kpi-card.red    { border-left-color: #ef4444; }
+  .kpi-icon { display: none; } /* obsoleto, mantido para nao quebrar HTML antigo */
+  .kpi-emoji { font-size: 13px; margin-right: 4px; opacity: .8; }
   .kpi-value.teal  { color: #0d9488; }
   .kpi-value.red   { color: #dc2626; }
-  .kpi-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-  .kpi-value { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1; }
-  .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 7px; }
+  .kpi-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; display: flex; align-items: center; }
+  .kpi-value { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 5px; line-height: 1.4; }
   .kpi-badge { display: inline-block; background: var(--verde-light); color: var(--verde-dark); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
 
   .charts-row { display: grid; gap: 16px; margin-bottom: 16px; }
@@ -91,8 +93,15 @@
 
   /* ── ANÁLISES AVANÇADAS ── */
   .section-header { display: flex; align-items: baseline; gap: 10px; margin: 24px 0 14px; }
+  .section-header.section-toggle { cursor: pointer; user-select: none; }
   .section-header-title { font-size: 15px; font-weight: 800; color: var(--text); }
   .section-header-sub { font-size: 12px; color: var(--text-muted); }
+  .section-collapse-btn { background: transparent; border: none; padding: 4px; margin-right: 2px; cursor: pointer; color: var(--text-muted); display: inline-flex; align-items: center; justify-content: center; transition: transform .25s; border-radius: 6px; }
+  .section-collapse-btn:hover { background: var(--cinza); color: var(--text); }
+  .section-collapse-btn svg { width: 16px; height: 16px; }
+  .section-header.collapsed .section-collapse-btn { transform: rotate(-90deg); }
+  .section-body { overflow: hidden; max-height: 100000px; transition: max-height .4s ease, opacity .25s ease, margin .25s ease; opacity: 1; }
+  .section-body.collapsed { max-height: 0 !important; opacity: 0; margin: 0; pointer-events: none; }
   .charts-row-3 { grid-template-columns: 1fr 1fr; }
   .charts-row-4 { grid-template-columns: 1fr 2fr; }
   .analytics-table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -109,15 +118,20 @@
   .pill-gray   { background: var(--cinza-border); color: var(--text-muted); }
   .bar-wrap { height: 6px; background: var(--cinza-border); border-radius: 3px; overflow: hidden; margin-top: 4px; min-width: 60px; }
   .bar-fill { height: 100%; border-radius: 3px; }
-  .mrr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-  .mrr-item { background: var(--cinza); border-radius: 10px; padding: 11px 13px; }
-  .mrr-item-label { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 3px; }
-  .mrr-item-value { font-size: 19px; font-weight: 800; color: var(--text); }
-  .mrr-item-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-  .mrr-total { background: var(--verde-light); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
-  .mrr-total-label { font-size: 12px; font-weight: 700; color: var(--verde-dark); }
-  .mrr-total-sub { font-size: 10px; color: var(--verde-dark); margin-top: 2px; }
-  .mrr-total-value { font-size: 24px; font-weight: 800; color: var(--verde-dark); }
+  .mrr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .mrr-item { background: var(--card-bg); border: 1px solid var(--cinza-border); border-left: 3px solid #94a3b8; border-radius: 10px; padding: 12px 14px; transition: transform .15s, box-shadow .15s; }
+  .mrr-item:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(15,23,42,.05); }
+  .mrr-item.trim  { border-left-color: var(--verde); }
+  .mrr-item.sem   { border-left-color: #8b5cf6; }
+  .mrr-item.anu   { border-left-color: #f59e0b; }
+  .mrr-item.men   { border-left-color: #94a3b8; }
+  .mrr-item-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+  .mrr-item-value { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .mrr-item-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
+  .mrr-total { background: linear-gradient(135deg, var(--verde-light), #f0fdf4); border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+  .mrr-total-label { font-size: 12px; font-weight: 700; color: var(--verde-dark); text-transform: uppercase; letter-spacing: .04em; }
+  .mrr-total-sub { font-size: 11px; color: var(--verde-dark); margin-top: 3px; opacity: .85; }
+  .mrr-total-value { font-size: 26px; font-weight: 800; color: var(--verde-dark); line-height: 1.1; }
   .insight-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
   .insight-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: var(--cinza); }
   .insight-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
@@ -297,41 +311,43 @@
     </div>
   </div>
 
+  <div class="section-header section-toggle" data-section="overview">
+    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="section-header-title">📊 Visão Geral</div>
+    <div class="section-header-sub">KPIs · Faturamento · Modalidade · Vendedor · Comissões · Ticket</div>
+  </div>
+
+  <div class="section-body" data-section="overview">
+
   <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-icon green">💰</div>
-      <div class="kpi-label">Faturamento Total</div>
+    <div class="kpi-card green">
+      <div class="kpi-label"><span class="kpi-emoji">💰</span>Faturamento Total</div>
       <div class="kpi-value" id="kpi-fat">R$ 243.531</div>
       <div class="kpi-sub"><span class="kpi-badge" id="kpi-fat-badge">2026 acumulado</span></div>
       <div class="meta-progress" id="meta-progress-wrap" style="display:none"><div class="meta-bar-wrap"><div class="meta-bar" id="meta-progress-bar" style="width:0%"></div></div><div class="meta-bar-labels"><span id="meta-pct-label"></span><span>Meta: R$60k</span></div></div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon blue">📋</div>
-      <div class="kpi-label">Vendas Realizadas</div>
+    <div class="kpi-card blue">
+      <div class="kpi-label"><span class="kpi-emoji">📋</span>Vendas Realizadas</div>
       <div class="kpi-value" id="kpi-vendas">491</div>
       <div class="kpi-sub" id="kpi-vendas-sub">pacientes atendidos</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon purple">🎯</div>
-      <div class="kpi-label">Ticket Médio</div>
+    <div class="kpi-card purple">
+      <div class="kpi-label"><span class="kpi-emoji">🎯</span>Ticket Médio</div>
       <div class="kpi-value" id="kpi-ticket">R$ 496</div>
       <div class="kpi-sub" id="kpi-ticket-sub">por venda</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon teal">📊</div>
-      <div class="kpi-label">Margem Bruta</div>
+    <div class="kpi-card teal">
+      <div class="kpi-label"><span class="kpi-emoji">📊</span>Margem Bruta</div>
       <div class="kpi-value teal" id="kpi-margem">R$ 199.695</div>
       <div class="kpi-sub" id="kpi-margem-pct">fat − comissões · <strong id="kpi-margem-pct-val">82%</strong> do faturamento</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon orange">⭐</div>
-      <div class="kpi-label">Comissão Vendedor</div>
+    <div class="kpi-card orange">
+      <div class="kpi-label"><span class="kpi-emoji">⭐</span>Comissão Vendedor</div>
       <div class="kpi-value" id="kpi-cvend-card">R$ 7.306</div>
       <div class="kpi-sub" id="kpi-cvend-sub">a pagar no período</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-icon red">🏋️</div>
-      <div class="kpi-label">Custo Personal</div>
+    <div class="kpi-card red">
+      <div class="kpi-label"><span class="kpi-emoji">🏋️</span>Custo Personal</div>
       <div class="kpi-value red" id="kpi-personal">R$ 36.530</div>
       <div class="kpi-sub" id="kpi-personal-sub">repasse adicional treino</div>
     </div>
@@ -381,6 +397,8 @@
     </div>
   </div>
 
+  </div><!-- /section-body overview -->
+
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -388,10 +406,13 @@
      ══════════════════════════════════════════════════════════════════ -->
 <div class="main" style="padding-top:0">
 
-  <div class="section-header">
+  <div class="section-header section-toggle" data-section="previsibilidade">
+    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     <div class="section-header-title">📅 Previsibilidade & Metas</div>
     <div class="section-header-sub" id="prev-sub">Carregando dados do controle de vendas...</div>
   </div>
+
+  <div class="section-body" data-section="previsibilidade">
 
   <!-- Linha 1: 4 cards compactos do mês corrente -->
   <div class="prev-kpis" id="prev-kpis-wrap" style="display:none">
@@ -457,6 +478,8 @@
     </div>
   </div>
 
+  </div><!-- /section-body previsibilidade -->
+
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -464,10 +487,13 @@
      ══════════════════════════════════════════════════════════════════ -->
 <div class="main" style="padding-top:0">
 
-  <div class="section-header">
+  <div class="section-header section-toggle" data-section="estrategicas">
+    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     <div class="section-header-title">📈 Análises Estratégicas</div>
     <div class="section-header-sub">LTV · Ticket real por modalidade · Upsell · MRR estimado · Insights</div>
   </div>
+
+  <div class="section-body" data-section="estrategicas">
 
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
 
@@ -548,23 +574,23 @@
       <div class="chart-title" id="mrr-title">MRR Estimado</div>
       <div class="chart-sub" id="mrr-sub">Receita mensal garantida dos contratos não-mensais do período</div>
       <div class="mrr-grid" id="mrr-grid">
-        <div class="mrr-item">
+        <div class="mrr-item trim">
           <div class="mrr-item-label">Trimestral</div>
           <div class="mrr-item-value" id="mrr-trim-val">—</div>
           <div class="mrr-item-sub" id="mrr-trim-sub">calculando…</div>
         </div>
-        <div class="mrr-item">
+        <div class="mrr-item sem">
           <div class="mrr-item-label">Semestral</div>
           <div class="mrr-item-value" id="mrr-sem-val">—</div>
           <div class="mrr-item-sub" id="mrr-sem-sub">calculando…</div>
         </div>
-        <div class="mrr-item">
+        <div class="mrr-item anu">
           <div class="mrr-item-label">Anual</div>
           <div class="mrr-item-value" id="mrr-anu-val">—</div>
           <div class="mrr-item-sub" id="mrr-anu-sub">calculando…</div>
         </div>
-        <div class="mrr-item" style="border:1.5px dashed var(--cinza-border)">
-          <div class="mrr-item-label">Mensal (renov. 60%)</div>
+        <div class="mrr-item men">
+          <div class="mrr-item-label">Mensal · renov. 60%</div>
           <div class="mrr-item-value" id="mrr-men-val" style="color:var(--text-muted)">—</div>
           <div class="mrr-item-sub">estimativa conservadora</div>
         </div>
@@ -589,6 +615,7 @@
 
   </div>
 
+  </div><!-- /section-body estrategicas -->
 </div>
 
 
@@ -13205,6 +13232,72 @@ updateDashboard();
     document.addEventListener('DOMContentLoaded', loadPrevisao);
   } else {
     loadPrevisao();
+  }
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     COLAPSAR/EXPANDIR SECOES (estado salvo em localStorage)
+     ══════════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const STORAGE_KEY = 'dashboard_collapsed_sections_v1';
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+  function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+
+  function applyState() {
+    const state = loadState();
+    document.querySelectorAll('.section-toggle').forEach(header => {
+      const key = header.dataset.section;
+      if (!key) return;
+      const body = document.querySelector('.section-body[data-section="' + key + '"]');
+      if (!body) return;
+      if (state[key] === true) {
+        header.classList.add('collapsed');
+        body.classList.add('collapsed');
+      } else {
+        header.classList.remove('collapsed');
+        body.classList.remove('collapsed');
+      }
+    });
+  }
+
+  function toggleSection(key) {
+    const state = loadState();
+    state[key] = !state[key];
+    saveState(state);
+    const header = document.querySelector('.section-toggle[data-section="' + key + '"]');
+    const body = document.querySelector('.section-body[data-section="' + key + '"]');
+    if (!header || !body) return;
+    header.classList.toggle('collapsed', state[key]);
+    body.classList.toggle('collapsed', state[key]);
+    // dispara um resize após a transição para os Chart.js redimensionarem
+    if (!state[key]) {
+      setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 450);
+    }
+  }
+
+  function init() {
+    applyState();
+    document.querySelectorAll('.section-toggle').forEach(header => {
+      header.addEventListener('click', function(e) {
+        // permite clicar no botão ou em qualquer parte do header
+        const key = header.dataset.section;
+        if (key) toggleSection(key);
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();
 </script>
