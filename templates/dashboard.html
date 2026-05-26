@@ -75,6 +75,24 @@
   .kpi-trend.down { background: rgba(239,68,68,.12); color: #b91c1c; }
   .kpi-trend.neu { background: rgba(100,116,139,.12); color: #475569; }
 
+  /* ── OPORTUNIDADES & ACOES ── */
+  .opp-list { display: flex; flex-direction: column; gap: 6px; max-height: 320px; overflow-y: auto; }
+  .opp-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; background: var(--cinza); border-radius: 8px; font-size: 12px; transition: background .15s; }
+  .opp-row:hover { background: #e2e8f0; }
+  .opp-row-name { font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .opp-row-meta { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .opp-row-val { font-weight: 700; color: var(--text); text-align: right; font-size: 12px; }
+  .opp-row-pill { display: inline-block; padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+  .opp-row-pill.warn { background: #fef3c7; color: #92400e; }
+  .opp-row-pill.bad  { background: #fee2e2; color: #991b1b; }
+  .opp-row-pill.good { background: #dcfce7; color: #166534; }
+  .opp-row-pill.blue { background: #dbeafe; color: #1e40af; }
+  .opp-summary { display: flex; align-items: baseline; gap: 8px; padding: 10px 12px; background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 10px; margin-bottom: 10px; }
+  .opp-summary.good { background: linear-gradient(135deg, var(--verde-light), #f0fdf4); }
+  .opp-summary.bad  { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+  .opp-summary-num { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; }
+  .opp-summary-lbl { font-size: 11px; color: var(--text-muted); }
+
   .charts-row { display: grid; gap: 16px; margin-bottom: 16px; }
   .charts-row-1 { grid-template-columns: 2fr 1fr 1fr; }
   .charts-row-2 { grid-template-columns: 3fr 2fr; }
@@ -508,6 +526,51 @@
   </div>
 
   </div><!-- /section-body previsibilidade -->
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     OPORTUNIDADES & AÇÕES
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="main" style="padding-top:0">
+
+  <div class="section-header section-toggle" data-section="oportunidades">
+    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="section-header-title">🎯 Oportunidades & Ações</div>
+    <div class="section-header-sub">Consultas pendentes · Top vendas · Clientes em risco de churn</div>
+  </div>
+
+  <div class="section-body" data-section="oportunidades">
+
+  <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px">
+
+    <div class="chart-card">
+      <div class="chart-title">📞 Consultas Online Pendentes</div>
+      <div class="chart-sub" id="cons-sub">Pacientes com plano que inclui consulta · ainda não agendaram</div>
+      <div id="cons-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">🏆 Top Vendas do Período</div>
+      <div class="chart-sub" id="topv-sub">Maiores tickets · respeita filtros</div>
+      <div id="topv-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">⚠️ Clientes em Risco</div>
+      <div class="chart-sub" id="churn-sub">Mensais sem renovação há 30+ dias</div>
+      <div id="churn-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+  </div>
+
+  </div><!-- /section-body oportunidades -->
 
 </div>
 
@@ -1731,10 +1794,14 @@ updateDashboard();
       rows.push(cols);
     }
     return rows.map(r => ({
+      data: (r[0]||'').trim(),
       ano: (r[1]||'').trim(),
       mes: ((r[2]||'').toLowerCase().match(/^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)||[])[1]||'',
-      tipo: (r[4]||'').trim(), mod: (r[5]||'').trim(), valor: parseBRL(r[7]),
-      vendedor: (r[8]||'').trim().toLowerCase()
+      paciente: (r[3]||'').trim(),
+      tipo: (r[4]||'').trim(), mod: (r[5]||'').trim(), adic: (r[6]||'').trim(), valor: parseBRL(r[7]),
+      vendedor: (r[8]||'').trim().toLowerCase(),
+      consulta: (r[11]||'').trim(),
+      operacao: (r[12]||'').trim()
     }));
   }
   async function fetchVendas() {
@@ -1814,12 +1881,110 @@ updateDashboard();
       }
     }
   }
+  // ------------------------------------------------------------
+  // OPORTUNIDADES & ACOES (3 cards na nova secao)
+  // ------------------------------------------------------------
+  function dadosFiltrados() {
+    const data = window.VENDAS_DATA;
+    if (!data) return null;
+    const ano = (typeof activeAno !== 'undefined' && activeAno === 'latest') ? (typeof LATEST_ANO !== 'undefined' ? LATEST_ANO : '2026') : (typeof activeAno !== 'undefined' ? activeAno : '2026');
+    const filtroAno = (typeof activeAno !== 'undefined' && activeAno === 'todos') ? null : ano;
+    const filtroMes = (typeof activeMes !== 'undefined' && activeMes !== 'all') ? activeMes : null;
+    const filtroVend = (typeof activeVend !== 'undefined' && activeVend !== 'all') ? activeVend : null;
+    return data.filter(r => {
+      if (filtroAno && r.ano !== filtroAno) return false;
+      if (filtroMes && r.mes !== filtroMes) return false;
+      if (filtroVend && r.vendedor !== filtroVend) return false;
+      return true;
+    });
+  }
+  function renderConsultas() {
+    const wrap = document.getElementById('cons-content');
+    if (!wrap) return;
+    const data = dadosFiltrados(); if (!data) return;
+    const pendentes = data.filter(r => /^0\/\d+$/.test(r.consulta) && r.paciente);
+    const total = pendentes.length;
+    const subEl = document.getElementById('cons-sub');
+    if (subEl) subEl.textContent = total + ' paciente' + (total!==1?'s':'') + ' com consulta inclusa não agendada';
+    if (total === 0) { wrap.innerHTML = '<div style="color:#15803d;font-size:12px;padding:14px;text-align:center;background:#dcfce7;border-radius:8px">✅ Nenhuma consulta pendente</div>'; return; }
+    const totVal = pendentes.reduce((s,r)=>s+(r.valor||0),0);
+    let html = '<div class="opp-summary"><div class="opp-summary-num">' + total + '</div><div class="opp-summary-lbl">pacientes · R$ ' + Math.round(totVal).toLocaleString('pt-BR') + ' em planos ativos</div></div>';
+    html += '<div class="opp-list">';
+    pendentes.slice(0, 10).forEach(r => {
+      const m = r.consulta.match(/^0\/(\d+)$/);
+      const total_c = m ? m[1] : '?';
+      html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">'+r.paciente+'</div><div class="opp-row-meta">'+(r.tipo||'')+' · '+(r.mod||'')+'</div></div><div><span class="opp-row-pill warn">0/'+total_c+'</span></div></div>';
+    });
+    html += '</div>';
+    if (total > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ '+(total-10)+' outros</div>';
+    wrap.innerHTML = html;
+  }
+  function renderTopVendas() {
+    const wrap = document.getElementById('topv-content');
+    if (!wrap) return;
+    const data = dadosFiltrados(); if (!data) return;
+    const pagos = data.filter(r => r.valor > 0 && r.paciente);
+    pagos.sort((a,b) => b.valor - a.valor);
+    const top = pagos.slice(0, 5);
+    const subEl = document.getElementById('topv-sub');
+    if (subEl) subEl.textContent = 'Top 5 · '+pagos.length+' vendas pagas no filtro';
+    if (top.length === 0) { wrap.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:14px;text-align:center">Sem vendas no filtro</div>'; return; }
+    const totVal = pagos.reduce((s,r)=>s+r.valor, 0);
+    const top5Val = top.reduce((s,r)=>s+r.valor, 0);
+    const pct = totVal > 0 ? Math.round(top5Val/totVal*100) : 0;
+    let html = '<div class="opp-summary good"><div class="opp-summary-num">'+pct+'%</div><div class="opp-summary-lbl">do faturamento veio do top 5 · R$ '+Math.round(top5Val).toLocaleString('pt-BR')+'</div></div>';
+    html += '<div class="opp-list">';
+    const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
+    top.forEach((r, i) => {
+      const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor ? r.vendedor.charAt(0).toUpperCase()+r.vendedor.slice(1) : '');
+      html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">#'+(i+1)+' · '+r.paciente+'</div><div class="opp-row-meta">'+(r.mod||'')+' · '+vendNome+'</div></div><div class="opp-row-val">R$ '+Math.round(r.valor).toLocaleString('pt-BR')+'</div></div>';
+    });
+    html += '</div>';
+    wrap.innerHTML = html;
+  }
+  function renderChurn() {
+    const wrap = document.getElementById('churn-content');
+    if (!wrap) return;
+    const data = window.VENDAS_DATA; if (!data) return;
+    const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    function mesIndex(m) { return MES_ORDER.indexOf(m); }
+    const ano = (typeof activeAno !== 'undefined' && activeAno === 'latest') ? (typeof LATEST_ANO !== 'undefined' ? LATEST_ANO : '2026') : (typeof activeAno !== 'undefined' ? activeAno : '2026');
+    const mensais = data.filter(r => r.mod === 'Mensal' && r.paciente && r.ano === ano);
+    const byPaciente = {};
+    mensais.forEach(r => {
+      const k = r.paciente.toLowerCase().trim();
+      if (!byPaciente[k] || mesIndex(r.mes) > mesIndex(byPaciente[k].mes)) byPaciente[k] = r;
+    });
+    const currentMonthIdx = (new Date()).getMonth();
+    const risco = Object.values(byPaciente).filter(r => { const idx = mesIndex(r.mes); if (idx < 0) return false; return idx < currentMonthIdx - 1; });
+    risco.sort((a,b) => mesIndex(a.mes) - mesIndex(b.mes));
+    const subEl = document.getElementById('churn-sub');
+    if (subEl) subEl.textContent = risco.length + ' mensais sem renovação · risco de churn';
+    if (risco.length === 0) { wrap.innerHTML = '<div style="color:#15803d;font-size:12px;padding:14px;text-align:center;background:#dcfce7;border-radius:8px">✅ Nenhum mensal em risco</div>'; return; }
+    const totVal = risco.reduce((s,r)=>s+(r.valor||0), 0);
+    let html = '<div class="opp-summary bad"><div class="opp-summary-num">'+risco.length+'</div><div class="opp-summary-lbl">clientes mensais em risco · ~R$ '+Math.round(totVal).toLocaleString('pt-BR')+' em jogo</div></div>';
+    html += '<div class="opp-list">';
+    const MES_LBL = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+    risco.slice(0, 10).forEach(r => {
+      const idx = mesIndex(r.mes);
+      const meses = currentMonthIdx - idx;
+      const pillCls = meses >= 3 ? 'bad' : 'warn';
+      html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">'+r.paciente+'</div><div class="opp-row-meta">Última: '+(MES_LBL[r.mes]||r.mes)+' · '+(r.tipo||'')+'</div></div><div><span class="opp-row-pill '+pillCls+'">'+meses+' mês'+(meses!==1?'es':'')+'</span></div></div>';
+    });
+    html += '</div>';
+    if (risco.length > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ '+(risco.length-10)+' outros</div>';
+    wrap.innerHTML = html;
+  }
+  function renderOportunidades() { renderConsultas(); renderTopVendas(); renderChurn(); }
+
   const _origUpdate = window.updateDashboard;
   if (typeof _origUpdate === 'function') {
-    window.updateDashboard = function() { _origUpdate.apply(this, arguments); if (window.VENDAS_DATA) renderMixTipo(); };
+    window.updateDashboard = function() { _origUpdate.apply(this, arguments); if (window.VENDAS_DATA) { renderMixTipo(); renderOportunidades(); } };
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fetchVendas);
-  else fetchVendas();
+  const _origFetchVendas = fetchVendas;
+  async function fetchVendasAndRender() { await _origFetchVendas(); renderOportunidades(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fetchVendasAndRender);
+  else fetchVendasAndRender();
 })();
 </script>
 
