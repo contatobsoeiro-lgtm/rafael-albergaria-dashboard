@@ -207,8 +207,10 @@ const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
 
     # CSS para botão comparar
     css_compare = """
-  .filter-btn-compare { border-color: #8b5cf6 !important; color: #7c3aed !important; }
-  .filter-btn-compare.active { background: #8b5cf6 !important; border-color: #8b5cf6 !important; color: #fff !important; }
+  .filter-btn-compare { color: #7c3aed !important; background: rgba(139,92,246,.08) !important; padding-left: 14px !important; padding-right: 14px !important; font-weight: 700 !important; margin-left: 6px; }
+  .filter-btn-compare:hover { background: rgba(139,92,246,.15) !important; color: #6d28d9 !important; }
+  .filter-btn-compare.active { background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important; color: #fff !important; box-shadow: 0 1px 2px rgba(15,23,42,.08), 0 2px 8px rgba(139,92,246,.32) !important; }
+  .filter-btn-compare.active:hover { background: linear-gradient(135deg, #7c3aed, #6d28d9) !important; }
   #compare-section { display: none; }
   #compare-section.show { display: block; }
   .yoy-up   { color: #16a34a; font-weight: 700; }
