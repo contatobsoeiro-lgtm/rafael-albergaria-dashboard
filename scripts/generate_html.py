@@ -357,12 +357,26 @@ function updateDashboard() {
   document.getElementById('kpi-personal').textContent   = 'R$ ' + fmt(d.ctreino||0);
 
   // Indicador MoM (variacao vs mes anterior) nos 3 KPIs principais
+  // Funciona com qualquer combinacao de filtros (mes/vendedor)
   (function() {
     const MES_ORDER_LOC = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-    const mesData = d.mes || {};
+    const MES_LBL_SHORT = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+    function blockFor(mes) {
+      if (activeVend !== 'all') {
+        const b = anoData[activeVend + '_' + mes];
+        if (!b) return null;
+        return { v: b.fat || 0, c: b.n || 0 };
+      }
+      const blk = anoData[mes];
+      if (blk && blk.fat !== undefined) return { v: blk.fat, c: blk.n };
+      const all = anoData['all'];
+      if (all && all.mes && all.mes[mes]) return { v: all.mes[mes].v || 0, c: all.mes[mes].c || 0 };
+      return null;
+    }
     let curMes = null, prevMes = null;
     if (activeMes === 'all') {
-      const ms = MES_ORDER_LOC.filter(m => mesData[m] && mesData[m].v > 0);
+      const allMes = (anoData['all'] && anoData['all'].mes) || {};
+      const ms = MES_ORDER_LOC.filter(m => allMes[m] && allMes[m].v > 0);
       if (ms.length >= 2) { curMes = ms[ms.length-1]; prevMes = ms[ms.length-2]; }
     } else {
       const idx = MES_ORDER_LOC.indexOf(activeMes);
@@ -377,9 +391,9 @@ function updateDashboard() {
       const sign = pct > 0 ? '+' : '';
       el.innerHTML = ' <span class="kpi-trend ' + cls + '" title="' + lbl + '">' + arrow + ' ' + sign + pct + '%</span>';
     }
-    if (curMes && prevMes && mesData[curMes] && mesData[prevMes] && mesData[prevMes].v > 0) {
-      const cur = mesData[curMes], prev = mesData[prevMes];
-      const MES_LBL_SHORT = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+    const cur = curMes ? blockFor(curMes) : null;
+    const prev = prevMes ? blockFor(prevMes) : null;
+    if (cur && prev && prev.v > 0) {
       const lbl = (MES_LBL_SHORT[curMes]||curMes) + ' vs ' + (MES_LBL_SHORT[prevMes]||prevMes);
       const fatPct = Math.round((cur.v - prev.v) / prev.v * 100);
       const vendPct = prev.c > 0 ? Math.round((cur.c - prev.c) / prev.c * 100) : null;
