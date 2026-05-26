@@ -399,7 +399,9 @@ function updateAdvanced() {
   let rows = '';
   VENDORS_LIST.forEach(v => {
     const vk = v.toLowerCase();
-    const vd = anoData[vk];
+    if (activeVend !== 'all' && activeVend !== vk) return;
+    const dataKey = activeMes !== 'all' ? vk + '_' + activeMes : vk;
+    const vd = anoData[dataKey];
     if (!vd || !vd.n) return;
     const m = vd.modal || {};
     const n = vd.n;

@@ -12681,7 +12681,11 @@ function updateAdvanced() {
   let rows = '';
   VENDORS_LIST.forEach(v => {
     const vk = v.toLowerCase();
-    const vd = anoData[vk];
+    // Respeita filtro de vendedor
+    if (activeVend !== 'all' && activeVend !== vk) return;
+    // Respeita filtro de mes: usa dado vendedor+mes; sem fallback para acumulado
+    const dataKey = activeMes !== 'all' ? vk + '_' + activeMes : vk;
+    const vd = anoData[dataKey];
     if (!vd || !vd.n) return;
     const m = vd.modal || {};
     const n = vd.n;
