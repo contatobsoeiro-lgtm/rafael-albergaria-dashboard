@@ -1408,21 +1408,27 @@ initMobileFilters();
   function renderVendedoresMeta(dash) {
     const wrap = document.getElementById('prev-vend-list');
     if (!wrap) return;
-    if (!dash || !dash.vendedores || !dash.vendedores.length) {
+    const ativos = (dash && dash.vendedores) ? dash.vendedores.filter(v => v.meta > 0 || v.fat > 0) : [];
+    if (!ativos.length) {
       wrap.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Sem dados</div>'; return;
     }
-    const cores = { Raquel:'#22c55e', Rafael:'#3b82f6', Junio:'#f59e0b', Duda:'#8b5cf6', Bia:'#ec4899' };
+    const cores = { Junio:'#f59e0b', Rafael:'#3b82f6', Raquel:'#22c55e', Duda:'#8b5cf6', Bia:'#ec4899' };
     let html = '';
-    dash.vendedores.forEach(v => {
+    ativos.forEach(v => {
       const cor = cores[v.nome] || '#94a3b8';
       const meta = v.meta > 0 ? v.meta : 0;
       const pct = meta > 0 ? Math.min(v.fat/meta*100, 100) : 0;
       const pctReal = meta > 0 ? Math.round(v.fat/meta*100) : 0;
       const barColor = pct >= 100 ? '#16a34a' : (pct >= 60 ? cor : '#ef4444');
+      const isOwner = v.nome === 'Rafael';
+      const tag = meta > 0 ? (' / '+fmtBRLk(meta)+' ('+pctReal+'%)') : (isOwner ? ' · dono' : ' · sem meta');
+      const barStyle = meta > 0
+        ? 'width:'+pct+'%;background:'+barColor
+        : 'width:100%;background:repeating-linear-gradient(45deg,#e2e8f0,#e2e8f0 4px,#f1f5f9 4px,#f1f5f9 8px)';
       html += '<div class="prev-vend-row">' +
         '<div class="prev-vend-name"><span style="width:8px;height:8px;border-radius:50%;background:'+cor+';display:inline-block"></span>'+v.nome+'</div>' +
-        '<div class="prev-vend-bar-wrap"><div class="prev-vend-bar" style="width:'+pct+'%;background:'+barColor+'"></div></div>' +
-        '<div class="prev-vend-val"><strong>'+fmtBRL(v.fat)+'</strong>'+(meta > 0 ? ' / '+fmtBRLk(meta)+' ('+pctReal+'%)' : ' (sem meta)')+'</div>' +
+        '<div class="prev-vend-bar-wrap"><div class="prev-vend-bar" style="'+barStyle+'"></div></div>' +
+        '<div class="prev-vend-val"><strong>'+fmtBRL(v.fat)+'</strong>'+tag+'</div>' +
         '</div>';
     });
     wrap.innerHTML = html;
