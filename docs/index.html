@@ -14065,60 +14065,57 @@ updateDashboard();
 
     } else if (currentCommType === 'personal') {
       // PERSONAL: 15% sobre TODAS as vendas com Treino, de qualquer vendedor
+      // NAO mostra valor/faturamento — so a comissao que o personal vai receber
       vendas = window.VENDAS_DATA.filter(r => r.adic === 'Treino' && r.valor > 0 && r.mes === mes && r.ano === ano);
       title = 'Comprovante de Comissão · Personal (Gustavo)';
       beneficiario = 'Gustavo (Personal Trainer)';
-      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Vendedor</th><th>Valor</th><th>Com. 15%</th></tr>';
-      let totalFat = 0, totalCom = 0;
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Comissão (15%)</th></tr>';
+      let totalCom = 0;
       let rowsHtml = '';
       vendas.forEach((r, i) => {
         const com = Math.round(r.valor * COM_TREINO_PCT * 100) / 100;
-        totalFat += r.valor; totalCom += com;
-        const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1);
+        totalCom += com;
         rowsHtml += '<tr>' +
           '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
-          '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + vendNome + '</td>' +
-          '<td style="text-align:right">' + fmtBR(r.valor) + '</td>' +
+          '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td>' +
           '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
       });
       makeRow = rowsHtml;
-      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+      totalLabel = '<tr><td colspan="5" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
       total = totalCom;
-      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
-        '<div class="summary-item"><div class="lbl">Vendas c/ Treino</div><div class="val">' + vendas.length + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Total dos planos</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Comissão (15%)</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(2,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Planos c/ Treino no mês</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
         '</div>';
-      footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano vendido com adicional "Treino" no mês de referência. Calculado direto da planilha oficial de vendas.';
+      footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano com adicional "Treino" vendido no mês de referência.';
 
     } else {
       // VENDEDOR: 3% sobre TODAS as vendas do vendedor
+      // NAO mostra valor/faturamento — so a comissao que o vendedor vai receber
       const vend = document.getElementById('comm-vendedor').value;
       const vendName = VEND_DISPLAY[vend] || vend;
       vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano);
       title = 'Comprovante de Comissão · ' + vendName + ' (Vendedor)';
       beneficiario = vendName + ' (Vendedor)';
-      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Valor</th><th>Com. 3%</th></tr>';
-      let totalFat = 0, totalCom = 0;
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Comissão (3%)</th></tr>';
+      let totalCom = 0;
       let rowsHtml = '';
       vendas.forEach((r, i) => {
         const com = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
-        totalFat += r.valor; totalCom += com;
+        totalCom += com;
         rowsHtml += '<tr>' +
           '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
           '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td>' +
-          '<td style="text-align:right">' + fmtBR(r.valor) + '</td>' +
           '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
       });
       makeRow = rowsHtml;
-      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
       total = totalCom;
-      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
-        '<div class="summary-item"><div class="lbl">Vendas no mês</div><div class="val">' + vendas.length + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Faturamento</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Comissão (3%)</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(2,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Vendas fechadas no mês</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
         '</div>';
-      footer = '<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de 3% sobre cada venda paga no mês de referência. Calculado direto da planilha oficial de vendas.';
+      footer = '<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de 3% sobre cada venda paga no mês de referência.';
     }
 
     const html = '<div class="header-print">' +
