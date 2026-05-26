@@ -128,15 +128,56 @@
   .meta-bar { height: 100%; border-radius: 3px; transition: width .45s; background: var(--verde); }
   .meta-bar.over { background: #16a34a; }
   .meta-bar-labels { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; }
+
+  /* ── PREVISIBILIDADE & METAS ── */
+  .prev-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 4px; }
+  .prev-card { background: var(--card-bg); border: 1px solid var(--cinza-border); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); }
+  .prev-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+  .prev-value { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .prev-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .prev-meta-bar { position: relative; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-top: 10px; }
+  .prev-meta-bar-fill { height: 100%; border-radius: 4px; transition: width .45s; background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .prev-meta-bar-fill.warn { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .prev-meta-bar-fill.bad { background: linear-gradient(90deg, #ef4444, #dc2626); }
+  .prev-meta-mark { position: absolute; top: -2px; bottom: -2px; width: 2px; background: #1e293b; opacity: .65; }
+  .prev-meta-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .prev-vend-row { display: grid; grid-template-columns: 90px 1fr 110px; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--cinza-border); }
+  .prev-vend-row:last-child { border-bottom: none; }
+  .prev-vend-name { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+  .prev-vend-bar-wrap { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+  .prev-vend-bar { height: 100%; border-radius: 4px; transition: width .45s; }
+  .prev-vend-val { font-size: 12px; text-align: right; color: var(--text-muted); }
+  .prev-vend-val strong { color: var(--text); }
+  .prev-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
+  .prev-cal-cell { padding: 8px 6px; border-radius: 8px; background: var(--cinza); text-align: center; min-height: 64px; display: flex; flex-direction: column; justify-content: center; border: 1px solid transparent; }
+  .prev-cal-cell.weekend { background: #f1f5f9; color: #cbd5e1; }
+  .prev-cal-cell.future { background: #f8fafc; color: #cbd5e1; border-style: dashed; border-color: #e2e8f0; }
+  .prev-cal-cell.today { border: 2px solid #1e293b; }
+  .prev-cal-cell.good { background: #dcfce7; border-color: #22c55e; }
+  .prev-cal-cell.warn { background: #fef3c7; border-color: #f59e0b; }
+  .prev-cal-cell.bad { background: #fee2e2; border-color: #ef4444; }
+  .prev-cal-date { font-size: 11px; font-weight: 700; color: var(--text); }
+  .prev-cal-pct { font-size: 14px; font-weight: 800; margin-top: 2px; }
+  .prev-cal-real { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+  .prev-cal-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; font-size: 11px; color: var(--text-muted); }
+  .prev-cal-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; vertical-align: middle; margin-right: 4px; }
+
   /* ── RESPONSIVO ── */
   @media (max-width: 1100px) {
     .kpi-grid        { grid-template-columns: repeat(3, 1fr); }
     .charts-row-1    { grid-template-columns: 1fr 1fr; }
     .charts-row-2, .charts-row-3, .charts-row-4 { grid-template-columns: 1fr; }
+    .prev-kpis       { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 780px) {
     .kpi-grid        { grid-template-columns: repeat(2, 1fr); }
     .charts-row-1    { grid-template-columns: 1fr; }
+    .prev-kpis       { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .prev-cal-grid   { gap: 4px; }
+    .prev-cal-cell   { min-height: 52px; padding: 5px 3px; }
+    .prev-cal-date   { font-size: 10px; }
+    .prev-cal-pct    { font-size: 12px; }
+    .prev-cal-real   { display: none; }
   }
   @media (max-width: 680px) {
     .main            { padding: 12px 14px; }
@@ -337,6 +378,82 @@
       <div class="chart-title">Ticket Médio por Vendedor</div>
       <div class="chart-sub">Valor médio por venda (R$) no período</div>
       <div class="chart-wrap h260"><canvas id="chartTicket"></canvas></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PREVISIBILIDADE & METAS (dados live da aba Previsão do Sheets)
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="main" style="padding-top:0">
+
+  <div class="section-header">
+    <div class="section-header-title">📅 Previsibilidade & Metas</div>
+    <div class="section-header-sub" id="prev-sub">Carregando dados do controle de vendas...</div>
+  </div>
+
+  <!-- Linha 1: 4 cards compactos do mês corrente -->
+  <div class="prev-kpis" id="prev-kpis-wrap" style="display:none">
+    <div class="prev-card">
+      <div class="prev-label">📊 Recorrência do Mês</div>
+      <div class="prev-value" id="prev-rec-pct">—</div>
+      <div class="prev-sub"><span id="prev-rec-real">R$ —</span> de <span id="prev-rec-prev">R$ —</span> esperado</div>
+      <div class="prev-meta-bar"><div class="prev-meta-bar-fill" id="prev-rec-bar" style="width:0%"></div><div class="prev-meta-mark" title="Meta 60%" style="left:60%"></div></div>
+      <div class="prev-meta-label">Meta: 60%</div>
+    </div>
+    <div class="prev-card">
+      <div class="prev-label">🎯 Projeção do Mês</div>
+      <div class="prev-value" id="prev-proj-val">R$ —</div>
+      <div class="prev-sub"><span id="prev-proj-pct">—</span> da meta de R$ 60k · <span id="prev-proj-gap">—</span></div>
+      <div class="prev-meta-bar"><div class="prev-meta-bar-fill" id="prev-proj-bar" style="width:0%"></div></div>
+      <div class="prev-meta-label" id="prev-proj-sub">Ritmo atual aplicado aos dias restantes</div>
+    </div>
+    <div class="prev-card">
+      <div class="prev-label">📆 Dias Úteis</div>
+      <div class="prev-value"><span id="prev-dias-rest">—</span><span style="font-size:14px;color:#94a3b8">/<span id="prev-dias-tot">—</span></span></div>
+      <div class="prev-sub">restantes · ritmo necessário <strong id="prev-ritmo-need">R$ —</strong>/dia</div>
+      <div class="prev-meta-label" id="prev-dias-passou">— dias já passados</div>
+    </div>
+    <div class="prev-card">
+      <div class="prev-label">💼 Realizado vs Esperado</div>
+      <div class="prev-value" id="prev-acum-val">R$ —</div>
+      <div class="prev-sub">esperado até hoje: <strong id="prev-acum-meta">R$ —</strong></div>
+      <div class="prev-meta-bar"><div class="prev-meta-bar-fill" id="prev-acum-bar" style="width:0%"></div></div>
+      <div class="prev-meta-label" id="prev-acum-pct">—</div>
+    </div>
+  </div>
+
+  <!-- Linha 2: gráficos de tendência -->
+  <div class="charts-row charts-row-1" style="margin-top:16px" id="prev-charts-wrap" style="display:none">
+    <div class="chart-card">
+      <div class="chart-title">Recorrência: Real vs Prevista por Mês</div>
+      <div class="chart-sub">% do esperado renovado · meta 60%</div>
+      <div class="chart-wrap h220"><canvas id="chartRecorrencia"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Carteira a Vencer (Recorrência Prevista)</div>
+      <div class="chart-sub">R$ esperado de renovação por mês do ano</div>
+      <div class="chart-wrap h220"><canvas id="chartCarteira"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Meta por Vendedor (mês corrente)</div>
+      <div class="chart-sub" id="prev-vend-sub">Faturamento individual vs meta cadastrada</div>
+      <div id="prev-vend-list" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- Linha 3: calendário diário -->
+  <div class="chart-card" id="prev-cal-wrap" style="margin-top:16px;display:none">
+    <div class="chart-title">📅 Calendário Diário <span id="prev-cal-mes" style="color:#94a3b8;font-weight:500"></span></div>
+    <div class="chart-sub">Cada dia útil: meta acumulada · realizado · % atingido</div>
+    <div id="prev-cal-grid" class="prev-cal-grid"></div>
+    <div class="prev-cal-legend">
+      <span><span class="prev-cal-dot" style="background:#22c55e"></span>≥ 90%</span>
+      <span><span class="prev-cal-dot" style="background:#f59e0b"></span>60-89%</span>
+      <span><span class="prev-cal-dot" style="background:#ef4444"></span>&lt; 60%</span>
+      <span><span class="prev-cal-dot" style="background:#cbd5e1"></span>fim de semana</span>
+      <span><span class="prev-cal-dot" style="background:#e2e8f0"></span>futuro</span>
     </div>
   </div>
 
@@ -12655,6 +12772,432 @@ updateDashboard();
     });
     return result;
   };
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PREVISIBILIDADE — fetch live da aba Previsão + render dos cards
+     ══════════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const SHEET_ID = '19RLmBTG5JQ4ocotoX3V0SmHILM2l_7PyMCQ4UJamCjM';
+  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Previs%C3%A3o&headers=2';
+  const DASH_URL  = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Dashboard&headers=2';
+  const META_REC  = 0.60; // meta de 60% de recorrência
+  const META_MES  = 60000; // meta mensal R$60k
+  const MESES_PT  = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const MES_NAMES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+  window.PREVISAO_DATA = null;
+  window.DASHBOARD_DATA = null;
+  let chartRecorrencia = null;
+  let chartCarteira = null;
+
+  function fmtN(n) {
+    if (n == null || isNaN(n)) return '0';
+    return Math.round(n).toLocaleString('pt-BR');
+  }
+  function fmtBRL(n) { return 'R$ ' + fmtN(n); }
+  function fmtBRLk(n) {
+    if (n == null || isNaN(n)) return 'R$0';
+    if (Math.abs(n) >= 1000) return 'R$' + (n/1000).toFixed(1).replace('.0','') + 'k';
+    return 'R$' + Math.round(n);
+  }
+
+  function parseGvizJSON(text) {
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start === -1 || end === -1) return null;
+    try { return JSON.parse(text.slice(start, end + 1)); } catch(e) { return null; }
+  }
+
+  async function fetchSheet(url) {
+    try {
+      const r = await fetch(url);
+      const txt = await r.text();
+      return parseGvizJSON(txt);
+    } catch(e) { console.warn('fetch sheet failed', e); return null; }
+  }
+
+  function cellVal(row, idx) {
+    if (!row || !row.c || idx >= row.c.length || !row.c[idx]) return null;
+    return row.c[idx].v;
+  }
+
+  function parsePrevisao(json) {
+    if (!json || !json.table || !json.table.rows) return null;
+    const rows = json.table.rows;
+    // Estrutura conhecida:
+    // row 0: ano (col B)
+    // row 1: meta mensal (B) + meta % recorrencia (D)
+    // row 2..13: 12 meses (jan..dez) com [B=fat, C=novas, D=renov, E=prev, F=%, G=meta, H=%meta, I=gap]
+    // row 14: totais
+    // row 15: data atual (col B)
+    // row 16: dias úteis tot
+    // row 17: dias úteis passados
+    // row 18: meta diaria
+    // row 19: meta acumulada
+    // row 20: realizado acumulado
+    // row 21: gap acumulado
+    // row 22: % atingido
+    // row 23: ritmo necessario
+    // row 24: projecao fim do mes
+    // row 25: gap projetado
+    // row 26+: calendario diario
+    const ano = cellVal(rows[0], 1);
+    const metaMes = cellVal(rows[1], 1);
+    const metaRec = cellVal(rows[1], 3);
+    const meses = [];
+    for (let i = 0; i < 12; i++) {
+      const r = rows[2 + i];
+      if (!r) continue;
+      meses.push({
+        mes: MESES_PT[i],
+        nome: MES_NAMES[i],
+        fat: +cellVal(r, 1) || 0,
+        novas: +cellVal(r, 2) || 0,
+        renov: +cellVal(r, 3) || 0,
+        recPrev: +cellVal(r, 4) || 0,
+        recPct: +cellVal(r, 5) || 0,
+        metaMes: +cellVal(r, 6) || 0,
+        metaPct: +cellVal(r, 7) || 0,
+        gap: +cellVal(r, 8) || 0
+      });
+    }
+    const totais = rows[14] ? {
+      fat: +cellVal(rows[14], 1) || 0,
+      novas: +cellVal(rows[14], 2) || 0,
+      renov: +cellVal(rows[14], 3) || 0,
+      recPrev: +cellVal(rows[14], 4) || 0,
+      recPct: +cellVal(rows[14], 5) || 0,
+      metaAno: +cellVal(rows[14], 6) || 0,
+      metaPct: +cellVal(rows[14], 7) || 0,
+      gap: +cellVal(rows[14], 8) || 0
+    } : null;
+    // Bloco diário
+    const diario = {
+      dataAtual: cellVal(rows[15], 1),
+      diasUteisTot: +cellVal(rows[16], 1) || 0,
+      diasUteisPas: +cellVal(rows[17], 1) || 0,
+      metaDiaria: +cellVal(rows[18], 1) || 0,
+      metaAcum: +cellVal(rows[19], 1) || 0,
+      realizadoAcum: +cellVal(rows[20], 1) || 0,
+      gapAcum: +cellVal(rows[21], 1) || 0,
+      pctAtingido: +cellVal(rows[22], 1) || 0,
+      ritmoNecessario: +cellVal(rows[23], 1) || 0,
+      projecaoFim: +cellVal(rows[24], 1) || 0,
+      gapProjetado: +cellVal(rows[25], 1) || 0
+    };
+    // Calendário
+    const calendario = [];
+    for (let i = 26; i < rows.length; i++) {
+      const r = rows[i];
+      if (!r) continue;
+      const dia = cellVal(r, 0);
+      if (!dia) continue;
+      calendario.push({
+        dia: dia,
+        diaUtil: +cellVal(r, 1) || null,
+        metaAcum: +cellVal(r, 2) || null,
+        realAcum: +cellVal(r, 3) || null,
+        gap: +cellVal(r, 4) || null,
+        pct: +cellVal(r, 5) || null
+      });
+    }
+    return { ano: ano, metaMes: metaMes, metaRec: metaRec, meses: meses, totais: totais, diario: diario, calendario: calendario };
+  }
+
+  function parseDashboard(json) {
+    if (!json || !json.table || !json.table.rows) return null;
+    // Os labels estão na coluna A; valores na B..G
+    // Procurar bloco POR VENDEDOR (linha 10-15)
+    const rows = json.table.rows;
+    const vendedores = [];
+    let inVend = false;
+    for (let i = 0; i < rows.length; i++) {
+      const lbl = cellVal(rows[i], 0);
+      if (!lbl) continue;
+      if (typeof lbl === 'string' && lbl.toUpperCase().includes('POR VENDEDOR')) { inVend = true; continue; }
+      if (typeof lbl === 'string' && lbl.toUpperCase().startsWith('POR ') && inVend) { inVend = false; }
+      if (inVend) {
+        const fat = +cellVal(rows[i], 1) || 0;
+        const qtd = +cellVal(rows[i], 2) || 0;
+        const tkt = +cellVal(rows[i], 3) || 0;
+        const meta = +cellVal(rows[i], 4) || 0;
+        const pct = +cellVal(rows[i], 5) || 0;
+        vendedores.push({ nome: lbl, fat: fat, qtd: qtd, tkt: tkt, meta: meta, pct: pct });
+      }
+    }
+    return { vendedores: vendedores };
+  }
+
+  // Mês mais recente com faturamento > 0 (mês corrente em andamento)
+  function mesCorrente(prev) {
+    if (!prev || !prev.meses) return null;
+    let last = null;
+    prev.meses.forEach(m => { if (m.fat > 0) last = m; });
+    return last;
+  }
+
+  function renderRecorrenciaCard(mc) {
+    if (!mc) return;
+    const pct = mc.recPrev > 0 ? mc.renov / mc.recPrev : 0;
+    document.getElementById('prev-rec-pct').textContent = Math.round(pct * 100) + '%';
+    document.getElementById('prev-rec-real').textContent = fmtBRL(mc.renov);
+    document.getElementById('prev-rec-prev').textContent = fmtBRL(mc.recPrev);
+    const bar = document.getElementById('prev-rec-bar');
+    bar.style.width = Math.min(pct * 100, 100) + '%';
+    bar.className = 'prev-meta-bar-fill' + (pct >= META_REC ? '' : (pct >= 0.4 ? ' warn' : ' bad'));
+  }
+
+  function renderProjecaoCard(prev, mc) {
+    if (!prev || !prev.diario || !mc) return;
+    const d = prev.diario;
+    document.getElementById('prev-proj-val').textContent = fmtBRL(d.projecaoFim);
+    const pctMeta = META_MES > 0 ? d.projecaoFim / META_MES : 0;
+    document.getElementById('prev-proj-pct').textContent = Math.round(pctMeta * 100) + '%';
+    const gap = d.projecaoFim - META_MES;
+    document.getElementById('prev-proj-gap').textContent = (gap >= 0 ? 'sobra ' : 'falta ') + fmtBRL(Math.abs(gap));
+    const bar = document.getElementById('prev-proj-bar');
+    bar.style.width = Math.min(pctMeta * 100, 100) + '%';
+    bar.className = 'prev-meta-bar-fill' + (pctMeta >= 1 ? '' : (pctMeta >= 0.75 ? ' warn' : ' bad'));
+    document.getElementById('prev-proj-sub').textContent = 'Projeção linear · ritmo atual ' + fmtBRL(d.realizadoAcum / Math.max(d.diasUteisPas, 1)) + '/dia';
+  }
+
+  function renderDiasCard(prev) {
+    if (!prev || !prev.diario) return;
+    const d = prev.diario;
+    const rest = Math.max(d.diasUteisTot - d.diasUteisPas, 0);
+    document.getElementById('prev-dias-rest').textContent = rest;
+    document.getElementById('prev-dias-tot').textContent = d.diasUteisTot;
+    document.getElementById('prev-ritmo-need').textContent = fmtBRL(d.ritmoNecessario);
+    document.getElementById('prev-dias-passou').textContent = d.diasUteisPas + ' dias úteis já passaram';
+  }
+
+  function renderAcumCard(prev) {
+    if (!prev || !prev.diario) return;
+    const d = prev.diario;
+    document.getElementById('prev-acum-val').textContent = fmtBRL(d.realizadoAcum);
+    document.getElementById('prev-acum-meta').textContent = fmtBRL(d.metaAcum);
+    const pct = d.metaAcum > 0 ? d.realizadoAcum / d.metaAcum : 0;
+    const bar = document.getElementById('prev-acum-bar');
+    bar.style.width = Math.min(pct * 100, 100) + '%';
+    bar.className = 'prev-meta-bar-fill' + (pct >= 1 ? '' : (pct >= 0.7 ? ' warn' : ' bad'));
+    document.getElementById('prev-acum-pct').textContent = Math.round(pct * 100) + '% do esperado até hoje';
+  }
+
+  function renderChartRecorrencia(prev) {
+    if (!prev || !prev.meses) return;
+    const labels = []; const pctData = []; const previstoData = []; const realData = [];
+    prev.meses.forEach(m => {
+      if (m.recPrev > 0 || m.renov > 0) {
+        labels.push(m.nome.slice(0, 3));
+        const pct = m.recPrev > 0 ? (m.renov / m.recPrev) * 100 : 0;
+        pctData.push(Math.round(pct));
+        previstoData.push(m.recPrev);
+        realData.push(m.renov);
+      }
+    });
+    const ctx = document.getElementById('chartRecorrencia').getContext('2d');
+    if (chartRecorrencia) chartRecorrencia.destroy();
+    chartRecorrencia = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          { type: 'bar', label: 'Previsto (R$)', data: previstoData, backgroundColor: 'rgba(148,163,184,.55)', borderRadius: 6, yAxisID: 'y' },
+          { type: 'bar', label: 'Renovado (R$)', data: realData, backgroundColor: 'rgba(34,197,94,.85)', borderRadius: 6, yAxisID: 'y' },
+          { type: 'line', label: '% Recorrência', data: pctData, borderColor: '#3b82f6', backgroundColor: '#3b82f6', tension: .35, yAxisID: 'y1', pointRadius: 4 },
+          { type: 'line', label: 'Meta 60%', data: labels.map(() => 60), borderColor: 'rgba(239,68,68,.7)', borderDash: [5,4], borderWidth: 1.5, pointRadius: 0, yAxisID: 'y1' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'bottom', labels: { font:{size:11}, padding: 8, boxWidth: 10 } },
+          tooltip: { callbacks: { label: ctx => {
+            if (ctx.dataset.label.includes('%')) return ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + '%';
+            return ' ' + ctx.dataset.label + ': R$ ' + fmtN(ctx.parsed.y);
+          }}}
+        },
+        scales: {
+          y:  { position: 'left', ticks: { callback: v => fmtBRLk(v), font:{size:11} }, grid: { color: '#f1f5f9' } },
+          y1: { position: 'right', min: 0, max: 100, ticks: { callback: v => v+'%', font:{size:11} }, grid: { display: false } },
+          x:  { grid: { display: false }, ticks: { font:{size:11} } }
+        }
+      }
+    });
+  }
+
+  function renderChartCarteira(prev) {
+    if (!prev || !prev.meses) return;
+    const labels = prev.meses.map(m => m.nome.slice(0,3));
+    const data = prev.meses.map(m => m.recPrev);
+    const ctx = document.getElementById('chartCarteira').getContext('2d');
+    if (chartCarteira) chartCarteira.destroy();
+    chartCarteira = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Recorrência prevista',
+          data: data,
+          backgroundColor: labels.map((_,i)=> i < 5 ? 'rgba(59,130,246,.55)' : 'rgba(59,130,246,.85)'),
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ' R$ ' + fmtN(ctx.parsed.y) } }
+        },
+        scales: {
+          y: { ticks: { callback: v => fmtBRLk(v), font:{size:11} }, grid: { color: '#f1f5f9' } },
+          x: { grid: { display: false }, ticks: { font:{size:11} } }
+        }
+      }
+    });
+  }
+
+  function renderVendedoresMeta(dash) {
+    const wrap = document.getElementById('prev-vend-list');
+    if (!wrap) return;
+    if (!dash || !dash.vendedores || dash.vendedores.length === 0) {
+      wrap.innerHTML = '<div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Sem dados</div>';
+      return;
+    }
+    const cores = { Raquel:'#22c55e', Rafael:'#3b82f6', Junio:'#f59e0b', Duda:'#8b5cf6', Bia:'#ec4899' };
+    let html = '';
+    dash.vendedores.forEach(v => {
+      const cor = cores[v.nome] || '#94a3b8';
+      const meta = v.meta > 0 ? v.meta : 0;
+      const pct = meta > 0 ? Math.min(v.fat / meta * 100, 100) : 0;
+      const pctReal = meta > 0 ? Math.round(v.fat / meta * 100) : 0;
+      const barColor = pct >= 100 ? '#16a34a' : (pct >= 60 ? cor : '#ef4444');
+      html += '<div class="prev-vend-row">' +
+        '<div class="prev-vend-name"><span style="width:8px;height:8px;border-radius:50%;background:' + cor + ';display:inline-block"></span>' + v.nome + '</div>' +
+        '<div class="prev-vend-bar-wrap"><div class="prev-vend-bar" style="width:' + pct + '%;background:' + barColor + '"></div></div>' +
+        '<div class="prev-vend-val"><strong>' + fmtBRL(v.fat) + '</strong>' + (meta > 0 ? ' / ' + fmtBRLk(meta) + ' (' + pctReal + '%)' : ' (sem meta)') + '</div>' +
+        '</div>';
+    });
+    wrap.innerHTML = html;
+  }
+
+  // Converte "Date(yyyy,mm,dd)" (mes 0-indexed do gviz) em {y,m,d,dow}
+  function parseGvizDate(s) {
+    if (!s) return null;
+    const m = ('' + s).match(/^Date\((\d+),(\d+),(\d+)\)/);
+    if (!m) return null;
+    const y = +m[1], mo = +m[2], d = +m[3];
+    const dt = new Date(y, mo, d);
+    return { y: y, m: mo, d: d, dow: dt.getDay(), date: dt };
+  }
+  // Serial date do Sheets (Lotus 1900 epoch) -> Date JS
+  function serialToDate(serial) {
+    if (typeof serial !== 'number') return null;
+    return new Date(Math.round((serial - 25569) * 86400 * 1000));
+  }
+
+  function renderCalendario(prev) {
+    if (!prev || !prev.calendario || prev.calendario.length === 0) return;
+    const grid = document.getElementById('prev-cal-grid');
+
+    const primeiro = parseGvizDate(prev.calendario[0].dia);
+    let mesLabel = '';
+    if (primeiro) mesLabel = MES_NAMES[primeiro.m] + ' ' + primeiro.y;
+    document.getElementById('prev-cal-mes').textContent = mesLabel ? '· ' + mesLabel : '';
+
+    // Hoje: ou da serial dataAtual, ou JS Date
+    let todayD = (new Date()).getDate();
+    let todayM = (new Date()).getMonth();
+    let todayY = (new Date()).getFullYear();
+    const dt = serialToDate(prev.diario && prev.diario.dataAtual);
+    if (dt) { todayD = dt.getDate(); todayM = dt.getMonth(); todayY = dt.getFullYear(); }
+    const calMesMatchToday = primeiro && primeiro.m === todayM && primeiro.y === todayY;
+
+    let html = '';
+    const labelsCab = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    labelsCab.forEach(l => { html += '<div style="text-align:center;font-size:10px;font-weight:700;color:#94a3b8;padding-bottom:2px">' + l + '</div>'; });
+
+    // Spacer pré-mês
+    const primeiroDow = primeiro ? primeiro.dow : 0;
+    for (let i = 0; i < primeiroDow; i++) html += '<div></div>';
+
+    prev.calendario.forEach(d => {
+      const pd = parseGvizDate(d.dia);
+      if (!pd) return;
+      const isWeekend = (pd.dow === 0 || pd.dow === 6);
+      const isToday   = calMesMatchToday && pd.d === todayD;
+      const isFuture  = calMesMatchToday && pd.d > todayD;
+      let cls = 'prev-cal-cell';
+      let content = '<div class="prev-cal-date">' + pd.d + '</div>';
+      if (isWeekend) {
+        cls += ' weekend';
+      } else if (isFuture || d.pct == null) {
+        cls += ' future';
+      } else {
+        const pct = d.pct;
+        if (pct >= 0.9) cls += ' good';
+        else if (pct >= 0.6) cls += ' warn';
+        else cls += ' bad';
+        content += '<div class="prev-cal-pct">' + Math.round(pct * 100) + '%</div>';
+        content += '<div class="prev-cal-real">' + fmtBRLk(d.realAcum||0) + '</div>';
+      }
+      if (isToday) cls += ' today';
+      const titulo = pd.d + '/' + (pd.m+1) + '/' + pd.y + (d.realAcum != null ? ' · R$ ' + fmtN(d.realAcum) : '');
+      html += '<div class="' + cls + '" title="' + titulo + '">' + content + '</div>';
+    });
+
+    grid.innerHTML = html;
+  }
+
+  function renderAll() {
+    const prev = window.PREVISAO_DATA;
+    const dash = window.DASHBOARD_DATA;
+    if (!prev) return;
+    const mc = mesCorrente(prev);
+    document.getElementById('prev-kpis-wrap').style.display = '';
+    document.getElementById('prev-charts-wrap').style.display = '';
+    document.getElementById('prev-cal-wrap').style.display = '';
+    const dtAtual = serialToDate(prev.diario.dataAtual);
+    const dtFmt = dtAtual ? dtAtual.toLocaleDateString('pt-BR') : 'agora';
+    document.getElementById('prev-sub').textContent = 'Atualizado em ' + dtFmt + ' · meta 60% recorrência · meta R$ 60k/mês';
+
+    renderRecorrenciaCard(mc);
+    renderProjecaoCard(prev, mc);
+    renderDiasCard(prev);
+    renderAcumCard(prev);
+    renderChartRecorrencia(prev);
+    renderChartCarteira(prev);
+    renderVendedoresMeta(dash);
+    renderCalendario(prev);
+  }
+
+  async function loadPrevisao() {
+    const [prevJson, dashJson] = await Promise.all([fetchSheet(SHEET_URL), fetchSheet(DASH_URL)]);
+    window.PREVISAO_DATA = parsePrevisao(prevJson);
+    window.DASHBOARD_DATA = parseDashboard(dashJson);
+    renderAll();
+  }
+
+  // Expor para o refresh
+  window.reloadPrevisao = loadPrevisao;
+
+  // Re-render no refresh global
+  const _origRefresh = window.refreshData;
+  window.refreshData = function() {
+    if (_origRefresh) _origRefresh();
+    loadPrevisao();
+  };
+
+  // Carrega na inicialização
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadPrevisao);
+  } else {
+    loadPrevisao();
+  }
 })();
 </script>
 </body>
