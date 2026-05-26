@@ -618,7 +618,7 @@
   <div class="section-header section-toggle" data-section="estrategicas">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     <div class="section-header-title">📈 Análises Estratégicas</div>
-    <div class="section-header-sub">LTV · Ticket real por modalidade · Upsell · MRR estimado · Insights</div>
+    <div class="section-header-sub">LTV por modalidade · MRR estimado</div>
   </div>
 
   <div class="section-body" data-section="estrategicas">
@@ -677,25 +677,6 @@
       </div>
     </div>
 
-    <!-- UPSELL POR VENDEDOR (dinâmico) -->
-    <div class="chart-card">
-      <div class="chart-title">Mix de Planos & Upsell por Vendedor</div>
-      <div class="chart-sub" id="upsell-sub">% de cada modalidade por vendedor no período selecionado</div>
-      <table class="analytics-table">
-        <thead><tr>
-          <th>Vendedor</th><th>Mensal</th><th>Trimestral</th><th>Semestral</th><th>Anual</th><th>% Plano Longo</th>
-        </tr></thead>
-        <tbody id="upsell-tbody"></tbody>
-      </table>
-      <div style="margin-top:12px;padding:10px 12px;background:#fafafa;border-radius:8px;font-size:12px;color:var(--text-muted);line-height:1.5">
-        📌 <strong>% Plano Longo</strong> = (semestral + anual) ÷ total de vendas do vendedor. Quanto maior, melhor upsell.
-      </div>
-    </div>
-
-  </div>
-
-  <div class="charts-row charts-row-4" style="margin-bottom:16px">
-
     <!-- MRR ESTIMADO (dinâmico) -->
     <div class="chart-card">
       <div class="chart-title" id="mrr-title">MRR Estimado</div>
@@ -729,15 +710,6 @@
         </div>
         <div class="mrr-total-value" id="mrr-total-val">—</div>
       </div>
-    </div>
-
-    <!-- INSIGHTS DE DECISÃO IMEDIATA -->
-    <div class="chart-card">
-      <div class="chart-title">⚡ Insights de Decisão Imediata</div>
-      <div class="chart-sub" id="insight-sub">Análise dos dados reais · atualiza com os filtros</div>
-      <ul class="insight-list" id="insight-list">
-        <li class="insight-item"><div class="insight-icon">⏳</div><div class="insight-text">Calculando insights…</div></li>
-      </ul>
     </div>
 
   </div>
@@ -2013,14 +1985,19 @@ updateDashboard();
   }
   function renderOportunidades() { renderConsultas(); renderTopVendas(); renderChurn(); }
 
-  const _origUpdate = window.updateDashboard;
-  if (typeof _origUpdate === 'function') {
-    window.updateDashboard = function() { _origUpdate.apply(this, arguments); if (window.VENDAS_DATA) { renderMixTipo(); renderOportunidades(); } };
+  function installHook() {
+    const _origUpdate = window.updateDashboard;
+    if (typeof _origUpdate !== 'function') return;
+    window.updateDashboard = function() {
+      _origUpdate.apply(this, arguments);
+      if (window.VENDAS_DATA) { renderMixTipo(); renderOportunidades(); }
+    };
   }
   const _origFetchVendas = fetchVendas;
   async function fetchVendasAndRender() { await _origFetchVendas(); renderOportunidades(); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fetchVendasAndRender);
-  else fetchVendasAndRender();
+  function bootstrap() { installHook(); fetchVendasAndRender(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootstrap);
+  else setTimeout(bootstrap, 0);
 })();
 </script>
 

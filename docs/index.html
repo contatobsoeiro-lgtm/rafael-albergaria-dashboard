@@ -456,8 +456,16 @@
 
   <div class="charts-row charts-row-2">
     <div class="chart-card">
-      <div class="chart-title">Comissões por Vendedor</div>
-      <div class="chart-sub">Comissão vendedor + treino no período selecionado</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px">
+        <div>
+          <div class="chart-title">Comissões por Vendedor</div>
+          <div class="chart-sub">Comissão vendedor + treino no período selecionado</div>
+        </div>
+        <button class="btn-pdf" onclick="openCommissionPDF()" style="flex-shrink:0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
+          Comprovante PDF
+        </button>
+      </div>
       <table class="comissoes-table">
         <thead>
           <tr>
@@ -482,13 +490,21 @@
 
   <div class="charts-row charts-row-2" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Mix por Tipo de Serviço</div>
-      <div class="chart-sub" id="sub-tipo">Distribuição de vendas por tipo · estratégia: foco em escalável (Sem Vídeo)</div>
-      <div class="chart-wrap h260"><canvas id="chartTipo"></canvas></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px">
+        <div>
+          <div class="chart-title">Mix por Tipo de Serviço</div>
+          <div class="chart-sub" id="sub-tipo">Foco em escalável (Sem Vídeo) · agrupa &lt;5% em "Outros"</div>
+        </div>
+        <label style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--text-muted);cursor:pointer;flex-shrink:0">
+          <input type="checkbox" id="tipo-expand" onchange="renderMixTipo()" style="cursor:pointer">
+          Expandir todos
+        </label>
+      </div>
+      <div class="chart-wrap h220"><canvas id="chartTipo"></canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Ticket Médio por Tipo</div>
-      <div class="chart-sub">Quanto cada tipo de serviço rende em média (R$ por venda paga)</div>
+      <div class="chart-sub">Quanto cada tipo rende em média (R$ por venda paga)</div>
       <table class="analytics-table">
         <thead><tr><th>Tipo</th><th>Vendas</th><th>Ticket Médio</th><th>Total</th><th>% Fat.</th></tr></thead>
         <tbody id="tipo-tbody"><tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Carregando…</td></tr></tbody>
@@ -640,7 +656,7 @@
   <div class="section-header section-toggle" data-section="estrategicas">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     <div class="section-header-title">📈 Análises Estratégicas</div>
-    <div class="section-header-sub">LTV · Ticket real por modalidade · Upsell · MRR estimado · Insights</div>
+    <div class="section-header-sub">LTV por modalidade · MRR estimado</div>
   </div>
 
   <div class="section-body" data-section="estrategicas">
@@ -699,25 +715,6 @@
       </div>
     </div>
 
-    <!-- UPSELL POR VENDEDOR (dinâmico) -->
-    <div class="chart-card">
-      <div class="chart-title">Mix de Planos & Upsell por Vendedor</div>
-      <div class="chart-sub" id="upsell-sub">% de cada modalidade por vendedor no período selecionado</div>
-      <table class="analytics-table">
-        <thead><tr>
-          <th>Vendedor</th><th>Mensal</th><th>Trimestral</th><th>Semestral</th><th>Anual</th><th>% Plano Longo</th>
-        </tr></thead>
-        <tbody id="upsell-tbody"></tbody>
-      </table>
-      <div style="margin-top:12px;padding:10px 12px;background:#fafafa;border-radius:8px;font-size:12px;color:var(--text-muted);line-height:1.5">
-        📌 <strong>% Plano Longo</strong> = (semestral + anual) ÷ total de vendas do vendedor. Quanto maior, melhor upsell.
-      </div>
-    </div>
-
-  </div>
-
-  <div class="charts-row charts-row-4" style="margin-bottom:16px">
-
     <!-- MRR ESTIMADO (dinâmico) -->
     <div class="chart-card">
       <div class="chart-title" id="mrr-title">MRR Estimado</div>
@@ -751,15 +748,6 @@
         </div>
         <div class="mrr-total-value" id="mrr-total-val">—</div>
       </div>
-    </div>
-
-    <!-- INSIGHTS DE DECISÃO IMEDIATA -->
-    <div class="chart-card">
-      <div class="chart-title">⚡ Insights de Decisão Imediata</div>
-      <div class="chart-sub" id="insight-sub">Análise dos dados reais · atualiza com os filtros</div>
-      <ul class="insight-list" id="insight-list">
-        <li class="insight-item"><div class="insight-icon">⏳</div><div class="insight-text">Calculando insights…</div></li>
-      </ul>
     </div>
 
   </div>
@@ -12089,6 +12077,12 @@ const VEND_NAMES  = {RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio'};
 const VEND_COLORS = {RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b'};
 const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
 
+// Registra plugin datalabels (off por padrao; habilitado em cada chart)
+if (window.ChartDataLabels) {
+  Chart.register(ChartDataLabels);
+  Chart.defaults.set('plugins.datalabels', { display: false });
+}
+
 // =====================================================================
 // CHARTS
 // =====================================================================
@@ -13047,7 +13041,28 @@ initMobileFilters();
   }
   function renderMixTipo() {
     const agg = aggregarPorTipo(); if (!agg) return;
-    const entries = Object.entries(agg).sort((a,b) => b[1].c - a[1].c);
+    let entriesRaw = Object.entries(agg).sort((a,b) => b[1].c - a[1].c);
+    const totalCntRaw = entriesRaw.reduce((s,e)=>s+e[1].c, 0);
+    const expand = !!(document.getElementById('tipo-expand') && document.getElementById('tipo-expand').checked);
+    // Agrupa tipos com <5% do total em "Outros" (a nao ser que expand)
+    let entries = entriesRaw;
+    if (!expand && totalCntRaw > 0) {
+      const principais = []; const outrosVals = { c: 0, v: 0, c_pago: 0, itens: [] };
+      entriesRaw.forEach(([tipo, vals]) => {
+        const pct = vals.c / totalCntRaw;
+        if (pct >= 0.05 && principais.length < 4) {
+          principais.push([tipo, vals]);
+        } else {
+          outrosVals.c += vals.c; outrosVals.v += vals.v; outrosVals.c_pago += vals.c_pago;
+          outrosVals.itens.push(tipo);
+        }
+      });
+      if (outrosVals.c > 0) {
+        outrosVals.label = 'Outros (' + outrosVals.itens.join(', ') + ')';
+        principais.push(['Outros', outrosVals]);
+      }
+      entries = principais;
+    }
     const labels = entries.map(e => e[0]);
     const counts = entries.map(e => e[1].c);
     const colors = labels.map(l => TIPO_COLORS[l] || '#94a3b8');
@@ -13149,9 +13164,30 @@ initMobileFilters();
         '</div>';
     });
     html += '</div>';
-    if (total > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ ' + (total - 10) + ' outros</div>';
+    if (total > 10) html += '<button class="opp-list-link" onclick="openConsultasModal()">Ver todos os ' + total + ' pacientes →</button>';
+    else if (total > 0) html += '<button class="opp-list-link" onclick="openConsultasModal()">Ver lista completa →</button>';
     wrap.innerHTML = html;
   }
+
+  window.openConsultasModal = function() {
+    const data = dadosFiltrados();
+    if (!data) return;
+    const pendentes = data.filter(r => /^0\/\d+$/.test(r.consulta) && r.paciente);
+    openOppListModal(
+      'Consultas Online Pendentes',
+      pendentes.length + ' pacientes com consulta inclusa que não agendaram',
+      [
+        { label: 'Paciente', key: 'paciente' },
+        { label: 'Tipo', key: 'tipo' },
+        { label: 'Modalidade', key: 'mod' },
+        { label: 'Consulta', key: 'consulta' },
+        { label: 'Vendedor', render: r => (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1) },
+        { label: 'Mês', key: 'mes' },
+        { label: 'Valor', render: r => 'R$ ' + (r.valor||0).toFixed(2).replace('.', ',') }
+      ],
+      pendentes
+    );
+  };
 
   // Card 2: Top Vendas do periodo
   function renderTopVendas() {
@@ -13232,9 +13268,34 @@ initMobileFilters();
         '</div>';
     });
     html += '</div>';
-    if (risco.length > 10) html += '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:6px">+ ' + (risco.length - 10) + ' outros</div>';
+    if (risco.length > 10) html += '<button class="opp-list-link" onclick="openChurnModal()">Ver todos os ' + risco.length + ' clientes →</button>';
+    else if (risco.length > 0) html += '<button class="opp-list-link" onclick="openChurnModal()">Ver lista completa →</button>';
     wrap.innerHTML = html;
+    // Salva referencia pro modal
+    window._churnList = risco;
+    window._churnCurrentMonth = currentMonthIdx;
   }
+
+  window.openChurnModal = function() {
+    const data = window._churnList || [];
+    const cur = window._churnCurrentMonth || (new Date()).getMonth();
+    const MES_LBL = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+    const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    openOppListModal(
+      'Clientes em Risco de Churn',
+      data.length + ' mensais sem renovação há 2+ meses',
+      [
+        { label: 'Paciente', key: 'paciente' },
+        { label: 'Última compra', render: r => MES_LBL[r.mes] || r.mes },
+        { label: 'Meses sem comprar', render: r => (cur - MES_ORDER.indexOf(r.mes)) + ' meses' },
+        { label: 'Tipo', key: 'tipo' },
+        { label: 'Modalidade', key: 'mod' },
+        { label: 'Vendedor', render: r => (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1) },
+        { label: 'Último valor', render: r => 'R$ ' + (r.valor||0).toFixed(2).replace('.', ',') }
+      ],
+      data
+    );
+  };
 
   function renderOportunidades() {
     renderConsultas();
@@ -13708,6 +13769,306 @@ updateDashboard();
     });
     return result;
   };
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAL GENERICO "LISTA COMPLETA" (Consultas/Top Vendas/Churn)
+     ══════════════════════════════════════════════════════════════════ -->
+<style>
+  .opp-list-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 9998; align-items: center; justify-content: center; padding: 20px; }
+  .opp-list-modal-overlay.show { display: flex; }
+  .opp-list-modal { background: #fff; border-radius: 14px; max-width: 720px; width: 100%; max-height: 86vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.25); overflow: hidden; }
+  .opp-list-modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 22px; border-bottom: 1px solid var(--cinza-border); }
+  .opp-list-modal-head h3 { font-size: 16px; margin: 0; color: var(--text); }
+  .opp-list-modal-head .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .opp-list-modal-close { background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; color: var(--text-muted); }
+  .opp-list-modal-close:hover { background: var(--cinza); color: var(--text); }
+  .opp-list-modal-close svg { width: 18px; height: 18px; }
+  .opp-list-modal-body { padding: 12px 22px; overflow-y: auto; flex: 1; }
+  .opp-list-modal-foot { padding: 12px 22px; border-top: 1px solid var(--cinza-border); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .opp-list-modal table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .opp-list-modal th { padding: 8px 10px; text-align: left; background: var(--cinza); border-bottom: 2px solid var(--cinza-border); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); position: sticky; top: 0; }
+  .opp-list-modal td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; }
+  .opp-list-modal tr:hover td { background: var(--cinza); }
+  .opp-list-link { background: transparent; border: none; color: #3b82f6; font-size: 11px; font-weight: 600; cursor: pointer; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
+  .opp-list-link:hover { color: #1d4ed8; }
+</style>
+
+<div class="opp-list-modal-overlay" id="opp-list-modal">
+  <div class="opp-list-modal">
+    <div class="opp-list-modal-head">
+      <div>
+        <h3 id="opp-list-title">Lista Completa</h3>
+        <div class="sub" id="opp-list-sub"></div>
+      </div>
+      <button class="opp-list-modal-close" onclick="closeOppListModal()" title="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+    <div class="opp-list-modal-body">
+      <table id="opp-list-table"></table>
+    </div>
+    <div class="opp-list-modal-foot">
+      <div style="font-size:11px;color:var(--text-muted)" id="opp-list-count"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-pdf" onclick="downloadOppList()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Baixar CSV
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  let currentList = null;
+  let currentColumns = null;
+  let currentTitle = '';
+
+  window.openOppListModal = function(title, subtitle, columns, data) {
+    currentList = data; currentColumns = columns; currentTitle = title;
+    document.getElementById('opp-list-title').textContent = title;
+    document.getElementById('opp-list-sub').textContent = subtitle;
+    document.getElementById('opp-list-count').textContent = data.length + ' registros';
+    const table = document.getElementById('opp-list-table');
+    let html = '<thead><tr>' + columns.map(c => '<th>' + c.label + '</th>').join('') + '</tr></thead><tbody>';
+    data.forEach(row => {
+      html += '<tr>' + columns.map(c => '<td>' + (c.render ? c.render(row) : (row[c.key] || '')) + '</td>').join('') + '</tr>';
+    });
+    html += '</tbody>';
+    table.innerHTML = html;
+    document.getElementById('opp-list-modal').classList.add('show');
+  };
+
+  window.closeOppListModal = function() {
+    document.getElementById('opp-list-modal').classList.remove('show');
+  };
+
+  window.downloadOppList = function() {
+    if (!currentList || !currentColumns) return;
+    const headers = currentColumns.map(c => c.label);
+    const rows = currentList.map(r => currentColumns.map(c => {
+      const v = c.render ? c.render(r) : (r[c.key] || '');
+      // Remove tags HTML e escapes para CSV
+      const clean = String(v).replace(/<[^>]+>/g, '').trim();
+      // Aspas duplas escapadas + envolve em aspas
+      return '"' + clean.replace(/"/g, '""') + '"';
+    }).join(';')).join('\n');
+    const csv = '﻿' + headers.join(';') + '\n' + rows;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const slug = currentTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    a.href = url; a.download = slug + '-' + (new Date()).toISOString().slice(0,10) + '.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+  };
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOppListModal(); });
+  document.getElementById('opp-list-modal').addEventListener('click', e => {
+    if (e.target.id === 'opp-list-modal') closeOppListModal();
+  });
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAL PDF COMISSÕES (comprovante mensal pro personal/vendedor)
+     ══════════════════════════════════════════════════════════════════ -->
+<style>
+  .commission-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+  .commission-modal-overlay.show { display: flex; }
+  .commission-modal { background: #fff; border-radius: 14px; max-width: 520px; width: 100%; padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+  .commission-modal h3 { font-size: 17px; margin: 0 0 4px; color: var(--text); }
+  .commission-modal p { font-size: 13px; color: var(--text-muted); margin: 0 0 18px; line-height: 1.5; }
+  .commission-modal label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin: 12px 0 4px; }
+  .commission-modal select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--cinza-border); border-radius: 8px; font-size: 14px; font-family: inherit; background: #fff; cursor: pointer; }
+  .commission-modal-actions { display: flex; gap: 10px; margin-top: 22px; justify-content: flex-end; }
+  .commission-modal button { padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+  .commission-modal .btn-cancel { background: #f1f5f9; color: var(--text); }
+  .commission-modal .btn-cancel:hover { background: var(--cinza-border); }
+  .commission-modal .btn-generate { background: var(--verde); color: #fff; }
+  .commission-modal .btn-generate:hover { background: var(--verde-dark); }
+
+  /* View de impressão de comissão */
+  #commission-print-view { display: none; padding: 24px; background: #fff; }
+  #commission-print-view.show { display: block; }
+  #commission-print-view .header-print { border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 18px; }
+  #commission-print-view h1 { font-size: 20px; margin: 0; color: var(--text); }
+  #commission-print-view .header-print-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  #commission-print-view .summary-card { background: var(--cinza); border: 1px solid var(--cinza-border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  #commission-print-view .summary-item .lbl { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+  #commission-print-view .summary-item .val { font-size: 17px; font-weight: 800; color: var(--text); margin-top: 2px; }
+  #commission-print-view table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  #commission-print-view th { padding: 8px 10px; text-align: left; background: var(--cinza); border-bottom: 2px solid var(--cinza-border); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); }
+  #commission-print-view td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
+  #commission-print-view tfoot td { background: var(--verde-light); font-weight: 700; border-top: 2px solid var(--verde); }
+  #commission-print-view .footer-print { font-size: 11px; color: var(--text-muted); margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--cinza-border); }
+
+  @media print {
+    body.printing-commission > *:not(#commission-print-view) { display: none !important; }
+    body.printing-commission #commission-print-view { display: block !important; padding: 0; }
+    body.printing-commission .header-print { padding-bottom: 8px; margin-bottom: 14px; }
+    body.printing-commission .summary-card { box-shadow: none; }
+    body.printing-commission tr { break-inside: avoid; }
+  }
+</style>
+
+<!-- Modal de seleção -->
+<div class="commission-modal-overlay" id="commission-modal">
+  <div class="commission-modal">
+    <h3>📄 Gerar Comprovante de Comissão</h3>
+    <p>Escolha o vendedor e o mês. O PDF será gerado com a lista de vendas e o total a pagar — pronto pra enviar como comprovante.</p>
+    <label>Vendedor</label>
+    <select id="comm-vendedor"></select>
+    <label>Mês de referência</label>
+    <select id="comm-mes"></select>
+    <label>Ano</label>
+    <select id="comm-ano"></select>
+    <div class="commission-modal-actions">
+      <button type="button" class="btn-cancel" onclick="closeCommissionModal()">Cancelar</button>
+      <button type="button" class="btn-generate" onclick="generateCommissionPDF()">Gerar PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- View que sai no PDF -->
+<div id="commission-print-view"></div>
+
+<script>
+(function() {
+  const MES_LBL_FULL = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
+  const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
+  const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
+
+  window.openCommissionPDF = function() {
+    if (!window.VENDAS_DATA) { alert('Aguarde os dados terminarem de carregar e tente de novo.'); return; }
+    const modal = document.getElementById('commission-modal');
+    const selV = document.getElementById('comm-vendedor');
+    const selM = document.getElementById('comm-mes');
+    const selA = document.getElementById('comm-ano');
+
+    // Vendedores únicos com vendas
+    const vendsSet = new Set();
+    window.VENDAS_DATA.forEach(r => { if (r.vendedor) vendsSet.add(r.vendedor); });
+    const vends = Array.from(vendsSet).sort();
+    selV.innerHTML = vends.map(v => '<option value="' + v + '">' + (VEND_DISPLAY[v] || v) + '</option>').join('');
+    // Pre-seleciona Junio se tiver
+    if (vends.includes('junio')) selV.value = 'junio';
+
+    // Meses
+    selM.innerHTML = Object.entries(MES_LBL_FULL).map(([k,v]) => '<option value="' + k + '">' + v + '</option>').join('');
+    // Pre-seleciona ultimo mes com dado
+    const MES_ORDER = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    let lastMes = 'mai';
+    const ano = (typeof activeAno !== 'undefined' && activeAno === 'latest') ? (typeof LATEST_ANO !== 'undefined' ? LATEST_ANO : '2026') : (typeof activeAno !== 'undefined' ? activeAno : '2026');
+    MES_ORDER.forEach(m => {
+      if (window.VENDAS_DATA.some(r => r.mes === m && r.ano === ano && r.valor > 0)) lastMes = m;
+    });
+    selM.value = lastMes;
+
+    // Anos
+    const anosSet = new Set();
+    window.VENDAS_DATA.forEach(r => { if (r.ano) anosSet.add(r.ano); });
+    const anos = Array.from(anosSet).sort().reverse();
+    selA.innerHTML = anos.map(a => '<option value="' + a + '">' + a + '</option>').join('');
+    selA.value = ano;
+
+    modal.classList.add('show');
+  };
+
+  window.closeCommissionModal = function() {
+    document.getElementById('commission-modal').classList.remove('show');
+  };
+
+  window.generateCommissionPDF = function() {
+    const vend = document.getElementById('comm-vendedor').value;
+    const mes = document.getElementById('comm-mes').value;
+    const ano = document.getElementById('comm-ano').value;
+    const vendName = VEND_DISPLAY[vend] || vend;
+    const mesName = MES_LBL_FULL[mes];
+
+    // Filtra vendas do vendedor + mes + ano
+    const vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.mes === mes && r.ano === ano);
+    const pagas = vendas.filter(r => r.valor > 0);
+
+    // Comissões por venda paga (do dado original ja calculado pelo Sheets)
+    // Como o CSV nao tem essa coluna estruturada, recalculamos com 3% (valor padrao Wellts)
+    // e 15% sobre treino (regra que ela me passou)
+    const COM_VEND_PCT = 0.03;
+    const COM_TREINO_PCT = 0.15;
+    let totalFat = 0, totalComV = 0, totalComT = 0;
+
+    let rowsHtml = '';
+    pagas.forEach((r, i) => {
+      const comV = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
+      const comT = (r.adic === 'Treino') ? Math.round(r.valor * COM_TREINO_PCT * 100) / 100 : 0;
+      totalFat += r.valor; totalComV += comV; totalComT += comT;
+      rowsHtml += '<tr>' +
+        '<td>' + (i+1) + '</td>' +
+        '<td>' + (r.data || '') + '</td>' +
+        '<td>' + r.paciente + '</td>' +
+        '<td>' + (r.tipo || '') + '</td>' +
+        '<td>' + (r.mod || '') + '</td>' +
+        '<td>' + (r.adic || 'Nenhum') + '</td>' +
+        '<td style="text-align:right">R$ ' + r.valor.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '</td>' +
+        '<td style="text-align:right">R$ ' + comV.toFixed(2).replace('.', ',') + '</td>' +
+        '<td style="text-align:right">R$ ' + comT.toFixed(2).replace('.', ',') + '</td>' +
+        '</tr>';
+    });
+
+    const totalCom = totalComV + totalComT;
+    const fmtBR = n => 'R$ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    const html = '<div class="header-print">' +
+      '<h1>Comprovante de Comissão · ' + vendName + '</h1>' +
+      '<div class="header-print-sub">' + mesName + ' / ' + ano + ' · Nutricionista Rafael Albergaria · gerado em ' + new Date().toLocaleDateString('pt-BR') + '</div>' +
+      '</div>' +
+      '<div class="summary-card">' +
+        '<div class="summary-item"><div class="lbl">Vendas pagas</div><div class="val">' + pagas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Faturamento</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Comissão</div><div class="val" style="color:#15803d">' + fmtBR(totalComV) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Treino</div><div class="val" style="color:#b91c1c">' + fmtBR(totalComT) + '</div></div>' +
+      '</div>' +
+      (pagas.length === 0
+        ? '<p style="text-align:center;color:#94a3b8;padding:40px 0">Sem vendas pagas no período.</p>'
+        : '<table>' +
+          '<thead><tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Valor</th><th>Com. Vend.</th><th>Com. Treino</th></tr></thead>' +
+          '<tbody>' + rowsHtml + '</tbody>' +
+          '<tfoot><tr>' +
+          '<td colspan="6" style="text-align:right">TOTAL</td>' +
+          '<td style="text-align:right">' + fmtBR(totalFat) + '</td>' +
+          '<td style="text-align:right">' + fmtBR(totalComV) + '</td>' +
+          '<td style="text-align:right">' + fmtBR(totalComT) + '</td>' +
+          '</tr></tfoot>' +
+          '</table>') +
+      '<div class="footer-print"><strong>Total a pagar: ' + fmtBR(totalCom) + '</strong> · Comissão vendedor 3% sobre vendas pagas. Comissão treino 15% sobre planos com adicional "Treino". Os valores foram calculados a partir da planilha de vendas oficial.</div>';
+
+    const view = document.getElementById('commission-print-view');
+    view.innerHTML = html;
+    view.classList.add('show');
+
+    closeCommissionModal();
+    document.body.classList.add('printing-commission');
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => {
+        document.body.classList.remove('printing-commission');
+        view.classList.remove('show');
+        view.innerHTML = '';
+      }, 600);
+    }, 350);
+  };
+
+  // ESC fecha o modal
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeCommissionModal();
+  });
+  // Click no overlay fecha
+  document.getElementById('commission-modal').addEventListener('click', e => {
+    if (e.target.id === 'commission-modal') closeCommissionModal();
+  });
 })();
 </script>
 </body>
