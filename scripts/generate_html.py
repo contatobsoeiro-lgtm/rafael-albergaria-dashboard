@@ -24,6 +24,11 @@ MES_LABEL = {
     "mai":"Maio","jun":"Junho","jul":"Julho","ago":"Agosto",
     "set":"Setembro","out":"Outubro","nov":"Novembro","dez":"Dezembro"
 }
+MES_LABEL_SHORT = {
+    "jan":"Jan","fev":"Fev","mar":"Mar","abr":"Abr",
+    "mai":"Mai","jun":"Jun","jul":"Jul","ago":"Ago",
+    "set":"Set","out":"Out","nov":"Nov","dez":"Dez"
+}
 
 # Regex para localizar o bloco const DATA = {...}
 DATA_PATTERN = re.compile(
@@ -53,37 +58,55 @@ def inject_data(html: str, data: dict) -> str:
 
 def update_year_filter(html: str, anos: list) -> str:
     """
-    Injeta (ou atualiza) os botões de filtro de ANO no HTML.
-    Adiciona logo após o bloco de filtros de mês existente.
+    Injeta (ou atualiza) os botões de filtro de ANO no HTML (formato novo com filter-track).
+    Botoes Atual/Todos/Anos ficam dentro do track; "Comparar Anos" fica fora como acao destacada.
     """
-    # Monta botões de ano
-    year_buttons = [
+    track_buttons = [
         '<button class="filter-btn active" data-ano="latest" onclick="setAno(\'latest\')">Atual</button>',
         '<button class="filter-btn" data-ano="todos" onclick="setAno(\'todos\')">Todos</button>'
     ]
     for ano in sorted(anos, reverse=True):
-        year_buttons.append(
+        track_buttons.append(
             f'<button class="filter-btn" data-ano="{ano}" onclick="setAno(\'{ano}\')">{ano}</button>'
         )
-    year_buttons.append(
-        '<button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">📊 Comparar Anos</button>'
+
+    year_label = (
+        '<span class="filter-label">'
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">'
+        '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'
+        '</svg>Ano</span>'
     )
 
     year_block = (
-        '\n    <div class="filter-divider"></div>\n'
-        '    <div class="filter-group" id="year-filter-group">\n'
-        '      <span class="filter-label">Ano</span>\n'
-        '      ' + "\n      ".join(year_buttons) + "\n"
+        '<div class="filter-group" id="year-filter-group">\n'
+        '      ' + year_label + '\n'
+        '      <div class="filter-track">\n'
+        '        ' + "\n        ".join(track_buttons) + "\n"
+        '      </div>\n'
+        '      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno(\'compare\')">📊 Comparar Anos</button>\n'
         '    </div>'
     )
 
-    # Substitui bloco de ano se já existir, senão insere antes do fechamento da filter-section
+    # Substituicao com balance de divs (regex puro nao da conta de aninhamento)
     if 'id="year-filter-group"' in html:
-        html = re.sub(
-            r'<div class="filter-group" id="year-filter-group">[\s\S]*?</div>',
-            year_block.strip(),
-            html
-        )
+        start = html.find('<div class="filter-group" id="year-filter-group">')
+        if start >= 0:
+            depth = 0
+            i = start
+            while i < len(html):
+                if html[i:i+4] == '<div':
+                    depth += 1
+                    # Pula ate fechar a tag de abertura
+                    i = html.find('>', i) + 1
+                    continue
+                if html[i:i+6] == '</div>':
+                    depth -= 1
+                    i += 6
+                    if depth == 0:
+                        break
+                    continue
+                i += 1
+            html = html[:start] + year_block + html[i:]
     else:
         html = html.replace(
             '</div>\n</div>\n\n  <div class="kpi-grid">',
@@ -93,24 +116,18 @@ def update_year_filter(html: str, anos: list) -> str:
 
 
 def update_month_filter(html: str, data: dict, anos: list) -> str:
-    """Atualiza botões de mês para os meses com dados (união de todos os anos)."""
-    active_months = set()
-    for ano in anos:
-        for m in MES_ORDER:
-            if data.get(ano, {}).get(m, {}).get("n", 0) > 0:
-                active_months.add(m)
-
+    """Sempre inclui os 12 meses no filtro (labels abreviados) — barra de seleção fixa."""
     buttons = ['<button class="filter-btn active" data-mes="all" onclick="setMes(\'all\')">Todos</button>']
     for m in MES_ORDER:
-        if m in active_months:
-            buttons.append(
-                f'<button class="filter-btn" data-mes="{m}" onclick="setMes(\'{m}\')">{MES_LABEL[m]}</button>'
-            )
+        buttons.append(
+            f'<button class="filter-btn" data-mes="{m}" onclick="setMes(\'{m}\')">{MES_LABEL_SHORT[m]}</button>'
+        )
 
-    new_buttons = "\n      ".join(buttons)
+    new_buttons = "\n        ".join(buttons)
+    # Match: span Periodo + filter-track inteiro
     html = re.sub(
-        r'(<span class="filter-label">Per[íi]odo</span>\s*)([\s\S]*?)(\s*</div>\s*<div class="filter-divider">)',
-        lambda m: m.group(1) + "\n      " + new_buttons + "\n    " + m.group(3),
+        r'(<span class="filter-label"[^>]*>(?:<svg[\s\S]*?</svg>)?\s*Per[íi]odo</span>\s*)<div class="filter-track">[\s\S]*?</div>',
+        lambda m: m.group(1) + '<div class="filter-track">\n        ' + new_buttons + '\n      </div>',
         html,
         count=1
     )

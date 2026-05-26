@@ -21,7 +21,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--cinza); color: var(--text); min-height: 100vh; }
 
-  .header { background: #fff; border-bottom: 1px solid var(--cinza-border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .header { background: #fff; border-bottom: 1px solid var(--cinza-border); padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; }
   .header-left { display: flex; align-items: center; gap: 12px; }
   .logo { width: 42px; height: 42px; background: var(--verde); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 18px; }
   .header-title h1 { font-size: 18px; font-weight: 700; }
@@ -33,7 +33,7 @@
   .btn-refresh:hover { background: var(--verde-dark); }
   .btn-refresh svg { width: 14px; height: 14px; }
 
-  .main { padding: 24px 32px; max-width: 1440px; margin: 0 auto; }
+  .main { padding: 24px 40px; max-width: 1440px; margin: 0 auto; }
 
   .filters-section { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border: 1px solid var(--cinza-border); border-radius: 14px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(15,23,42,.04); }
   .filter-group { display: flex; align-items: center; gap: 8px; }
@@ -293,6 +293,9 @@
         <button class="filter-btn" data-mes="mar" onclick="setMes('mar')">Mar</button>
         <button class="filter-btn" data-mes="abr" onclick="setMes('abr')">Abr</button>
         <button class="filter-btn" data-mes="mai" onclick="setMes('mai')">Mai</button>
+        <button class="filter-btn" data-mes="jun" onclick="setMes('jun')">Jun</button>
+        <button class="filter-btn" data-mes="jul" onclick="setMes('jul')">Jul</button>
+        <button class="filter-btn" data-mes="ago" onclick="setMes('ago')">Ago</button>
         <button class="filter-btn" data-mes="set" onclick="setMes('set')">Set</button>
         <button class="filter-btn" data-mes="out" onclick="setMes('out')">Out</button>
         <button class="filter-btn" data-mes="nov" onclick="setMes('nov')">Nov</button>
