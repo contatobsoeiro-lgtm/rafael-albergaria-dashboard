@@ -311,15 +311,14 @@
         <button class="filter-btn"        data-vend="junio"  onclick="setVend('junio')">Junio</button>
       </div>
     </div>
-    <div class="filter-divider"></div>
     <div class="filter-group" id="year-filter-group">
-      <span class="filter-label">Ano</span>
-      <button class="filter-btn active" data-ano="latest" onclick="setAno('latest')">Atual</button>
-      <button class="filter-btn" data-ano="todos" onclick="setAno('todos')">Todos</button>
-      <button class="filter-btn" data-ano="2026" onclick="setAno('2026')">2026</button>
-      <button class="filter-btn" data-ano="2025" onclick="setAno('2025')">2025</button>
-      <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">📊 Comparar Anos</button>
-    </div>
+      <span class="filter-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Ano</span>
+      <div class="filter-track">
+        <button class="filter-btn active" data-ano="latest" onclick="setAno('latest')">Atual</button>
+        <button class="filter-btn" data-ano="todos" onclick="setAno('todos')">Todos</button>
+        <button class="filter-btn" data-ano="2026" onclick="setAno('2026')">2026</button>
+        <button class="filter-btn" data-ano="2025" onclick="setAno('2025')">2025</button>
+      </div>
       <button class="filter-btn filter-btn-compare" data-ano="compare" onclick="setAno('compare')">📊 Comparar Anos</button>
     </div>
   </div>
