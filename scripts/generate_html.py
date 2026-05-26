@@ -329,6 +329,7 @@ function updateDashboard() {
   chartMes.data.labels   = mesLbls;
   chartMes.data.datasets[0].data = mesVals;
   chartMes.data.datasets[0].backgroundColor = mesLbls.map((_,i)=>['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)','rgba(139,92,246,.85)','rgba(236,72,153,.85)','rgba(20,184,166,.85)'][i%6]);
+  chartMes.data.datasets[1].data = Array(mesLbls.length).fill(META_MENSAL);
   chartMes.update();
 
   chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m=>(d.modal&&d.modal[m])?d.modal[m].c:0);
