@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -123,6 +123,11 @@
   .insight-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
   .insight-text { font-size: 13px; color: var(--text); line-height: 1.5; }
   .insight-text strong { color: var(--text); }
+  .meta-progress { margin-top: 8px; width: 100%; }
+  .meta-bar-wrap { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 4px 0; }
+  .meta-bar { height: 100%; border-radius: 3px; transition: width .45s; background: var(--verde); }
+  .meta-bar.over { background: #16a34a; }
+  .meta-bar-labels { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; }
   /* ── RESPONSIVO ── */
   @media (max-width: 1100px) {
     .kpi-grid        { grid-template-columns: repeat(3, 1fr); }
@@ -184,11 +189,6 @@
   .yoy-table td { padding:9px 10px; border-bottom:1px solid var(--cinza-border); }
   .yoy-table tbody tr:hover td { background:var(--cinza); }
 
-  .meta-progress { margin-top: 8px; width: 100%; }
-  .meta-bar-wrap { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 4px 0; }
-  .meta-bar { height: 100%; border-radius: 3px; transition: width .45s; background: var(--verde); }
-  .meta-bar.over { background: #16a34a; }
-  .meta-bar-labels { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -208,8 +208,8 @@
   </div>
   <div class="header-right">
     <div class="update-info">
-      <strong id="updateDate">25/05/2026 — dados reais</strong>
-      <span id="updateTime">1048 registros · 2025, 2026</span>
+      <strong id="updateDate">26/05/2026 — dados reais</strong>
+      <span id="updateTime">1050 registros · 2025, 2026</span>
     </div>
     <button class="btn-refresh" onclick="refreshData()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
@@ -511,8 +511,8 @@
 
 <div class="footer">
   Dados extraídos diretamente de <strong>Controle de Vendas e Pós-Venda.xlsx</strong> via OneDrive &nbsp;·&nbsp;
-  <strong id="footer-records">1048 registros · 2025 + 2026</strong> &nbsp;·&nbsp;
-  Última atualização: <strong>25/05/2026</strong>
+  <strong id="footer-records">1050 registros · 2025 + 2026</strong> &nbsp;·&nbsp;
+  Última atualização: <strong>26/05/2026</strong>
 </div>
 
 <script>
@@ -5995,15 +5995,15 @@ const DATA = {
   "v":0},
   "dez":{"c":0,
   "v":0}}}},
-  "2026":{"all":{"n":569,
-  "fat":334980,
+  "2026":{"all":{"n":571,
+  "fat":336564,
   "tkt":589,
   "cvend":9764,
   "ctreino":15997,
   "modal":{"MENSAL":{"c":217,
   "v":43786},
-  "TRIMESTRAL":{"c":198,
-  "v":112277},
+  "TRIMESTRAL":{"c":200,
+  "v":113861},
   "SEMESTRAL":{"c":70,
   "v":67851},
   "ANUAL":{"c":79,
@@ -6021,13 +6021,13 @@ const DATA = {
   "tkt":499,
   "cv":5228,
   "ct":10602},
-  "RAFAEL":{"c":79,
-  "v":63953,
-  "tkt":810,
+  "RAFAEL":{"c":80,
+  "v":64850,
+  "tkt":811,
   "cv":1919,
   "ct":784},
-  "JUNIO":{"c":139,
-  "v":95989,
+  "JUNIO":{"c":140,
+  "v":96675,
   "tkt":691,
   "cv":2595,
   "ct":4586},
@@ -6049,8 +6049,8 @@ const DATA = {
   "v":77806},
   "abr":{"c":59,
   "v":47019},
-  "mai":{"c":47,
-  "v":35129},
+  "mai":{"c":49,
+  "v":36712},
   "jun":{"c":0,
   "v":0},
   "jul":{"c":0,
@@ -6345,15 +6345,15 @@ const DATA = {
   "v":0},
   "dez":{"c":0,
   "v":0}}},
-  "mai":{"n":47,
-  "fat":35129,
-  "tkt":747,
+  "mai":{"n":49,
+  "fat":36712,
+  "tkt":749,
   "cvend":769,
   "ctreino":644,
   "modal":{"MENSAL":{"c":14,
   "v":3827},
-  "TRIMESTRAL":{"c":16,
-  "v":10797},
+  "TRIMESTRAL":{"c":18,
+  "v":12380},
   "SEMESTRAL":{"c":8,
   "v":10349},
   "ANUAL":{"c":6,
@@ -6371,14 +6371,14 @@ const DATA = {
   "tkt":0,
   "cv":0,
   "ct":0},
-  "RAFAEL":{"c":22,
-  "v":13478,
-  "tkt":613,
+  "RAFAEL":{"c":23,
+  "v":14375,
+  "tkt":625,
   "cv":404,
   "ct":227},
-  "JUNIO":{"c":25,
-  "v":21651,
-  "tkt":866,
+  "JUNIO":{"c":26,
+  "v":22337,
+  "tkt":859,
   "cv":365,
   "ct":417},
   "DUDA":{"c":0,
@@ -6399,8 +6399,8 @@ const DATA = {
   "v":0},
   "abr":{"c":0,
   "v":0},
-  "mai":{"c":47,
-  "v":35129},
+  "mai":{"c":49,
+  "v":36712},
   "jun":{"c":0,
   "v":0},
   "jul":{"c":0,
@@ -6975,15 +6975,15 @@ const DATA = {
   "v":0},
   "dez":{"c":0,
   "v":0}}},
-  "rafael":{"n":79,
-  "fat":63953,
-  "tkt":810,
+  "rafael":{"n":80,
+  "fat":64850,
+  "tkt":811,
   "cvend":1919,
   "ctreino":784,
   "modal":{"MENSAL":{"c":19,
   "v":5126},
-  "TRIMESTRAL":{"c":39,
-  "v":24671},
+  "TRIMESTRAL":{"c":40,
+  "v":25568},
   "SEMESTRAL":{"c":12,
   "v":16487},
   "ANUAL":{"c":6,
@@ -7001,9 +7001,9 @@ const DATA = {
   "tkt":0,
   "cv":0,
   "ct":0},
-  "RAFAEL":{"c":79,
-  "v":63953,
-  "tkt":810,
+  "RAFAEL":{"c":80,
+  "v":64850,
+  "tkt":811,
   "cv":1919,
   "ct":784},
   "JUNIO":{"c":0,
@@ -7029,8 +7029,8 @@ const DATA = {
   "v":3538},
   "abr":{"c":26,
   "v":23864},
-  "mai":{"c":22,
-  "v":13478},
+  "mai":{"c":23,
+  "v":14375},
   "jun":{"c":0,
   "v":0},
   "jul":{"c":0,
@@ -7045,15 +7045,15 @@ const DATA = {
   "v":0},
   "dez":{"c":0,
   "v":0}}},
-  "junio":{"n":139,
-  "fat":95989,
+  "junio":{"n":140,
+  "fat":96675,
   "tkt":691,
   "cvend":2595,
   "ctreino":4586,
   "modal":{"MENSAL":{"c":30,
   "v":7942},
-  "TRIMESTRAL":{"c":68,
-  "v":42248},
+  "TRIMESTRAL":{"c":69,
+  "v":42935},
   "SEMESTRAL":{"c":19,
   "v":17243},
   "ANUAL":{"c":21,
@@ -7076,8 +7076,8 @@ const DATA = {
   "tkt":0,
   "cv":0,
   "ct":0},
-  "JUNIO":{"c":139,
-  "v":95989,
+  "JUNIO":{"c":140,
+  "v":96675,
   "tkt":691,
   "cv":2595,
   "ct":4586},
@@ -7099,8 +7099,8 @@ const DATA = {
   "v":51184},
   "abr":{"c":33,
   "v":23154},
-  "mai":{"c":25,
-  "v":21651},
+  "mai":{"c":26,
+  "v":22337},
   "jun":{"c":0,
   "v":0},
   "jul":{"c":0,
@@ -8375,15 +8375,15 @@ const DATA = {
   "v":0},
   "dez":{"c":0,
   "v":0}}},
-  "rafael_mai":{"n":22,
-  "fat":13478,
-  "tkt":613,
+  "rafael_mai":{"n":23,
+  "fat":14375,
+  "tkt":625,
   "cvend":404,
   "ctreino":227,
   "modal":{"MENSAL":{"c":9,
   "v":2732},
-  "TRIMESTRAL":{"c":7,
-  "v":4434},
+  "TRIMESTRAL":{"c":8,
+  "v":5331},
   "SEMESTRAL":{"c":4,
   "v":5858},
   "ANUAL":{"c":0,
@@ -8401,9 +8401,9 @@ const DATA = {
   "tkt":0,
   "cv":0,
   "ct":0},
-  "RAFAEL":{"c":22,
-  "v":13478,
-  "tkt":613,
+  "RAFAEL":{"c":23,
+  "v":14375,
+  "tkt":625,
   "cv":404,
   "ct":227},
   "JUNIO":{"c":0,
@@ -8429,8 +8429,8 @@ const DATA = {
   "v":0},
   "abr":{"c":0,
   "v":0},
-  "mai":{"c":22,
-  "v":13478},
+  "mai":{"c":23,
+  "v":14375},
   "jun":{"c":0,
   "v":0},
   "jul":{"c":0,
@@ -9215,15 +9215,15 @@ const DATA = {
   "v":0},
   "dez":{"c":0,
   "v":0}}},
-  "junio_mai":{"n":25,
-  "fat":21651,
-  "tkt":866,
+  "junio_mai":{"n":26,
+  "fat":22337,
+  "tkt":859,
   "cvend":365,
   "ctreino":417,
   "modal":{"MENSAL":{"c":5,
   "v":1095},
-  "TRIMESTRAL":{"c":9,
-  "v":6363},
+  "TRIMESTRAL":{"c":10,
+  "v":7049},
   "SEMESTRAL":{"c":4,
   "v":4491},
   "ANUAL":{"c":6,
@@ -9246,9 +9246,9 @@ const DATA = {
   "tkt":0,
   "cv":0,
   "ct":0},
-  "JUNIO":{"c":25,
-  "v":21651,
-  "tkt":866,
+  "JUNIO":{"c":26,
+  "v":22337,
+  "tkt":859,
   "cv":365,
   "ct":417},
   "DUDA":{"c":0,
@@ -9269,8 +9269,8 @@ const DATA = {
   "v":0},
   "abr":{"c":0,
   "v":0},
-  "mai":{"c":25,
-  "v":21651},
+  "mai":{"c":26,
+  "v":22337},
   "jun":{"c":0,
   "v":0},
   "jul":{"c":0,
@@ -11504,16 +11504,16 @@ const DATA = {
   "delta":797,
   "pct":null}},
   "mai":{"fat":{"v25":0,
-  "v26":35129,
-  "delta":35129,
+  "v26":36712,
+  "delta":36712,
   "pct":null},
   "n":{"v25":0,
-  "v26":47,
-  "delta":47,
+  "v26":49,
+  "delta":49,
   "pct":null},
   "tkt":{"v25":0,
-  "v26":747,
-  "delta":747,
+  "v26":749,
+  "delta":749,
   "pct":null}},
   "set":{"fat":{"v25":50382,
   "v26":0,
@@ -11564,12 +11564,12 @@ const DATA = {
   "delta":-362,
   "pct":-100}}},
   "total":{"fat":{"v25":200650,
-  "v26":334980,
-  "delta":134330,
-  "pct":67},
+  "v26":336564,
+  "delta":135914,
+  "pct":68},
   "n":{"v25":479,
-  "v26":569,
-  "delta":90,
+  "v26":571,
+  "delta":92,
   "pct":19},
   "tkt":{"v25":419,
   "v26":589,
@@ -11596,24 +11596,24 @@ const DATA = {
   "delta":105,
   "pct":27}},
   "RAFAEL":{"fat":{"v25":30683,
-  "v26":63953,
-  "delta":33270,
-  "pct":108},
+  "v26":64850,
+  "delta":34167,
+  "pct":111},
   "n":{"v25":72,
-  "v26":79,
-  "delta":7,
-  "pct":10},
+  "v26":80,
+  "delta":8,
+  "pct":11},
   "tkt":{"v25":426,
-  "v26":810,
-  "delta":384,
+  "v26":811,
+  "delta":385,
   "pct":90}},
   "JUNIO":{"fat":{"v25":0,
-  "v26":95989,
-  "delta":95989,
+  "v26":96675,
+  "delta":96675,
   "pct":null},
   "n":{"v25":0,
-  "v26":139,
-  "delta":139,
+  "v26":140,
+  "delta":140,
   "pct":null},
   "tkt":{"v25":0,
   "v26":691,
@@ -11643,15 +11643,15 @@ const DATA = {
   "v26":0,
   "delta":-344,
   "pct":-100}}}},
-  "all":{"n":569,
-  "fat":334980,
+  "all":{"n":571,
+  "fat":336564,
   "tkt":589,
   "cvend":9764,
   "ctreino":15997,
   "modal":{"MENSAL":{"c":217,
   "v":43786},
-  "TRIMESTRAL":{"c":198,
-  "v":112277},
+  "TRIMESTRAL":{"c":200,
+  "v":113861},
   "SEMESTRAL":{"c":70,
   "v":67851},
   "ANUAL":{"c":79,
@@ -11669,13 +11669,13 @@ const DATA = {
   "tkt":499,
   "cv":5228,
   "ct":10602},
-  "RAFAEL":{"c":79,
-  "v":63953,
-  "tkt":810,
+  "RAFAEL":{"c":80,
+  "v":64850,
+  "tkt":811,
   "cv":1919,
   "ct":784},
-  "JUNIO":{"c":139,
-  "v":95989,
+  "JUNIO":{"c":140,
+  "v":96675,
   "tkt":691,
   "cv":2595,
   "ct":4586},
@@ -11697,8 +11697,8 @@ const DATA = {
   "v":77806},
   "abr":{"c":59,
   "v":47019},
-  "mai":{"c":47,
-  "v":35129},
+  "mai":{"c":49,
+  "v":36712},
   "jun":{"c":0,
   "v":0},
   "jul":{"c":0,
@@ -11725,7 +11725,6 @@ let activeVend = 'all';
 
 const ANOS_DISPONIVEIS = ["2025", "2026"];
 const LATEST_ANO = '2026';
-const META_MENSAL = 60000; // meta mensal de faturamento
 
 function setAno(ano) {
   activeAno = ano;
@@ -11791,14 +11790,13 @@ const chartMes = new Chart(ctxMes, {
       label: 'Faturamento (R$)',
       data: [118329, 56698, 72383],
       backgroundColor: ['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)'],
-      borderRadius: 8, borderSkipped: false
+      borderRadius: 8, borderSkipped: false, order: 2
     },{
       type: 'line', label: 'Meta R$60k',
       data: [60000,60000,60000],
       borderColor: 'rgba(239,68,68,0.75)', borderDash: [6,4], borderWidth: 1.5,
-      pointRadius: 0, fill: false, tension: 0, order: 1, yAxisID: 'y'
-    }
-    ]
+      pointRadius: 0, fill: false, tension: 0, order: 1
+    }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
@@ -11892,9 +11890,29 @@ function updateDashboard() {
   const vendLabel = {all:'', raquel:' · Raquel', rafael:' · Rafael', junio:' · Junio'};
   document.getElementById('kpi-fat-badge').textContent = (mesLabel[activeMes]||'') + (vendLabel[activeVend]||'');
 
-  // Chart Mês
+  // Chart Mês + linha de meta
   chartMes.data.datasets[0].data = [d.mes.jan.v, d.mes.fev.v, d.mes.mar.v];
+  chartMes.data.datasets[1].data = [META_MENSAL, META_MENSAL, META_MENSAL];
   chartMes.update();
+
+  // Barra de progresso da meta mensal
+  (function() {
+    const wrap  = document.getElementById('meta-progress-wrap');
+    const bar   = document.getElementById('meta-progress-bar');
+    const pctEl = document.getElementById('meta-pct-label');
+    if (!wrap) return;
+    if (activeMes !== 'all') {
+      const fat = d.fat || 0;
+      const pct = Math.min(Math.round(fat / META_MENSAL * 100), 100);
+      const over = fat >= META_MENSAL;
+      bar.style.width = pct + '%';
+      bar.className   = 'meta-bar' + (over ? ' over' : '');
+      pctEl.textContent = pct + '%' + (over ? ' meta batida!' : ' da meta');
+      wrap.style.display = '';
+    } else {
+      wrap.style.display = 'none';
+    }
+  })();
 
   // Chart Modal
   chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m => d.modal[m] ? d.modal[m].c : 0);
@@ -11936,6 +11954,8 @@ function updateDashboard() {
   </tr>` : '';
 
   updateAdvanced();
+  updateInsights();
+  updateLTV();
 }
 
 // =====================================================================
@@ -11995,7 +12015,7 @@ function buildData(rows) {
 }
 
 // =====================================================================
-// UPSELL TABLE — sempre usa dados globais por vendedor (não filtra)
+// UPSELL TABLE — respeita filtros de mes e vendedor
 // =====================================================================
 function updateAdvanced() {
   const VKEYS  = ['raquel','rafael','junio'];
@@ -12004,7 +12024,9 @@ function updateAdvanced() {
 
   let rows = '';
   VKEYS.forEach(vk => {
-    const vd = DATA[vk];
+    if (activeVend !== 'all' && activeVend !== vk) return;
+    const dataKey = activeMes !== 'all' ? `${vk}_${activeMes}` : vk;
+    const vd = DATA[dataKey];
     if (!vd || !vd.n) return;
     const m  = vd.modal;
     const n  = vd.n;
@@ -12025,7 +12047,7 @@ function updateAdvanced() {
     </tr>`;
   });
   const el = document.getElementById('upsell-tbody');
-  if (el) el.innerHTML = rows;
+  if (el) el.innerHTML = rows || '<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:16px">Sem dados para o filtro selecionado</td></tr>';
 }
 
 // =====================================================================
@@ -12039,24 +12061,18 @@ function fmtK(n) { return n>=1000 ? (n/1000).toFixed(0)+'k' : n; }
 // =====================================================================
 function updateInsights() {
   const key = getKey();
-  const anoData = (typeof getAnoData === 'function') ? getAnoData() : DATA;
-  const d = anoData[key] || anoData['all'] || {};
+  const d = DATA[key] || DATA.all;
   const items = [];
 
   // 1. Melhor vendedor por faturamento
-  const VNAMES_I = {};
-  (VENDORS_LIST || ['RAQUEL','RAFAEL','JUNIO']).forEach(v => {
-    VNAMES_I[v] = v.charAt(0) + v.slice(1).toLowerCase();
-  });
+  const VNAMES_I = {RAQUEL:'Raquel', RAFAEL:'Rafael', JUNIO:'Junio'};
   let topVend = null, topVendV = 0;
   Object.entries(d.vend || {}).forEach(([vk, vd]) => {
     if (vd && vd.v > topVendV) { topVendV = vd.v; topVend = vk; }
   });
-  const dn = d.n || 0;
-  if (topVend && dn > 0) {
-    const pct = Math.round((d.vend[topVend].c / dn) * 100);
-    const nome = VNAMES_I[topVend] || topVend;
-    items.push({icon:'🏆', text:`<strong>${nome}</strong> lidera com R$ ${fmt(topVendV)} (${pct}% das vendas do período)`});
+  if (topVend && d.n > 0) {
+    const pct = Math.round((d.vend[topVend].c / d.n) * 100);
+    items.push({icon:'🏆', text:`<strong>${VNAMES_I[topVend]}</strong> lidera com R$ ${fmt(topVendV)} (${pct}% das vendas do período)`});
   }
 
   // 2. Plano mais vendido
@@ -12066,8 +12082,8 @@ function updateInsights() {
     if (mv && mv.c > topModC) { topModC = mv.c; topMod = mk; }
   });
   if (topMod) {
-    const pct = dn > 0 ? Math.round(topModC / dn * 100) : 0;
-    items.push({icon:'📦', text:`Plano <strong>${MNAMES_I[topMod]||topMod}</strong> é o mais contratado (${topModC} vendas, ${pct}% do total)`});
+    const pct = d.n > 0 ? Math.round(topModC / d.n * 100) : 0;
+    items.push({icon:'📦', text:`Plano <strong>${MNAMES_I[topMod]}</strong> é o mais contratado (${topModC} vendas, ${pct}% do total)`});
   }
 
   // 3. Margem operacional
@@ -12079,16 +12095,16 @@ function updateInsights() {
   }
 
   // 4. Ticket médio vs media geral
-  const dAll = anoData['all'] || {};
-  if (d.tkt && dn > 0) {
-    const tktAll = dAll.tkt || 0;
+  const dAll = DATA.all;
+  if (d.tkt && d.n > 0) {
+    const tktAll = dAll ? (dAll.tkt||0) : 0;
     if (tktAll && Math.abs(d.tkt - tktAll) > 1) {
       const diff = Math.round(d.tkt - tktAll);
       const icon = diff >= 0 ? '📈' : '📉';
       const sinal = diff >= 0 ? '+' : '';
       items.push({icon, text:`Ticket médio de <strong>R$ ${fmt(d.tkt)}</strong> (${sinal}R$ ${fmt(Math.abs(diff))} em relação à média geral de R$ ${fmt(tktAll)})`});
     } else {
-      items.push({icon:'🎯', text:`Ticket médio de <strong>R$ ${fmt(d.tkt)}</strong> com ${dn} venda${dn!==1?'s':''} no período`});
+      items.push({icon:'🎯', text:`Ticket médio de <strong>R$ ${fmt(d.tkt)}</strong> com ${d.n} venda${d.n!==1?'s':''} no período`});
     }
   }
 
@@ -12101,20 +12117,104 @@ function updateInsights() {
     return;
   }
 
-  const mesLabel  = {all:'acumulado',jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',
-                     mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',
-                     nov:'Novembro',dez:'Dezembro'};
-  const vLblMap = {all:''};
-  (VENDORS_LIST||[]).forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + (v.charAt(0)+v.slice(1).toLowerCase()); });
-  const anoLabel = (activeAno === 'latest' ? LATEST_ANO : activeAno) || '';
-  if (sub) sub.textContent = 'Análise de ' + (mesLabel[activeMes]||'acumulado') + (vLblMap[activeVend]||'') + ' · ' + anoLabel;
+  const mesLabel  = {all:'acumulado', jan:'Janeiro', fev:'Fevereiro', mar:'Março'};
+  const vendLabel = {all:'', raquel:' · Raquel', rafael:' · Rafael', junio:' · Junio'};
+  if (sub) sub.textContent = 'Análise de ' + (mesLabel[activeMes]||'acumulado') + (vendLabel[activeVend]||'') + ' · ' + activeAno;
 
   ul.innerHTML = items.map(i =>
     `<li class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></li>`
   ).join('');
 }
 
+// =====================================================================
+// LTV TABLE — respeita filtros
+// =====================================================================
+function updateLTV() {
+  const key = getKey();
+  const d = DATA[key] || DATA.all;
+  if (!d || !d.modal) return;
+
+  const MODS = [
+    {key:'MENSAL',     label:'Mensal',     meses:1,  color:'#3b82f6', pill:'pill-blue'},
+    {key:'TRIMESTRAL', label:'Trimestral', meses:3,  color:'#22c55e', pill:'pill-green'},
+    {key:'SEMESTRAL',  label:'Semestral',  meses:6,  color:'#8b5cf6', pill:'pill-purple'},
+    {key:'ANUAL',      label:'Anual',      meses:12, color:'#f59e0b', pill:'pill-orange'}
+  ];
+
+  const totalFat = d.fat || 0;
+  let totalN = 0, totalTktSum = 0, totalRpmSum = 0;
+  MODS.forEach(m => {
+    const md = d.modal[m.key];
+    if (md && md.c > 0) {
+      totalN += md.c; totalTktSum += md.v;
+      totalRpmSum += Math.round(md.v / md.c / m.meses) * md.c;
+    }
+  });
+
+  let rows = '';
+  MODS.forEach(m => {
+    const md  = d.modal[m.key] || {c:0, v:0};
+    const tkt = md.c > 0 ? Math.round(md.v / md.c) : 0;
+    const rpm = tkt > 0 ? Math.round(tkt / m.meses) : 0;
+    const pct = totalFat > 0 ? Math.round(md.v / totalFat * 100) : 0;
+    rows += `<tr>
+      <td><span class="pill ${m.pill}">${m.label}</span></td>
+      <td>${md.c}</td><td>R$ ${fmt(tkt)}</td><td>R$ ${fmt(rpm)}</td>
+      <td><div style="font-size:12px;font-weight:700">${pct}%</div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${m.color}"></div></div></td>
+    </tr>`;
+  });
+
+  const totalTkt = totalN > 0 ? Math.round(totalTktSum / totalN) : 0;
+  const avgRpm   = totalN > 0 ? Math.round(totalRpmSum / totalN) : 0;
+  const tbody = document.getElementById('ltv-tbody');
+  const tfoot = document.getElementById('ltv-tfoot');
+  if (tbody) tbody.innerHTML = rows || '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px">Sem dados</td></tr>';
+  if (tfoot) tfoot.innerHTML = `<tr><td><strong>Total</strong></td><td><strong>${totalN}</strong></td><td><strong>R$ ${fmt(totalTkt)}</strong></td><td><strong>R$ ${fmt(avgRpm)}</strong></td><td><strong>100%</strong></td></tr>`;
+
+  const ltvEl = document.getElementById('ltv-insight');
+  if (ltvEl) {
+    const tM = (d.modal['MENSAL']?.c     > 0) ? Math.round(d.modal['MENSAL'].v     / d.modal['MENSAL'].c)     : 0;
+    const tT = (d.modal['TRIMESTRAL']?.c > 0) ? Math.round(d.modal['TRIMESTRAL'].v / d.modal['TRIMESTRAL'].c) : 0;
+    const tS = (d.modal['SEMESTRAL']?.c  > 0) ? Math.round(d.modal['SEMESTRAL'].v  / d.modal['SEMESTRAL'].c)  : 0;
+    const tA = (d.modal['ANUAL']?.c      > 0) ? Math.round(d.modal['ANUAL'].v      / d.modal['ANUAL'].c)      : 0;
+    if (tM > 0) {
+      const mTx = tT > 0 ? (tT/tM).toFixed(1)+'×' : '—';
+      const mSx = tS > 0 ? (tS/tM).toFixed(1)+'×' : '—';
+      const mAx = tA > 0 ? (tA/tM).toFixed(1)+'×' : '—';
+      ltvEl.innerHTML = `💡 <strong>Insight LTV:</strong> paciente mensal = R$ ${fmt(tM)}. Trimestral: ${mTx} (R$ ${fmt(tT)}). Semestral: ${mSx}. Anual: ${mAx}.`;
+    }
+  }
+}
+
+// Selects nativos para filtros em mobile
+function initMobileFilters() {
+  if (window.innerWidth > 680) return;
+  document.querySelectorAll('.filter-group').forEach(function(group) {
+    var btns = Array.from(group.querySelectorAll('.filter-btn'));
+    if (!btns.length) return;
+    var sel = document.createElement('select');
+    sel.className = 'filter-select-mobile';
+    btns.forEach(function(btn) {
+      var opt = document.createElement('option');
+      opt.textContent = btn.textContent.trim();
+      opt.dataset.action = btn.getAttribute('onclick') || '';
+      if (btn.classList.contains('active')) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', function() {
+      var action = this.options[this.selectedIndex].dataset.action;
+      if (!action) return;
+      var m = action.match(/^(\w+)\s*\(\s*['"]?([^'")\s]*)['"]?\s*\)/);
+      if (m && window[m[1]]) window[m[1]](m[2]);
+    });
+    var label = group.querySelector('.filter-label');
+    group.insertBefore(sel, label ? label.nextSibling : null);
+  });
+}
 // Inicializa
+updateDashboard();
+initMobileFilters();
 
 // =====================================================================
 // DASHBOARD MULTI-ANO — lógica de rendering
@@ -12169,13 +12269,6 @@ function updateDashboard() {
   chartMes.data.labels   = mesLbls;
   chartMes.data.datasets[0].data = mesVals;
   chartMes.data.datasets[0].backgroundColor = mesLbls.map((_,i)=>['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)','rgba(139,92,246,.85)','rgba(236,72,153,.85)','rgba(20,184,166,.85)'][i%6]);
-  chartMes.update();
-  // Linha de meta no grafico mensal
-  if (chartMes.data.datasets.length < 2) {
-    chartMes.data.datasets.push({type:'line',label:'Meta R$60k',data:Array(mesLbls.length).fill(META_MENSAL),borderColor:'rgba(239,68,68,0.75)',borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false,tension:0,order:1});
-  } else {
-    chartMes.data.datasets[1].data = Array(mesLbls.length).fill(META_MENSAL);
-  }
   chartMes.update();
 
   chartModal.data.datasets[0].data = ['MENSAL','TRIMESTRAL','SEMESTRAL','ANUAL'].map(m=>(d.modal&&d.modal[m])?d.modal[m].c:0);
@@ -12358,23 +12451,19 @@ function updateAdvanced() {
   let rows = '';
   VENDORS_LIST.forEach(v => {
     const vk = v.toLowerCase();
-    // Se filtro de vendedor ativo, pula os outros
-    if (activeVend !== 'all' && activeVend !== vk) return;
-    // Usa chave com mês quando filtro de mês está ativo
-    const dataKey = activeMes !== 'all' ? vk + '_' + activeMes : vk;
-    const vd = anoData[dataKey] || (activeMes !== 'all' ? anoData[vk] : null);
+    const vd = anoData[vk];
     if (!vd || !vd.n) return;
     const m = vd.modal || {};
     const n = vd.n;
     const pct = val => n > 0 ? Math.round((val||0) / n * 100) : 0;
-    const cM = (m.MENSAL      && m.MENSAL.c)      || 0;
-    const cT = (m.TRIMESTRAL  && m.TRIMESTRAL.c)  || 0;
-    const cS = (m.SEMESTRAL   && m.SEMESTRAL.c)   || 0;
-    const cA = (m.ANUAL       && m.ANUAL.c)       || 0;
+    const cM = (m.MENSAL    && m.MENSAL.c)    || 0;
+    const cT = (m.TRIMESTRAL && m.TRIMESTRAL.c) || 0;
+    const cS = (m.SEMESTRAL  && m.SEMESTRAL.c)  || 0;
+    const cA = (m.ANUAL      && m.ANUAL.c)      || 0;
     const pLongo = pct(cS + cA);
     const pillClass = pLongo >= 35 ? 'pill-green' : pLongo >= 25 ? 'pill-blue' : 'pill-gray';
-    const cor  = VEND_COLORS[v] || '#94a3b8';
-    const nome = VEND_NAMES[v]  || (v.charAt(0) + v.slice(1).toLowerCase());
+    const cor = VEND_COLORS[v] || '#94a3b8';
+    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
     rows += '<tr>' +
       '<td><span class="vend-badge"><span class="vend-dot" style="background:' + cor + '"></span>' + nome + '</span></td>' +
       '<td>' + pct(cM) + '% <small style="color:var(--text-muted)">(' + cM + ')</small></td>' +
@@ -12510,33 +12599,6 @@ function refreshData() {
   setTimeout(() => { document.getElementById('loadingOverlay').classList.remove('show'); }, 800);
   updateDashboard();
 }
-
-// Selects nativos para filtros em mobile
-function initMobileFilters() {
-  if (window.innerWidth > 680) return;
-  document.querySelectorAll('.filter-group').forEach(function(group) {
-    var btns = Array.from(group.querySelectorAll('.filter-btn'));
-    if (!btns.length) return;
-    var sel = document.createElement('select');
-    sel.className = 'filter-select-mobile';
-    btns.forEach(function(btn) {
-      var opt = document.createElement('option');
-      opt.textContent = btn.textContent.trim();
-      opt.dataset.action = btn.getAttribute('onclick') || '';
-      if (btn.classList.contains('active')) opt.selected = true;
-      sel.appendChild(opt);
-    });
-    sel.addEventListener('change', function() {
-      var action = this.options[this.selectedIndex].dataset.action;
-      if (!action) return;
-      var m = action.match(/^(\w+)\s*\(\s*['"]?([^'")\s]*)['"]?\s*\)/);
-      if (m && window[m[1]]) window[m[1]](m[2]);
-    });
-    var label = group.querySelector('.filter-label');
-    group.insertBefore(sel, label ? label.nextSibling : null);
-  });
-}
-initMobileFilters();
 
 // Inicializa dashboard
 updateDashboard();
