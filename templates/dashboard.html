@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Comercial — Rafael Albergaria Nutrição</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <style>
   :root {
     --verde: #22c55e;
@@ -697,6 +698,12 @@ const VEND_NAMES  = {RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio'};
 const VEND_COLORS = {RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b'};
 const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
 
+// Registra plugin datalabels (off por padrao; habilitado em cada chart)
+if (window.ChartDataLabels) {
+  Chart.register(ChartDataLabels);
+  Chart.defaults.set('plugins.datalabels', { display: false });
+}
+
 // =====================================================================
 // CHARTS
 // =====================================================================
@@ -713,16 +720,23 @@ const chartMes = new Chart(ctxMes, {
       label: 'Faturamento (R$)',
       data: [118329, 56698, 72383],
       backgroundColor: ['rgba(34,197,94,.85)','rgba(59,130,246,.85)','rgba(245,158,11,.85)'],
-      borderRadius: 8, borderSkipped: false, order: 2
+      borderRadius: 8, borderSkipped: false, order: 2,
+      datalabels: {
+        display: true, anchor: 'end', align: 'end', offset: 2,
+        color: '#0f172a', font: { weight: 700, size: 11 },
+        formatter: v => v > 0 ? 'R$' + fmtK(v) : ''
+      }
     },{
       type: 'line', label: 'Meta R$60k',
       data: [60000,60000,60000],
       borderColor: 'rgba(239,68,68,0.75)', borderDash: [6,4], borderWidth: 1.5,
-      pointRadius: 0, fill: false, tension: 0, order: 1
+      pointRadius: 0, fill: false, tension: 0, order: 1,
+      datalabels: { display: false }
     }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
+    layout: { padding: { top: 22 } },
     plugins: {
       legend: { display: false },
       tooltip: { callbacks: { label: ctx => ' R$ ' + fmt(ctx.parsed.y) } }
@@ -738,12 +752,37 @@ const chartModal = new Chart(ctxModal, {
   type: 'doughnut',
   data: {
     labels: ['Mensal','Trimestral','Semestral','Anual'],
-    datasets: [{ data: [186,156,70,81], backgroundColor: MODAL_COLORS, borderWidth: 2, borderColor:'#fff', hoverOffset: 6 }]
+    datasets: [{
+      data: [186,156,70,81], backgroundColor: MODAL_COLORS, borderWidth: 2, borderColor:'#fff', hoverOffset: 6,
+      datalabels: {
+        display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+        color: '#fff', font: { weight: 800, size: 13 },
+        formatter: (v, ctx) => {
+          const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+          const pct = total > 0 ? Math.round(v/total*100) : 0;
+          return pct >= 5 ? v + '\n' + pct + '%' : '';
+        },
+        textAlign: 'center'
+      }
+    }]
   },
   options: {
-    responsive: true, maintainAspectRatio: false, cutout: '62%',
+    responsive: true, maintainAspectRatio: false, cutout: '60%',
     plugins: {
-      legend: { position:'bottom', labels:{ font:{size:11}, padding:8, boxWidth:10 } },
+      legend: { position:'bottom', labels:{ font:{size:11}, padding:8, boxWidth:10, generateLabels: (chart) => {
+        const data = chart.data;
+        const total = data.datasets[0].data.reduce((a,b)=>a+b,0);
+        return data.labels.map((label, i) => {
+          const v = data.datasets[0].data[i];
+          const pct = total > 0 ? Math.round(v/total*100) : 0;
+          return {
+            text: label + ' (' + v + ' · ' + pct + '%)',
+            fillStyle: data.datasets[0].backgroundColor[i],
+            strokeStyle: data.datasets[0].backgroundColor[i],
+            lineWidth: 0, hidden: false, index: i
+          };
+        });
+      } } },
       tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} vendas` } }
     }
   }
@@ -753,15 +792,25 @@ const chartVend = new Chart(ctxVend, {
   type: 'bar',
   data: {
     labels: ['Raquel','Rafael','Junio'],
-    datasets: [{ label:'Faturamento', data:[172419,26611,47783], backgroundColor:['#22c55e','#3b82f6','#f59e0b'], borderRadius:8, borderSkipped:false }]
+    datasets: [{
+      label:'Faturamento', data:[172419,26611,47783],
+      backgroundColor:['#22c55e','#3b82f6','#f59e0b'], borderRadius:8, borderSkipped:false,
+      datalabels: {
+        display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+        anchor: 'end', align: 'end', offset: 4, clamp: true,
+        color: '#0f172a', font: { weight: 700, size: 11 },
+        formatter: v => 'R$' + fmtK(v)
+      }
+    }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     indexAxis: 'y',
+    layout: { padding: { right: 40 } },
     plugins: { legend:{display:false}, tooltip:{callbacks:{label: ctx=>' R$ '+fmt(ctx.parsed.x)}} },
     scales: {
       x: { ticks:{callback: v=>'R$'+fmtK(v),font:{size:11}}, grid:{color:'#f1f5f9'} },
-      y: { grid:{display:false}, ticks:{font:{size:12}} }
+      y: { grid:{display:false}, ticks:{font:{size:12, weight: 600}} }
     }
   }
 });
@@ -770,14 +819,24 @@ const chartTicket = new Chart(ctxTicket, {
   type: 'bar',
   data: {
     labels: ['Raquel','Rafael','Junio'],
-    datasets: [{ label:'Ticket Médio', data:[453,665,629], backgroundColor:['#22c55e','#3b82f6','#f59e0b'], borderRadius:8, borderSkipped:false }]
+    datasets: [{
+      label:'Ticket Médio', data:[453,665,629],
+      backgroundColor:['#22c55e','#3b82f6','#f59e0b'], borderRadius:8, borderSkipped:false,
+      datalabels: {
+        display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+        anchor: 'end', align: 'end', offset: 2,
+        color: '#0f172a', font: { weight: 700, size: 11 },
+        formatter: v => 'R$' + fmt(v)
+      }
+    }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
+    layout: { padding: { top: 22 } },
     plugins: { legend:{display:false}, tooltip:{callbacks:{label: ctx=>' R$ '+fmt(ctx.parsed.y)}} },
     scales: {
       y: { ticks:{callback: v=>'R$'+v,font:{size:11}}, grid:{color:'#f1f5f9'} },
-      x: { grid:{display:false}, ticks:{font:{size:12}} }
+      x: { grid:{display:false}, ticks:{font:{size:12, weight: 600}} }
     }
   }
 });
