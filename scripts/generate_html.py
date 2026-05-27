@@ -61,9 +61,11 @@ def update_year_filter(html: str, anos: list) -> str:
     Injeta (ou atualiza) os botões de filtro de ANO no HTML (formato novo com filter-track).
     Botoes Atual/Todos/Anos ficam dentro do track; "Comparar Anos" fica fora como acao destacada.
     """
+    # Label "Tudo" combina os anos disponiveis (ex: "2025+2026")
+    anos_label = '+'.join(sorted(anos))
     track_buttons = [
         '<button class="filter-btn active" data-ano="latest" onclick="setAno(\'latest\')">Atual</button>',
-        '<button class="filter-btn" data-ano="todos" onclick="setAno(\'todos\')">Todos</button>'
+        f'<button class="filter-btn" data-ano="todos" onclick="setAno(\'todos\')" title="Soma todos os anos">{anos_label}</button>'
     ]
     for ano in sorted(anos, reverse=True):
         track_buttons.append(
