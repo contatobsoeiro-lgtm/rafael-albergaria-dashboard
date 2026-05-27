@@ -245,7 +245,12 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
     fat     = round(sub["valor"].sum())
     tkt     = round(fat / n) if n > 0 else 0
     cvend   = round(sub["com_vend"].sum())
-    _treino_mask = sub["adicional"].astype(str).str.upper().str.strip() == "TREINO"
+    # Custo Personal: 15% sobre planos com Adicional=Treino, EXCETO Plano Gustavo
+    # (Plano Gustavo eh produto do parceiro, ele paga comissao pro Rafael, nao o contrario)
+    _treino_mask = (
+        (sub["adicional"].astype(str).str.upper().str.strip() == "TREINO") &
+        (sub["tipo"].astype(str).str.strip().str.lower() != "plano gustavo")
+    )
     ctreino = round(sub[_treino_mask]["com_treino"].sum())
 
     modal = {}
@@ -258,8 +263,13 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
         s  = sub[sub["vendedor"] == v]
         sv = round(s["valor"].sum())
         sc = len(s)
+        # ct (com.treino do vendedor): mesma regra — exclui Plano Gustavo
+        _ct_mask = (
+            (s["adicional"].astype(str).str.upper().str.strip() == "TREINO") &
+            (s["tipo"].astype(str).str.strip().str.lower() != "plano gustavo")
+        )
         vend[v] = {"c":sc,"v":sv,"tkt":round(sv/sc) if sc>0 else 0,
-                   "cv":round(s["com_vend"].sum()),"ct":round(s[s["adicional"].astype(str).str.upper().str.strip()=="TREINO"]["com_treino"].sum())}
+                   "cv":round(s["com_vend"].sum()),"ct":round(s[_ct_mask]["com_treino"].sum())}
 
     mes = {}
     for m in MES_ORDER:

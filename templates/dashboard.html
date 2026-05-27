@@ -2425,9 +2425,16 @@ updateDashboard();
       footer = '<strong>Extrato de cobrança · ' + partnerName + '</strong> · Lista os pacientes que contrataram o "' + tipoPlano + '" em ' + mesName + '/' + ano + '. O valor de repasse deve ser combinado com o parceiro com base na regra acordada. Quando o valor aparece como "—" significa que a venda foi registrada sem valor (provavelmente porque o parceiro cobra direto do paciente).';
 
     } else if (currentCommType === 'personal') {
-      // PERSONAL: 15% sobre TODAS as vendas com Treino, de qualquer vendedor
+      // PERSONAL: 15% sobre vendas com Treino, EXCETO Plano Gustavo
+      // (Plano Gustavo eh produto do Gustavo — ele paga comissao pro Rafael, nao o contrario)
       // NAO mostra valor/faturamento — so a comissao que o personal vai receber
-      vendas = window.VENDAS_DATA.filter(r => r.adic === 'Treino' && r.valor > 0 && r.mes === mes && r.ano === ano);
+      vendas = window.VENDAS_DATA.filter(r =>
+        r.adic === 'Treino' &&
+        r.valor > 0 &&
+        r.mes === mes &&
+        r.ano === ano &&
+        r.tipo !== 'Plano Gustavo'
+      );
       title = 'Comprovante de Comissão · Personal (Gustavo)';
       beneficiario = 'Gustavo (Personal Trainer)';
       headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Comissão (15%)</th></tr>';
