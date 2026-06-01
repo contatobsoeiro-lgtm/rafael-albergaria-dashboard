@@ -12658,11 +12658,8 @@ initMobileFilters();
   function parsePrevisao(json) {
     if (!json || !json.table || !json.table.rows) return null;
     const rows = json.table.rows;
-    // Parser por label (robusto a mudancas de layout). Procura cada bloco pelo texto da col A.
     const MES_RE = /^(Jan|Fev|Mar|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov|Dez)$/i;
     const MES_TO_KEY = {jan:'jan',fev:'fev',mar:'mar',abr:'abr',mai:'mai',jun:'jun',jul:'jul',ago:'ago',set:'set',out:'out',nov:'nov',dez:'dez'};
-
-    // 1. Meses: linhas onde col A bate com "Jan", "Fev", etc.
     const meses = [];
     for (let i = 0; i < rows.length; i++) {
       const r = rows[i]; if (!r) continue;
@@ -12680,8 +12677,6 @@ initMobileFilters();
         });
       }
     }
-
-    // 2. Diario: busca por labels especificos
     function findRowByLabel(re) {
       for (let i = 0; i < rows.length; i++) {
         const r = rows[i]; if (!r) continue;
@@ -12690,10 +12685,7 @@ initMobileFilters();
       }
       return null;
     }
-    function getValByLabel(re) {
-      const r = findRowByLabel(re);
-      return r ? cellVal(r,1) : null;
-    }
+    function getValByLabel(re) { const r = findRowByLabel(re); return r ? cellVal(r,1) : null; }
     const diario = {
       dataAtual: getValByLabel(/^Hoje:/i),
       diasUteisTot: +getValByLabel(/Dias.+teis.+m[eê]s/i)||0,
@@ -12707,8 +12699,6 @@ initMobileFilters();
       projecaoFim: +getValByLabel(/Proje[çc][aã]o fim do m[eê]s/i)||0,
       gapProjetado: +getValByLabel(/Diferen[çc]a vs Meta/i)||0
     };
-
-    // 3. Calendario: linhas DEPOIS do header "ACOMPANHAMENTO DIARIO" cuja col A bate dd/MM
     const DATE_RE = /^\d{1,2}\/\d{1,2}/;
     const calendario = [];
     let foundCalHeader = false;
@@ -12886,13 +12876,11 @@ initMobileFilters();
   function parseGvizDate(s) {
     if (!s) return null;
     const str = ''+s;
-    // Formato gviz antigo: Date(yyyy,mm,dd)
     let m = str.match(/^Date\((\d+),(\d+),(\d+)\)/);
     if (m) {
       const y=+m[1], mo=+m[2], d=+m[3];
       return { y:y, m:mo, d:d, dow:(new Date(y,mo,d)).getDay() };
     }
-    // Formato novo: "01/06 (seg.)" — d/M + ano corrente
     m = str.match(/^(\d{1,2})\/(\d{1,2})/);
     if (m) {
       const d = +m[1], mo = +m[2] - 1;
@@ -12903,10 +12891,7 @@ initMobileFilters();
   }
   function serialToDate(serial) {
     if (serial == null) return null;
-    if (typeof serial === 'number') {
-      return new Date(Math.round((serial - 25569) * 86400 * 1000));
-    }
-    // String tipo "01/06/2026"
+    if (typeof serial === 'number') return new Date(Math.round((serial - 25569) * 86400 * 1000));
     const m = (''+serial).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
     if (m) return new Date(+m[3], +m[2]-1, +m[1]);
     return null;
@@ -13022,7 +13007,6 @@ initMobileFilters();
     renderChartRecorrencia(prev); renderChartCarteira(prev); renderVendedoresMeta(dash); renderChartNovaRenov(prev); renderCalendario(prev);
   }
 
-  // Expõe re-render do calendario pra ser chamado pelos hooks de filtro
   window.renderCalendarioGlobal = function() {
     if (window.PREVISAO_DATA) renderCalendario(window.PREVISAO_DATA);
   };
@@ -13307,8 +13291,7 @@ initMobileFilters();
     window.updateDashboard = function() {
       _origUpdate.apply(this, arguments);
       if (window.VENDAS_DATA) { renderMixTipo(); renderOportunidades(); }
-      // Re-render do calendario diario tambem (responde ao filtro de mes)
-      if (window.PREVISAO_DATA && typeof renderCalendarioGlobal === 'function') renderCalendarioGlobal();
+      if (window.PREVISAO_DATA && typeof window.renderCalendarioGlobal === 'function') window.renderCalendarioGlobal();
     };
   }
   const _origFetchVendas = fetchVendas;
