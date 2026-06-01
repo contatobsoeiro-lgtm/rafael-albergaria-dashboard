@@ -1480,33 +1480,63 @@ updateDashboard();
   function parsePrevisao(json) {
     if (!json || !json.table || !json.table.rows) return null;
     const rows = json.table.rows;
+    const MES_RE = /^(Jan|Fev|Mar|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov|Dez)$/i;
+    const MES_TO_KEY = {jan:'jan',fev:'fev',mar:'mar',abr:'abr',mai:'mai',jun:'jun',jul:'jul',ago:'ago',set:'set',out:'out',nov:'nov',dez:'dez'};
     const meses = [];
-    for (let i = 0; i < 12; i++) {
-      const r = rows[2 + i]; if (!r) continue;
-      meses.push({
-        mes: MESES_PT[i], nome: MES_NAMES[i],
-        fat: +cellVal(r,1)||0, novas: +cellVal(r,2)||0, renov: +cellVal(r,3)||0,
-        recPrev: +cellVal(r,4)||0, recPct: +cellVal(r,5)||0,
-        metaMes: +cellVal(r,6)||0, metaPct: +cellVal(r,7)||0, gap: +cellVal(r,8)||0
-      });
-    }
-    const diario = {
-      dataAtual: cellVal(rows[15],1),
-      diasUteisTot: +cellVal(rows[16],1)||0, diasUteisPas: +cellVal(rows[17],1)||0,
-      metaDiaria: +cellVal(rows[18],1)||0, metaAcum: +cellVal(rows[19],1)||0,
-      realizadoAcum: +cellVal(rows[20],1)||0, gapAcum: +cellVal(rows[21],1)||0,
-      pctAtingido: +cellVal(rows[22],1)||0, ritmoNecessario: +cellVal(rows[23],1)||0,
-      projecaoFim: +cellVal(rows[24],1)||0, gapProjetado: +cellVal(rows[25],1)||0
-    };
-    const calendario = [];
-    for (let i = 26; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       const r = rows[i]; if (!r) continue;
-      const dia = cellVal(r,0); if (!dia) continue;
-      calendario.push({
-        dia: dia, diaUtil: +cellVal(r,1)||null,
-        metaAcum: +cellVal(r,2)||null, realAcum: +cellVal(r,3)||null,
-        gap: +cellVal(r,4)||null, pct: +cellVal(r,5)||null
-      });
+      const lbl = cellVal(r,0);
+      if (typeof lbl !== 'string') continue;
+      const m = lbl.match(MES_RE);
+      if (m) {
+        const key = MES_TO_KEY[m[1].toLowerCase()];
+        const idx = MESES_PT.indexOf(key);
+        meses.push({
+          mes: key, nome: MES_NAMES[idx] || key,
+          fat: +cellVal(r,1)||0, novas: +cellVal(r,2)||0, renov: +cellVal(r,3)||0,
+          recPrev: +cellVal(r,4)||0, recPct: +cellVal(r,5)||0,
+          metaMes: +cellVal(r,6)||0, metaPct: +cellVal(r,7)||0, gap: +cellVal(r,8)||0
+        });
+      }
+    }
+    function findRowByLabel(re) {
+      for (let i = 0; i < rows.length; i++) {
+        const r = rows[i]; if (!r) continue;
+        const lbl = cellVal(r,0);
+        if (typeof lbl === 'string' && re.test(lbl)) return r;
+      }
+      return null;
+    }
+    function getValByLabel(re) { const r = findRowByLabel(re); return r ? cellVal(r,1) : null; }
+    const diario = {
+      dataAtual: getValByLabel(/^Hoje:/i),
+      diasUteisTot: +getValByLabel(/Dias.+teis.+m[eê]s/i)||0,
+      diasUteisPas: +getValByLabel(/Dias.+teis.+at[eé].+hoje/i)||0,
+      metaDiaria: +getValByLabel(/Meta di[aá]ria:?/i)||0,
+      metaAcum: +getValByLabel(/Meta acumulada/i)||0,
+      realizadoAcum: +getValByLabel(/Realizado.+mes.+hoje|Realizado no m[eê]s/i)||0,
+      gapAcum: +getValByLabel(/Diferen[çc]a.+Realizado.+Meta|Diferen[çc]a \(Realizado/i)||0,
+      pctAtingido: +getValByLabel(/Atingimento.+hoje|% Atingimento/i)||0,
+      ritmoNecessario: +getValByLabel(/Ritmo m[eé]dio/i)||0,
+      projecaoFim: +getValByLabel(/Proje[çc][aã]o fim do m[eê]s/i)||0,
+      gapProjetado: +getValByLabel(/Diferen[çc]a vs Meta/i)||0
+    };
+    const DATE_RE = /^\d{1,2}\/\d{1,2}/;
+    const calendario = [];
+    let foundCalHeader = false;
+    for (let i = 0; i < rows.length; i++) {
+      const r = rows[i]; if (!r) continue;
+      const lbl = cellVal(r,0);
+      if (typeof lbl !== 'string') continue;
+      if (/ACOMPANHAMENTO DI[ÁA]RIO|Data$/i.test(lbl)) { foundCalHeader = true; continue; }
+      if (!foundCalHeader) continue;
+      if (DATE_RE.test(lbl)) {
+        calendario.push({
+          dia: lbl, diaUtil: +cellVal(r,1)||null,
+          metaAcum: +cellVal(r,2)||null, realAcum: +cellVal(r,3)||null,
+          gap: +cellVal(r,4)||null, pct: +cellVal(r,5)||null
+        });
+      }
     }
     return { meses: meses, diario: diario, calendario: calendario };
   }
@@ -1667,14 +1697,26 @@ updateDashboard();
 
   function parseGvizDate(s) {
     if (!s) return null;
-    const m = (''+s).match(/^Date\((\d+),(\d+),(\d+)\)/);
-    if (!m) return null;
-    const y=+m[1], mo=+m[2], d=+m[3];
-    return { y:y, m:mo, d:d, dow:(new Date(y,mo,d)).getDay() };
+    const str = ''+s;
+    let m = str.match(/^Date\((\d+),(\d+),(\d+)\)/);
+    if (m) {
+      const y=+m[1], mo=+m[2], d=+m[3];
+      return { y:y, m:mo, d:d, dow:(new Date(y,mo,d)).getDay() };
+    }
+    m = str.match(/^(\d{1,2})\/(\d{1,2})/);
+    if (m) {
+      const d = +m[1], mo = +m[2] - 1;
+      const y = (new Date()).getFullYear();
+      return { y:y, m:mo, d:d, dow:(new Date(y,mo,d)).getDay() };
+    }
+    return null;
   }
   function serialToDate(serial) {
-    if (typeof serial !== 'number') return null;
-    return new Date(Math.round((serial - 25569) * 86400 * 1000));
+    if (serial == null) return null;
+    if (typeof serial === 'number') return new Date(Math.round((serial - 25569) * 86400 * 1000));
+    const m = (''+serial).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (m) return new Date(+m[3], +m[2]-1, +m[1]);
+    return null;
   }
 
   function renderCalendario(prev) {
@@ -1683,6 +1725,17 @@ updateDashboard();
     const primeiro = parseGvizDate(prev.calendario[0].dia);
     let mesLabel = primeiro ? MES_NAMES[primeiro.m]+' '+primeiro.y : '';
     document.getElementById('prev-cal-mes').textContent = mesLabel ? '· '+mesLabel : '';
+
+    // Se filtro de mes != mes corrente do calendario, mostra aviso e sai
+    const MES_KEYS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    if (typeof activeMes !== 'undefined' && activeMes !== 'all' && primeiro) {
+      if (MES_KEYS[primeiro.m] !== activeMes) {
+        grid.innerHTML = '<div style="grid-column:1/-1;padding:24px;text-align:center;color:#94a3b8;font-size:13px;background:var(--cinza);border-radius:10px">' +
+          '📅 O calendário diário só tem dados do mês corrente (<strong>' + mesLabel + '</strong>).<br>' +
+          'Você filtrou por outro mês — sem dados diários para mostrar.</div>';
+        return;
+      }
+    }
 
     let todayD = (new Date()).getDate();
     let todayM = (new Date()).getMonth();
@@ -1775,6 +1828,10 @@ updateDashboard();
     renderRecorrenciaCard(mc); renderProjecaoCard(prev, mc); renderDiasCard(prev); renderAcumCard(prev);
     renderChartRecorrencia(prev); renderChartCarteira(prev); renderVendedoresMeta(dash); renderChartNovaRenov(prev); renderCalendario(prev);
   }
+
+  window.renderCalendarioGlobal = function() {
+    if (window.PREVISAO_DATA) renderCalendario(window.PREVISAO_DATA);
+  };
 
   async function loadPrevisao() {
     const [prevJson, dashJson] = await Promise.all([fetchSheet(SHEET_URL), fetchSheet(DASH_URL)]);
@@ -2056,6 +2113,7 @@ updateDashboard();
     window.updateDashboard = function() {
       _origUpdate.apply(this, arguments);
       if (window.VENDAS_DATA) { renderMixTipo(); renderOportunidades(); }
+      if (window.PREVISAO_DATA && typeof window.renderCalendarioGlobal === 'function') window.renderCalendarioGlobal();
     };
   }
   const _origFetchVendas = fetchVendas;
