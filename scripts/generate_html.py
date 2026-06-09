@@ -175,6 +175,59 @@ let activeVend = 'all';
 const ANOS_DISPONIVEIS = {json.dumps(sorted(anos))};
 const LATEST_ANO = '{latest}';
 const META_MENSAL = 70000;
+const JUNIO_FIXO = 1500;
+function calcComissaoJunio(receita) {{
+  if (!receita || receita <= 0) return 0;
+  if (receita <= 70000) return receita * 0.025;
+  if (receita <= 80000) return 70000*0.025 + (receita-70000)*0.03;
+  if (receita <= 100000) return 70000*0.025 + 10000*0.03 + (receita-80000)*0.035;
+  return 70000*0.025 + 10000*0.03 + 20000*0.035 + (receita-100000)*0.04;
+}}
+function renderRemuneracao() {{
+  const anoData = (typeof getAnoData === 'function') ? getAnoData() : {{}};
+  const key = (typeof getKey === 'function') ? getKey() : 'all';
+  const d = anoData[key] || anoData['all'] || {{}};
+  const receita = d.fat || 0;
+  const pct = Math.round(receita / META_MENSAL * 100);
+  const bateu = receita >= META_MENSAL;
+  const comJunio = calcComissaoJunio(receita);
+  const totalJunio = JUNIO_FIXO + comJunio;
+  const corPct = bateu ? '#10b981' : pct >= 80 ? '#f59e0b' : '#ef4444';
+  const elStatus = document.getElementById('rv-status');
+  if (elStatus) elStatus.innerHTML = '<div style="text-align:center;padding:12px">' +
+    '<div style="font-size:36px;font-weight:700;color:' + corPct + '">' + pct + '%</div>' +
+    '<div style="color:#64748b;font-size:13px">da meta de R$ 70.000</div>' +
+    '<div style="margin-top:14px;font-size:18px"><strong>R$ ' + fmt(receita) + '</strong></div>' +
+    '<div style="margin-top:6px;color:#64748b;font-size:13px">' +
+    (bateu ? '✅ Meta batida' : 'Faltam R$ ' + fmt(META_MENSAL - receita)) + '</div></div>';
+  const elJunio = document.getElementById('rv-junio');
+  if (elJunio) elJunio.innerHTML = '<div style="padding:14px">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ 1.500,00</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Comissão escalonada</span><strong>R$ ' + fmt(comJunio) + '</strong></div>' +
+    '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">' +
+    '<span><strong>Total estimado</strong></span><strong style="color:#10b981;font-size:22px">R$ ' + fmt(totalJunio) + '</strong></div></div>';
+  const elSup = document.getElementById('rv-suporte');
+  if (elSup) {{
+    if (!bateu) {{
+      elSup.innerHTML = '<div style="text-align:center;padding:30px 12px;color:#94a3b8">🔒<br><strong>Travado</strong><br><small style="font-size:12px">Libera quando receita ≥ R$ 70.000</small></div>';
+    }} else {{
+      elSup.innerHTML = '<div style="padding:14px">' +
+        '<div style="margin-bottom:10px;color:#64748b;font-size:13px">Por pessoa (Lais e Emilly), conforme taxa de renovação real:</div>' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>60% a 79%</span><strong>R$ 300</strong></div>' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:10px"><span>80% ou mais</span><strong style="color:#10b981">R$ 600</strong></div>' +
+        '<div style="font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:8px">2 pessoas → total R$ 600 a R$ 1.200/mês</div></div>';
+    }}
+  }}
+  const elFx = document.getElementById('rv-faixas');
+  if (elFx) elFx.innerHTML = '<table class="yoy-table" style="width:100%">' +
+    '<thead><tr><th>Faixa de receita</th><th>Comissão</th><th>Junio recebe (acumulado)</th></tr></thead>' +
+    '<tbody>' +
+    '<tr' + (receita > 0 && receita <= 70000 ? ' style="background:#fef9c3"' : '') + '><td>Até R$ 70.000</td><td>2,5% sobre o total</td><td>até R$ 1.750 + fixo R$ 1.500</td></tr>' +
+    '<tr' + (receita > 70000 && receita <= 80000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 70.000 a R$ 80.000</td><td>+ 3% sobre o que passar</td><td>até R$ 2.050 + fixo</td></tr>' +
+    '<tr' + (receita > 80000 && receita <= 100000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 80.000 a R$ 100.000</td><td>+ 3,5% sobre o que passar</td><td>até R$ 2.750 + fixo</td></tr>' +
+    '<tr' + (receita > 100000 ? ' style="background:#fef9c3"' : '') + '><td>Acima de R$ 100.000</td><td>+ 4% sobre o que passar</td><td>progressivo + fixo</td></tr>' +
+    '</tbody></table>';
+}}
 
 function setAno(ano) {{
   activeAno = ano;
@@ -307,6 +360,39 @@ if (window.ChartDataLabels) {{
 </div>
 """
     html = html.replace('<div class="footer">', compare_section + '\n<div class="footer">', 1)
+
+    # Seção de Remuneração Variável (Junio + Suporte)
+    rv_section = """
+<div id="rv-section" class="main" style="padding-top:0">
+  <div class="section-header">
+    <div class="section-header-title">💰 Remuneração Variável</div>
+    <div class="section-header-sub">Meta R$ 70.000 · Comissão escalonada do Junio · Bônus do Suporte</div>
+  </div>
+  <div class="charts-row charts-row-3" style="margin-bottom:16px">
+    <div class="chart-card">
+      <div class="chart-title">Status do Mês</div>
+      <div class="chart-sub">Receita atual vs meta</div>
+      <div id="rv-status"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Comissão Junio (estimada)</div>
+      <div class="chart-sub">Fixo + escalonada por faixa</div>
+      <div id="rv-junio"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Bônus Suporte (renovação)</div>
+      <div class="chart-sub">Libera apenas se meta de receita batida</div>
+      <div id="rv-suporte"></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-bottom:16px">
+    <div class="chart-title">Estrutura escalonada de comissão (Junio)</div>
+    <div class="chart-sub">Faixa atual em destaque</div>
+    <div id="rv-faixas"></div>
+  </div>
+</div>
+"""
+    html = html.replace('<div class="footer">', rv_section + '\n<div class="footer">', 1)
 
     # Remove as versoes antigas de setMes/setVend/getKey ANTES de injetar js_multiyr
     # (evita que o cleanup remova as versoes novas que serao injetadas a seguir)
@@ -492,6 +578,7 @@ function updateDashboard() {
     <td><strong>R$ ${fmt(totCv+totCt)}</strong></td></tr>`:'';
 
   if(typeof updateAdvanced === 'function') updateAdvanced();
+  if(typeof renderRemuneracao === 'function') renderRemuneracao();
 }
 
 // Override updateAdvanced to use multi-year data structure
