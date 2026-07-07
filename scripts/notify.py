@@ -23,17 +23,26 @@ WA_PHONE = os.getenv("WHATSAPP_PHONE", "")
 WA_APIKEY = os.getenv("WHATSAPP_APIKEY", "")
 
 
-def build_message(records, fat_total, timestamp):
+def build_message(records, fat_total, timestamp, problemas=None):
     dt = datetime.fromisoformat(timestamp)
     date_str = dt.strftime("%d/%m/%Y")
     fat_str = f"R$ {fat_total:,.0f}".replace(",", ".")
-    return (
+    msg = (
         f"✅ *Dashboard de Vendas atualizado!*\n\n"
         f"📅 {date_str}\n"
         f"📋 {records} registros\n"
         f"💰 Faturamento: {fat_str}\n\n"
         f"🔗 Acesse: {DASHBOARD_URL}"
     )
+    if problemas:
+        msg += (
+            f"\n\n⚠️ {len(problemas)} venda(s) ficaram FORA do dash "
+            f"por erro de digitacao na planilha:\n"
+        )
+        msg += "\n".join(f"- {p}" for p in problemas[:8])
+        if len(problemas) > 8:
+            msg += f"\n(e mais {len(problemas) - 8})"
+    return msg
 
 
 def send_whatsapp(message):
@@ -49,8 +58,8 @@ def send_whatsapp(message):
         return False
 
 
-def notify(records, fat_total, timestamp):
-    message = build_message(records, fat_total, timestamp)
+def notify(records, fat_total, timestamp, problemas=None):
+    message = build_message(records, fat_total, timestamp, problemas)
     results = {}
     if "whatsapp" in NOTIFY_CHANNEL.lower():
         results["whatsapp"] = send_whatsapp(message)

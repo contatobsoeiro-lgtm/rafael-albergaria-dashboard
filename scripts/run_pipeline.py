@@ -38,6 +38,7 @@ def run():
         records   = result["records"]
         timestamp = result["timestamp"]
         fat_total = data["all"]["fat"]
+        problemas = result.get("problemas", [])
         print(f"    ✅ {records} registros · faturamento total: R$ {fat_total:,.0f}")
     except Exception as e:
         print(f"\n❌ ERRO na etapa 1 (fetch_data): {e}")
@@ -58,7 +59,7 @@ def run():
     # ── ETAPA 3: Notificar ────────────────────────────────────
     print("\n📨 [3/3] Enviando notificação...")
     try:
-        results = notifier.notify(records, fat_total, timestamp)
+        results = notifier.notify(records, fat_total, timestamp, problemas)
         for channel, ok in results.items():
             status = "✅" if ok else "❌"
             print(f"    {status} {channel}")

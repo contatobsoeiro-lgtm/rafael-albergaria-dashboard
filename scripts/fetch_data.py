@@ -17,6 +17,7 @@ VARIÃÂÃÂVEIS DE AMBIENTE:
 """
 
 import os
+import re
 import json
 import unicodedata
 import requests
@@ -185,6 +186,56 @@ def download_sheet(url: str, sheet_type: str) -> pd.DataFrame:
 
 # ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ NORMALIZAÃÂÃÂÃÂÃÂO ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 
+def parse_valor_flex(x):
+    """
+    Converte valor em numero. Aceita float/int nativos e tambem texto
+    digitado errado na planilha, tipo "R$1858,75" ou "R$ 1.197,00".
+    Celula vazia vira 0. Texto ilegivel vira NaN (para gerar alerta).
+    """
+    if isinstance(x, (int, float)):
+        return float(x) if not pd.isna(x) else 0.0
+    s = str(x).strip()
+    if not s or s.lower() in ("nan", "none", "-"):
+        return 0.0
+    s = re.sub(r"(?i)[r$\s ]", "", s)
+    if "," in s:
+        # formato brasileiro: ponto de milhar, virgula decimal
+        s = s.replace(".", "").replace(",", ".")
+    elif re.fullmatch(r"\d{1,3}(\.\d{3})+", s):
+        # so pontos de milhar, sem decimais: "1.197" significa 1197
+        s = s.replace(".", "")
+    try:
+        return float(s)
+    except ValueError:
+        return float("nan")
+
+
+def parse_data_flex(x):
+    """
+    Converte data. Aceita datetime nativo, serial do Excel e texto,
+    inclusive digitacao quebrada tipo "19/052026" (sem uma das barras).
+    Ilegivel vira NaT (para gerar alerta).
+    """
+    if isinstance(x, (pd.Timestamp, datetime)):
+        return pd.Timestamp(x)
+    if isinstance(x, (int, float)):
+        if pd.isna(x):
+            return pd.NaT
+        try:
+            return pd.Timestamp("1899-12-30") + pd.Timedelta(days=float(x))
+        except Exception:
+            return pd.NaT
+    s = str(x).strip()
+    if not s or s.lower() == "nan":
+        return pd.NaT
+    d = pd.to_datetime(s, dayfirst=True, errors="coerce")
+    if pd.isna(d):
+        digitos = re.sub(r"\D", "", s)
+        if len(digitos) == 8:
+            d = pd.to_datetime(digitos, format="%d%m%Y", errors="coerce")
+    return d
+
+
 def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = [unicodedata.normalize('NFKD',str(c)).encode('ascii','ignore').decode('ascii').lower().strip() for c in df.columns]
     _cmap = {unicodedata.normalize('NFKD',k).encode('ascii','ignore').decode('ascii').lower().strip():v for k,v in COL_MAP.items()}
@@ -206,18 +257,30 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     if "adicional"  not in df.columns: df["adicional"]  = ""
 
     # Converte datas: aceita datetime nativo, strings ou seriais numéricos do Excel
-    _data_col = df["data"]
-    if pd.api.types.is_numeric_dtype(_data_col):
-        df["data"] = pd.to_datetime(_data_col, unit="D", origin="1899-12-30", errors="coerce")
-    else:
-        df["data"] = pd.to_datetime(_data_col, dayfirst=True, errors="coerce")
-    df["valor"]      = pd.to_numeric(df["valor"],      errors="coerce").fillna(0)
-    df["com_vend"]   = pd.to_numeric(df["com_vend"],   errors="coerce").fillna(0)
-    df["com_treino"] = pd.to_numeric(df["com_treino"], errors="coerce").fillna(0)
+    df["data"]       = pd.to_datetime(df["data"].map(parse_data_flex), errors="coerce")
+    df["valor"]      = df["valor"].map(parse_valor_flex)
+    df["com_vend"]   = df["com_vend"].map(parse_valor_flex).fillna(0)
+    df["com_treino"] = df["com_treino"].map(parse_valor_flex).fillna(0)
     df["vendedor"]   = df["vendedor"].astype(str).str.upper().str.strip()
     df["modalidade"] = df["modalidade"].astype(str).str.upper().str.strip().apply(lambda s: unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode('ascii'))
 
+    # Linhas que serao descartadas por erro de digitacao: alertar em vez de sumir em silencio.
+    # Valor 0 e legitimo (planos Wellts), por isso nao entra no alerta.
+    _sem_data  = df["data"].isna()
+    _sem_valor = df["valor"].isna()
+    problemas = []
+    for idx, row in df[_sem_data | _sem_valor].iterrows():
+        paciente = str(row.get("paciente", "")).strip() or "(sem nome)"
+        motivo   = "data ilegivel" if _sem_data.loc[idx] else "valor ilegivel"
+        problemas.append(f"linha {idx + 2}: {paciente}, {motivo}")
+    if problemas:
+        print(f"[fetch] ATENCAO: {len(problemas)} linha(s) da planilha descartada(s) por erro de digitacao:")
+        for p in problemas:
+            print(f"[fetch]    - {p}")
+    df["valor"] = df["valor"].fillna(0)
+
     df = df.dropna(subset=["data"]).query("valor > 0").copy()
+    df.attrs["problemas"] = problemas
 
     df["ano"]     = df["data"].dt.year.astype(str)
     df["mes_num"] = df["data"].dt.month
@@ -429,6 +492,7 @@ def main() -> dict:
         "timestamp": snap["timestamp"],
         "anos":      snap["anos"],
         "fat_total": snap["fat_total"],
+        "problemas": df.attrs.get("problemas", []),
     }
 
 
