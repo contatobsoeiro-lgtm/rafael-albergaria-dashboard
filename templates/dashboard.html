@@ -1445,7 +1445,11 @@ updateDashboard();
 <script>
 (function() {
   const SHEET_ID = '19RLmBTG5JQ4ocotoX3V0SmHILM2l_7PyMCQ4UJamCjM';
-  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Previs%C3%A3o&headers=2';
+  // Aba Previsão via export CSV (gid fixo). Não usar gviz aqui: o calendário
+  // diário faz o gviz tipar a coluna A como data, aí ele devolve null pra
+  // todos os rótulos de texto ("Jan", "Hoje:", "Dias úteis"...) e a seção zera.
+  const PREV_GID  = 7550405;
+  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=' + PREV_GID;
   const DASH_URL  = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Dashboard&headers=2';
   const META_REC  = 0.60;
   const META_MES  = 60000;
@@ -1476,6 +1480,41 @@ updateDashboard();
     if (!row || !row.c || idx >= row.c.length || !row.c[idx]) return null;
     return row.c[idx].v;
   }
+  // Parser de CSV (respeita aspas) devolvendo a mesma estrutura do gviz,
+  // pra reaproveitar cellVal e o resto do código.
+  function parseCSVText(text) {
+    const raw = []; let row = [], cur = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (q) {
+        if (ch === '"') { if (text[i+1] === '"') { cur += '"'; i++; } else q = false; }
+        else cur += ch;
+      }
+      else if (ch === '"') q = true;
+      else if (ch === ',') { row.push(cur); cur = ''; }
+      else if (ch === '\n') { row.push(cur.replace(/\r$/,'')); raw.push(row); row = []; cur = ''; }
+      else cur += ch;
+    }
+    if (cur !== '' || row.length) { row.push(cur.replace(/\r$/,'')); raw.push(row); }
+    return { table: { rows: raw.map(cells => ({ c: cells.map(v => ({ v: v === '' ? null : v })) })) } };
+  }
+  async function fetchSheetCSV(url) {
+    try { const r = await fetch(url); const t = await r.text(); return parseCSVText(t); } catch(e) { return null; }
+  }
+  // Converte valor formatado em pt-BR ("R$ 3.043,48", "31%", "-R$ 668,82") em número.
+  function parseBRNum(x) {
+    if (x == null || x === '') return null;
+    if (typeof x === 'number') return x;
+    let t = ('' + x).trim();
+    if (!t) return null;
+    const neg = t.indexOf('-') !== -1;
+    const pct = t.indexOf('%') !== -1;
+    t = t.replace(/[^\d,\.]/g, '').replace(/\./g, '').replace(',', '.');
+    let n = parseFloat(t);
+    if (isNaN(n)) return null;
+    if (pct) n = n / 100;
+    return neg ? -n : n;
+  }
 
   function parsePrevisao(json) {
     if (!json || !json.table || !json.table.rows) return null;
@@ -1493,9 +1532,9 @@ updateDashboard();
         const idx = MESES_PT.indexOf(key);
         meses.push({
           mes: key, nome: MES_NAMES[idx] || key,
-          fat: +cellVal(r,1)||0, novas: +cellVal(r,2)||0, renov: +cellVal(r,3)||0,
-          recPrev: +cellVal(r,4)||0, recPct: +cellVal(r,5)||0,
-          metaMes: +cellVal(r,6)||0, metaPct: +cellVal(r,7)||0, gap: +cellVal(r,8)||0
+          fat: parseBRNum(cellVal(r,1))||0, novas: parseBRNum(cellVal(r,2))||0, renov: parseBRNum(cellVal(r,3))||0,
+          recPrev: parseBRNum(cellVal(r,4))||0, recPct: parseBRNum(cellVal(r,5))||0,
+          metaMes: parseBRNum(cellVal(r,6))||0, metaPct: parseBRNum(cellVal(r,7))||0, gap: parseBRNum(cellVal(r,8))||0
         });
       }
     }
@@ -1510,16 +1549,16 @@ updateDashboard();
     function getValByLabel(re) { const r = findRowByLabel(re); return r ? cellVal(r,1) : null; }
     const diario = {
       dataAtual: getValByLabel(/^Hoje:/i),
-      diasUteisTot: +getValByLabel(/Dias.+teis.+m[eê]s/i)||0,
-      diasUteisPas: +getValByLabel(/Dias.+teis.+at[eé].+hoje/i)||0,
-      metaDiaria: +getValByLabel(/Meta di[aá]ria:?/i)||0,
-      metaAcum: +getValByLabel(/Meta acumulada/i)||0,
-      realizadoAcum: +getValByLabel(/Realizado.+mes.+hoje|Realizado no m[eê]s/i)||0,
-      gapAcum: +getValByLabel(/Diferen[çc]a.+Realizado.+Meta|Diferen[çc]a \(Realizado/i)||0,
-      pctAtingido: +getValByLabel(/Atingimento.+hoje|% Atingimento/i)||0,
-      ritmoNecessario: +getValByLabel(/Ritmo m[eé]dio/i)||0,
-      projecaoFim: +getValByLabel(/Proje[çc][aã]o fim do m[eê]s/i)||0,
-      gapProjetado: +getValByLabel(/Diferen[çc]a vs Meta/i)||0
+      diasUteisTot: parseBRNum(getValByLabel(/Dias.+teis.+m[eê]s/i))||0,
+      diasUteisPas: parseBRNum(getValByLabel(/Dias.+teis.+at[eé].+hoje/i))||0,
+      metaDiaria: parseBRNum(getValByLabel(/Meta di[aá]ria:?/i))||0,
+      metaAcum: parseBRNum(getValByLabel(/Meta acumulada/i))||0,
+      realizadoAcum: parseBRNum(getValByLabel(/Realizado.+mes.+hoje|Realizado no m[eê]s/i))||0,
+      gapAcum: parseBRNum(getValByLabel(/Diferen[çc]a.+Realizado.+Meta|Diferen[çc]a \(Realizado/i))||0,
+      pctAtingido: parseBRNum(getValByLabel(/Atingimento.+hoje|% Atingimento/i))||0,
+      ritmoNecessario: parseBRNum(getValByLabel(/Ritmo m[eé]dio/i))||0,
+      projecaoFim: parseBRNum(getValByLabel(/Proje[çc][aã]o fim do m[eê]s/i))||0,
+      gapProjetado: parseBRNum(getValByLabel(/Diferen[çc]a vs Meta/i))||0
     };
     const DATE_RE = /^\d{1,2}\/\d{1,2}/;
     const calendario = [];
@@ -1532,9 +1571,9 @@ updateDashboard();
       if (!foundCalHeader) continue;
       if (DATE_RE.test(lbl)) {
         calendario.push({
-          dia: lbl, diaUtil: +cellVal(r,1)||null,
-          metaAcum: +cellVal(r,2)||null, realAcum: +cellVal(r,3)||null,
-          gap: +cellVal(r,4)||null, pct: +cellVal(r,5)||null
+          dia: lbl, diaUtil: parseBRNum(cellVal(r,1)),
+          metaAcum: parseBRNum(cellVal(r,2)), realAcum: parseBRNum(cellVal(r,3)),
+          gap: parseBRNum(cellVal(r,4)), pct: parseBRNum(cellVal(r,5))
         });
       }
     }
@@ -1834,7 +1873,7 @@ updateDashboard();
   };
 
   async function loadPrevisao() {
-    const [prevJson, dashJson] = await Promise.all([fetchSheet(SHEET_URL), fetchSheet(DASH_URL)]);
+    const [prevJson, dashJson] = await Promise.all([fetchSheetCSV(SHEET_URL), fetchSheet(DASH_URL)]);
     window.PREVISAO_DATA = parsePrevisao(prevJson);
     window.DASHBOARD_DATA = parseDashboard(dashJson);
     renderAll();
