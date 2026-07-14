@@ -242,6 +242,28 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     rename = {c: _cmap[c] for c in df.columns if c in _cmap}
     df = df.rename(columns=rename)
 
+    # Coluna de data sumiu pelo nome? Acontece quando mexem na tabela do Sheets
+    # e o cabecalho vira "Coluna 1". Detecta automaticamente: coluna nao mapeada
+    # em que a maioria dos valores vira data valida entre 2020 e 2035.
+    if "data" not in df.columns:
+        ja_mapeadas = set(rename.values())
+        melhor, melhor_taxa = None, 0.0
+        for c in df.columns:
+            if c in ja_mapeadas:
+                continue
+            amostra = df[c].dropna().head(100)
+            if len(amostra) < 5:
+                continue
+            conv = amostra.map(parse_data_flex)
+            taxa = conv.map(lambda d: (not pd.isna(d)) and 2020 <= d.year <= 2035).mean()
+            if taxa > melhor_taxa:
+                melhor, melhor_taxa = c, taxa
+        if melhor is not None and melhor_taxa >= 0.8:
+            print(f"[fetch] AVISO: coluna de data nao encontrada pelo nome; "
+                  f"usando '{melhor}' ({melhor_taxa:.0%} de datas validas). "
+                  f"Renomear o cabecalho para 'Data' na planilha.")
+            df = df.rename(columns={melhor: "data"})
+
     # Checa colunas obrigatÃÂÃÂ³rias
     required = {"data", "vendedor", "modalidade", "valor"}
     missing  = required - set(df.columns)

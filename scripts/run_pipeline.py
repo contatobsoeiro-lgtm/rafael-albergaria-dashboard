@@ -43,6 +43,11 @@ def run():
     except Exception as e:
         print(f"\n❌ ERRO na etapa 1 (fetch_data): {e}")
         traceback.print_exc()
+        # Avisa no WhatsApp que o robo quebrou (so no primeiro run que falha)
+        try:
+            notifier.notify_erro(e)
+        except Exception as ne:
+            print(f"    ⚠️  Falhou tambem ao enviar o aviso de erro: {ne}")
         sys.exit(1)
 
     # ── ETAPA 2: Gerar HTML ───────────────────────────────────

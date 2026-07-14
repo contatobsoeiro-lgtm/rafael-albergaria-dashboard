@@ -65,3 +65,36 @@ def notify(records, fat_total, timestamp, problemas=None):
         results["whatsapp"] = send_whatsapp(message)
     return results
 
+
+def _falha_anterior():
+    """True se o run anterior do workflow tambem falhou (evita spam no WhatsApp)."""
+    repo = os.getenv("GITHUB_REPOSITORY", "")
+    if not repo:
+        return False
+    try:
+        url = (f"https://api.github.com/repos/{repo}/actions/workflows/"
+               f"update.yml/runs?per_page=1&status=completed")
+        r = requests.get(url, timeout=15)
+        runs = r.json().get("workflow_runs", [])
+        return bool(runs) and runs[0].get("conclusion") == "failure"
+    except Exception:
+        return False
+
+
+def notify_erro(erro):
+    """Avisa no WhatsApp que o robo quebrou. So no PRIMEIRO run que falha."""
+    if _falha_anterior():
+        print("[notify] Run anterior ja tinha falhado, aviso ja foi enviado.")
+        return {}
+    msg = (
+        "🚨 Dashboard de Vendas NAO atualizou!\n\n"
+        "O robo falhou ao ler a planilha. O dash continua no ar, "
+        "mas congelado nos ultimos dados bons.\n\n"
+        f"Motivo tecnico: {str(erro)[:300]}\n\n"
+        "Quase sempre foi cabecalho ou celula mexida na aba Vendas."
+    )
+    results = {}
+    if "whatsapp" in NOTIFY_CHANNEL.lower():
+        results["whatsapp"] = send_whatsapp(msg)
+    return results
+
