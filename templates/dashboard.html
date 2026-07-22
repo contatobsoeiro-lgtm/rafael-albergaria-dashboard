@@ -353,9 +353,8 @@
       <div class="filter-track">
         <button class="filter-btn active" data-vend="all"    onclick="setVend('all')">Todos</button>
         <button class="filter-btn"        data-vend="rafael" onclick="setVend('rafael')">Rafael</button>
-        <button class="filter-btn"        data-vend="bia"    onclick="setVend('bia')">Bia</button>
         <button class="filter-btn"        data-vend="suporte" onclick="setVend('suporte')">Suporte</button>
-        <button class="filter-btn"        data-vend="vendedores antigos" onclick="setVend('vendedores antigos')">Vendedores Antigos</button>
+        <button class="filter-btn"        data-vend="outros" onclick="setVend('outros')">Outros</button>
       </div>
     </div>
     <div class="filter-group" id="year-filter-group">
@@ -1925,7 +1924,7 @@ updateDashboard();
       tipo: (r[4]||'').trim(), mod: (r[5]||'').trim(), adic: (r[6]||'').trim(), valor: parseBRL(r[7]),
       vendedor: (function(v){
         // Junio, Duda e Raquel sairam da equipe: historico unificado
-        return (v === 'junio' || v === 'duda' || v === 'raquel') ? 'vendedores antigos' : v;
+        return (v === 'junio' || v === 'duda' || v === 'raquel' || v === 'bia') ? 'outros' : v;
       })((r[8]||'').trim().toLowerCase()),
       consulta: (r[11]||'').trim(),
       operacao: (r[12]||'').trim()
@@ -2062,7 +2061,7 @@ updateDashboard();
     const pct = totVal > 0 ? Math.round(top5Val/totVal*100) : 0;
     let html = '<div class="opp-summary good"><div class="opp-summary-num">'+pct+'%</div><div class="opp-summary-lbl">do faturamento veio do top 5 · R$ '+Math.round(top5Val).toLocaleString('pt-BR')+'</div></div>';
     html += '<div class="opp-list">';
-    const VEND_DISPLAY = { rafael:'Rafael', bia:'Bia', suporte:'Suporte', 'vendedores antigos':'Vendedores Antigos', junio:'Junio', raquel:'Raquel', duda:'Duda' };
+    const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda' };
     top.forEach((r, i) => {
       const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor ? r.vendedor.charAt(0).toUpperCase()+r.vendedor.slice(1) : '');
       html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">#'+(i+1)+' · '+r.paciente+'</div><div class="opp-row-meta">'+(r.mod||'')+' · '+vendNome+'</div></div><div class="opp-row-val">R$ '+Math.round(r.valor).toLocaleString('pt-BR')+'</div></div>';
@@ -2411,7 +2410,7 @@ updateDashboard();
 (function() {
   const MES_LBL_FULL = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
   const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
-  const VEND_DISPLAY = { rafael:'Rafael', bia:'Bia', suporte:'Suporte', 'vendedores antigos':'Vendedores Antigos', junio:'Junio', raquel:'Raquel', duda:'Duda' };
+  const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda' };
 
   // tipo: 'vendedor' (default), 'personal', 'parceiro'
   let currentCommType = 'vendedor';
