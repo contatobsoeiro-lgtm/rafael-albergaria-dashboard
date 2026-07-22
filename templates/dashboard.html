@@ -352,9 +352,10 @@
       <span class="filter-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Vendedor</span>
       <div class="filter-track">
         <button class="filter-btn active" data-vend="all"    onclick="setVend('all')">Todos</button>
-        <button class="filter-btn"        data-vend="raquel" onclick="setVend('raquel')">Raquel</button>
         <button class="filter-btn"        data-vend="rafael" onclick="setVend('rafael')">Rafael</button>
-        <button class="filter-btn"        data-vend="junio"  onclick="setVend('junio')">Junio</button>
+        <button class="filter-btn"        data-vend="bia"    onclick="setVend('bia')">Bia</button>
+        <button class="filter-btn"        data-vend="suporte" onclick="setVend('suporte')">Suporte</button>
+        <button class="filter-btn"        data-vend="vendedores antigos" onclick="setVend('vendedores antigos')">Vendedores Antigos</button>
       </div>
     </div>
     <div class="filter-group" id="year-filter-group">
@@ -1922,7 +1923,10 @@ updateDashboard();
       mes: ((r[2]||'').toLowerCase().match(/^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)||[])[1]||'',
       paciente: (r[3]||'').trim(),
       tipo: (r[4]||'').trim(), mod: (r[5]||'').trim(), adic: (r[6]||'').trim(), valor: parseBRL(r[7]),
-      vendedor: (r[8]||'').trim().toLowerCase(),
+      vendedor: (function(v){
+        // Junio, Duda e Raquel sairam da equipe: historico unificado
+        return (v === 'junio' || v === 'duda' || v === 'raquel') ? 'vendedores antigos' : v;
+      })((r[8]||'').trim().toLowerCase()),
       consulta: (r[11]||'').trim(),
       operacao: (r[12]||'').trim()
     }));
@@ -2058,7 +2062,7 @@ updateDashboard();
     const pct = totVal > 0 ? Math.round(top5Val/totVal*100) : 0;
     let html = '<div class="opp-summary good"><div class="opp-summary-num">'+pct+'%</div><div class="opp-summary-lbl">do faturamento veio do top 5 · R$ '+Math.round(top5Val).toLocaleString('pt-BR')+'</div></div>';
     html += '<div class="opp-list">';
-    const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
+    const VEND_DISPLAY = { rafael:'Rafael', bia:'Bia', suporte:'Suporte', 'vendedores antigos':'Vendedores Antigos', junio:'Junio', raquel:'Raquel', duda:'Duda' };
     top.forEach((r, i) => {
       const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor ? r.vendedor.charAt(0).toUpperCase()+r.vendedor.slice(1) : '');
       html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">#'+(i+1)+' · '+r.paciente+'</div><div class="opp-row-meta">'+(r.mod||'')+' · '+vendNome+'</div></div><div class="opp-row-val">R$ '+Math.round(r.valor).toLocaleString('pt-BR')+'</div></div>';
@@ -2407,7 +2411,7 @@ updateDashboard();
 (function() {
   const MES_LBL_FULL = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
   const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
-  const VEND_DISPLAY = { junio:'Junio', rafael:'Rafael', raquel:'Raquel', duda:'Duda', bia:'Bia' };
+  const VEND_DISPLAY = { rafael:'Rafael', bia:'Bia', suporte:'Suporte', 'vendedores antigos':'Vendedores Antigos', junio:'Junio', raquel:'Raquel', duda:'Duda' };
 
   // tipo: 'vendedor' (default), 'personal', 'parceiro'
   let currentCommType = 'vendedor';
@@ -2451,7 +2455,7 @@ updateDashboard();
       window.VENDAS_DATA.forEach(r => { if (r.vendedor) vendsSet.add(r.vendedor); });
       const vends = Array.from(vendsSet).sort();
       selV.innerHTML = vends.map(v => '<option value="' + v + '">' + (VEND_DISPLAY[v] || v) + '</option>').join('');
-      if (vends.includes('junio')) selV.value = 'junio';
+      if (vends.includes('rafael')) selV.value = 'rafael';
     }
 
     // Meses

@@ -93,7 +93,11 @@ MES_ORDER = list(MES_MAP.values())
 
 # Vendedores detectados dinamicamente na planilha ÃÂ¢ÃÂÃÂ nÃÂÃÂ£o mais hardcoded
 # Os nomes abaixo sÃÂÃÂ£o usados como fallback para ordenaÃÂÃÂ§ÃÂÃÂ£o nos grÃÂÃÂ¡ficos
-VENDORS_DISPLAY_ORDER = ["RAQUEL", "RAFAEL", "JUNIO", "DUDA"]
+VENDORS_DISPLAY_ORDER = ["RAFAEL", "BIA", "SUPORTE", "VENDEDORES ANTIGOS"]
+
+# Junio, Duda e Raquel sairam da equipe (jul/2026): o historico deles
+# aparece unificado no dashboard como "VENDEDORES ANTIGOS"
+VENDORS_QUE_SAIRAM = {"JUNIO", "DUDA", "RAQUEL"}
 VENDORS_EXPECTED      = VENDORS_DISPLAY_ORDER  # serÃÂÃÂ¡ atualizado dinamicamente em build_data_object()
 MODAIS_EXPECTED  = ["MENSAL", "TRIMESTRAL", "SEMESTRAL", "ANUAL", "BÃÂÃÂSICO", "DESAFIO", "VIP", "PREMIUM", "BASICO"]
 MODAIS_EXPECTED  = [m for m in MODAIS_EXPECTED if m.isascii()]
@@ -284,6 +288,7 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     df["com_vend"]   = df["com_vend"].map(parse_valor_flex).fillna(0)
     df["com_treino"] = df["com_treino"].map(parse_valor_flex).fillna(0)
     df["vendedor"]   = df["vendedor"].astype(str).str.upper().str.strip()
+    df["vendedor"]   = df["vendedor"].map(lambda v: "VENDEDORES ANTIGOS" if v in VENDORS_QUE_SAIRAM else v)
     df["modalidade"] = df["modalidade"].astype(str).str.upper().str.strip().apply(lambda s: unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode('ascii'))
 
     # Linhas que serao descartadas por erro de digitacao: alertar em vez de sumir em silencio.

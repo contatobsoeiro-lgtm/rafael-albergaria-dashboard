@@ -420,7 +420,7 @@ const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RA
 const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
 VENDORS_LIST.forEach((v, i) => {
   if (!VEND_COLORS[v]) VEND_COLORS[v] = EXTRA_COLORS[i % EXTRA_COLORS.length];
-  if (!VEND_NAMES[v])  VEND_NAMES[v]  = v.charAt(0) + v.slice(1).toLowerCase();
+  if (!VEND_NAMES[v])  VEND_NAMES[v]  = v.toLowerCase().split(' ').map(w => w ? w.charAt(0).toUpperCase() + w.slice(1) : w).join(' ');
 });
 
 // Substitui updateDashboard para usar dados do ano ativo
@@ -505,7 +505,7 @@ function updateDashboard() {
                   ago:'Ago '+ano,set:'Set '+ano,out:'Out '+ano,nov:'Nov '+ano,dez:'Dez '+ano};
   // Gera mapeamento vend→label dinamicamente
   const vLblMap = {all:''};
-  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + v.charAt(0) + v.slice(1).toLowerCase(); });
+  VENDORS_LIST.forEach(v => { vLblMap[v.toLowerCase()] = ' · ' + (VEND_NAMES[v] || v); });
   document.getElementById('kpi-fat-badge').textContent = (mesLbl[activeMes]||anoTxt) + (vLblMap[activeVend]||'');
 
   // Sub-titulos dinamicos (refletem filtros)
@@ -561,7 +561,7 @@ function updateDashboard() {
     if(!vd||vd.c===0) return;
     totN+=vd.c;totV+=vd.v;totCv+=vd.cv;totCt+=vd.ct;
     const cor = VEND_COLORS[v] || '#94a3b8';
-    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
+    const nome = VEND_NAMES[v] || v;
     rows+=`<tr>
       <td><span class="vend-badge"><span class="vend-dot" style="background:${cor}"></span>${nome}</span></td>
       <td>${vd.c}</td><td>R$ ${fmt(vd.v)}</td>
@@ -601,7 +601,7 @@ function updateAdvanced() {
     const pLongo = pct(cS + cA);
     const pillClass = pLongo >= 35 ? 'pill-green' : pLongo >= 25 ? 'pill-blue' : 'pill-gray';
     const cor = VEND_COLORS[v] || '#94a3b8';
-    const nome = VEND_NAMES[v] || (v.charAt(0) + v.slice(1).toLowerCase());
+    const nome = VEND_NAMES[v] || v;
     rows += '<tr>' +
       '<td><span class="vend-badge"><span class="vend-dot" style="background:' + cor + '"></span>' + nome + '</span></td>' +
       '<td>' + pct(cM) + '% <small style="color:var(--text-muted)">(' + cM + ')</small></td>' +
