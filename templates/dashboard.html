@@ -449,7 +449,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Vendedor
           </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Comprovante de comissão do personal (15% sobre treinos)">
+          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Repasse do personal: R$ 50/mês por plano com Treino vigente (vendas a partir de jul/2026); meses anteriores no modelo antigo de 15%">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
             Personal
           </button>
@@ -2430,7 +2430,7 @@ updateDashboard();
 
     if (currentCommType === 'personal') {
       title.textContent = '🏋️ Comprovante do Personal (Gustavo)';
-      desc.textContent = 'Lista de vendas COM adicional "Treino" no mês selecionado. Comissão de 15% sobre cada venda, independente de qual vendedor fechou.';
+      desc.textContent = 'A partir de jul/2026: repasse fixo de R$ 50 por mês por plano com Treino, durante toda a vigência do plano (Trimestral paga 3 meses, Semestral 6, Anual 12). Até jun/2026 vale o modelo antigo de 15% sobre a venda.';
       vendGroup.style.display = 'none';
     } else if (currentCommType === 'parceiro') {
       title.textContent = '🤝 Cobrança de Parceiro';
@@ -2523,48 +2523,106 @@ updateDashboard();
       footer = '<strong>Extrato de cobrança · ' + partnerName + '</strong> · Lista os pacientes que contrataram o "' + tipoPlano + '" em ' + mesName + '/' + ano + '. O valor de repasse deve ser combinado com o parceiro com base na regra acordada. Quando o valor aparece como "—" significa que a venda foi registrada sem valor (provavelmente porque o parceiro cobra direto do paciente).';
 
     } else if (currentCommType === 'personal') {
-      // PERSONAL: 15% sobre vendas com Treino, EXCETO Plano Gustavo
-      // (Plano Gustavo eh produto do Gustavo — ele paga comissao pro Rafael, nao o contrario)
-      // NAO mostra valor/faturamento — so a comissao que o personal vai receber
-      vendas = window.VENDAS_DATA.filter(r =>
-        r.adic === 'Treino' &&
-        r.valor > 0 &&
-        r.mes === mes &&
-        r.ano === ano &&
-        r.tipo !== 'Plano Gustavo'
-      );
-      title = 'Comprovante de Comissão · Personal (Gustavo)';
+      // PERSONAL, sempre EXCETO Plano Gustavo (produto do proprio Gustavo,
+      // ele paga comissao pro Rafael, nao o contrario). Dois modelos:
+      //   ate jun/2026: 15% sobre cada venda com Treino no mes
+      //   de jul/2026 em diante: R$ 50 por MES de vigencia de cada plano com
+      //   Treino vendido a partir de jul/2026 (Mensal 1x, Trimestral 3x,
+      //   Semestral 6x, Anual 12x), com acompanhamento "parcela X de N"
+      title = 'Comprovante de Repasse · Personal (Gustavo)';
       beneficiario = 'Gustavo (Personal Trainer)';
-      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Operação</th><th>Comissão (15%)</th></tr>';
-      let totalCom = 0;
-      let nRenov = 0;
-      let rowsHtml = '';
-      vendas.forEach((r, i) => {
-        const com = Math.round(r.valor * COM_TREINO_PCT * 100) / 100;
-        totalCom += com;
+      const DUR_MOD = { 'Mensal': 1, 'Trimestral': 3, 'Semestral': 6, 'Anual': 12 };
+      const REPASSE_MENSAL = 50;
+      const NOVO_MODELO_INICIO = 2026 * 12 + 6; // jul/2026
+      const refIdx = parseInt(ano, 10) * 12 + (MES_LBL_NUM[mes] - 1);
+      const mesIdxVenda = function(r) {
+        const a = parseInt(r.ano, 10), m = MES_LBL_NUM[r.mes];
+        return (a && m) ? a * 12 + (m - 1) : NaN;
+      };
+      const opBadgeDe = function(r) {
         const op = (r.operacao || '').trim();
+        if (!op) return '';
         const isRenov = /renova/i.test(op);
-        if (isRenov) nRenov++;
-        const opBadge = op
-          ? '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;' +
-            (isRenov ? 'background:#dbeafe;color:#1d4ed8' : 'background:#dcfce7;color:#15803d') + '">' + op + '</span>'
-          : '';
-        rowsHtml += '<tr>' +
-          '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
-          '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td>' +
-          '<td>' + opBadge + '</td>' +
-          '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
-      });
-      makeRow = rowsHtml;
-      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
-      total = totalCom;
-      summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
-        '<div class="summary-item"><div class="lbl">Planos c/ Treino no mês</div><div class="val">' + vendas.length + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Vendas novas</div><div class="val" style="color:#15803d">' + (vendas.length - nRenov) + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenov + '</div></div>' +
-        '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
-        '</div>';
-      footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano com adicional "Treino" vendido no mês de referência.';
+        return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;' +
+          (isRenov ? 'background:#dbeafe;color:#1d4ed8' : 'background:#dcfce7;color:#15803d') + '">' + op + '</span>';
+      };
+
+      if (refIdx >= NOVO_MODELO_INICIO) {
+        // MODELO NOVO: lista todo plano com Treino vigente no mes de referencia
+        vendas = window.VENDAS_DATA.filter(r => {
+          if (r.adic !== 'Treino' || r.valor <= 0 || r.tipo === 'Plano Gustavo') return false;
+          const v = mesIdxVenda(r);
+          if (isNaN(v) || v < NOVO_MODELO_INICIO) return false;
+          const dur = DUR_MOD[r.mod] || 1;
+          return v <= refIdx && refIdx < v + dur;
+        });
+        headers = '<tr><th>#</th><th>Venda</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Operação</th><th>Parcela</th><th>Repasse</th></tr>';
+        let totalCom = 0, nIniciando = 0, nUltima = 0;
+        let rowsHtml = '';
+        vendas.forEach((r, i) => {
+          const dur = DUR_MOD[r.mod] || 1;
+          const parcela = refIdx - mesIdxVenda(r) + 1;
+          const ultima = parcela === dur;
+          if (parcela === 1) nIniciando++;
+          if (ultima) nUltima++;
+          totalCom += REPASSE_MENSAL;
+          const tagUltima = ultima
+            ? ' <span style="display:inline-block;padding:1px 6px;border-radius:999px;font-size:9px;font-weight:700;background:#fef3c7;color:#b45309">última</span>'
+            : '';
+          rowsHtml += '<tr>' +
+            '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+            '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td>' +
+            '<td>' + opBadgeDe(r) + '</td>' +
+            '<td><strong>' + parcela + ' de ' + dur + '</strong>' + tagUltima + '</td>' +
+            '<td style="text-align:right">' + fmtBR(REPASSE_MENSAL) + '</td></tr>';
+        });
+        makeRow = rowsHtml;
+        totalLabel = '<tr><td colspan="7" style="text-align:right">TOTAL A PAGAR NO MÊS</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+        total = totalCom;
+        summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
+          '<div class="summary-item"><div class="lbl">Planos pagando este mês</div><div class="val">' + vendas.length + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Iniciando (1ª parcela)</div><div class="val" style="color:#15803d">' + nIniciando + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Última parcela</div><div class="val" style="color:#b45309">' + nUltima + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Total do mês</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
+          '</div>';
+        footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Repasse fixo de ' + fmtBR(REPASSE_MENSAL) +
+          ' por mês por plano com adicional "Treino", durante a vigência do plano (Mensal 1 mês, Trimestral 3, Semestral 6, Anual 12).' +
+          ' A coluna Parcela mostra o andamento: "2 de 3" significa segundo mês de um plano trimestral.' +
+          ' Modelo válido para vendas feitas a partir de julho/2026; comprovantes até junho/2026 seguem o modelo antigo de 15%.';
+      } else {
+        // MODELO ANTIGO (referencia ate jun/2026): 15% sobre cada venda do mes
+        vendas = window.VENDAS_DATA.filter(r =>
+          r.adic === 'Treino' &&
+          r.valor > 0 &&
+          r.mes === mes &&
+          r.ano === ano &&
+          r.tipo !== 'Plano Gustavo'
+        );
+        headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Operação</th><th>Comissão (15%)</th></tr>';
+        let totalCom = 0;
+        let nRenov = 0;
+        let rowsHtml = '';
+        vendas.forEach((r, i) => {
+          const com = Math.round(r.valor * COM_TREINO_PCT * 100) / 100;
+          totalCom += com;
+          if (/renova/i.test(r.operacao||'')) nRenov++;
+          rowsHtml += '<tr>' +
+            '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
+            '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td>' +
+            '<td>' + opBadgeDe(r) + '</td>' +
+            '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
+        });
+        makeRow = rowsHtml;
+        totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+        total = totalCom;
+        summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
+          '<div class="summary-item"><div class="lbl">Planos c/ Treino no mês</div><div class="val">' + vendas.length + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Vendas novas</div><div class="val" style="color:#15803d">' + (vendas.length - nRenov) + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenov + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
+          '</div>';
+        footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano com adicional "Treino" vendido no mês de referência (modelo vigente até junho/2026).';
+      }
 
     } else {
       // VENDEDOR: 3% sobre TODAS as vendas do vendedor
