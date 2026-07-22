@@ -456,6 +456,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             Parceiros
           </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('renovacao')" style="flex-shrink:0;border-color:rgba(20,184,166,.35);color:#0f766e" title="Lista de pacientes com plano vencendo no mês escolhido, pra equipe de renovação trabalhar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+            Renovações
+          </button>
         </div>
       </div>
       <table class="comissoes-table">
@@ -2398,6 +2402,7 @@ updateDashboard();
     <select id="comm-ano"></select>
     <div class="commission-modal-actions">
       <button type="button" class="btn-cancel" onclick="closeCommissionModal()">Cancelar</button>
+      <button type="button" class="btn-cancel" id="comm-copy-btn" style="display:none;background:#ccfbf1;color:#0f766e" onclick="copyRenovacoes()">Copiar texto (WhatsApp)</button>
       <button type="button" class="btn-generate" onclick="generateCommissionPDF()">Gerar PDF</button>
     </div>
   </div>
@@ -2412,11 +2417,61 @@ updateDashboard();
   const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
   const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda' };
 
-  // tipo: 'vendedor' (default), 'personal', 'parceiro'
+  // Lista de renovações do mês: pacientes cujo plano termina no mês de
+  // referência (data da venda + duração da modalidade), pulando quem já
+  // comprou de novo e pacientes de plano de parceiro (renovação é do parceiro)
+  const DUR_MOD_REN = { 'Mensal': 1, 'Trimestral': 3, 'Semestral': 6, 'Anual': 12 };
+  function buildListaRenovacao(mes, ano) {
+    const refIdx = parseInt(ano, 10) * 12 + (MES_LBL_NUM[mes] - 1);
+    const idxDe = r => { const a = parseInt(r.ano, 10), m = MES_LBL_NUM[r.mes]; return (a && m) ? a * 12 + (m - 1) : NaN; };
+    const diaDe = r => parseInt((r.data||'').split('/')[0], 10) || 0;
+    const ultima = {};
+    window.VENDAS_DATA.forEach(r => {
+      const k = (r.paciente||'').trim().toLowerCase(); if (!k) return;
+      const v = idxDe(r); if (isNaN(v)) return;
+      const stamp = v * 100 + Math.min(diaDe(r), 99);
+      if (!(k in ultima) || stamp > ultima[k]) ultima[k] = stamp;
+    });
+    const lista = [];
+    window.VENDAS_DATA.forEach(r => {
+      if (r.valor <= 0) return;
+      if (/^Plano\s+/i.test(r.tipo||'')) return;
+      const v = idxDe(r); if (isNaN(v)) return;
+      const dur = DUR_MOD_REN[r.mod] || 1;
+      if (v + dur !== refIdx) return;
+      const k = (r.paciente||'').trim().toLowerCase();
+      const stamp = v * 100 + Math.min(diaDe(r), 99);
+      if (ultima[k] > stamp) return;
+      const p = (r.data||'').split('/');
+      const dt = new Date(parseInt(p[2],10), parseInt(p[1],10) - 1 + dur, parseInt(p[0],10));
+      lista.push({ r: r, dur: dur, venc: dt,
+        vencStr: ('0'+dt.getDate()).slice(-2) + '/' + ('0'+(dt.getMonth()+1)).slice(-2) + '/' + dt.getFullYear() });
+    });
+    lista.sort((a,b) => a.venc - b.venc);
+    return lista;
+  }
+  window.copyRenovacoes = function() {
+    const mes = document.getElementById('comm-mes').value;
+    const ano = document.getElementById('comm-ano').value;
+    const lista = buildListaRenovacao(mes, ano);
+    if (!lista.length) { alert('Nenhuma renovação prevista pra esse mês.'); return; }
+    const linhas = lista.map(x => x.vencStr.slice(0,5) + ': ' + (x.r.paciente||'').trim() +
+      ' (' + (x.r.mod||'') + ', R$ ' + Math.round(x.r.valor) + ', comprou ' + (x.r.data||'') + ')');
+    const txt = '🔄 RENOVAÇÕES ' + (MES_LBL_FULL[mes]||mes).toUpperCase() + '/' + ano +
+      ' (' + lista.length + ' pacientes)\n\n' + linhas.join('\n');
+    navigator.clipboard.writeText(txt).then(
+      () => alert('Lista copiada! É só colar no WhatsApp da equipe.'),
+      () => alert('Não consegui copiar automaticamente. Gere o PDF.')
+    );
+  };
+
+  // tipo: 'vendedor' (default), 'personal', 'parceiro', 'renovacao'
   let currentCommType = 'vendedor';
   window.openCommissionPDF = function(tipo) {
     if (!window.VENDAS_DATA) { alert('Aguarde os dados terminarem de carregar e tente de novo.'); return; }
-    currentCommType = (['personal','parceiro'].indexOf(tipo) >= 0) ? tipo : 'vendedor';
+    currentCommType = (['personal','parceiro','renovacao'].indexOf(tipo) >= 0) ? tipo : 'vendedor';
+    const copyBtn = document.getElementById('comm-copy-btn');
+    if (copyBtn) copyBtn.style.display = (currentCommType === 'renovacao') ? '' : 'none';
 
     const modal = document.getElementById('commission-modal');
     const selV = document.getElementById('comm-vendedor');
@@ -2427,7 +2482,11 @@ updateDashboard();
     const vendGroup = document.getElementById('comm-vendedor-group');
     const vendLabel = vendGroup.querySelector('label');
 
-    if (currentCommType === 'personal') {
+    if (currentCommType === 'renovacao') {
+      title.textContent = '🔄 Renovações do Mês';
+      desc.textContent = 'Lista os pacientes cujo plano termina no mês escolhido (data da venda + duração da modalidade), pulando quem já comprou de novo e pacientes de plano de parceiro. Gere o PDF ou copie o texto pra mandar pra equipe.';
+      vendGroup.style.display = 'none';
+    } else if (currentCommType === 'personal') {
       title.textContent = '🏋️ Comprovante do Personal (Gustavo)';
       desc.textContent = 'A partir de jul/2026: repasse fixo de R$ 50 por mês por plano com Treino, durante toda a vigência do plano (Trimestral paga 3 meses, Semestral 6, Anual 12). Até jun/2026 vale o modelo antigo de 15% sobre a venda.';
       vendGroup.style.display = 'none';
@@ -2678,6 +2737,37 @@ updateDashboard();
           '</div>';
         footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano com adicional "Treino" vendido no mês de referência (modelo vigente até junho/2026).';
       }
+
+    } else if (currentCommType === 'renovacao') {
+      // RENOVACOES DO MES: lista pra equipe de renovação trabalhar
+      const lista = buildListaRenovacao(mes, ano);
+      vendas = lista.map(x => x.r);
+      title = 'Renovações previstas · ' + mesName + '/' + ano;
+      beneficiario = 'Equipe de Renovação';
+      headers = '<tr><th>#</th><th>Vence em</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Última compra</th><th>Operação</th><th>Valor pago</th></tr>';
+      let carteira = 0, nMensal = 0;
+      let rowsHtml = '';
+      lista.forEach((x, i) => {
+        carteira += x.r.valor;
+        if (x.dur === 1) nMensal++;
+        rowsHtml += '<tr>' +
+          '<td>' + (i+1) + '</td><td><strong>' + x.vencStr + '</strong></td><td>' + x.r.paciente + '</td>' +
+          '<td>' + (x.r.tipo||'') + '</td><td>' + (x.r.mod||'') + '</td><td>' + (x.r.data||'') + '</td>' +
+          '<td>' + opBadgeDe(x.r) + '</td>' +
+          '<td style="text-align:right">' + fmtBR(x.r.valor) + '</td></tr>';
+      });
+      makeRow = rowsHtml;
+      totalLabel = '<tr><td colspan="7" style="text-align:right">CARTEIRA DO MÊS</td><td style="text-align:right">' + fmtBR(carteira) + '</td></tr>';
+      total = carteira;
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
+        '<div class="summary-item"><div class="lbl">Potenciais renovações</div><div class="val">' + lista.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Planos mensais</div><div class="val" style="color:#0f766e">' + nMensal + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Carteira (última compra)</div><div class="val" style="color:#0f766e">' + fmtBR(carteira) + '</div></div>' +
+        '</div>';
+      footer = '<strong>' + lista.length + ' paciente(s) com plano vencendo em ' + mesName + '/' + ano + '.</strong>' +
+        ' Regra: data da venda + duração da modalidade (Mensal 1 mês, Trimestral 3, Semestral 6, Anual 12).' +
+        ' Quem já fez uma compra mais recente não aparece. Pacientes de plano de parceiro (Plano Gustavo, Plano Eliseu) ficam de fora: a renovação é do parceiro.' +
+        ' O valor exibido é o da última compra, referência do tamanho da carteira.';
 
     } else {
       // VENDEDOR: 3% sobre TODAS as vendas do vendedor
