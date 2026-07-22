@@ -2531,22 +2531,33 @@ updateDashboard();
       );
       title = 'Comprovante de Comissão · Personal (Gustavo)';
       beneficiario = 'Gustavo (Personal Trainer)';
-      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Comissão (15%)</th></tr>';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Operação</th><th>Comissão (15%)</th></tr>';
       let totalCom = 0;
+      let nRenov = 0;
       let rowsHtml = '';
       vendas.forEach((r, i) => {
         const com = Math.round(r.valor * COM_TREINO_PCT * 100) / 100;
         totalCom += com;
+        const op = (r.operacao || '').trim();
+        const isRenov = /renova/i.test(op);
+        if (isRenov) nRenov++;
+        const opBadge = op
+          ? '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;' +
+            (isRenov ? 'background:#dbeafe;color:#1d4ed8' : 'background:#dcfce7;color:#15803d') + '">' + op + '</span>'
+          : '';
         rowsHtml += '<tr>' +
           '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
           '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td>' +
+          '<td>' + opBadge + '</td>' +
           '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
       });
       makeRow = rowsHtml;
-      totalLabel = '<tr><td colspan="5" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
       total = totalCom;
-      summary = '<div class="summary-card" style="grid-template-columns:repeat(2,1fr)">' +
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
         '<div class="summary-item"><div class="lbl">Planos c/ Treino no mês</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Vendas novas</div><div class="val" style="color:#15803d">' + (vendas.length - nRenov) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenov + '</div></div>' +
         '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
         '</div>';
       footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Comissão de 15% sobre cada plano com adicional "Treino" vendido no mês de referência.';
