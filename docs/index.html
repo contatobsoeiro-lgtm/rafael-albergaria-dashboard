@@ -11365,24 +11365,28 @@ initMobileFilters();
         // DEMAIS PARCEIROS (ou referencia ate jun/2026): extrato simples do mes.
         // Inclui vendas com valor 0 (caso o parceiro cobre direto do paciente)
         vendas = window.VENDAS_DATA.filter(r => r.tipo === tipoPlano && r.mes === mes && r.ano === ano);
-        headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Modalidade</th><th>Adicional</th><th>Vendedor</th><th>Valor cobrado</th></tr>';
+        headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Modalidade</th><th>Adicional</th><th>Vendedor</th><th>Operação</th><th>Valor cobrado</th></tr>';
         let totalFat = 0;
+        let nRenovP = 0;
         let rowsHtml = '';
         vendas.forEach((r, i) => {
           totalFat += r.valor;
+          if (/renova/i.test(r.operacao||'')) nRenovP++;
           const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor||'').charAt(0).toUpperCase() + (r.vendedor||'').slice(1);
           rowsHtml += '<tr>' +
             '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
             '<td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td><td>' + vendNome + '</td>' +
+            '<td>' + opBadgeDe(r) + '</td>' +
             '<td style="text-align:right">' + (r.valor > 0 ? fmtBR(r.valor) : 'sem valor') + '</td></tr>';
         });
         makeRow = rowsHtml;
-        totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td></tr>';
+        totalLabel = '<tr><td colspan="7" style="text-align:right">TOTAL</td><td style="text-align:right">' + fmtBR(totalFat) + '</td></tr>';
         total = totalFat;
-        summary = '<div class="summary-card" style="grid-template-columns:repeat(3,1fr)">' +
+        summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
           '<div class="summary-item"><div class="lbl">Pacientes no mês</div><div class="val">' + vendas.length + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Vendas novas</div><div class="val" style="color:#15803d">' + (vendas.length - nRenovP) + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenovP + '</div></div>' +
           '<div class="summary-item"><div class="lbl">Valor cobrado total</div><div class="val">' + fmtBR(totalFat) + '</div></div>' +
-          '<div class="summary-item"><div class="lbl">A acertar com o parceiro</div><div class="val" style="color:#7c3aed">a definir</div></div>' +
           '</div>';
         footer = '<strong>Extrato de cobrança · ' + partnerName + '</strong> · Lista os pacientes que contrataram o "' + tipoPlano + '" em ' + mesName + '/' + ano + '. O valor de repasse deve ser combinado com o parceiro com base na regra acordada. Quando aparece "sem valor" a venda foi registrada sem valor (provavelmente porque o parceiro cobra direto do paciente).';
       }
@@ -11482,22 +11486,27 @@ initMobileFilters();
       vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano);
       title = 'Comprovante de Comissão · ' + vendName + ' (Vendedor)';
       beneficiario = vendName + ' (Vendedor)';
-      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Comissão (3%)</th></tr>';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Operação</th><th>Comissão (3%)</th></tr>';
       let totalCom = 0;
+      let nRenovV = 0;
       let rowsHtml = '';
       vendas.forEach((r, i) => {
         const com = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
         totalCom += com;
+        if (/renova/i.test(r.operacao||'')) nRenovV++;
         rowsHtml += '<tr>' +
           '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
           '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td>' +
+          '<td>' + opBadgeDe(r) + '</td>' +
           '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
       });
       makeRow = rowsHtml;
-      totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+      totalLabel = '<tr><td colspan="7" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
       total = totalCom;
-      summary = '<div class="summary-card" style="grid-template-columns:repeat(2,1fr)">' +
+      summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
         '<div class="summary-item"><div class="lbl">Vendas fechadas no mês</div><div class="val">' + vendas.length + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Vendas novas</div><div class="val" style="color:#15803d">' + (vendas.length - nRenovV) + '</div></div>' +
+        '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenovV + '</div></div>' +
         '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
         '</div>';
       footer = '<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de 3% sobre cada venda paga no mês de referência.';
