@@ -448,11 +448,11 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Vendedor
           </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Repasse do personal: R$ 50/mês por plano com Treino vigente (vendas a partir de jul/2026); meses anteriores no modelo antigo de 15%">
+          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Repasse do personal: R$ 50 x meses do plano, pago integral no mês da venda (jul/2026+); antes, 15%">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
             Personal
           </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('parceiro')" style="flex-shrink:0;border-color:rgba(139,92,246,.3);color:#7c3aed" title="Cobrança de parceiros: Plano Gustavo repassa R$ 50 por paciente/mês (jul/2026+); demais parceiros extrato do mês">
+          <button class="btn-pdf" onclick="openCommissionPDF('parceiro')" style="flex-shrink:0;border-color:rgba(139,92,246,.3);color:#7c3aed" title="Cobrança de parceiros: Plano Gustavo repassa R$ 50 x meses do plano, integral no mês da venda (jul/2026+); demais parceiros extrato do mês">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             Parceiros
           </button>
@@ -2488,11 +2488,11 @@ updateDashboard();
       vendGroup.style.display = 'none';
     } else if (currentCommType === 'personal') {
       title.textContent = '🏋️ Comprovante do Personal (Gustavo)';
-      desc.textContent = 'A partir de jul/2026: repasse fixo de R$ 50 por mês por plano com Treino, durante toda a vigência do plano (Trimestral paga 3 meses, Semestral 6, Anual 12). Até jun/2026 vale o modelo antigo de 15% sobre a venda.';
+      desc.textContent = 'A partir de jul/2026: pagamento integral no mês da venda, R$ 50 por mês de vigência do plano (Mensal R$ 50, Trimestral R$ 150, Semestral R$ 300, Anual R$ 600). Até jun/2026 vale o modelo antigo de 15% sobre a venda.';
       vendGroup.style.display = 'none';
     } else if (currentCommType === 'parceiro') {
       title.textContent = '🤝 Cobrança de Parceiro';
-      desc.textContent = 'Plano Gustavo (a partir de jul/2026): o parceiro repassa R$ 50 por paciente por mês de vigência, com acompanhamento de parcelas. Demais parceiros: extrato das vendas do mês pra conferir o repasse combinado.';
+      desc.textContent = 'Plano Gustavo (a partir de jul/2026): o parceiro repassa de forma integral, no mês da venda, R$ 50 por mês de vigência (trimestral R$ 150, anual R$ 600). Demais parceiros: extrato das vendas do mês pra conferir o repasse combinado.';
       vendGroup.style.display = '';
       if (vendLabel) vendLabel.textContent = 'Parceiro / Tipo de Plano';
       // Tipos de plano de parceiros detectados na planilha
@@ -2566,12 +2566,7 @@ updateDashboard();
       return '<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;' +
         (isRenov ? 'background:#dbeafe;color:#1d4ed8' : 'background:#dcfce7;color:#15803d') + '">' + op + '</span>';
     };
-    const tagUltimaDe = function(ultima) {
-      return ultima
-        ? ' <span style="display:inline-block;padding:1px 6px;border-radius:999px;font-size:9px;font-weight:700;background:#fef3c7;color:#b45309">última</span>'
-        : '';
-    };
-
+  
     let title, beneficiario, vendas, headers, makeRow, totalLabel, total, summary, footer;
 
     if (currentCommType === 'parceiro') {
@@ -2581,45 +2576,37 @@ updateDashboard();
       beneficiario = partnerName + ' (Parceiro)';
 
       if (/gustavo/i.test(tipoPlano) && refIdx >= NOVO_MODELO_INICIO) {
-        // PLANO GUSTAVO (jul/2026 em diante): o parceiro repassa R$ 50 por
-        // paciente por MES de vigencia do plano, com parcela "X de N".
+        // PLANO GUSTAVO (vendas a partir de jul/2026): o parceiro repassa de
+        // forma INTEGRAL no mes da venda, R$ 50 por mes de vigencia do plano
+        // (Trimestral = R$ 150, Semestral = R$ 300, Anual = R$ 600).
         // Inclui vendas com valor 0 (ele cobra direto do paciente).
-        vendas = window.VENDAS_DATA.filter(r => {
-          if (r.tipo !== tipoPlano) return false;
-          const v = mesIdxVenda(r);
-          if (isNaN(v) || v < NOVO_MODELO_INICIO) return false;
-          const dur = DUR_MOD[r.mod] || 1;
-          return v <= refIdx && refIdx < v + dur;
-        });
-        headers = '<tr><th>#</th><th>Venda</th><th>Paciente</th><th>Modalidade</th><th>Operação</th><th>Parcela</th><th>A receber</th></tr>';
-        let totalRec = 0, nIniciando = 0, nUltima = 0;
+        vendas = window.VENDAS_DATA.filter(r => r.tipo === tipoPlano && r.mes === mes && r.ano === ano);
+        headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Modalidade</th><th>Operação</th><th>Meses</th><th>A receber</th></tr>';
+        let totalRec = 0, nRenovG = 0;
         let rowsHtml = '';
         vendas.forEach((r, i) => {
           const dur = DUR_MOD[r.mod] || 1;
-          const parcela = refIdx - mesIdxVenda(r) + 1;
-          const ultima = parcela === dur;
-          if (parcela === 1) nIniciando++;
-          if (ultima) nUltima++;
-          totalRec += REPASSE_MENSAL;
+          const rep = REPASSE_MENSAL * dur;
+          totalRec += rep;
+          if (/renova/i.test(r.operacao||'')) nRenovG++;
           rowsHtml += '<tr>' +
             '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
             '<td>' + (r.mod||'') + '</td>' +
             '<td>' + opBadgeDe(r) + '</td>' +
-            '<td><strong>' + parcela + ' de ' + dur + '</strong>' + tagUltimaDe(ultima) + '</td>' +
-            '<td style="text-align:right">' + fmtBR(REPASSE_MENSAL) + '</td></tr>';
+            '<td>' + dur + ' x ' + fmtBR(REPASSE_MENSAL) + '</td>' +
+            '<td style="text-align:right"><strong>' + fmtBR(rep) + '</strong></td></tr>';
         });
         makeRow = rowsHtml;
-        totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL A COBRAR NO MÊS</td><td style="text-align:right">' + fmtBR(totalRec) + '</td></tr>';
+        totalLabel = '<tr><td colspan="6" style="text-align:right">TOTAL A COBRAR</td><td style="text-align:right">' + fmtBR(totalRec) + '</td></tr>';
         total = totalRec;
         summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
-          '<div class="summary-item"><div class="lbl">Pacientes pagando este mês</div><div class="val">' + vendas.length + '</div></div>' +
-          '<div class="summary-item"><div class="lbl">Iniciando (1ª parcela)</div><div class="val" style="color:#15803d">' + nIniciando + '</div></div>' +
-          '<div class="summary-item"><div class="lbl">Última parcela</div><div class="val" style="color:#b45309">' + nUltima + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Pacientes no mês</div><div class="val">' + vendas.length + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Vendas novas</div><div class="val" style="color:#15803d">' + (vendas.length - nRenovG) + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenovG + '</div></div>' +
           '<div class="summary-item"><div class="lbl">Total a cobrar</div><div class="val" style="color:#7c3aed">' + fmtBR(totalRec) + '</div></div>' +
           '</div>';
-        footer = '<strong>Total a cobrar do ' + partnerName + ': ' + fmtBR(total) + '</strong> · O parceiro repassa ' + fmtBR(REPASSE_MENSAL) +
-          ' por paciente por mês de vigência do plano (Mensal 1 mês, Trimestral 3, Semestral 6, Anual 12).' +
-          ' A coluna Parcela mostra o andamento: "2 de 3" significa segundo mês de um plano trimestral.' +
+        footer = '<strong>Total a cobrar do ' + partnerName + ': ' + fmtBR(total) + '</strong> · O parceiro repassa de forma integral, no mês da venda, ' +
+          fmtBR(REPASSE_MENSAL) + ' por mês de vigência do plano: Mensal ' + fmtBR(50) + ', Trimestral ' + fmtBR(150) + ', Semestral ' + fmtBR(300) + ', Anual ' + fmtBR(600) + '.' +
           ' Vale para vendas do ' + tipoPlano + ' feitas a partir de julho/2026.';
       } else {
         // DEMAIS PARCEIROS (ou referencia ate jun/2026): extrato simples do mes.
@@ -2662,47 +2649,43 @@ updateDashboard();
       beneficiario = 'Gustavo (Personal Trainer)';
 
       if (refIdx >= NOVO_MODELO_INICIO) {
-        // MODELO NOVO: lista todo plano com Treino vigente no mes de referencia
-        vendas = window.VENDAS_DATA.filter(r => {
-          if (r.adic !== 'Treino' || r.valor <= 0 || r.tipo === 'Plano Gustavo') return false;
-          const v = mesIdxVenda(r);
-          if (isNaN(v) || v < NOVO_MODELO_INICIO) return false;
-          const dur = DUR_MOD[r.mod] || 1;
-          return v <= refIdx && refIdx < v + dur;
-        });
-        headers = '<tr><th>#</th><th>Venda</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Operação</th><th>Parcela</th><th>Repasse</th></tr>';
-        let totalCom = 0, nIniciando = 0, nUltima = 0;
+        // MODELO NOVO (vendas a partir de jul/2026): pagamento INTEGRAL no mes
+        // da venda, R$ 50 por mes de vigencia do plano (Trimestral = R$ 150,
+        // Semestral = R$ 300, Anual = R$ 600)
+        vendas = window.VENDAS_DATA.filter(r =>
+          r.adic === 'Treino' &&
+          r.valor > 0 &&
+          r.mes === mes &&
+          r.ano === ano &&
+          r.tipo !== 'Plano Gustavo'
+        );
+        headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Operação</th><th>Meses</th><th>Repasse</th></tr>';
+        let totalCom = 0, nRenovN = 0;
         let rowsHtml = '';
         vendas.forEach((r, i) => {
           const dur = DUR_MOD[r.mod] || 1;
-          const parcela = refIdx - mesIdxVenda(r) + 1;
-          const ultima = parcela === dur;
-          if (parcela === 1) nIniciando++;
-          if (ultima) nUltima++;
-          totalCom += REPASSE_MENSAL;
-          const tagUltima = ultima
-            ? ' <span style="display:inline-block;padding:1px 6px;border-radius:999px;font-size:9px;font-weight:700;background:#fef3c7;color:#b45309">última</span>'
-            : '';
+          const rep = REPASSE_MENSAL * dur;
+          totalCom += rep;
+          if (/renova/i.test(r.operacao||'')) nRenovN++;
           rowsHtml += '<tr>' +
             '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
             '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td>' +
             '<td>' + opBadgeDe(r) + '</td>' +
-            '<td><strong>' + parcela + ' de ' + dur + '</strong>' + tagUltima + '</td>' +
-            '<td style="text-align:right">' + fmtBR(REPASSE_MENSAL) + '</td></tr>';
+            '<td>' + dur + ' x ' + fmtBR(REPASSE_MENSAL) + '</td>' +
+            '<td style="text-align:right"><strong>' + fmtBR(rep) + '</strong></td></tr>';
         });
         makeRow = rowsHtml;
-        totalLabel = '<tr><td colspan="7" style="text-align:right">TOTAL A PAGAR NO MÊS</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
+        totalLabel = '<tr><td colspan="7" style="text-align:right">TOTAL A PAGAR</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
         total = totalCom;
         summary = '<div class="summary-card" style="grid-template-columns:repeat(4,1fr)">' +
-          '<div class="summary-item"><div class="lbl">Planos pagando este mês</div><div class="val">' + vendas.length + '</div></div>' +
-          '<div class="summary-item"><div class="lbl">Iniciando (1ª parcela)</div><div class="val" style="color:#15803d">' + nIniciando + '</div></div>' +
-          '<div class="summary-item"><div class="lbl">Última parcela</div><div class="val" style="color:#b45309">' + nUltima + '</div></div>' +
-          '<div class="summary-item"><div class="lbl">Total do mês</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Planos c/ Treino no mês</div><div class="val">' + vendas.length + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Vendas novas</div><div class="val" style="color:#15803d">' + (vendas.length - nRenovN) + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenovN + '</div></div>' +
+          '<div class="summary-item"><div class="lbl">Total a pagar</div><div class="val" style="color:#b91c1c">' + fmtBR(totalCom) + '</div></div>' +
           '</div>';
-        footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Repasse fixo de ' + fmtBR(REPASSE_MENSAL) +
-          ' por mês por plano com adicional "Treino", durante a vigência do plano (Mensal 1 mês, Trimestral 3, Semestral 6, Anual 12).' +
-          ' A coluna Parcela mostra o andamento: "2 de 3" significa segundo mês de um plano trimestral.' +
-          ' Modelo válido para vendas feitas a partir de julho/2026; comprovantes até junho/2026 seguem o modelo antigo de 15%.';
+        footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Pagamento integral no mês da venda: ' + fmtBR(REPASSE_MENSAL) +
+          ' por mês de vigência do plano com adicional "Treino" (Mensal ' + fmtBR(50) + ', Trimestral ' + fmtBR(150) + ', Semestral ' + fmtBR(300) + ', Anual ' + fmtBR(600) + ').' +
+          ' Válido para vendas feitas a partir de julho/2026; comprovantes até junho/2026 seguem o modelo antigo de 15%.';
       } else {
         // MODELO ANTIGO (referencia ate jun/2026): 15% sobre cada venda do mes
         vendas = window.VENDAS_DATA.filter(r =>
