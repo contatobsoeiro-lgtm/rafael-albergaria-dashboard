@@ -11,10 +11,17 @@ Envia notificação de atualização do dashboard via:
 import os
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
+from pathlib import Path
 from urllib.parse import quote
 
 NOTIFY_CHANNEL = os.getenv("NOTIFY_CHANNEL", "whatsapp")
+
+# Aviso de atualizacao vai UMA vez por dia: no primeiro run bem-sucedido
+# a partir das 21h UTC (18h em Vitoria). O marcador fica em history/ e e
+# commitado pelo workflow junto com o resto.
+HORA_ENVIO_UTC  = int(os.getenv("NOTIFY_DAILY_HOUR_UTC", "21"))
+MARCADOR_DIARIO = Path(__file__).parent.parent / "history" / "ultimo_aviso_diario.txt"
 DASHBOARD_URL = os.getenv("DASHBOARD_URL", "")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
@@ -58,11 +65,33 @@ def send_whatsapp(message):
         return False
 
 
+def _ja_enviado_hoje():
+    try:
+        hoje = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        return MARCADOR_DIARIO.read_text(encoding="utf-8").strip() == hoje
+    except Exception:
+        return False
+
+
 def notify(records, fat_total, timestamp, problemas=None):
+    agora = datetime.now(timezone.utc)
+    if agora.hour < HORA_ENVIO_UTC:
+        print(f"[notify] Aviso diario sai a partir das {HORA_ENVIO_UTC}h UTC "
+              f"(agora sao {agora.hour}h UTC). Pulando este run.")
+        return {}
+    if _ja_enviado_hoje():
+        print("[notify] Aviso diario de hoje ja foi enviado. Pulando.")
+        return {}
     message = build_message(records, fat_total, timestamp, problemas)
     results = {}
     if "whatsapp" in NOTIFY_CHANNEL.lower():
         results["whatsapp"] = send_whatsapp(message)
+    # So marca como enviado se o envio funcionou; senao tenta de novo no proximo run
+    if results.get("whatsapp"):
+        try:
+            MARCADOR_DIARIO.write_text(agora.strftime("%Y-%m-%d"), encoding="utf-8")
+        except Exception:
+            pass
     return results
 
 
