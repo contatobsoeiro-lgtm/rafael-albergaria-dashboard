@@ -520,6 +520,55 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
+     CAPTAÇÃO DE LEADS (dados live da planilha de eventos do WaLeads)
+     Conta o PRIMEIRO contato de cada lead no WhatsApp comercial, sem
+     depender de ninguém mover card no funil.
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="main" style="padding-top:0">
+
+  <div class="section-header section-toggle" data-section="captacao">
+    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="section-header-title">🧲 Captação de Leads</div>
+    <div class="section-header-sub" id="leads-sub">Carregando eventos do WhatsApp comercial...</div>
+  </div>
+
+  <div class="section-body" data-section="captacao">
+
+  <div id="leads-alerta" style="display:none;margin:10px 0;padding:10px 14px;border-radius:10px;background:#fef3c7;color:#92400e;font-size:13px;font-weight:600"></div>
+
+  <div class="prev-kpis" id="leads-kpis" style="display:none">
+    <div class="prev-card">
+      <div class="prev-label">🧲 Leads no Mês</div>
+      <div class="prev-value" id="leads-mes">—</div>
+      <div class="prev-sub">contatos novos no WhatsApp comercial</div>
+    </div>
+    <div class="prev-card">
+      <div class="prev-label">📆 Leads Hoje</div>
+      <div class="prev-value" id="leads-hoje">—</div>
+      <div class="prev-sub" id="leads-media-sub">média diária do mês: —</div>
+    </div>
+    <div class="prev-card">
+      <div class="prev-label">🛒 Vendas Novas no Mês</div>
+      <div class="prev-value" id="leads-vendas">—</div>
+      <div class="prev-sub">da planilha de vendas, sem renovações e sem parceiros</div>
+    </div>
+    <div class="prev-card">
+      <div class="prev-label">🎯 Conversão do Mês</div>
+      <div class="prev-value" id="leads-conv">—</div>
+      <div class="prev-sub">vendas novas ÷ leads que entraram</div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-top:16px" id="leads-chart-wrap">
+    <div class="chart-title">Leads por Dia (últimos 30 dias)</div>
+    <div class="chart-sub">Primeiro contato de cada lead no WhatsApp comercial · funciona sem mover card no funil</div>
+    <div class="chart-wrap h220"><canvas id="chartLeadsDia"></canvas></div>
+  </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
      PREVISIBILIDADE & METAS (dados live da aba Previsão do Sheets)
      ══════════════════════════════════════════════════════════════════ -->
 <div class="main" style="padding-top:0">
@@ -9391,6 +9440,131 @@ initMobileFilters();
   document.getElementById('commission-modal').addEventListener('click', e => {
     if (e.target.id === 'commission-modal') closeCommissionModal();
   });
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CAPTAÇÃO DE LEADS — fetch live da planilha de eventos do WaLeads
+     ══════════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const EVENTOS_SHEET_ID = '1xwC01tuT9FEhff65U4jKj9aQGt-W2qCNhAYcvG9TKJI';
+  const EVENTOS_URL = 'https://docs.google.com/spreadsheets/d/' + EVENTOS_SHEET_ID + '/gviz/tq?tqx=out:csv&sheet=eventos';
+  // Números internos que aparecem como chat mas não são lead
+  const NUMEROS_INTERNOS = ['5527997667931', '5527992812380'];
+  let chartLeads = null;
+
+  function parseCSVLeads(text) {
+    const rows = []; let row = [], cur = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (q) { if (ch === '"') { if (text[i+1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+      else if (ch === '"') q = true;
+      else if (ch === ',') { row.push(cur); cur = ''; }
+      else if (ch === '\n') { row.push(cur.replace(/\r$/,'')); rows.push(row); row = []; cur = ''; }
+      else cur += ch;
+    }
+    if (cur !== '' || row.length) { row.push(cur.replace(/\r$/,'')); rows.push(row); }
+    return rows;
+  }
+  function parseTS(s) {
+    const m = (s||'').match(/^(\d{2})\/(\d{2})\/(\d{4})[ T](\d{2}):(\d{2})/);
+    if (!m) return null;
+    return new Date(+m[3], +m[2]-1, +m[1], +m[4], +m[5]);
+  }
+  function chaveDia(d) {
+    return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
+  }
+
+  async function loadLeads() {
+    let rows;
+    try {
+      const r = await fetch(EVENTOS_URL);
+      rows = parseCSVLeads(await r.text());
+    } catch(e) {
+      document.getElementById('leads-sub').textContent = 'Não consegui ler a planilha de eventos do WaLeads.';
+      return;
+    }
+    // colunas: 0 timestamp, 1 event, 2 chat
+    const primeiro = {};
+    let ultimoEvento = null;
+    for (let i = 1; i < rows.length; i++) {
+      const ts = parseTS(rows[i][0]); if (!ts) continue;
+      if (!ultimoEvento || ts > ultimoEvento) ultimoEvento = ts;
+      if (rows[i][1] !== 'atm-assign-user') continue;
+      const chat = (rows[i][2]||'').trim();
+      if (!chat || NUMEROS_INTERNOS.indexOf(chat) >= 0) continue;
+      if (chat.indexOf('-') >= 0 || chat.indexOf('@g') >= 0) continue;
+      if (!primeiro[chat] || ts < primeiro[chat]) primeiro[chat] = ts;
+    }
+    const porDia = {};
+    Object.values(primeiro).forEach(ts => { const k = chaveDia(ts); porDia[k] = (porDia[k]||0)+1; });
+
+    const hoje = new Date();
+    const mesAtual = chaveDia(hoje).slice(0, 7);
+    let leadsMes = 0;
+    Object.entries(porDia).forEach(([k, v]) => { if (k.slice(0, 7) === mesAtual) leadsMes += v; });
+    const leadsHoje = porDia[chaveDia(hoje)] || 0;
+
+    // Vendas novas do mês (planilha de vendas já carregada em VENDAS_DATA)
+    let vn = null;
+    if (window.VENDAS_DATA) {
+      const MESK = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'][hoje.getMonth()];
+      vn = window.VENDAS_DATA.filter(r =>
+        r.ano === String(hoje.getFullYear()) && r.mes === MESK && r.valor > 0 &&
+        !/renova/i.test(r.operacao||'') && !/^Plano\s+/i.test(r.tipo||'')
+      ).length;
+    } else if (!window.__leadsRetry) {
+      // VENDAS_DATA ainda carregando: tenta de novo daqui a pouco
+      window.__leadsRetry = true;
+      setTimeout(loadLeads, 3000);
+    }
+
+    document.getElementById('leads-kpis').style.display = '';
+    document.getElementById('leads-mes').textContent = leadsMes;
+    document.getElementById('leads-hoje').textContent = leadsHoje;
+    document.getElementById('leads-media-sub').textContent =
+      'média diária do mês: ' + (leadsMes > 0 ? (leadsMes / hoje.getDate()).toFixed(1) : '0');
+    document.getElementById('leads-vendas').textContent = (vn == null ? '—' : vn);
+    document.getElementById('leads-conv').textContent =
+      (vn != null && leadsMes > 0) ? Math.round(vn / leadsMes * 100) + '%' : (leadsMes === 0 ? '0%' : '—');
+
+    const sub = document.getElementById('leads-sub');
+    if (ultimoEvento) {
+      sub.textContent = 'Último evento captado: ' + ultimoEvento.toLocaleDateString('pt-BR') + ' às ' +
+        ('0'+ultimoEvento.getHours()).slice(-2) + ':' + ('0'+ultimoEvento.getMinutes()).slice(-2);
+      const dias = Math.floor((hoje - ultimoEvento) / 86400000);
+      if (dias >= 1) {
+        const al = document.getElementById('leads-alerta');
+        al.style.display = '';
+        al.textContent = '⚠️ A captura de eventos do WaLeads está parada há ' + dias + ' dia(s). ' +
+          'Os números desta seção só enxergam até ' + ultimoEvento.toLocaleDateString('pt-BR') + '.';
+      }
+    }
+
+    const labels = [], dados = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - i);
+      labels.push(('0'+d.getDate()).slice(-2) + '/' + ('0'+(d.getMonth()+1)).slice(-2));
+      dados.push(porDia[chaveDia(d)] || 0);
+    }
+    const ctx = document.getElementById('chartLeadsDia');
+    if (ctx && typeof Chart !== 'undefined') {
+      if (chartLeads) chartLeads.destroy();
+      chartLeads = new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: { labels: labels, datasets: [{ label: 'Leads novos', data: dados, backgroundColor: 'rgba(20,184,166,.8)', borderRadius: 4 }]},
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + c.parsed.y + ' lead(s)' } } },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0, font: { size: 11 } }, grid: { color: '#f1f5f9' } },
+                    x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 0, autoSkip: true } } }
+        }
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadLeads);
+  else loadLeads();
 })();
 
 // =====================================================================
