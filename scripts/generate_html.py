@@ -220,7 +220,7 @@ function renderRemuneracao() {{
   }}
   const elFx = document.getElementById('rv-faixas');
   if (elFx) elFx.innerHTML = '<table class="yoy-table" style="width:100%">' +
-    '<thead><tr><th>Faixa de receita</th><th>Comissão</th><th>Junio recebe (acumulado)</th></tr></thead>' +
+    '<thead><tr><th>Faixa de receita</th><th>Comissão</th><th>Vendedor recebe (acumulado)</th></tr></thead>' +
     '<tbody>' +
     '<tr' + (receita > 0 && receita <= 70000 ? ' style="background:#fef9c3"' : '') + '><td>Até R$ 70.000</td><td>2,5% sobre o total</td><td>até R$ 1.750 + fixo R$ 1.500</td></tr>' +
     '<tr' + (receita > 70000 && receita <= 80000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 70.000 a R$ 80.000</td><td>+ 3% sobre o que passar</td><td>até R$ 2.050 + fixo</td></tr>' +
@@ -361,12 +361,12 @@ if (window.ChartDataLabels) {{
 """
     html = html.replace('<div class="footer">', compare_section + '\n<div class="footer">', 1)
 
-    # Seção de Remuneração Variável (Junio + Suporte)
+    # Seção de Remuneração Variável (Vendedor + Suporte)
     rv_section = """
 <div id="rv-section" class="main" style="padding-top:0">
   <div class="section-header">
     <div class="section-header-title">💰 Remuneração Variável</div>
-    <div class="section-header-sub">Meta R$ 70.000 · Comissão escalonada do Junio · Bônus do Suporte</div>
+    <div class="section-header-sub">Meta R$ 70.000 · Comissão escalonada do Vendedor · Bônus do Suporte</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
@@ -375,7 +375,7 @@ if (window.ChartDataLabels) {{
       <div id="rv-status"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Comissão Junio (estimada)</div>
+      <div class="chart-title">Comissão do Vendedor (estimada)</div>
       <div class="chart-sub">Fixo + escalonada por faixa</div>
       <div id="rv-junio"></div>
     </div>
@@ -386,7 +386,7 @@ if (window.ChartDataLabels) {{
     </div>
   </div>
   <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Estrutura escalonada de comissão (Junio)</div>
+    <div class="chart-title">Estrutura escalonada de comissão (Vendedor)</div>
     <div class="chart-sub">Faixa atual em destaque</div>
     <div id="rv-faixas"></div>
   </div>
