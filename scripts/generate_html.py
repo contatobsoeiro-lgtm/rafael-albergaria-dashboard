@@ -175,13 +175,16 @@ let activeVend = 'all';
 const ANOS_DISPONIVEIS = {json.dumps(sorted(anos))};
 const LATEST_ANO = '{latest}';
 const META_MENSAL = 70000;
-const JUNIO_FIXO = 1500;
-function calcComissaoJunio(receita) {{
+const VENDEDOR_FIXO = 2000;
+function calcComissaoVendedor(receita) {{
+  // Regra vigente desde 01/08/2026. A faixa define uma aliquota unica
+  // aplicada sobre o TOTAL do mes (nao e progressiva por fatia).
   if (!receita || receita <= 0) return 0;
-  if (receita <= 70000) return receita * 0.025;
-  if (receita <= 80000) return 70000*0.025 + (receita-70000)*0.03;
-  if (receita <= 100000) return 70000*0.025 + 10000*0.03 + (receita-80000)*0.035;
-  return 70000*0.025 + 10000*0.03 + 20000*0.035 + (receita-100000)*0.04;
+  if (receita <= 50000)  return receita * 0.03;
+  if (receita <= 75000)  return receita * 0.035;
+  if (receita <= 100000) return receita * 0.04;
+  if (receita <= 125000) return receita * 0.045;
+  return receita * 0.05;
 }}
 function renderRemuneracao() {{
   const anoData = (typeof getAnoData === 'function') ? getAnoData() : {{}};
@@ -190,8 +193,8 @@ function renderRemuneracao() {{
   const receita = d.fat || 0;
   const pct = Math.round(receita / META_MENSAL * 100);
   const bateu = receita >= META_MENSAL;
-  const comJunio = calcComissaoJunio(receita);
-  const totalJunio = JUNIO_FIXO + comJunio;
+  const comVendedor = calcComissaoVendedor(receita);
+  const totalVendedor = VENDEDOR_FIXO + comVendedor;
   const corPct = bateu ? '#10b981' : pct >= 80 ? '#f59e0b' : '#ef4444';
   const elStatus = document.getElementById('rv-status');
   if (elStatus) elStatus.innerHTML = '<div style="text-align:center;padding:12px">' +
@@ -200,12 +203,12 @@ function renderRemuneracao() {{
     '<div style="margin-top:14px;font-size:18px"><strong>R$ ' + fmt(receita) + '</strong></div>' +
     '<div style="margin-top:6px;color:#64748b;font-size:13px">' +
     (bateu ? '✅ Meta batida' : 'Faltam R$ ' + fmt(META_MENSAL - receita)) + '</div></div>';
-  const elJunio = document.getElementById('rv-junio');
+  const elJunio = document.getElementById('rv-vendedor');
   if (elJunio) elJunio.innerHTML = '<div style="padding:14px">' +
-    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ 1.500,00</strong></div>' +
-    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Comissão escalonada</span><strong>R$ ' + fmt(comJunio) + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ ' + fmt(VENDEDOR_FIXO) + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Comissão sobre vendas</span><strong>R$ ' + fmt(comVendedor) + '</strong></div>' +
     '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">' +
-    '<span><strong>Total estimado</strong></span><strong style="color:#10b981;font-size:22px">R$ ' + fmt(totalJunio) + '</strong></div></div>';
+    '<span><strong>Total estimado</strong></span><strong style="color:#10b981;font-size:22px">R$ ' + fmt(totalVendedor) + '</strong></div></div>';
   const elSup = document.getElementById('rv-suporte');
   if (elSup) {{
     if (!bateu) {{
@@ -292,8 +295,8 @@ function getKey() {{
   return activeVend + '_' + activeMes;
 }}
 
-const VEND_NAMES  = {{RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio'}};
-const VEND_COLORS = {{RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b'}};
+const VEND_NAMES  = {{RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio',CHRISTOFER:'Christofer',SUPORTE:'Suporte'}};
+const VEND_COLORS = {{RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b',CHRISTOFER:'#8b5cf6',SUPORTE:'#64748b'}};
 const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
 
 // Registra plugin datalabels (off por padrao; habilitado em cada chart)
@@ -377,7 +380,7 @@ if (window.ChartDataLabels) {{
     <div class="chart-card">
       <div class="chart-title">Comissão do Vendedor (estimada)</div>
       <div class="chart-sub">Fixo + escalonada por faixa</div>
-      <div id="rv-junio"></div>
+      <div id="rv-vendedor"></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Bônus Suporte (renovação)</div>
@@ -414,7 +417,7 @@ if (window.ChartDataLabels) {{
 // =====================================================================
 
 // Lista de vendedores dinâmica (vem do Python via DATA.meta.vendors)
-const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['RAQUEL','RAFAEL','JUNIO'];
+const VENDORS_LIST = (DATA.meta && DATA.meta.vendors) ? DATA.meta.vendors : ['CHRISTOFER','RAFAEL','SUPORTE'];
 
 // Paleta de cores para vendedores extras (além dos 3 originais)
 const EXTRA_COLORS = ['#8b5cf6','#ec4899','#14b8a6','#f97316','#64748b','#ef4444'];
