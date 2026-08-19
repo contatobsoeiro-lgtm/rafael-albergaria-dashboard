@@ -526,13 +526,14 @@ def build_data_object(df: pd.DataFrame) -> dict:
         ano_data["diario"] = diario
 
         # Carteira de renovacao: ultimo plano de cada paciente e quando ele vence
-        MESES_PLANO = {"Mensal":1,"Trimestral":3,"Semestral":6,"Anual":12,"Recorrente":1}
+        # modalidade chega em CAIXA ALTA do normalize
+        MESES_PLANO = {"MENSAL":1,"TRIMESTRAL":3,"SEMESTRAL":6,"ANUAL":12,"RECORRENTE":1}
         carteira = []
         if "paciente" in df.columns and "operacao" in df.columns:
             hoje = pd.Timestamp.today().normalize()
             ult = df.sort_values("data").groupby(df["paciente"].astype(str).str.strip().str.lower()).tail(1)
             for _, row in ult.iterrows():
-                meses = MESES_PLANO.get(str(row.get("modalidade","")).strip())
+                meses = MESES_PLANO.get(str(row.get("modalidade","")).strip().upper())
                 if not meses or float(row.get("valor") or 0) <= 0:
                     continue
                 venc = row["data"] + pd.DateOffset(months=meses)
