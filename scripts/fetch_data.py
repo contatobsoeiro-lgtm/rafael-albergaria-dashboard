@@ -64,6 +64,14 @@ COL_MAP = {
 
     # Status de Pagamento (Pago / Pendente / Reembolsado)
     "status de pagamento":     "status",
+
+    # Operacao (Nova Venda / Renovacao) e Paciente
+    "operacao":                "operacao",
+    "operaco":                 "operacao",
+    "tipo de operacao":        "operacao",
+    "paciente":                "paciente",
+    "cliente":                 "paciente",
+    "nome":                    "paciente",
     "status":                  "status",
     "status pagamento":        "status",
     "receita":                 "valor",
@@ -345,6 +353,8 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
             "modal": {m: {"c":0,"v":0} for m in MODAIS_EXPECTED},
             "vend":  {v: {"c":0,"v":0,"tkt":0,"cv":0,"ct":0} for v in VENDORS_EXPECTED},
             "mes":   {m: {"c":0,"v":0} for m in MES_ORDER},
+            "oper":  {"Renovação": {"c":0,"v":0}, "Nova Venda": {"c":0,"v":0}},
+            "pend":  {"c":0,"v":0},
         }
 
     n       = len(sub)
@@ -382,8 +392,26 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
         s = sub[sub["mes"] == m]
         mes[m] = {"c": len(s), "v": round(s["valor"].sum())}
 
+    # Renovacao x venda nova
+    oper = {}
+    if "operacao" in sub.columns:
+        _op = sub["operacao"].astype(str).str.strip().str.lower()
+        for rot, chave in (("renovacao", "Renovação"), ("nova", "Nova Venda")):
+            s = sub[_op.str.startswith(rot[:4])] if rot == "nova" else sub[_op.str.contains("renov")]
+            oper[chave] = {"c": len(s), "v": round(s["valor"].sum())}
+    else:
+        oper = {"Renovação": {"c":0,"v":0}, "Nova Venda": {"c":0,"v":0}}
+
+    # Vendas ainda nao pagas (receita ja conta, comissao nao)
+    if "status" in sub.columns:
+        _st = sub["status"].astype(str).str.strip().str.lower()
+        sp = sub[_st == "pendente"]
+        pend = {"c": len(sp), "v": round(sp["valor"].sum())}
+    else:
+        pend = {"c": 0, "v": 0}
+
     return {"n":n,"fat":fat,"tkt":tkt,"cvend":cvend,"ctreino":ctreino,
-            "modal":modal,"vend":vend,"mes":mes}
+            "modal":modal,"vend":vend,"mes":mes,"oper":oper,"pend":pend}
 
 
 # ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ COMPARATIVO YoY ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
@@ -496,6 +524,31 @@ def build_data_object(df: pd.DataFrame) -> dict:
                              "v": round(grp["valor"].sum()), "vd": vd})
             diario[m] = dias
         ano_data["diario"] = diario
+
+        # Carteira de renovacao: ultimo plano de cada paciente e quando ele vence
+        MESES_PLANO = {"Mensal":1,"Trimestral":3,"Semestral":6,"Anual":12,"Recorrente":1}
+        carteira = []
+        if "paciente" in df.columns and "operacao" in df.columns:
+            hoje = pd.Timestamp.today().normalize()
+            ult = df.sort_values("data").groupby(df["paciente"].astype(str).str.strip().str.lower()).tail(1)
+            for _, row in ult.iterrows():
+                meses = MESES_PLANO.get(str(row.get("modalidade","")).strip())
+                if not meses or float(row.get("valor") or 0) <= 0:
+                    continue
+                venc = row["data"] + pd.DateOffset(months=meses)
+                dias = (venc - hoje).days
+                if -60 <= dias <= 60:
+                    carteira.append({
+                        "nome": str(row.get("paciente","")).strip(),
+                        "venc": venc.strftime("%d/%m/%Y"),
+                        "dias": int(dias),
+                        "plano": str(row.get("modalidade","")).strip(),
+                        "valor": round(float(row.get("valor") or 0)),
+                        "vend": str(row.get("vendedor","")).strip(),
+                    })
+            carteira.sort(key=lambda x: x["dias"])
+        ano_data["carteira"] = carteira
+        print(f"[fetch] Ano {ano}: carteira de renovacao com {len(carteira)} paciente(s)")
 
         data[ano] = ano_data
         print(f"[fetch] Ano {ano}: {len(df_ano)} registros ÃÂÃÂ· {len(ano_data)} combinaÃÂÃÂ§ÃÂÃÂµes")

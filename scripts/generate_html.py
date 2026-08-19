@@ -277,6 +277,61 @@ function renderDiario() {{
       '<tbody>' + (rows || '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px">Sem vendas no recorte</td></tr>') + '</tbody></table>';
   }}
 }}
+
+function renderRenovacao() {{
+  const anoData = (typeof getAnoData === 'function') ? getAnoData() : {{}};
+  const key = (typeof getKey === 'function') ? getKey() : 'all';
+  const d = anoData[key] || anoData['all'] || {{}};
+
+  // renovacao x venda nova
+  const op = d.oper || {{}};
+  const ren = op['Renovação'] || {{c:0,v:0}};
+  const nov = op['Nova Venda'] || {{c:0,v:0}};
+  const tot = (ren.v || 0) + (nov.v || 0);
+  const pctR = tot ? Math.round(ren.v / tot * 100) : 0;
+  const el1 = document.getElementById('renov-split');
+  if (el1) el1.innerHTML = '<div style="padding:14px">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Renovação</span><strong>' + (ren.c||0) + ' · R$ ' + fmt(ren.v||0) + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:12px"><span>Venda nova</span><strong>' + (nov.c||0) + ' · R$ ' + fmt(nov.v||0) + '</strong></div>' +
+    '<div style="height:10px;border-radius:5px;overflow:hidden;background:#e2e8f0;display:flex">' +
+      '<div style="width:' + pctR + '%;background:#22c55e"></div><div style="flex:1;background:#3b82f6"></div></div>' +
+    '<div style="margin-top:8px;font-size:13px;color:#64748b">' + pctR + '% da receita veio de quem já era cliente</div></div>';
+
+  // pendentes
+  const p = d.pend || {{c:0,v:0}};
+  const el2 = document.getElementById('renov-pend');
+  if (el2) el2.innerHTML = (p.c ?
+    '<div style="padding:14px"><div style="font-size:32px;font-weight:700;color:#f59e0b">R$ ' + fmt(p.v) + '</div>' +
+    '<div style="color:#64748b;font-size:13px;margin-top:4px">' + p.c + ' venda(s) aguardando pagamento</div>' +
+    '<div style="margin-top:10px;font-size:12px;color:#94a3b8">Enquanto não constam como pagas, a comissão do vendedor sobre elas fica zerada.</div></div>'
+    : '<div style="text-align:center;padding:30px 12px;color:#94a3b8">✅<br><strong>Nada pendente</strong></div>');
+
+  // carteira
+  const cart = anoData.carteira || [];
+  const vencidos = cart.filter(x => x.dias < 0);
+  const aVencer  = cart.filter(x => x.dias >= 0);
+  const sv = a => a.reduce((s,x) => s + (x.valor||0), 0);
+  const el3 = document.getElementById('renov-carteira-resumo');
+  if (el3) el3.innerHTML = '<div style="padding:14px">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Já venceram</span><strong style="color:#ef4444">' + vencidos.length + ' · R$ ' + fmt(sv(vencidos)) + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Vencem em 60 dias</span><strong style="color:#f59e0b">' + aVencer.length + ' · R$ ' + fmt(sv(aVencer)) + '</strong></div>' +
+    '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between"><span><strong>Total em jogo</strong></span><strong style="color:#10b981">R$ ' + fmt(sv(cart)) + '</strong></div>' +
+    '<div style="margin-top:8px;font-size:12px;color:#94a3b8">Baseado no último plano de cada paciente e na duração dele.</div></div>';
+
+  const el4 = document.getElementById('renov-carteira-tabela');
+  if (el4) {{
+    const linhas = cart.slice(0, 60).map(x => {{
+      const cor = x.dias < 0 ? '#ef4444' : (x.dias <= 7 ? '#f59e0b' : '#64748b');
+      const txt = x.dias < 0 ? ('venceu há ' + Math.abs(x.dias) + 'd') : (x.dias === 0 ? 'vence hoje' : 'vence em ' + x.dias + 'd');
+      return '<tr><td>' + x.nome + '</td><td>' + x.plano + '</td><td>R$ ' + fmt(x.valor) + '</td>' +
+             '<td>' + x.venc + '</td><td style="color:' + cor + '"><strong>' + txt + '</strong></td><td>' + (x.vend||'') + '</td></tr>';
+    }}).join('');
+    el4.innerHTML = '<table class="yoy-table" style="width:100%">' +
+      '<thead><tr><th>Paciente</th><th>Plano</th><th>Valor</th><th>Vence</th><th>Situação</th><th>Vendedor</th></tr></thead>' +
+      '<tbody>' + (linhas || '<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px">Sem carteira no período</td></tr>') + '</tbody></table>' +
+      (cart.length > 60 ? '<div style="margin-top:8px;font-size:12px;color:#94a3b8">Mostrando 60 de ' + cart.length + ' pacientes.</div>' : '');
+  }}
+}}
 function calcComissaoTime(d) {{
   // A faixa e por vendedor. Somar a receita da casa e aplicar uma faixa unica
   // superestima sempre que a casa passa de um degrau que ninguem passou sozinho.
@@ -541,6 +596,40 @@ if (window.ChartDataLabels) {{
 """
     html = html.replace('<div class="footer">', diario_section + '\n<div class="footer">', 1)
 
+    # Secao de Renovacao, carteira e pendencias
+    renov_section = """
+<div id="renov-section" class="main" style="padding-top:0">
+  <div class="section-header">
+    <div class="section-header-title">🔄 Renovação e Carteira</div>
+    <div class="section-header-sub">Renovação x venda nova · quem vence agora · o que ainda não foi pago</div>
+  </div>
+  <div class="charts-row charts-row-3" style="margin-bottom:16px">
+    <div class="chart-card">
+      <div class="chart-title">Renovação x Venda Nova</div>
+      <div class="chart-sub">No recorte selecionado</div>
+      <div id="renov-split"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Vendas não pagas</div>
+      <div class="chart-sub">Contam na receita, não geram comissão</div>
+      <div id="renov-pend"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Carteira de renovação</div>
+      <div class="chart-sub">Vencidos e a vencer em 60 dias</div>
+      <div id="renov-carteira-resumo"></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-bottom:16px">
+    <div class="chart-title">Quem precisa de contato</div>
+    <div class="chart-sub">Vencidos primeiro, do mais antigo para o mais recente</div>
+    <div id="renov-carteira-tabela"></div>
+  </div>
+</div>
+"""
+    html = html.replace('<div class="footer">', renov_section + '\n<div class="footer">', 1)
+
+
 
     # Remove as versoes antigas de setMes/setVend/getKey ANTES de injetar js_multiyr
     # (evita que o cleanup remova as versoes novas que serao injetadas a seguir)
@@ -728,6 +817,7 @@ function updateDashboard() {
   if(typeof updateAdvanced === 'function') updateAdvanced();
   if(typeof renderRemuneracao === 'function') renderRemuneracao();
   if(typeof renderDiario === 'function') renderDiario();
+  if(typeof renderRenovacao === 'function') renderRenovacao();
 }
 
 // Override updateAdvanced to use multi-year data structure
