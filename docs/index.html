@@ -7724,7 +7724,7 @@ const DATA = {
   "2026":{"all":{"n":839,
   "fat":549844,
   "tkt":655,
-  "cvend":13796,
+  "cvend":13775,
   "ctreino":21718,
   "modal":{"MENSAL":{"c":246,
   "v":55151},
@@ -7745,7 +7745,7 @@ const DATA = {
   "vend":{"RAFAEL":{"c":269,
   "v":221179,
   "tkt":822,
-  "cv":5517,
+  "cv":5496,
   "ct":4876},
   "SUPORTE":{"c":26,
   "v":15810,
@@ -8324,7 +8324,7 @@ const DATA = {
   "ago":{"n":58,
   "fat":42549,
   "tkt":734,
-  "cvend":1188,
+  "cvend":1167,
   "ctreino":300,
   "modal":{"MENSAL":{"c":6,
   "v":2195},
@@ -8345,7 +8345,7 @@ const DATA = {
   "vend":{"RAFAEL":{"c":43,
   "v":30151,
   "tkt":701,
-  "cv":816,
+  "cv":795,
   "ct":300},
   "SUPORTE":{"c":10,
   "v":8103,
@@ -8699,7 +8699,7 @@ const DATA = {
   "rafael":{"n":269,
   "fat":221179,
   "tkt":822,
-  "cvend":5517,
+  "cvend":5496,
   "ctreino":4876,
   "modal":{"MENSAL":{"c":31,
   "v":10987},
@@ -8720,7 +8720,7 @@ const DATA = {
   "vend":{"RAFAEL":{"c":269,
   "v":221179,
   "tkt":822,
-  "cv":5517,
+  "cv":5496,
   "ct":4876},
   "SUPORTE":{"c":0,
   "v":0,
@@ -9674,7 +9674,7 @@ const DATA = {
   "rafael_ago":{"n":43,
   "fat":30151,
   "tkt":701,
-  "cvend":816,
+  "cvend":795,
   "ctreino":300,
   "modal":{"MENSAL":{"c":4,
   "v":1788},
@@ -9695,7 +9695,7 @@ const DATA = {
   "vend":{"RAFAEL":{"c":43,
   "v":30151,
   "tkt":701,
-  "cv":816,
+  "cv":795,
   "ct":300},
   "SUPORTE":{"c":0,
   "v":0,
@@ -14703,8 +14703,8 @@ const DATA = {
   "delta":236,
   "pct":56},
   "cvend":{"v25":4961,
-  "v26":13796,
-  "delta":8835,
+  "v26":13775,
+  "delta":8814,
   "pct":178},
   "ctreino":{"v25":18928,
   "v26":21718,
@@ -14785,7 +14785,7 @@ const DATA = {
   "all":{"n":839,
   "fat":549844,
   "tkt":655,
-  "cvend":13796,
+  "cvend":13775,
   "ctreino":21718,
   "modal":{"MENSAL":{"c":246,
   "v":55151},
@@ -14806,7 +14806,7 @@ const DATA = {
   "vend":{"RAFAEL":{"c":269,
   "v":221179,
   "tkt":822,
-  "cv":5517,
+  "cv":5496,
   "ct":4876},
   "SUPORTE":{"c":26,
   "v":15810,
@@ -14881,6 +14881,19 @@ function calcComissaoVendedor(receita) {
   if (receita <= 125000) return receita * 0.045;
   return receita * 0.05;
 }
+function calcComissaoTime(d) {
+  // A faixa e por vendedor. Somar a receita da casa e aplicar uma faixa unica
+  // superestima sempre que a casa passa de um degrau que ninguem passou sozinho.
+  const vend = (d && d.vend) || null;
+  if (!vend) return calcComissaoVendedor((d && d.fat) || 0);
+  let tot = 0, achou = false;
+  for (const k in vend) {
+    if (k === '-' || k === 'OUTROS') continue;  // buckets sem dono, nao geram comissao
+    const v = (vend[k] && vend[k].v) || 0;
+    if (v > 0) { tot += calcComissaoVendedor(v); achou = true; }
+  }
+  return achou ? tot : calcComissaoVendedor((d && d.fat) || 0);
+}
 function renderRemuneracao() {
   const anoData = (typeof getAnoData === 'function') ? getAnoData() : {};
   const key = (typeof getKey === 'function') ? getKey() : 'all';
@@ -14888,7 +14901,7 @@ function renderRemuneracao() {
   const receita = d.fat || 0;
   const pct = Math.round(receita / META_MENSAL * 100);
   const bateu = receita >= META_MENSAL;
-  const comVendedor = calcComissaoVendedor(receita);
+  const comVendedor = calcComissaoTime(d);
   const totalVendedor = VENDEDOR_FIXO + comVendedor;
   const corPct = bateu ? '#10b981' : pct >= 80 ? '#f59e0b' : '#ef4444';
   const elStatus = document.getElementById('rv-status');
@@ -14916,15 +14929,27 @@ function renderRemuneracao() {
         '<div style="font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:8px">2 pessoas → total R$ 600 a R$ 1.200/mês</div></div>';
     }
   }
+  let vBase = receita;
+  if (d && d.vend) {
+    vBase = 0;
+    for (const k in d.vend) {
+      if (k === '-' || k === 'OUTROS') continue;
+      const v = (d.vend[k] && d.vend[k].v) || 0;
+      if (v > vBase) vBase = v;
+    }
+    if (!vBase) vBase = receita;
+  }
   const elFx = document.getElementById('rv-faixas');
   if (elFx) elFx.innerHTML = '<table class="yoy-table" style="width:100%">' +
-    '<thead><tr><th>Faixa de receita</th><th>Comissão</th><th>Vendedor recebe (acumulado)</th></tr></thead>' +
+    '<thead><tr><th>Faixa de vendas no mês</th><th>Comissão</th><th>Vendedor recebe</th></tr></thead>' +
     '<tbody>' +
-    '<tr' + (receita > 0 && receita <= 70000 ? ' style="background:#fef9c3"' : '') + '><td>Até R$ 70.000</td><td>2,5% sobre o total</td><td>até R$ 1.750 + fixo R$ 1.500</td></tr>' +
-    '<tr' + (receita > 70000 && receita <= 80000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 70.000 a R$ 80.000</td><td>+ 3% sobre o que passar</td><td>até R$ 2.050 + fixo</td></tr>' +
-    '<tr' + (receita > 80000 && receita <= 100000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 80.000 a R$ 100.000</td><td>+ 3,5% sobre o que passar</td><td>até R$ 2.750 + fixo</td></tr>' +
-    '<tr' + (receita > 100000 ? ' style="background:#fef9c3"' : '') + '><td>Acima de R$ 100.000</td><td>+ 4% sobre o que passar</td><td>progressivo + fixo</td></tr>' +
-    '</tbody></table>';
+    '<tr' + (vBase > 0 && vBase <= 50000 ? ' style="background:#fef9c3"' : '') + '><td>Até R$ 50.000</td><td>3% sobre o total</td><td>até R$ 1.500 + fixo R$ 2.000</td></tr>' +
+    '<tr' + (vBase > 50000 && vBase <= 75000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 50.001 a R$ 75.000</td><td>3,5% sobre o total</td><td>até R$ 2.625 + fixo R$ 2.000</td></tr>' +
+    '<tr' + (vBase > 75000 && vBase <= 100000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 75.001 a R$ 100.000</td><td>4% sobre o total</td><td>até R$ 4.000 + fixo R$ 2.000</td></tr>' +
+    '<tr' + (vBase > 100000 && vBase <= 125000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 100.001 a R$ 125.000</td><td>4,5% sobre o total</td><td>até R$ 5.625 + fixo R$ 2.000</td></tr>' +
+    '<tr' + (vBase > 125000 ? ' style="background:#fef9c3"' : '') + '><td>Acima de R$ 125.000</td><td>5% sobre o total</td><td>5% do total + fixo R$ 2.000</td></tr>' +
+    '</tbody></table>' +
+    '<div style="margin-top:8px;font-size:12px;color:#94a3b8">A faixa define uma alíquota única sobre o total do mês do vendedor. Não é progressiva por fatia. Vigente desde 01/08/2026.</div>';
 }
 
 function setAno(ano) {
