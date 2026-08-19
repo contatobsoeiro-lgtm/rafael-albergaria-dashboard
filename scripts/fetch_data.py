@@ -61,6 +61,11 @@ COL_MAP = {
     # ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Valor ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
     "valor":                   "valor",
     "valor pago":              "valor",
+
+    # Status de Pagamento (Pago / Pendente / Reembolsado)
+    "status de pagamento":     "status",
+    "status":                  "status",
+    "status pagamento":        "status",
     "receita":                 "valor",
     "valor total":             "valor",
     # ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ ComissÃÂÃÂ£o Vendedor (com e sem "R$") ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
@@ -306,6 +311,17 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
             print(f"[fetch]    - {p}")
     df["valor"] = df["valor"].fillna(0)
 
+    # Reembolso nao e receita. A planilha filtra "<>Reembolsado" em toda formula;
+    # sem isso o dashboard fica permanentemente acima da planilha.
+    if "status" in df.columns:
+        _st = df["status"].astype(str).str.strip().str.lower()
+        _reemb = int((_st == "reembolsado").sum())
+        if _reemb:
+            print(f"[fetch] Descartando {_reemb} venda(s) reembolsada(s)")
+        df = df[_st != "reembolsado"].copy()
+    else:
+        print("[fetch] AVISO: coluna de Status ausente, reembolsos nao serao descartados")
+
     df = df.dropna(subset=["data"]).query("valor > 0").copy()
     df.attrs["problemas"] = problemas
 
@@ -463,6 +479,23 @@ def build_data_object(df: pd.DataFrame) -> dict:
                 key = f"{v.lower()}_{m}"
                 sub = df_ano[(df_ano["vendedor"]==v) & (df_ano["mes"]==m)]
                 ano_data[key] = calc_block(sub, df_ano)
+
+        # Serie diaria: por mes, um ponto por dia com venda (total e por vendedor)
+        diario = {}
+        for m in MES_ORDER:
+            sub = df_ano[df_ano["mes"] == m]
+            if sub.empty:
+                continue
+            dias = []
+            for dia, grp in sub.groupby(sub["data"].dt.day, sort=True):
+                vd = {}
+                for v, g in grp.groupby("vendedor"):
+                    if len(g):
+                        vd[str(v)] = round(g["valor"].sum())
+                dias.append({"d": int(dia), "n": int(len(grp)),
+                             "v": round(grp["valor"].sum()), "vd": vd})
+            diario[m] = dias
+        ano_data["diario"] = diario
 
         data[ano] = ano_data
         print(f"[fetch] Ano {ano}: {len(df_ano)} registros ÃÂÃÂ· {len(ano_data)} combinaÃÂÃÂ§ÃÂÃÂµes")

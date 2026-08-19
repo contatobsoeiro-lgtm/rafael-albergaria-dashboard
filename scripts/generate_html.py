@@ -186,6 +186,97 @@ function calcComissaoVendedor(receita) {{
   if (receita <= 125000) return receita * 0.045;
   return receita * 0.05;
 }}
+
+let chartDiario = null;
+function diarioMesAtivo() {{
+  const ano = (typeof getAnoData === 'function') ? getAnoData() : {{}};
+  const dd = ano.diario || {{}};
+  if (activeMes !== 'all' && dd[activeMes] && dd[activeMes].length) return activeMes;
+  const ordem = ['dez','nov','out','set','ago','jul','jun','mai','abr','mar','fev','jan'];
+  for (const m of ordem) if (dd[m] && dd[m].length) return m;
+  return null;
+}}
+function renderDiario() {{
+  const anoData = (typeof getAnoData === 'function') ? getAnoData() : {{}};
+  const dd = anoData.diario || {{}};
+  const mes = diarioMesAtivo();
+  const dias = (mes && dd[mes]) ? dd[mes] : [];
+  const filtro = (activeVend && activeVend !== 'all') ? activeVend.toUpperCase() : null;
+
+  const pts = dias.map(x => {{
+    const val = filtro ? ((x.vd && x.vd[filtro]) || 0) : x.v;
+    let qtd = x.n;
+    if (filtro) qtd = (x.vd && x.vd[filtro]) ? null : 0;   // sem contagem por vendedor no dia
+    return {{d: x.d, v: val, n: qtd}};
+  }}).filter(x => !filtro || x.v > 0);
+
+  const sub = document.getElementById('diario-sub');
+  if (sub) sub.textContent = mes
+    ? ('Mês: ' + mes.toUpperCase() + (filtro ? ' · Vendedor: ' + filtro : ' · Todos os vendedores'))
+    : 'Sem dados no recorte';
+
+  // grafico
+  const cv = document.getElementById('chartDiario');
+  if (cv && typeof Chart !== 'undefined') {{
+    const labels = pts.map(p => String(p.d).padStart(2,'0'));
+    const vals   = pts.map(p => p.v);
+    const metaDia = META_MENSAL / 21;
+    const linha  = pts.map(() => Math.round(metaDia));
+    if (chartDiario) {{
+      chartDiario.data.labels = labels;
+      chartDiario.data.datasets[0].data = vals;
+      chartDiario.data.datasets[1].data = linha;
+      chartDiario.update();
+    }} else {{
+      chartDiario = new Chart(cv, {{
+        type: 'bar',
+        data: {{ labels: labels, datasets: [
+          {{ label: 'Receita do dia', data: vals, backgroundColor: '#3b82f6', borderRadius: 4, order: 2 }},
+          {{ label: 'Meta diária', data: linha, type: 'line', borderColor: '#ef4444',
+             borderDash: [6,4], borderWidth: 2, pointRadius: 0, fill: false, order: 1 }}
+        ]}},
+        options: {{ responsive: true, maintainAspectRatio: false,
+          plugins: {{ legend: {{ display: true, position: 'bottom' }},
+            tooltip: {{ callbacks: {{ label: c => c.dataset.label + ': R$ ' + fmt(c.parsed.y) }} }} }},
+          scales: {{ y: {{ beginAtZero: true, ticks: {{ callback: v => 'R$ ' + fmt(v) }} }} }} }}
+      }});
+    }}
+  }}
+
+  // resumo
+  const tot   = pts.reduce((a,b) => a + b.v, 0);
+  const ndias = pts.filter(p => p.v > 0).length;
+  const media = ndias ? tot / ndias : 0;
+  const melhor = pts.reduce((a,b) => (b.v > (a ? a.v : -1) ? b : a), null);
+  const metaDia = META_MENSAL / 21;
+  const acima = pts.filter(p => p.v >= metaDia).length;
+  const elR = document.getElementById('diario-resumo');
+  if (elR) elR.innerHTML = '<div style="padding:14px">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Dias com venda</span><strong>' + ndias + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Média por dia com venda</span><strong>R$ ' + fmt(Math.round(media)) + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Melhor dia</span><strong>' + (melhor ? ('dia ' + melhor.d + ' · R$ ' + fmt(melhor.v)) : '-') + '</strong></div>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Dias que bateram a meta diária</span><strong>' + acima + ' de ' + ndias + '</strong></div>' +
+    '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between"><span><strong>Total no recorte</strong></span><strong style="color:#10b981">R$ ' + fmt(tot) + '</strong></div>' +
+    '<div style="margin-top:8px;font-size:12px;color:#94a3b8">Meta diária de referência: R$ ' + fmt(Math.round(metaDia)) + ' (meta do mês dividida por 21 dias úteis).</div></div>';
+
+  // tabela dia a dia
+  const elT = document.getElementById('diario-tabela');
+  if (elT) {{
+    let acum = 0;
+    const linhas = pts.slice().sort((a,b) => a.d - b.d).map(p => {{ acum += p.v; return {{...p, acum}}; }});
+    const rows = linhas.slice().reverse().map(p => {{
+      const bateu = p.v >= metaDia;
+      return '<tr><td>dia ' + String(p.d).padStart(2,'0') + '</td>' +
+        '<td>' + (p.n === null ? '-' : p.n) + '</td>' +
+        '<td>R$ ' + fmt(p.v) + '</td>' +
+        '<td style="color:' + (bateu ? '#10b981' : '#ef4444') + '">' + (bateu ? 'bateu' : 'abaixo') + '</td>' +
+        '<td>R$ ' + fmt(p.acum) + '</td></tr>';
+    }}).join('');
+    elT.innerHTML = '<table class="yoy-table" style="width:100%">' +
+      '<thead><tr><th>Dia</th><th>Vendas</th><th>Receita</th><th>vs meta diária</th><th>Acumulado no mês</th></tr></thead>' +
+      '<tbody>' + (rows || '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px">Sem vendas no recorte</td></tr>') + '</tbody></table>';
+  }}
+}}
 function calcComissaoTime(d) {{
   // A faixa e por vendedor. Somar a receita da casa e aplicar uma faixa unica
   // superestima sempre que a casa passa de um degrau que ninguem passou sozinho.
@@ -320,8 +411,8 @@ function getKey() {{
   return activeVend + '_' + activeMes;
 }}
 
-const VEND_NAMES  = {{RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio',CHRISTOFER:'Christofer',SUPORTE:'Suporte'}};
-const VEND_COLORS = {{RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b',CHRISTOFER:'#8b5cf6',SUPORTE:'#64748b'}};
+const VEND_NAMES  = {{RAQUEL:'Raquel',RAFAEL:'Rafael',JUNIO:'Junio',CHRISTOFER:'Christofer',SUPORTE:'Suporte',MICAELLY:'Micaelly',DUDA:'Duda',BIA:'Bia'}};
+const VEND_COLORS = {{RAQUEL:'#22c55e',RAFAEL:'#3b82f6',JUNIO:'#f59e0b',CHRISTOFER:'#8b5cf6',SUPORTE:'#64748b',MICAELLY:'#ec4899',DUDA:'#06b6d4',BIA:'#14b8a6'}};
 const MODAL_COLORS = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
 
 // Registra plugin datalabels (off por padrao; habilitado em cada chart)
@@ -421,6 +512,35 @@ if (window.ChartDataLabels) {{
 </div>
 """
     html = html.replace('<div class="footer">', rv_section + '\n<div class="footer">', 1)
+
+    # Secao de Vendas Diarias
+    diario_section = """
+<div id="diario-section" class="main" style="padding-top:0">
+  <div class="section-header">
+    <div class="section-header-title">📅 Vendas por Dia</div>
+    <div class="section-header-sub">Ritmo diário do mês · acompanha o filtro de mês e vendedor</div>
+  </div>
+  <div class="charts-row charts-row-3" style="margin-bottom:16px">
+    <div class="chart-card" style="grid-column:span 2">
+      <div class="chart-title">Faturamento por dia</div>
+      <div class="chart-sub" id="diario-sub">Barras: receita do dia · Linha: meta diária</div>
+      <div class="chart-wrap h260"><canvas id="chartDiario"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Resumo do ritmo</div>
+      <div class="chart-sub">Dias com venda no recorte</div>
+      <div id="diario-resumo"></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-bottom:16px">
+    <div class="chart-title">Detalhe dia a dia</div>
+    <div class="chart-sub">Mais recente primeiro</div>
+    <div id="diario-tabela"></div>
+  </div>
+</div>
+"""
+    html = html.replace('<div class="footer">', diario_section + '\n<div class="footer">', 1)
+
 
     # Remove as versoes antigas de setMes/setVend/getKey ANTES de injetar js_multiyr
     # (evita que o cleanup remova as versoes novas que serao injetadas a seguir)
@@ -607,6 +727,7 @@ function updateDashboard() {
 
   if(typeof updateAdvanced === 'function') updateAdvanced();
   if(typeof renderRemuneracao === 'function') renderRemuneracao();
+  if(typeof renderDiario === 'function') renderDiario();
 }
 
 // Override updateAdvanced to use multi-year data structure
