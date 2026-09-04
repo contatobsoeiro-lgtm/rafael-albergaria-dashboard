@@ -361,10 +361,12 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
     fat     = round(sub["valor"].sum())
     tkt     = round(fat / n) if n > 0 else 0
     cvend   = round(sub["com_vend"].sum())
-    # Custo Personal: 15% sobre planos com Adicional=Treino, EXCETO Plano Gustavo
+    # Custo Personal: planos com Adicional começando em "Treino" (inclui Treino, Treino Mensal,
+    # Treino Trimestral, Treino Semestral, Treino Anual — o treino pode ter prazo diferente da
+    # consultoria, ex: consultoria Anual + Treino Trimestral), EXCETO Plano Gustavo
     # (Plano Gustavo eh produto do parceiro, ele paga comissao pro Rafael, nao o contrario)
     _treino_mask = (
-        (sub["adicional"].astype(str).str.upper().str.strip() == "TREINO") &
+        (sub["adicional"].astype(str).str.upper().str.strip().str.startswith("TREINO")) &
         (sub["tipo"].astype(str).str.strip().str.lower() != "plano gustavo")
     )
     ctreino = round(sub[_treino_mask]["com_treino"].sum())
@@ -379,9 +381,9 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
         s  = sub[sub["vendedor"] == v]
         sv = round(s["valor"].sum())
         sc = len(s)
-        # ct (com.treino do vendedor): mesma regra — exclui Plano Gustavo
+        # ct (com.treino do vendedor): mesma regra — Adicional começando em "Treino", exclui Plano Gustavo
         _ct_mask = (
-            (s["adicional"].astype(str).str.upper().str.strip() == "TREINO") &
+            (s["adicional"].astype(str).str.upper().str.strip().str.startswith("TREINO")) &
             (s["tipo"].astype(str).str.strip().str.lower() != "plano gustavo")
         )
         vend[v] = {"c":sc,"v":sv,"tkt":round(sv/sc) if sc>0 else 0,
