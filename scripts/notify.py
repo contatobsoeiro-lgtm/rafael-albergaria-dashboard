@@ -52,16 +52,37 @@ def build_message(records, fat_total, timestamp, problemas=None):
     return msg
 
 
+def _registra_status(texto):
+    """Grava o resultado da ultima tentativa de envio em history/ (commitado
+    pelo workflow), pra dar pra diagnosticar sem acesso aos logs do Actions."""
+    try:
+        arq = Path(__file__).parent.parent / "history" / "ultimo_aviso_status.txt"
+        agora = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+        arq.write_text(f"{agora} · {texto}\n", encoding="utf-8")
+    except Exception:
+        pass
+
+
 def send_whatsapp(message):
     if not WA_PHONE or not WA_APIKEY:
+        _registra_status("FALHA: WHATSAPP_PHONE ou WHATSAPP_APIKEY nao configurados nos secrets")
         return False
     plain = message.replace("*", "").replace("_", "")
     url = f"https://api.callmebot.com/whatsapp.php?phone={WA_PHONE}&text={quote(plain)}&apikey={WA_APIKEY}"
     try:
-        resp = requests.get(url, timeout=15)
-        resp.raise_for_status()
+        resp = requests.get(url, timeout=30)
+        corpo = (resp.text or "")[:200].replace("\n", " ")
+        if resp.status_code != 200:
+            _registra_status(f"FALHA: CallMeBot HTTP {resp.status_code} · {corpo}")
+            return False
+        # O CallMeBot devolve 200 mesmo em erro logico (ex.: apikey invalida)
+        if any(p in corpo.lower() for p in ("invalid", "error", "not registered", "blocked")):
+            _registra_status(f"FALHA: CallMeBot respondeu erro · {corpo}")
+            return False
+        _registra_status(f"OK: mensagem aceita pelo CallMeBot · {corpo}")
         return True
-    except Exception:
+    except Exception as e:
+        _registra_status(f"FALHA: excecao no envio · {type(e).__name__}: {str(e)[:150]}")
         return False
 
 
