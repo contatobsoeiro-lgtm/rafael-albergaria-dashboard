@@ -1,0 +1,1 @@
+2026-09-07 23:06 UTC · FALHA: WHATSAPP_PHONE ou WHATSAPP_APIKEY nao configurados nos secrets
