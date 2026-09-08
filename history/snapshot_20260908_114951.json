@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-08-27T13:14:10.177415",
-  "records": 1330,
+  "timestamp": "2026-09-08T11:49:51.330156",
+  "records": 1360,
   "anos": [
     "2025",
     "2026"
   ],
-  "fat_total": 564347,
+  "fat_total": 593563,
   "data": {
     "meta": {
       "anos": [
@@ -14415,233 +14415,9 @@
       },
       "carteira": [
         {
-          "nome": "Karine Andrade Reis",
-          "venc": "28/06/2026",
-          "dias": -60,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Yara Amade",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Taciana Quirino",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Rithelly da Silva de Souza",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Kesley Moraes",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 507,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Monizi Oliveira Barcelos",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Katieli Demoner Niero",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 927,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Marcos Alexandre dos Reis",
-          "venc": "01/07/2026",
-          "dias": -57,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Laila Rodrigues Coelho Guedes",
-          "venc": "01/07/2026",
-          "dias": -57,
-          "plano": "MENSAL",
-          "valor": 172,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Guilherme Pozzato",
-          "venc": "03/07/2026",
-          "dias": -55,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Kimberlly Carlini Neves",
-          "venc": "03/07/2026",
-          "dias": -55,
-          "plano": "TRIMESTRAL",
-          "valor": 797,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Jonathan Hygino dos Santos Rosas",
-          "venc": "04/07/2026",
-          "dias": -54,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Rosieli Inácio Simão",
-          "venc": "04/07/2026",
-          "dias": -54,
-          "plano": "MENSAL",
-          "valor": 497,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Vitória Rocha de Lima",
-          "venc": "06/07/2026",
-          "dias": -52,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Hélita Clemente Soares",
-          "venc": "06/07/2026",
-          "dias": -52,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Lucas Rodrigues Gallo",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Larissa de Oliveira Nicolau",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Kettanny Campos",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Maria Dulce de Souza Figueiro",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Juliana da Cruz Souza de Carvalho",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Ariany Soany Martins Mendes",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "TRIMESTRAL",
-          "valor": 764,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Ayanma Alexandre Correia",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "TRIMESTRAL",
-          "valor": 764,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Natalia de Freitas Rabbi",
-          "venc": "08/07/2026",
-          "dias": -50,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Pérsia Ribeiro dos Santos",
-          "venc": "08/07/2026",
-          "dias": -50,
-          "plano": "TRIMESTRAL",
-          "valor": 1147,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Abraão Nassar Mácola",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Iurya Corrêa Nascimento",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Gleiceane Freire de Sousa",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Diego dos Santos Barboza",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Ludmilla Soares",
           "venc": "10/07/2026",
-          "dias": -48,
+          "dias": -60,
           "plano": "TRIMESTRAL",
           "valor": 1147,
           "vend": "OUTROS"
@@ -14649,23 +14425,23 @@
         {
           "nome": "Antonio Cloves Depiante Junior",
           "venc": "10/07/2026",
-          "dias": -48,
+          "dias": -60,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Antenor Vieira Neto",
+          "nome": "Rodrigo Alcure Castro",
           "venc": "13/07/2026",
-          "dias": -45,
+          "dias": -57,
           "plano": "SEMESTRAL",
           "valor": 1347,
           "vend": "OUTROS"
         },
         {
-          "nome": "Rodrigo Alcure Castro",
+          "nome": "Antenor Vieira Neto",
           "venc": "13/07/2026",
-          "dias": -45,
+          "dias": -57,
           "plano": "SEMESTRAL",
           "valor": 1347,
           "vend": "OUTROS"
@@ -14673,7 +14449,7 @@
         {
           "nome": "Susana Borges",
           "venc": "13/07/2026",
-          "dias": -45,
+          "dias": -57,
           "plano": "MENSAL",
           "valor": 397,
           "vend": "RAFAEL"
@@ -14681,7 +14457,7 @@
         {
           "nome": "Paula Borges",
           "venc": "15/07/2026",
-          "dias": -43,
+          "dias": -55,
           "plano": "TRIMESTRAL",
           "valor": 717,
           "vend": "RAFAEL"
@@ -14689,7 +14465,7 @@
         {
           "nome": "Joyce Ellen dos Passos de Oliveira",
           "venc": "15/07/2026",
-          "dias": -43,
+          "dias": -55,
           "plano": "TRIMESTRAL",
           "valor": 797,
           "vend": "OUTROS"
@@ -14697,7 +14473,7 @@
         {
           "nome": "Patrícia Arariba",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "SEMESTRAL",
           "valor": 1031,
           "vend": "OUTROS"
@@ -14705,23 +14481,15 @@
         {
           "nome": "Beatriz Tavares Faccioli Pantoja",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Beatriz Buzat",
-          "venc": "16/07/2026",
-          "dias": -42,
-          "plano": "MENSAL",
-          "valor": 497,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Fernanda Inácio Simão",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 450,
           "vend": "OUTROS"
@@ -14729,7 +14497,7 @@
         {
           "nome": "Rosieli Inacio Simao",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 450,
           "vend": "OUTROS"
@@ -14737,7 +14505,7 @@
         {
           "nome": "Roseli Inácio",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 500,
           "vend": "OUTROS"
@@ -14745,7 +14513,15 @@
         {
           "nome": "Fernanda Dionizio Melo Vieira",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
+          "plano": "MENSAL",
+          "valor": 497,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Beatriz Buzat",
+          "venc": "16/07/2026",
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -14753,7 +14529,7 @@
         {
           "nome": "Marcos Vinícius Araújo C",
           "venc": "17/07/2026",
-          "dias": -41,
+          "dias": -53,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -14761,7 +14537,7 @@
         {
           "nome": "Lays Santos Viana",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -14769,7 +14545,7 @@
         {
           "nome": "Felipe Lobo dos Anjos",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -14777,7 +14553,7 @@
         {
           "nome": "Felipe Moura da Cunha",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "MENSAL",
           "valor": 398,
           "vend": "OUTROS"
@@ -14785,31 +14561,23 @@
         {
           "nome": "Carolina Cestaro Moura",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "MENSAL",
           "valor": 398,
           "vend": "OUTROS"
         },
         {
-          "nome": "Liliane Santos Pinheiro",
-          "venc": "19/07/2026",
-          "dias": -39,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Antonio Sérgio Mateus Silva",
           "venc": "19/07/2026",
-          "dias": -39,
+          "dias": -51,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Brenda Carvalho Paula",
-          "venc": "20/07/2026",
-          "dias": -38,
+          "nome": "Liliane Santos Pinheiro",
+          "venc": "19/07/2026",
+          "dias": -51,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -14817,7 +14585,15 @@
         {
           "nome": "Gabriel Nascimento da Silva",
           "venc": "20/07/2026",
-          "dias": -38,
+          "dias": -50,
+          "plano": "SEMESTRAL",
+          "valor": 597,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Brenda Carvalho Paula",
+          "venc": "20/07/2026",
+          "dias": -50,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -14825,31 +14601,15 @@
         {
           "nome": "Melissa Souza",
           "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "SEMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Maria Angélica Marroni Terossi",
+          "nome": "Mariana de Oliveira Lucas",
           "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 497,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Larissa Loureiro Tolentino",
-          "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "SUPORTE"
-        },
-        {
-          "nome": "Gessica Rodrigues",
-          "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "OUTROS"
@@ -14857,15 +14617,7 @@
         {
           "nome": "Maria Julia Marroni Terossi",
           "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Leticia P Lucio",
-          "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -14873,39 +14625,63 @@
         {
           "nome": "Daiane S F Pereira",
           "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Mariana de Oliveira Lucas",
-          "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Robson Jose Rodrigues",
           "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "OUTROS"
         },
         {
-          "nome": "Daline Gomes Lopes",
+          "nome": "Gessica Rodrigues",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Larissa Loureiro Tolentino",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Maria Angélica Marroni Terossi",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 497,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Leticia P Lucio",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Ketllyn Dantas Cipriano da Silva",
           "venc": "24/07/2026",
-          "dias": -34,
+          "dias": -46,
           "plano": "TRIMESTRAL",
           "valor": 757,
           "vend": "OUTROS"
         },
         {
-          "nome": "Ketllyn Dantas Cipriano da Silva",
+          "nome": "Daline Gomes Lopes",
           "venc": "24/07/2026",
-          "dias": -34,
+          "dias": -46,
           "plano": "TRIMESTRAL",
           "valor": 757,
           "vend": "OUTROS"
@@ -14913,39 +14689,39 @@
         {
           "nome": "Angélica Pena dos Santos Canto",
           "venc": "25/07/2026",
-          "dias": -33,
+          "dias": -45,
           "plano": "RECORRENTE",
           "valor": 172,
           "vend": "SUPORTE"
         },
         {
-          "nome": "Vitor Augusto Martins de Oliveira",
-          "venc": "27/07/2026",
-          "dias": -31,
-          "plano": "SEMESTRAL",
-          "valor": 1197,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "João Pedro Souza",
           "venc": "27/07/2026",
-          "dias": -31,
+          "dias": -43,
           "plano": "SEMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Rebeca Oliveira Nunes",
+          "nome": "Vitor Augusto Martins de Oliveira",
           "venc": "27/07/2026",
-          "dias": -31,
+          "dias": -43,
           "plano": "SEMESTRAL",
           "valor": 1197,
           "vend": "OUTROS"
         },
         {
-          "nome": "Nathalia Silva Sobreira",
+          "nome": "Rebeca Oliveira Nunes",
+          "venc": "27/07/2026",
+          "dias": -43,
+          "plano": "SEMESTRAL",
+          "valor": 1197,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Odair Jose da Silva Caldon",
           "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -14953,23 +14729,15 @@
         {
           "nome": "Bárbara Danielle",
           "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thalyta Silva Fernandes Bonadi",
+          "nome": "Nathalia Silva Sobreira",
           "venc": "28/07/2026",
-          "dias": -30,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Odair Jose da Silva Caldon",
-          "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -14977,7 +14745,15 @@
         {
           "nome": "Albert Ferreira",
           "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Thalyta Silva Fernandes Bonadi",
+          "venc": "28/07/2026",
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -14985,7 +14761,7 @@
         {
           "nome": "Gleice Kelle de Souza Silva",
           "venc": "29/07/2026",
-          "dias": -29,
+          "dias": -41,
           "plano": "SEMESTRAL",
           "valor": 798,
           "vend": "OUTROS"
@@ -14993,7 +14769,7 @@
         {
           "nome": "Nathalia Sobreira",
           "venc": "29/07/2026",
-          "dias": -29,
+          "dias": -41,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15001,7 +14777,7 @@
         {
           "nome": "Melody Amorim Defreitas",
           "venc": "30/07/2026",
-          "dias": -28,
+          "dias": -40,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15009,7 +14785,7 @@
         {
           "nome": "Diego Marques Santiago",
           "venc": "01/08/2026",
-          "dias": -26,
+          "dias": -38,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -15017,23 +14793,7 @@
         {
           "nome": "Aldvila Sanny Alexandre",
           "venc": "04/08/2026",
-          "dias": -23,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Maressa Passigatti Ahnert",
-          "venc": "04/08/2026",
-          "dias": -23,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Hiorana Monteiro",
-          "venc": "04/08/2026",
-          "dias": -23,
+          "dias": -35,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -15041,15 +14801,31 @@
         {
           "nome": "Julio Cesar Araujo Junior",
           "venc": "04/08/2026",
-          "dias": -23,
+          "dias": -35,
           "plano": "SEMESTRAL",
           "valor": 947,
           "vend": "OUTROS"
         },
         {
+          "nome": "Maressa Passigatti Ahnert",
+          "venc": "04/08/2026",
+          "dias": -35,
+          "plano": "SEMESTRAL",
+          "valor": 997,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Hiorana Monteiro",
+          "venc": "04/08/2026",
+          "dias": -35,
+          "plano": "SEMESTRAL",
+          "valor": 997,
+          "vend": "OUTROS"
+        },
+        {
           "nome": "Ana Luiza de Souza Dornelas",
           "venc": "06/08/2026",
-          "dias": -21,
+          "dias": -33,
           "plano": "SEMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15057,55 +14833,23 @@
         {
           "nome": "Ana Paula Amorim Pacheco",
           "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Jordan Santos",
-          "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Rafaela Casagrande",
           "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Maria da Penha Araujo Peixoto",
+          "nome": "Jordan Santos",
           "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Carolina Moulin",
-          "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 852,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Kevyn Brunno Vieira",
-          "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Marcela Ferreira Sampaio",
-          "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15113,7 +14857,39 @@
         {
           "nome": "Pâmella Lopes Tavares",
           "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Marcela Ferreira Sampaio",
+          "venc": "08/08/2026",
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Kevyn Brunno Vieira",
+          "venc": "08/08/2026",
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Carolina Moulin",
+          "venc": "08/08/2026",
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 852,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Maria da Penha Araujo Peixoto",
+          "venc": "08/08/2026",
+          "dias": -31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15121,7 +14897,7 @@
         {
           "nome": "Luana Vitória Goulart Barbosa",
           "venc": "09/08/2026",
-          "dias": -18,
+          "dias": -30,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -15129,23 +14905,15 @@
         {
           "nome": "João Vitor Schneider dos Santos",
           "venc": "09/08/2026",
-          "dias": -18,
+          "dias": -30,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Kellen de Assis",
-          "venc": "12/08/2026",
-          "dias": -15,
-          "plano": "TRIMESTRAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Igor Luiz Boaventura",
           "venc": "12/08/2026",
-          "dias": -15,
+          "dias": -27,
           "plano": "TRIMESTRAL",
           "valor": 397,
           "vend": "OUTROS"
@@ -15153,23 +14921,15 @@
         {
           "nome": "Louise Catugy Rocha",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Kezia Otilia Almeida Balardino",
+          "nome": "Marco Sobreira",
           "venc": "13/08/2026",
-          "dias": -14,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "João Paulo Vieira Marvilla Fernandes",
-          "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15177,15 +14937,23 @@
         {
           "nome": "Natalia Rabbi",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Marco Sobreira",
+          "nome": "João Paulo Vieira Marvilla Fernandes",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Kezia Otilia Almeida Balardino",
+          "venc": "13/08/2026",
+          "dias": -26,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15193,23 +14961,15 @@
         {
           "nome": "Christiane Renata de Oliveira",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Danyela reis de Oliveira",
-          "venc": "15/08/2026",
-          "dias": -12,
-          "plano": "TRIMESTRAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Cláudia Couto do Rosário Ferraz",
           "venc": "15/08/2026",
-          "dias": -12,
+          "dias": -24,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15217,15 +14977,23 @@
         {
           "nome": "Letícia Severiano Zoboli",
           "venc": "15/08/2026",
-          "dias": -12,
+          "dias": -24,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
+          "nome": "Danyela reis de Oliveira",
+          "venc": "15/08/2026",
+          "dias": -24,
+          "plano": "TRIMESTRAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
           "nome": "Lucimara da Silva Macedo",
           "venc": "15/08/2026",
-          "dias": -12,
+          "dias": -24,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15233,7 +15001,7 @@
         {
           "nome": "Marlon Christian de Oliveira santos",
           "venc": "18/08/2026",
-          "dias": -9,
+          "dias": -21,
           "plano": "TRIMESTRAL",
           "valor": 75,
           "vend": "RAFAEL"
@@ -15241,7 +15009,7 @@
         {
           "nome": "Melissa Mel Lisboa Cerqueira",
           "venc": "18/08/2026",
-          "dias": -9,
+          "dias": -21,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -15249,55 +15017,55 @@
         {
           "nome": "Larissa G L Pasolini Braz",
           "venc": "19/08/2026",
-          "dias": -8,
+          "dias": -20,
           "plano": "TRIMESTRAL",
           "valor": 567,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Bruna Assaf",
+          "nome": "Mateus fundeheller da Silva",
           "venc": "20/08/2026",
-          "dias": -7,
+          "dias": -19,
           "plano": "TRIMESTRAL",
           "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Daiany Belisario da mata",
-          "venc": "20/08/2026",
-          "dias": -7,
-          "plano": "TRIMESTRAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Livia Sales Dos Santos",
-          "venc": "20/08/2026",
-          "dias": -7,
-          "plano": "TRIMESTRAL",
-          "valor": 687,
           "vend": "OUTROS"
         },
         {
           "nome": "ana luiza pereira santana",
           "venc": "20/08/2026",
-          "dias": -7,
+          "dias": -19,
           "plano": "TRIMESTRAL",
           "valor": 797,
           "vend": "OUTROS"
         },
         {
-          "nome": "Mateus fundeheller da Silva",
+          "nome": "Livia Sales Dos Santos",
           "venc": "20/08/2026",
-          "dias": -7,
+          "dias": -19,
+          "plano": "TRIMESTRAL",
+          "valor": 687,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Daiany Belisario da mata",
+          "venc": "20/08/2026",
+          "dias": -19,
+          "plano": "TRIMESTRAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Bruna Assaf",
+          "venc": "20/08/2026",
+          "dias": -19,
           "plano": "TRIMESTRAL",
           "valor": 597,
-          "vend": "OUTROS"
+          "vend": "RAFAEL"
         },
         {
           "nome": "Pedro Henrique Lima Formentini",
           "venc": "22/08/2026",
-          "dias": -5,
+          "dias": -17,
           "plano": "SEMESTRAL",
           "valor": 1497,
           "vend": "RAFAEL"
@@ -15305,7 +15073,7 @@
         {
           "nome": "Diana Karoline Santos Marques",
           "venc": "23/08/2026",
-          "dias": -4,
+          "dias": -16,
           "plano": "MENSAL",
           "valor": 172,
           "vend": "SUPORTE"
@@ -15313,39 +15081,39 @@
         {
           "nome": "Elbiene Nascimento",
           "venc": "24/08/2026",
-          "dias": -3,
+          "dias": -15,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "SUPORTE"
         },
         {
-          "nome": "Giuliana Alves de Oliveira Venditti",
-          "venc": "25/08/2026",
-          "dias": -2,
-          "plano": "TRIMESTRAL",
-          "valor": 686,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Julia Karla da Rocha Costa",
           "venc": "25/08/2026",
-          "dias": -2,
+          "dias": -14,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Beatriz Elias de Queiroz",
+          "nome": "Giuliana Alves de Oliveira Venditti",
+          "venc": "25/08/2026",
+          "dias": -14,
+          "plano": "TRIMESTRAL",
+          "valor": 686,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Aline Sacramento dos Santos",
           "venc": "26/08/2026",
-          "dias": -1,
+          "dias": -13,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Aline Sacramento dos Santos",
+          "nome": "Beatriz Elias de Queiroz",
           "venc": "26/08/2026",
-          "dias": -1,
+          "dias": -13,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -15353,7 +15121,7 @@
         {
           "nome": "Larice Marques de Oliveira Rocha",
           "venc": "27/08/2026",
-          "dias": 0,
+          "dias": -12,
           "plano": "SEMESTRAL",
           "valor": 1198,
           "vend": "OUTROS"
@@ -15361,7 +15129,7 @@
         {
           "nome": "Jessica Dias Davel",
           "venc": "27/08/2026",
-          "dias": 0,
+          "dias": -12,
           "plano": "TRIMESTRAL",
           "valor": 568,
           "vend": "OUTROS"
@@ -15369,7 +15137,7 @@
         {
           "nome": "Bruna Abreu Pereira Stafanato",
           "venc": "27/08/2026",
-          "dias": 0,
+          "dias": -12,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15377,7 +15145,7 @@
         {
           "nome": "Gabriela Almeida Freire",
           "venc": "28/08/2026",
-          "dias": 1,
+          "dias": -11,
           "plano": "RECORRENTE",
           "valor": 150,
           "vend": "SUPORTE"
@@ -15385,7 +15153,7 @@
         {
           "nome": "Stefany Santos Cordeiro",
           "venc": "29/08/2026",
-          "dias": 2,
+          "dias": -10,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -15393,23 +15161,15 @@
         {
           "nome": "Amr Aly",
           "venc": "30/08/2026",
-          "dias": 3,
+          "dias": -9,
           "plano": "MENSAL",
           "valor": 300,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thassia Quartezani Rodrigues",
-          "venc": "01/09/2026",
-          "dias": 5,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Felipe Barros Galvão",
           "venc": "01/09/2026",
-          "dias": 5,
+          "dias": -7,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -15417,7 +15177,7 @@
         {
           "nome": "Geiza Almeida de Souza Garcia",
           "venc": "02/09/2026",
-          "dias": 6,
+          "dias": -6,
           "plano": "SEMESTRAL",
           "valor": 1497,
           "vend": "OUTROS"
@@ -15425,7 +15185,7 @@
         {
           "nome": "Daniela Moreira Thuler",
           "venc": "03/09/2026",
-          "dias": 7,
+          "dias": -5,
           "plano": "SEMESTRAL",
           "valor": 150,
           "vend": "RAFAEL"
@@ -15433,7 +15193,7 @@
         {
           "nome": "Bruno Jadielson Soares Oliveira",
           "venc": "04/09/2026",
-          "dias": 8,
+          "dias": -4,
           "plano": "SEMESTRAL",
           "valor": 686,
           "vend": "OUTROS"
@@ -15441,7 +15201,7 @@
         {
           "nome": "Thainara Emilly Andrade",
           "venc": "04/09/2026",
-          "dias": 8,
+          "dias": -4,
           "plano": "MENSAL",
           "valor": 150,
           "vend": "SUPORTE"
@@ -15449,7 +15209,7 @@
         {
           "nome": "Vitória Ferreira Cosmo",
           "venc": "06/09/2026",
-          "dias": 10,
+          "dias": -2,
           "plano": "SEMESTRAL",
           "valor": 687,
           "vend": "OUTROS"
@@ -15457,7 +15217,7 @@
         {
           "nome": "Lilian Rosa Ribeiro Nunes Costa",
           "venc": "07/09/2026",
-          "dias": 11,
+          "dias": -1,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15465,7 +15225,7 @@
         {
           "nome": "Isabelle Estanislau Rezende",
           "venc": "07/09/2026",
-          "dias": 11,
+          "dias": -1,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "SUPORTE"
@@ -15473,7 +15233,7 @@
         {
           "nome": "Ana Carolina Carvalho",
           "venc": "08/09/2026",
-          "dias": 12,
+          "dias": 0,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15481,7 +15241,7 @@
         {
           "nome": "Emanuel Cordeiro",
           "venc": "08/09/2026",
-          "dias": 12,
+          "dias": 0,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15489,7 +15249,7 @@
         {
           "nome": "Tatiana Toniato",
           "venc": "08/09/2026",
-          "dias": 12,
+          "dias": 0,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -15497,7 +15257,7 @@
         {
           "nome": "Mateus Barbosa",
           "venc": "09/09/2026",
-          "dias": 13,
+          "dias": 1,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -15505,7 +15265,7 @@
         {
           "nome": "Juan de Lacerda S.",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15513,7 +15273,7 @@
         {
           "nome": "Eduardo de Jesus",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15521,7 +15281,7 @@
         {
           "nome": "Luzimara Oliveira",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "SEMESTRAL",
           "valor": 1000,
           "vend": "OUTROS"
@@ -15529,23 +15289,15 @@
         {
           "nome": "Guilherme Mattos",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "SEMESTRAL",
           "valor": 2695,
           "vend": "OUTROS"
         },
         {
-          "nome": "Adrieli da Silva",
+          "nome": "Layne Lara Rodrigues Ferreira",
           "venc": "10/09/2026",
-          "dias": 14,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Bruna Marcal De Oliveira",
-          "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15553,31 +15305,39 @@
         {
           "nome": "Maria Eduarda Nascimento",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "TRIMESTRAL",
           "valor": 687,
           "vend": "OUTROS"
         },
         {
-          "nome": "Layne Lara Rodrigues Ferreira",
+          "nome": "Adrieli da Silva",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Bruna Marcal De Oliveira",
+          "venc": "10/09/2026",
+          "dias": 2,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Michelle Vasconcelos",
+          "nome": "Lojoancy Paranho Cintra Vasconcelos",
           "venc": "11/09/2026",
-          "dias": 15,
+          "dias": 3,
           "plano": "TRIMESTRAL",
           "valor": 507,
           "vend": "OUTROS"
         },
         {
-          "nome": "Lojoancy Paranho Cintra Vasconcelos",
+          "nome": "Michelle Vasconcelos",
           "venc": "11/09/2026",
-          "dias": 15,
+          "dias": 3,
           "plano": "TRIMESTRAL",
           "valor": 507,
           "vend": "OUTROS"
@@ -15585,7 +15345,7 @@
         {
           "nome": "Hadassa Jennifer",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15593,23 +15353,15 @@
         {
           "nome": "Valeska Mendonça Calmon",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "TRIMESTRAL",
           "valor": 1197,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Aline Barbosa Peixoto Schwarzt",
-          "venc": "13/09/2026",
-          "dias": 17,
-          "plano": "MENSAL",
-          "valor": 497,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Lucas Girelli Ribeiro de Oliveira",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -15617,7 +15369,7 @@
         {
           "nome": "Rafaela do Nascimento Rosa Duarte",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "RAFAEL"
@@ -15625,7 +15377,7 @@
         {
           "nome": "Jonathan Guimarães C Okwuonye",
           "venc": "14/09/2026",
-          "dias": 18,
+          "dias": 6,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -15633,7 +15385,7 @@
         {
           "nome": "Viviane Cristina Da Silva Reis B",
           "venc": "14/09/2026",
-          "dias": 18,
+          "dias": 6,
           "plano": "TRIMESTRAL",
           "valor": 397,
           "vend": "RAFAEL"
@@ -15641,39 +15393,7 @@
         {
           "nome": "Ariany Alves Muniz",
           "venc": "14/09/2026",
-          "dias": 18,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Jessica Thamara Santana Leroy",
-          "venc": "15/09/2026",
-          "dias": 19,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Alice Martins Carvalho",
-          "venc": "15/09/2026",
-          "dias": 19,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Leticia Pereira Lucio",
-          "venc": "15/09/2026",
-          "dias": 19,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Daiane Souza Fonseca Pereira",
-          "venc": "15/09/2026",
-          "dias": 19,
+          "dias": 6,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -15681,7 +15401,7 @@
         {
           "nome": "Mariana Oliveira",
           "venc": "15/09/2026",
-          "dias": 19,
+          "dias": 7,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -15689,7 +15409,39 @@
         {
           "nome": "Ana Beatriz Simoes",
           "venc": "15/09/2026",
-          "dias": 19,
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Daiane Souza Fonseca Pereira",
+          "venc": "15/09/2026",
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Alice Martins Carvalho",
+          "venc": "15/09/2026",
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Jessica Thamara Santana Leroy",
+          "venc": "15/09/2026",
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Leticia Pereira Lucio",
+          "venc": "15/09/2026",
+          "dias": 7,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -15697,23 +15449,23 @@
         {
           "nome": "Adriana Lima",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Tayanne Francelle Maia de Oliveira",
+          "nome": "Thamires Kleim",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thamires Kleim",
+          "nome": "Tayanne Francelle Maia de Oliveira",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15721,7 +15473,7 @@
         {
           "nome": "Marcelo Lobão Martins de Oliveira",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15729,23 +15481,23 @@
         {
           "nome": "Carlos de Jesus Silva",
           "venc": "17/09/2026",
-          "dias": 21,
+          "dias": 9,
           "plano": "ANUAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Juciara Correa Occhiena",
-          "venc": "17/09/2026",
-          "dias": 21,
-          "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
           "nome": "Marcos Paulino",
           "venc": "17/09/2026",
-          "dias": 21,
+          "dias": 9,
+          "plano": "TRIMESTRAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Juciara Correa Occhiena",
+          "venc": "17/09/2026",
+          "dias": 9,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15753,7 +15505,7 @@
         {
           "nome": "Breno Gon Zortea",
           "venc": "18/09/2026",
-          "dias": 22,
+          "dias": 10,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15761,7 +15513,7 @@
         {
           "nome": "Daniel Arruda",
           "venc": "18/09/2026",
-          "dias": 22,
+          "dias": 10,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15769,7 +15521,7 @@
         {
           "nome": "Thais Faustino Arruda",
           "venc": "18/09/2026",
-          "dias": 22,
+          "dias": 10,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "SUPORTE"
@@ -15777,7 +15529,7 @@
         {
           "nome": "Ana Clara de Souza S",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15785,7 +15537,7 @@
         {
           "nome": "Tamires Oliveira Pessoa",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15793,7 +15545,7 @@
         {
           "nome": "Heloisa Katharina Lacerda Caló",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15801,7 +15553,7 @@
         {
           "nome": "Jeane Martins da Penha Silva",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "MENSAL",
           "valor": 257,
           "vend": "CHRISTOFER"
@@ -15809,23 +15561,23 @@
         {
           "nome": "Kedma de Vasconcelos",
           "venc": "20/09/2026",
-          "dias": 24,
+          "dias": 12,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Jacqueline Cruz da Silva",
+          "nome": "Camila Freitas",
           "venc": "21/09/2026",
-          "dias": 25,
+          "dias": 13,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "MICAELLY"
         },
         {
-          "nome": "Camila Freitas",
+          "nome": "Jacqueline Cruz da Silva",
           "venc": "21/09/2026",
-          "dias": 25,
+          "dias": 13,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "MICAELLY"
@@ -15833,7 +15585,7 @@
         {
           "nome": "Mariana Pereira de Souza",
           "venc": "22/09/2026",
-          "dias": 26,
+          "dias": 14,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15841,7 +15593,7 @@
         {
           "nome": "Thainá Pereira Barbosa Nunes",
           "venc": "22/09/2026",
-          "dias": 26,
+          "dias": 14,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15849,7 +15601,7 @@
         {
           "nome": "Thaiz Fiorim de Almeida",
           "venc": "22/09/2026",
-          "dias": 26,
+          "dias": 14,
           "plano": "MENSAL",
           "valor": 440,
           "vend": "CHRISTOFER"
@@ -15857,7 +15609,7 @@
         {
           "nome": "Maria Crisitane",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15865,23 +15617,23 @@
         {
           "nome": "Jessica Stefany Santana",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
         },
         {
-          "nome": "Caio César Chagas Frederico",
+          "nome": "Catia Da Silva Costa",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Catia Da Silva Costa",
+          "nome": "Caio César Chagas Frederico",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -15889,7 +15641,7 @@
         {
           "nome": "Hyago Diego Ferreira Paixão",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -15897,15 +15649,15 @@
         {
           "nome": "Luana Couto Lemos Carvalho",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "SEMESTRAL",
           "valor": 687,
           "vend": "OUTROS"
         },
         {
-          "nome": "Carla Sayra Madureira Alves Loureiro",
+          "nome": "Thayná Campos De Carvalho",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15913,15 +15665,15 @@
         {
           "nome": "Jucilene de Araújo Costa Anacleto",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thayná Campos De Carvalho",
+          "nome": "Carla Sayra Madureira Alves Loureiro",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15929,7 +15681,7 @@
         {
           "nome": "Vinicius S. Barbosa",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15937,7 +15689,7 @@
         {
           "nome": "Erik Reis de Araujo",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15945,7 +15697,7 @@
         {
           "nome": "Debora Sian",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15953,7 +15705,7 @@
         {
           "nome": "Inayá Nascimento Santos",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "SEMESTRAL",
           "valor": 847,
           "vend": "OUTROS"
@@ -15961,7 +15713,7 @@
         {
           "nome": "Karen Pereira Rodrigues Lyro",
           "venc": "26/09/2026",
-          "dias": 30,
+          "dias": 18,
           "plano": "SEMESTRAL",
           "valor": 1497,
           "vend": "OUTROS"
@@ -15969,7 +15721,7 @@
         {
           "nome": "Gustavo Simões Souza",
           "venc": "27/09/2026",
-          "dias": 31,
+          "dias": 19,
           "plano": "SEMESTRAL",
           "valor": 798,
           "vend": "OUTROS"
@@ -15977,7 +15729,7 @@
         {
           "nome": "Ana Paula de Souza Brito",
           "venc": "27/09/2026",
-          "dias": 31,
+          "dias": 19,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -15985,7 +15737,7 @@
         {
           "nome": "Brenda Melo",
           "venc": "29/09/2026",
-          "dias": 33,
+          "dias": 21,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -15993,7 +15745,7 @@
         {
           "nome": "Ana Carolina A.",
           "venc": "29/09/2026",
-          "dias": 33,
+          "dias": 21,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -16001,23 +15753,39 @@
         {
           "nome": "Ana Carolina Moura Nascimento",
           "venc": "30/09/2026",
-          "dias": 34,
+          "dias": 22,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
+          "nome": "Moisés Guerra dos Santos",
+          "venc": "30/09/2026",
+          "dias": 22,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
           "nome": "Marcela Caroline Alves",
           "venc": "01/10/2026",
-          "dias": 35,
+          "dias": 23,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
+          "nome": "Laís Moreira de Araújo",
+          "venc": "01/10/2026",
+          "dias": 23,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "SUPORTE"
+        },
+        {
           "nome": "Larissa Fernandes Pimenta",
           "venc": "01/10/2026",
-          "dias": 35,
+          "dias": 23,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16025,23 +15793,15 @@
         {
           "nome": "Aline de Paula Franco da Silva V",
           "venc": "01/10/2026",
-          "dias": 35,
+          "dias": 23,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Laís Moreira de Araújo",
-          "venc": "01/10/2026",
-          "dias": 35,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "SUPORTE"
-        },
-        {
           "nome": "Karolayne Rodrigues",
           "venc": "02/10/2026",
-          "dias": 36,
+          "dias": 24,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -16049,7 +15809,7 @@
         {
           "nome": "Regina Celia Oliveira Santos Zeni",
           "venc": "03/10/2026",
-          "dias": 37,
+          "dias": 25,
           "plano": "SEMESTRAL",
           "valor": 1997,
           "vend": "RAFAEL"
@@ -16057,7 +15817,7 @@
         {
           "nome": "Leonardo Gall",
           "venc": "03/10/2026",
-          "dias": 37,
+          "dias": 25,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16065,7 +15825,7 @@
         {
           "nome": "Lara Polyana dos Santos",
           "venc": "03/10/2026",
-          "dias": 37,
+          "dias": 25,
           "plano": "TRIMESTRAL",
           "valor": 997,
           "vend": "RAFAEL"
@@ -16073,7 +15833,7 @@
         {
           "nome": "Guilherme Carvalho",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -16081,7 +15841,7 @@
         {
           "nome": "Thaís Caroline",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "SEMESTRAL",
           "valor": 884,
           "vend": "OUTROS"
@@ -16089,31 +15849,15 @@
         {
           "nome": "Larissa Valbão poleti",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "TRIMESTRAL",
           "valor": 1197,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Emilly Moreira Pereira",
-          "venc": "06/10/2026",
-          "dias": 40,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "SUPORTE"
-        },
-        {
-          "nome": "Cristiana Maria de oliveira",
-          "venc": "06/10/2026",
-          "dias": 40,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Ramina Ferreira Xavier",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "TRIMESTRAL",
           "valor": 958,
           "vend": "RAFAEL"
@@ -16121,23 +15865,39 @@
         {
           "nome": "Samira Cardoso Correia",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
+          "nome": "Cristiana Maria de oliveira",
+          "venc": "06/10/2026",
+          "dias": 28,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Emilly Moreira Pereira",
+          "venc": "06/10/2026",
+          "dias": 28,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "SUPORTE"
+        },
+        {
           "nome": "Vitória Gleton Jesus dos Santos",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "SEMESTRAL",
           "valor": 1671,
           "vend": "OUTROS"
         },
         {
-          "nome": "Julia Souza da Silva Louzada",
+          "nome": "Nivaldo Louzada Queiroz",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 537,
           "vend": "RAFAEL"
@@ -16145,15 +15905,23 @@
         {
           "nome": "Max Pereira Santos",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Nivaldo Louzada Queiroz",
+          "nome": "Angela Nascimento Costa",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Julia Souza da Silva Louzada",
+          "venc": "07/10/2026",
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 537,
           "vend": "RAFAEL"
@@ -16161,23 +15929,23 @@
         {
           "nome": "Thayná Thomaz bonfim",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 300,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Angela Nascimento Costa",
+          "nome": "Nadson da Paixão de Jesus P.",
           "venc": "07/10/2026",
-          "dias": 41,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
+          "dias": 29,
+          "plano": "MENSAL",
+          "valor": 297,
           "vend": "RAFAEL"
         },
         {
           "nome": "Thainara de Oliveira Amaral",
           "venc": "08/10/2026",
-          "dias": 42,
+          "dias": 30,
           "plano": "SEMESTRAL",
           "valor": 604,
           "vend": "OUTROS"
@@ -16185,7 +15953,7 @@
         {
           "nome": "Maria Cristina Nolasco Mendes",
           "venc": "08/10/2026",
-          "dias": 42,
+          "dias": 30,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16193,7 +15961,7 @@
         {
           "nome": "Mayara Pereira da Rocha",
           "venc": "08/10/2026",
-          "dias": 42,
+          "dias": 30,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16201,7 +15969,7 @@
         {
           "nome": "Bárbara Carine Soares Pinheiro",
           "venc": "09/10/2026",
-          "dias": 43,
+          "dias": 31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16209,7 +15977,7 @@
         {
           "nome": "Carla Samira",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -16217,7 +15985,7 @@
         {
           "nome": "Daniely Santos Reis",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -16225,7 +15993,7 @@
         {
           "nome": "Mariana Melo Pereira",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "SEMESTRAL",
           "valor": 105,
           "vend": "OUTROS"
@@ -16233,7 +16001,7 @@
         {
           "nome": "Scheila da Vitória Lopes",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16241,7 +16009,15 @@
         {
           "nome": "Bruna Azevedo dos Santos",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Barbara Gabriela Melo de Oliveira",
+          "venc": "10/10/2026",
+          "dias": 32,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16249,39 +16025,31 @@
         {
           "nome": "Lázaro Bertolini Da Rós",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "TRIMESTRAL",
           "valor": 1197,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Barbara Gabriela Melo de Oliveira",
-          "venc": "10/10/2026",
-          "dias": 44,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Amanda Ronconi",
           "venc": "14/10/2026",
-          "dias": 48,
+          "dias": 36,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Luís Guilherme de Almeida Ferreira",
+          "nome": "Danilo Toledo",
           "venc": "14/10/2026",
-          "dias": 48,
+          "dias": 36,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Danilo Toledo",
+          "nome": "Luís Guilherme de Almeida Ferreira",
           "venc": "14/10/2026",
-          "dias": 48,
+          "dias": 36,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16289,7 +16057,7 @@
         {
           "nome": "Maria Luiza Silva Souza Sagrilo",
           "venc": "15/10/2026",
-          "dias": 49,
+          "dias": 37,
           "plano": "SEMESTRAL",
           "valor": 1077,
           "vend": "OUTROS"
@@ -16297,7 +16065,7 @@
         {
           "nome": "Bianca Burigo",
           "venc": "16/10/2026",
-          "dias": 50,
+          "dias": 38,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -16305,7 +16073,7 @@
         {
           "nome": "Thais Vieira de Souza",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -16313,15 +16081,23 @@
         {
           "nome": "Rafaela Anselmo",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "SEMESTRAL",
           "valor": 1997,
           "vend": "RAFAEL"
         },
         {
+          "nome": "Isabelli Vieira Pereira Araújo",
+          "venc": "17/10/2026",
+          "dias": 39,
+          "plano": "TRIMESTRAL",
+          "valor": 397,
+          "vend": "RAFAEL"
+        },
+        {
           "nome": "Gabriel Miranda",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16329,23 +16105,15 @@
         {
           "nome": "Steffany Tavares",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "TRIMESTRAL",
           "valor": 90,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Isabelli Vieira Pereira Araújo",
-          "venc": "17/10/2026",
-          "dias": 51,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Agnes Vitoria da Silva",
           "venc": "19/10/2026",
-          "dias": 53,
+          "dias": 41,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -16353,7 +16121,7 @@
         {
           "nome": "Thayná do Rosário Gomes",
           "venc": "20/10/2026",
-          "dias": 54,
+          "dias": 42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -16361,7 +16129,7 @@
         {
           "nome": "Júlia Arjona Pinheiro",
           "venc": "23/10/2026",
-          "dias": 57,
+          "dias": 45,
           "plano": "ANUAL",
           "valor": 797,
           "vend": "OUTROS"
@@ -16369,36 +16137,268 @@
         {
           "nome": "Bianca Catharino",
           "venc": "24/10/2026",
-          "dias": 58,
+          "dias": 46,
           "plano": "TRIMESTRAL",
           "valor": 697,
           "vend": "RAFAEL"
+        },
+        {
+          "nome": "Jamile Fonseca Martins",
+          "venc": "27/10/2026",
+          "dias": 49,
+          "plano": "SEMESTRAL",
+          "valor": 1197,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Ana Luisa Khoury",
+          "venc": "28/10/2026",
+          "dias": 50,
+          "plano": "SEMESTRAL",
+          "valor": 997,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Gabriela Goncalves Rocha",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Patricia Pessoa",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Natálie Pereira Lomes",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "TRIMESTRAL",
+          "valor": 697,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Carlos Eduardo Oliveira Nunes",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "TRIMESTRAL",
+          "valor": 1037,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Ilma Santos Cunha",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "TRIMESTRAL",
+          "valor": 697,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Leticia Leal",
+          "venc": "30/10/2026",
+          "dias": 52,
+          "plano": "SEMESTRAL",
+          "valor": 1997,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Agatta Luciana de Brito Lima",
+          "venc": "30/10/2026",
+          "dias": 52,
+          "plano": "TRIMESTRAL",
+          "valor": 847,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Liliane theobaldo Rezende",
+          "venc": "30/10/2026",
+          "dias": 52,
+          "plano": "TRIMESTRAL",
+          "valor": 697,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Bruna Rodrigues dos Santos",
+          "venc": "04/11/2026",
+          "dias": 57,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Isadora Pimenta",
+          "venc": "04/11/2026",
+          "dias": 57,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Bruno Samuel de Almeida",
+          "venc": "04/11/2026",
+          "dias": 57,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Cleidson da Silva",
+          "venc": "05/11/2026",
+          "dias": 58,
+          "plano": "TRIMESTRAL",
+          "valor": 1197,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Glauciane Demoner Niero",
+          "venc": "05/11/2026",
+          "dias": 58,
+          "plano": "TRIMESTRAL",
+          "valor": 1197,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Higo Viganor Camporez",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Cristina Gonçalves Barcelos",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Ana Carla Goncalves Borges",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Milena Alves Rovetta Rocha",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Raquel Rodrigues Teles",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Tamires Cyrino de Oliveira",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Raiany Araújo de Souza",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Thiago Almeida",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Williams Silva dos Santos P",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Isabelly Russo",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Everton Carvalho Barbosa",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Caio Henrique Andrela",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Jessica Alessandra Barbosa",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Carlos Leandro de Pádua G",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
         }
       ]
     },
     "2026": {
       "all": {
-        "n": 854,
-        "fat": 564347,
-        "tkt": 661,
-        "cvend": 14502,
-        "ctreino": 21718,
+        "n": 884,
+        "fat": 593563,
+        "tkt": 671,
+        "cvend": 15301,
+        "ctreino": 22468,
         "modal": {
           "MENSAL": {
             "c": 249,
-            "v": 56185
+            "v": 55985
           },
           "TRIMESTRAL": {
-            "c": 300,
-            "v": 182442
+            "c": 319,
+            "v": 196610
           },
           "SEMESTRAL": {
-            "c": 131,
-            "v": 127656
+            "c": 134,
+            "v": 131197
           },
           "ANUAL": {
-            "c": 136,
-            "v": 181265
+            "c": 143,
+            "v": 192715
           },
           "DESAFIO": {
             "c": 1,
@@ -16419,18 +16419,18 @@
         },
         "vend": {
           "RAFAEL": {
-            "c": 271,
-            "v": 222873,
-            "tkt": 822,
-            "cv": 5716,
-            "ct": 4876
+            "c": 294,
+            "v": 246002,
+            "tkt": 837,
+            "cv": 6365,
+            "ct": 5476
           },
           "SUPORTE": {
-            "c": 29,
-            "v": 18046,
-            "tkt": 622,
-            "cv": 504,
-            "ct": 290
+            "c": 34,
+            "v": 21339,
+            "tkt": 628,
+            "cv": 624,
+            "ct": 440
           },
           "OUTROS": {
             "c": 535,
@@ -16440,9 +16440,9 @@
             "ct": 16552
           },
           "-": {
-            "c": 2,
-            "v": 600,
-            "tkt": 300,
+            "c": 3,
+            "v": 2397,
+            "tkt": 799,
             "cv": 15,
             "ct": 0
           },
@@ -16454,10 +16454,10 @@
             "ct": 0
           },
           "MICAELLY": {
-            "c": 9,
-            "v": 8223,
-            "tkt": 914,
-            "cv": 366,
+            "c": 10,
+            "v": 9220,
+            "tkt": 922,
+            "cv": 396,
             "ct": 0
           }
         },
@@ -16491,12 +16491,12 @@
             "v": 82192
           },
           "ago": {
-            "c": 75,
-            "v": 58466
+            "c": 88,
+            "v": 68599
           },
           "set": {
-            "c": 0,
-            "v": 0
+            "c": 17,
+            "v": 19083
           },
           "out": {
             "c": 0,
@@ -16513,17 +16513,17 @@
         },
         "oper": {
           "Renovação": {
-            "c": 168,
-            "v": 91262
+            "c": 173,
+            "v": 96243
           },
           "Nova Venda": {
-            "c": 685,
-            "v": 472785
+            "c": 710,
+            "v": 497020
           }
         },
         "pend": {
-          "c": 0,
-          "v": 0
+          "c": 3,
+          "v": 3291
         }
       },
       "jan": {
@@ -17425,7 +17425,7 @@
         "fat": 82192,
         "tkt": 847,
         "cvend": 2055,
-        "ctreino": 2000,
+        "ctreino": 2600,
         "modal": {
           "MENSAL": {
             "c": 10,
@@ -17466,7 +17466,7 @@
             "v": 75531,
             "tkt": 889,
             "cv": 1888,
-            "ct": 1800
+            "ct": 2400
           },
           "SUPORTE": {
             "c": 9,
@@ -17570,27 +17570,27 @@
         }
       },
       "ago": {
-        "n": 75,
-        "fat": 58466,
+        "n": 88,
+        "fat": 68599,
         "tkt": 780,
-        "cvend": 1905,
-        "ctreino": 300,
+        "cvend": 2230,
+        "ctreino": 450,
         "modal": {
           "MENSAL": {
-            "c": 9,
-            "v": 3229
+            "c": 8,
+            "v": 2732
           },
           "TRIMESTRAL": {
-            "c": 24,
-            "v": 18484
+            "c": 33,
+            "v": 24873
           },
           "SEMESTRAL": {
-            "c": 20,
-            "v": 18276
+            "c": 22,
+            "v": 20020
           },
           "ANUAL": {
-            "c": 13,
-            "v": 16164
+            "c": 15,
+            "v": 18404
           },
           "DESAFIO": {
             "c": 0,
@@ -17611,18 +17611,18 @@
         },
         "vend": {
           "RAFAEL": {
-            "c": 46,
-            "v": 32842,
-            "tkt": 714,
-            "cv": 1015,
+            "c": 53,
+            "v": 38685,
+            "tkt": 730,
+            "cv": 1190,
             "ct": 300
           },
           "SUPORTE": {
-            "c": 13,
-            "v": 10339,
-            "tkt": 795,
-            "cv": 312,
-            "ct": 0
+            "c": 18,
+            "v": 13632,
+            "tkt": 757,
+            "cv": 431,
+            "ct": 150
           },
           "OUTROS": {
             "c": 0,
@@ -17646,10 +17646,10 @@
             "ct": 0
           },
           "MICAELLY": {
-            "c": 9,
-            "v": 8223,
-            "tkt": 914,
-            "cv": 366,
+            "c": 10,
+            "v": 9220,
+            "tkt": 922,
+            "cv": 396,
             "ct": 0
           }
         },
@@ -17683,8 +17683,8 @@
             "v": 0
           },
           "ago": {
-            "c": 75,
-            "v": 58466
+            "c": 88,
+            "v": 68599
           },
           "set": {
             "c": 0,
@@ -17705,12 +17705,12 @@
         },
         "oper": {
           "Renovação": {
-            "c": 24,
-            "v": 13328
+            "c": 27,
+            "v": 16315
           },
           "Nova Venda": {
-            "c": 51,
-            "v": 45138
+            "c": 61,
+            "v": 52284
           }
         },
         "pend": {
@@ -17719,27 +17719,27 @@
         }
       },
       "set": {
-        "n": 0,
-        "fat": 0,
-        "tkt": 0,
-        "cvend": 0,
+        "n": 17,
+        "fat": 19083,
+        "tkt": 1123,
+        "cvend": 474,
         "ctreino": 0,
         "modal": {
           "MENSAL": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 297
           },
           "TRIMESTRAL": {
-            "c": 0,
-            "v": 0
+            "c": 10,
+            "v": 7779
           },
           "SEMESTRAL": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 1797
           },
           "ANUAL": {
-            "c": 0,
-            "v": 0
+            "c": 5,
+            "v": 9210
           },
           "DESAFIO": {
             "c": 0,
@@ -17760,10 +17760,10 @@
         },
         "vend": {
           "RAFAEL": {
-            "c": 0,
-            "v": 0,
-            "tkt": 0,
-            "cv": 0,
+            "c": 16,
+            "v": 17286,
+            "tkt": 1080,
+            "cv": 474,
             "ct": 0
           },
           "SUPORTE": {
@@ -17781,9 +17781,9 @@
             "ct": 0
           },
           "-": {
-            "c": 0,
-            "v": 0,
-            "tkt": 0,
+            "c": 1,
+            "v": 1797,
+            "tkt": 1797,
             "cv": 0,
             "ct": 0
           },
@@ -17836,8 +17836,8 @@
             "v": 0
           },
           "set": {
-            "c": 0,
-            "v": 0
+            "c": 17,
+            "v": 19083
           },
           "out": {
             "c": 0,
@@ -17854,17 +17854,17 @@
         },
         "oper": {
           "Renovação": {
-            "c": 0,
-            "v": 0
+            "c": 2,
+            "v": 1994
           },
           "Nova Venda": {
-            "c": 0,
-            "v": 0
+            "c": 15,
+            "v": 17089
           }
         },
         "pend": {
-          "c": 0,
-          "v": 0
+          "c": 3,
+          "v": 3291
         }
       },
       "out": {
@@ -18315,27 +18315,27 @@
         }
       },
       "rafael": {
-        "n": 271,
-        "fat": 222873,
-        "tkt": 822,
-        "cvend": 5716,
-        "ctreino": 4876,
+        "n": 294,
+        "fat": 246002,
+        "tkt": 837,
+        "cvend": 6365,
+        "ctreino": 5476,
         "modal": {
           "MENSAL": {
             "c": 31,
-            "v": 10987
+            "v": 10787
           },
           "TRIMESTRAL": {
-            "c": 116,
-            "v": 75258
+            "c": 131,
+            "v": 86625
           },
           "SEMESTRAL": {
             "c": 57,
             "v": 61271
           },
           "ANUAL": {
-            "c": 42,
-            "v": 61988
+            "c": 49,
+            "v": 73693
           },
           "DESAFIO": {
             "c": 1,
@@ -18356,11 +18356,11 @@
         },
         "vend": {
           "RAFAEL": {
-            "c": 271,
-            "v": 222873,
-            "tkt": 822,
-            "cv": 5716,
-            "ct": 4876
+            "c": 294,
+            "v": 246002,
+            "tkt": 837,
+            "cv": 6365,
+            "ct": 5476
           },
           "SUPORTE": {
             "c": 0,
@@ -18428,12 +18428,12 @@
             "v": 75531
           },
           "ago": {
-            "c": 46,
-            "v": 32842
+            "c": 53,
+            "v": 38685
           },
           "set": {
-            "c": 0,
-            "v": 0
+            "c": 16,
+            "v": 17286
           },
           "out": {
             "c": 0,
@@ -18450,41 +18450,41 @@
         },
         "oper": {
           "Renovação": {
-            "c": 45,
-            "v": 28207
+            "c": 48,
+            "v": 31199
           },
           "Nova Venda": {
-            "c": 226,
-            "v": 194666
+            "c": 246,
+            "v": 214803
           }
         },
         "pend": {
-          "c": 0,
-          "v": 0
+          "c": 2,
+          "v": 1494
         }
       },
       "suporte": {
-        "n": 29,
-        "fat": 18046,
-        "tkt": 622,
-        "cvend": 504,
-        "ctreino": 290,
+        "n": 34,
+        "fat": 21339,
+        "tkt": 628,
+        "cvend": 624,
+        "ctreino": 440,
         "modal": {
           "MENSAL": {
             "c": 7,
             "v": 1389
           },
           "TRIMESTRAL": {
-            "c": 9,
-            "v": 7123
+            "c": 13,
+            "v": 9924
           },
           "SEMESTRAL": {
-            "c": 4,
-            "v": 3453
+            "c": 5,
+            "v": 4200
           },
           "ANUAL": {
             "c": 4,
-            "v": 4988
+            "v": 4733
           },
           "DESAFIO": {
             "c": 0,
@@ -18512,11 +18512,11 @@
             "ct": 0
           },
           "SUPORTE": {
-            "c": 29,
-            "v": 18046,
-            "tkt": 622,
-            "cv": 504,
-            "ct": 290
+            "c": 34,
+            "v": 21339,
+            "tkt": 628,
+            "cv": 624,
+            "ct": 440
           },
           "OUTROS": {
             "c": 0,
@@ -18577,8 +18577,8 @@
             "v": 5064
           },
           "ago": {
-            "c": 13,
-            "v": 10339
+            "c": 18,
+            "v": 13632
           },
           "set": {
             "c": 0,
@@ -18599,12 +18599,12 @@
         },
         "oper": {
           "Renovação": {
-            "c": 28,
-            "v": 16549
+            "c": 30,
+            "v": 18538
           },
           "Nova Venda": {
-            "c": 1,
-            "v": 1497
+            "c": 4,
+            "v": 2801
           }
         },
         "pend": {
@@ -18762,9 +18762,9 @@
         }
       },
       "-": {
-        "n": 2,
-        "fat": 600,
-        "tkt": 300,
+        "n": 3,
+        "fat": 2397,
+        "tkt": 799,
         "cvend": 15,
         "ctreino": 0,
         "modal": {
@@ -18777,8 +18777,8 @@
             "v": 0
           },
           "SEMESTRAL": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 1797
           },
           "ANUAL": {
             "c": 2,
@@ -18824,9 +18824,9 @@
             "ct": 0
           },
           "-": {
-            "c": 2,
-            "v": 600,
-            "tkt": 300,
+            "c": 3,
+            "v": 2397,
+            "tkt": 799,
             "cv": 15,
             "ct": 0
           },
@@ -18879,8 +18879,8 @@
             "v": 0
           },
           "set": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 1797
           },
           "out": {
             "c": 0,
@@ -18901,13 +18901,13 @@
             "v": 0
           },
           "Nova Venda": {
-            "c": 1,
-            "v": 300
+            "c": 2,
+            "v": 2097
           }
         },
         "pend": {
-          "c": 0,
-          "v": 0
+          "c": 1,
+          "v": 1797
         }
       },
       "christofer": {
@@ -19060,10 +19060,10 @@
         }
       },
       "micaelly": {
-        "n": 9,
-        "fat": 8223,
-        "tkt": 914,
-        "cvend": 366,
+        "n": 10,
+        "fat": 9220,
+        "tkt": 922,
+        "cvend": 396,
         "ctreino": 0,
         "modal": {
           "MENSAL": {
@@ -19075,8 +19075,8 @@
             "v": 1644
           },
           "SEMESTRAL": {
-            "c": 2,
-            "v": 1994
+            "c": 3,
+            "v": 2991
           },
           "ANUAL": {
             "c": 3,
@@ -19136,10 +19136,10 @@
             "ct": 0
           },
           "MICAELLY": {
-            "c": 9,
-            "v": 8223,
-            "tkt": 914,
-            "cv": 366,
+            "c": 10,
+            "v": 9220,
+            "tkt": 922,
+            "cv": 396,
             "ct": 0
           }
         },
@@ -19173,8 +19173,8 @@
             "v": 0
           },
           "ago": {
-            "c": 9,
-            "v": 8223
+            "c": 10,
+            "v": 9220
           },
           "set": {
             "c": 0,
@@ -19199,8 +19199,8 @@
             "v": 0
           },
           "Nova Venda": {
-            "c": 9,
-            "v": 8223
+            "c": 10,
+            "v": 9220
           }
         },
         "pend": {
@@ -20107,7 +20107,7 @@
         "fat": 75531,
         "tkt": 889,
         "cvend": 1888,
-        "ctreino": 1800,
+        "ctreino": 2400,
         "modal": {
           "MENSAL": {
             "c": 7,
@@ -20148,7 +20148,7 @@
             "v": 75531,
             "tkt": 889,
             "cv": 1888,
-            "ct": 1800
+            "ct": 2400
           },
           "SUPORTE": {
             "c": 0,
@@ -20252,27 +20252,27 @@
         }
       },
       "rafael_ago": {
-        "n": 46,
-        "fat": 32842,
-        "tkt": 714,
-        "cvend": 1015,
+        "n": 53,
+        "fat": 38685,
+        "tkt": 730,
+        "cvend": 1190,
         "ctreino": 300,
         "modal": {
           "MENSAL": {
-            "c": 4,
-            "v": 1788
+            "c": 3,
+            "v": 1291
           },
           "TRIMESTRAL": {
-            "c": 16,
-            "v": 11095
+            "c": 21,
+            "v": 14683
           },
           "SEMESTRAL": {
             "c": 11,
             "v": 8481
           },
           "ANUAL": {
-            "c": 8,
-            "v": 9679
+            "c": 10,
+            "v": 12174
           },
           "DESAFIO": {
             "c": 0,
@@ -20293,10 +20293,10 @@
         },
         "vend": {
           "RAFAEL": {
-            "c": 46,
-            "v": 32842,
-            "tkt": 714,
-            "cv": 1015,
+            "c": 53,
+            "v": 38685,
+            "tkt": 730,
+            "cv": 1190,
             "ct": 300
           },
           "SUPORTE": {
@@ -20365,8 +20365,8 @@
             "v": 0
           },
           "ago": {
-            "c": 46,
-            "v": 32842
+            "c": 53,
+            "v": 38685
           },
           "set": {
             "c": 0,
@@ -20387,12 +20387,12 @@
         },
         "oper": {
           "Renovação": {
-            "c": 12,
-            "v": 4486
+            "c": 13,
+            "v": 5484
           },
           "Nova Venda": {
-            "c": 34,
-            "v": 28356
+            "c": 40,
+            "v": 33201
           }
         },
         "pend": {
@@ -20401,27 +20401,27 @@
         }
       },
       "rafael_set": {
-        "n": 0,
-        "fat": 0,
-        "tkt": 0,
-        "cvend": 0,
+        "n": 16,
+        "fat": 17286,
+        "tkt": 1080,
+        "cvend": 474,
         "ctreino": 0,
         "modal": {
           "MENSAL": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 297
           },
           "TRIMESTRAL": {
-            "c": 0,
-            "v": 0
+            "c": 10,
+            "v": 7779
           },
           "SEMESTRAL": {
             "c": 0,
             "v": 0
           },
           "ANUAL": {
-            "c": 0,
-            "v": 0
+            "c": 5,
+            "v": 9210
           },
           "DESAFIO": {
             "c": 0,
@@ -20442,10 +20442,10 @@
         },
         "vend": {
           "RAFAEL": {
-            "c": 0,
-            "v": 0,
-            "tkt": 0,
-            "cv": 0,
+            "c": 16,
+            "v": 17286,
+            "tkt": 1080,
+            "cv": 474,
             "ct": 0
           },
           "SUPORTE": {
@@ -20518,8 +20518,8 @@
             "v": 0
           },
           "set": {
-            "c": 0,
-            "v": 0
+            "c": 16,
+            "v": 17286
           },
           "out": {
             "c": 0,
@@ -20536,17 +20536,17 @@
         },
         "oper": {
           "Renovação": {
-            "c": 0,
-            "v": 0
+            "c": 2,
+            "v": 1994
           },
           "Nova Venda": {
-            "c": 0,
-            "v": 0
+            "c": 14,
+            "v": 15292
           }
         },
         "pend": {
-          "c": 0,
-          "v": 0
+          "c": 2,
+          "v": 1494
         }
       },
       "rafael_out": {
@@ -22040,27 +22040,27 @@
         }
       },
       "suporte_ago": {
-        "n": 13,
-        "fat": 10339,
-        "tkt": 795,
-        "cvend": 312,
-        "ctreino": 0,
+        "n": 18,
+        "fat": 13632,
+        "tkt": 757,
+        "cvend": 431,
+        "ctreino": 150,
         "modal": {
           "MENSAL": {
             "c": 1,
             "v": 150
           },
           "TRIMESTRAL": {
-            "c": 5,
-            "v": 4645
+            "c": 9,
+            "v": 7446
           },
           "SEMESTRAL": {
-            "c": 3,
-            "v": 2536
+            "c": 4,
+            "v": 3283
           },
           "ANUAL": {
             "c": 2,
-            "v": 2494
+            "v": 2239
           },
           "DESAFIO": {
             "c": 0,
@@ -22088,11 +22088,11 @@
             "ct": 0
           },
           "SUPORTE": {
-            "c": 13,
-            "v": 10339,
-            "tkt": 795,
-            "cv": 312,
-            "ct": 0
+            "c": 18,
+            "v": 13632,
+            "tkt": 757,
+            "cv": 431,
+            "ct": 150
           },
           "OUTROS": {
             "c": 0,
@@ -22153,8 +22153,8 @@
             "v": 0
           },
           "ago": {
-            "c": 13,
-            "v": 10339
+            "c": 18,
+            "v": 13632
           },
           "set": {
             "c": 0,
@@ -22175,12 +22175,12 @@
         },
         "oper": {
           "Renovação": {
-            "c": 12,
-            "v": 8842
+            "c": 14,
+            "v": 10831
           },
           "Nova Venda": {
-            "c": 1,
-            "v": 1497
+            "c": 4,
+            "v": 2801
           }
         },
         "pend": {
@@ -25765,9 +25765,9 @@
         }
       },
       "-_set": {
-        "n": 0,
-        "fat": 0,
-        "tkt": 0,
+        "n": 1,
+        "fat": 1797,
+        "tkt": 1797,
         "cvend": 0,
         "ctreino": 0,
         "modal": {
@@ -25780,8 +25780,8 @@
             "v": 0
           },
           "SEMESTRAL": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 1797
           },
           "ANUAL": {
             "c": 0,
@@ -25827,9 +25827,9 @@
             "ct": 0
           },
           "-": {
-            "c": 0,
-            "v": 0,
-            "tkt": 0,
+            "c": 1,
+            "v": 1797,
+            "tkt": 1797,
             "cv": 0,
             "ct": 0
           },
@@ -25882,8 +25882,8 @@
             "v": 0
           },
           "set": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 1797
           },
           "out": {
             "c": 0,
@@ -25904,13 +25904,13 @@
             "v": 0
           },
           "Nova Venda": {
-            "c": 0,
-            "v": 0
+            "c": 1,
+            "v": 1797
           }
         },
         "pend": {
-          "c": 0,
-          "v": 0
+          "c": 1,
+          "v": 1797
         }
       },
       "-_out": {
@@ -29192,10 +29192,10 @@
         }
       },
       "micaelly_ago": {
-        "n": 9,
-        "fat": 8223,
-        "tkt": 914,
-        "cvend": 366,
+        "n": 10,
+        "fat": 9220,
+        "tkt": 922,
+        "cvend": 396,
         "ctreino": 0,
         "modal": {
           "MENSAL": {
@@ -29207,8 +29207,8 @@
             "v": 1644
           },
           "SEMESTRAL": {
-            "c": 2,
-            "v": 1994
+            "c": 3,
+            "v": 2991
           },
           "ANUAL": {
             "c": 3,
@@ -29268,10 +29268,10 @@
             "ct": 0
           },
           "MICAELLY": {
-            "c": 9,
-            "v": 8223,
-            "tkt": 914,
-            "cv": 366,
+            "c": 10,
+            "v": 9220,
+            "tkt": 922,
+            "cv": 396,
             "ct": 0
           }
         },
@@ -29305,8 +29305,8 @@
             "v": 0
           },
           "ago": {
-            "c": 9,
-            "v": 8223
+            "c": 10,
+            "v": 9220
           },
           "set": {
             "c": 0,
@@ -29331,8 +29331,8 @@
             "v": 0
           },
           "Nova Venda": {
-            "c": 9,
-            "v": 8223
+            "c": 10,
+            "v": 9220
           }
         },
         "pend": {
@@ -31359,11 +31359,11 @@
           },
           {
             "d": 13,
-            "n": 13,
-            "v": 9752,
+            "n": 12,
+            "v": 9256,
             "vd": {
-              "RAFAEL": 7298,
-              "SUPORTE": 2454
+              "RAFAEL": 8298,
+              "SUPORTE": 957
             }
           },
           {
@@ -31452,244 +31452,115 @@
           {
             "d": 26,
             "n": 5,
-            "v": 5735,
+            "v": 5736,
             "vd": {
               "MICAELLY": 3991,
-              "RAFAEL": 997,
+              "RAFAEL": 998,
               "SUPORTE": 747
+            }
+          },
+          {
+            "d": 27,
+            "n": 4,
+            "v": 3488,
+            "vd": {
+              "MICAELLY": 997,
+              "RAFAEL": 997,
+              "SUPORTE": 1494
+            }
+          },
+          {
+            "d": 28,
+            "n": 2,
+            "v": 1842,
+            "vd": {
+              "RAFAEL": 600,
+              "SUPORTE": 1242
+            }
+          },
+          {
+            "d": 29,
+            "n": 1,
+            "v": 747,
+            "vd": {
+              "RAFAEL": 747
+            }
+          },
+          {
+            "d": 30,
+            "n": 1,
+            "v": 747,
+            "vd": {
+              "SUPORTE": 747
+            }
+          },
+          {
+            "d": 31,
+            "n": 6,
+            "v": 3805,
+            "vd": {
+              "RAFAEL": 2498,
+              "SUPORTE": 1307
+            }
+          }
+        ],
+        "set": [
+          {
+            "d": 1,
+            "n": 3,
+            "v": 3791,
+            "vd": {
+              "-": 1797,
+              "RAFAEL": 1994
+            }
+          },
+          {
+            "d": 2,
+            "n": 1,
+            "v": 747,
+            "vd": {
+              "RAFAEL": 747
+            }
+          },
+          {
+            "d": 4,
+            "n": 2,
+            "v": 3569,
+            "vd": {
+              "RAFAEL": 3569
+            }
+          },
+          {
+            "d": 5,
+            "n": 3,
+            "v": 5141,
+            "vd": {
+              "RAFAEL": 5141
+            }
+          },
+          {
+            "d": 6,
+            "n": 1,
+            "v": 747,
+            "vd": {
+              "RAFAEL": 747
+            }
+          },
+          {
+            "d": 7,
+            "n": 7,
+            "v": 5088,
+            "vd": {
+              "RAFAEL": 5088
             }
           }
         ]
       },
       "carteira": [
         {
-          "nome": "Karine Andrade Reis",
-          "venc": "28/06/2026",
-          "dias": -60,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Yara Amade",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Taciana Quirino",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Rithelly da Silva de Souza",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Kesley Moraes",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 507,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Monizi Oliveira Barcelos",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Katieli Demoner Niero",
-          "venc": "30/06/2026",
-          "dias": -58,
-          "plano": "TRIMESTRAL",
-          "valor": 927,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Marcos Alexandre dos Reis",
-          "venc": "01/07/2026",
-          "dias": -57,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Laila Rodrigues Coelho Guedes",
-          "venc": "01/07/2026",
-          "dias": -57,
-          "plano": "MENSAL",
-          "valor": 172,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Guilherme Pozzato",
-          "venc": "03/07/2026",
-          "dias": -55,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Kimberlly Carlini Neves",
-          "venc": "03/07/2026",
-          "dias": -55,
-          "plano": "TRIMESTRAL",
-          "valor": 797,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Jonathan Hygino dos Santos Rosas",
-          "venc": "04/07/2026",
-          "dias": -54,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Rosieli Inácio Simão",
-          "venc": "04/07/2026",
-          "dias": -54,
-          "plano": "MENSAL",
-          "valor": 497,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Vitória Rocha de Lima",
-          "venc": "06/07/2026",
-          "dias": -52,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Hélita Clemente Soares",
-          "venc": "06/07/2026",
-          "dias": -52,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Lucas Rodrigues Gallo",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Larissa de Oliveira Nicolau",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Kettanny Campos",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Maria Dulce de Souza Figueiro",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Juliana da Cruz Souza de Carvalho",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Ariany Soany Martins Mendes",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "TRIMESTRAL",
-          "valor": 764,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Ayanma Alexandre Correia",
-          "venc": "07/07/2026",
-          "dias": -51,
-          "plano": "TRIMESTRAL",
-          "valor": 764,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Natalia de Freitas Rabbi",
-          "venc": "08/07/2026",
-          "dias": -50,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Pérsia Ribeiro dos Santos",
-          "venc": "08/07/2026",
-          "dias": -50,
-          "plano": "TRIMESTRAL",
-          "valor": 1147,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Abraão Nassar Mácola",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Iurya Corrêa Nascimento",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Gleiceane Freire de Sousa",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Diego dos Santos Barboza",
-          "venc": "09/07/2026",
-          "dias": -49,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Ludmilla Soares",
           "venc": "10/07/2026",
-          "dias": -48,
+          "dias": -60,
           "plano": "TRIMESTRAL",
           "valor": 1147,
           "vend": "OUTROS"
@@ -31697,23 +31568,23 @@
         {
           "nome": "Antonio Cloves Depiante Junior",
           "venc": "10/07/2026",
-          "dias": -48,
+          "dias": -60,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Antenor Vieira Neto",
+          "nome": "Rodrigo Alcure Castro",
           "venc": "13/07/2026",
-          "dias": -45,
+          "dias": -57,
           "plano": "SEMESTRAL",
           "valor": 1347,
           "vend": "OUTROS"
         },
         {
-          "nome": "Rodrigo Alcure Castro",
+          "nome": "Antenor Vieira Neto",
           "venc": "13/07/2026",
-          "dias": -45,
+          "dias": -57,
           "plano": "SEMESTRAL",
           "valor": 1347,
           "vend": "OUTROS"
@@ -31721,7 +31592,7 @@
         {
           "nome": "Susana Borges",
           "venc": "13/07/2026",
-          "dias": -45,
+          "dias": -57,
           "plano": "MENSAL",
           "valor": 397,
           "vend": "RAFAEL"
@@ -31729,7 +31600,7 @@
         {
           "nome": "Paula Borges",
           "venc": "15/07/2026",
-          "dias": -43,
+          "dias": -55,
           "plano": "TRIMESTRAL",
           "valor": 717,
           "vend": "RAFAEL"
@@ -31737,7 +31608,7 @@
         {
           "nome": "Joyce Ellen dos Passos de Oliveira",
           "venc": "15/07/2026",
-          "dias": -43,
+          "dias": -55,
           "plano": "TRIMESTRAL",
           "valor": 797,
           "vend": "OUTROS"
@@ -31745,7 +31616,7 @@
         {
           "nome": "Patrícia Arariba",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "SEMESTRAL",
           "valor": 1031,
           "vend": "OUTROS"
@@ -31753,23 +31624,15 @@
         {
           "nome": "Beatriz Tavares Faccioli Pantoja",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Beatriz Buzat",
-          "venc": "16/07/2026",
-          "dias": -42,
-          "plano": "MENSAL",
-          "valor": 497,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Fernanda Inácio Simão",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 450,
           "vend": "OUTROS"
@@ -31777,7 +31640,7 @@
         {
           "nome": "Rosieli Inacio Simao",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 450,
           "vend": "OUTROS"
@@ -31785,7 +31648,7 @@
         {
           "nome": "Roseli Inácio",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 500,
           "vend": "OUTROS"
@@ -31793,7 +31656,15 @@
         {
           "nome": "Fernanda Dionizio Melo Vieira",
           "venc": "16/07/2026",
-          "dias": -42,
+          "dias": -54,
+          "plano": "MENSAL",
+          "valor": 497,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Beatriz Buzat",
+          "venc": "16/07/2026",
+          "dias": -54,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -31801,7 +31672,7 @@
         {
           "nome": "Marcos Vinícius Araújo C",
           "venc": "17/07/2026",
-          "dias": -41,
+          "dias": -53,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -31809,7 +31680,7 @@
         {
           "nome": "Lays Santos Viana",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -31817,7 +31688,7 @@
         {
           "nome": "Felipe Lobo dos Anjos",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -31825,7 +31696,7 @@
         {
           "nome": "Felipe Moura da Cunha",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "MENSAL",
           "valor": 398,
           "vend": "OUTROS"
@@ -31833,31 +31704,23 @@
         {
           "nome": "Carolina Cestaro Moura",
           "venc": "18/07/2026",
-          "dias": -40,
+          "dias": -52,
           "plano": "MENSAL",
           "valor": 398,
           "vend": "OUTROS"
         },
         {
-          "nome": "Liliane Santos Pinheiro",
-          "venc": "19/07/2026",
-          "dias": -39,
-          "plano": "SEMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Antonio Sérgio Mateus Silva",
           "venc": "19/07/2026",
-          "dias": -39,
+          "dias": -51,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Brenda Carvalho Paula",
-          "venc": "20/07/2026",
-          "dias": -38,
+          "nome": "Liliane Santos Pinheiro",
+          "venc": "19/07/2026",
+          "dias": -51,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -31865,7 +31728,15 @@
         {
           "nome": "Gabriel Nascimento da Silva",
           "venc": "20/07/2026",
-          "dias": -38,
+          "dias": -50,
+          "plano": "SEMESTRAL",
+          "valor": 597,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Brenda Carvalho Paula",
+          "venc": "20/07/2026",
+          "dias": -50,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -31873,31 +31744,15 @@
         {
           "nome": "Melissa Souza",
           "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "SEMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Maria Angélica Marroni Terossi",
+          "nome": "Mariana de Oliveira Lucas",
           "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 497,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Larissa Loureiro Tolentino",
-          "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "SUPORTE"
-        },
-        {
-          "nome": "Gessica Rodrigues",
-          "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "OUTROS"
@@ -31905,15 +31760,7 @@
         {
           "nome": "Maria Julia Marroni Terossi",
           "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Leticia P Lucio",
-          "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -31921,39 +31768,63 @@
         {
           "nome": "Daiane S F Pereira",
           "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Mariana de Oliveira Lucas",
-          "venc": "22/07/2026",
-          "dias": -36,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Robson Jose Rodrigues",
           "venc": "22/07/2026",
-          "dias": -36,
+          "dias": -48,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "OUTROS"
         },
         {
-          "nome": "Daline Gomes Lopes",
+          "nome": "Gessica Rodrigues",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Larissa Loureiro Tolentino",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Maria Angélica Marroni Terossi",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 497,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Leticia P Lucio",
+          "venc": "22/07/2026",
+          "dias": -48,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Ketllyn Dantas Cipriano da Silva",
           "venc": "24/07/2026",
-          "dias": -34,
+          "dias": -46,
           "plano": "TRIMESTRAL",
           "valor": 757,
           "vend": "OUTROS"
         },
         {
-          "nome": "Ketllyn Dantas Cipriano da Silva",
+          "nome": "Daline Gomes Lopes",
           "venc": "24/07/2026",
-          "dias": -34,
+          "dias": -46,
           "plano": "TRIMESTRAL",
           "valor": 757,
           "vend": "OUTROS"
@@ -31961,39 +31832,39 @@
         {
           "nome": "Angélica Pena dos Santos Canto",
           "venc": "25/07/2026",
-          "dias": -33,
+          "dias": -45,
           "plano": "RECORRENTE",
           "valor": 172,
           "vend": "SUPORTE"
         },
         {
-          "nome": "Vitor Augusto Martins de Oliveira",
-          "venc": "27/07/2026",
-          "dias": -31,
-          "plano": "SEMESTRAL",
-          "valor": 1197,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "João Pedro Souza",
           "venc": "27/07/2026",
-          "dias": -31,
+          "dias": -43,
           "plano": "SEMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Rebeca Oliveira Nunes",
+          "nome": "Vitor Augusto Martins de Oliveira",
           "venc": "27/07/2026",
-          "dias": -31,
+          "dias": -43,
           "plano": "SEMESTRAL",
           "valor": 1197,
           "vend": "OUTROS"
         },
         {
-          "nome": "Nathalia Silva Sobreira",
+          "nome": "Rebeca Oliveira Nunes",
+          "venc": "27/07/2026",
+          "dias": -43,
+          "plano": "SEMESTRAL",
+          "valor": 1197,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Odair Jose da Silva Caldon",
           "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32001,23 +31872,15 @@
         {
           "nome": "Bárbara Danielle",
           "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thalyta Silva Fernandes Bonadi",
+          "nome": "Nathalia Silva Sobreira",
           "venc": "28/07/2026",
-          "dias": -30,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Odair Jose da Silva Caldon",
-          "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32025,7 +31888,15 @@
         {
           "nome": "Albert Ferreira",
           "venc": "28/07/2026",
-          "dias": -30,
+          "dias": -42,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Thalyta Silva Fernandes Bonadi",
+          "venc": "28/07/2026",
+          "dias": -42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32033,7 +31904,7 @@
         {
           "nome": "Gleice Kelle de Souza Silva",
           "venc": "29/07/2026",
-          "dias": -29,
+          "dias": -41,
           "plano": "SEMESTRAL",
           "valor": 798,
           "vend": "OUTROS"
@@ -32041,7 +31912,7 @@
         {
           "nome": "Nathalia Sobreira",
           "venc": "29/07/2026",
-          "dias": -29,
+          "dias": -41,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32049,7 +31920,7 @@
         {
           "nome": "Melody Amorim Defreitas",
           "venc": "30/07/2026",
-          "dias": -28,
+          "dias": -40,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32057,7 +31928,7 @@
         {
           "nome": "Diego Marques Santiago",
           "venc": "01/08/2026",
-          "dias": -26,
+          "dias": -38,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -32065,23 +31936,7 @@
         {
           "nome": "Aldvila Sanny Alexandre",
           "venc": "04/08/2026",
-          "dias": -23,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Maressa Passigatti Ahnert",
-          "venc": "04/08/2026",
-          "dias": -23,
-          "plano": "SEMESTRAL",
-          "valor": 997,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Hiorana Monteiro",
-          "venc": "04/08/2026",
-          "dias": -23,
+          "dias": -35,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -32089,15 +31944,31 @@
         {
           "nome": "Julio Cesar Araujo Junior",
           "venc": "04/08/2026",
-          "dias": -23,
+          "dias": -35,
           "plano": "SEMESTRAL",
           "valor": 947,
           "vend": "OUTROS"
         },
         {
+          "nome": "Maressa Passigatti Ahnert",
+          "venc": "04/08/2026",
+          "dias": -35,
+          "plano": "SEMESTRAL",
+          "valor": 997,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Hiorana Monteiro",
+          "venc": "04/08/2026",
+          "dias": -35,
+          "plano": "SEMESTRAL",
+          "valor": 997,
+          "vend": "OUTROS"
+        },
+        {
           "nome": "Ana Luiza de Souza Dornelas",
           "venc": "06/08/2026",
-          "dias": -21,
+          "dias": -33,
           "plano": "SEMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32105,55 +31976,23 @@
         {
           "nome": "Ana Paula Amorim Pacheco",
           "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Jordan Santos",
-          "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Rafaela Casagrande",
           "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Maria da Penha Araujo Peixoto",
+          "nome": "Jordan Santos",
           "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Carolina Moulin",
-          "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 852,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Kevyn Brunno Vieira",
-          "venc": "08/08/2026",
-          "dias": -19,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Marcela Ferreira Sampaio",
-          "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32161,7 +32000,39 @@
         {
           "nome": "Pâmella Lopes Tavares",
           "venc": "08/08/2026",
-          "dias": -19,
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Marcela Ferreira Sampaio",
+          "venc": "08/08/2026",
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Kevyn Brunno Vieira",
+          "venc": "08/08/2026",
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Carolina Moulin",
+          "venc": "08/08/2026",
+          "dias": -31,
+          "plano": "TRIMESTRAL",
+          "valor": 852,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Maria da Penha Araujo Peixoto",
+          "venc": "08/08/2026",
+          "dias": -31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32169,7 +32040,7 @@
         {
           "nome": "Luana Vitória Goulart Barbosa",
           "venc": "09/08/2026",
-          "dias": -18,
+          "dias": -30,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -32177,23 +32048,15 @@
         {
           "nome": "João Vitor Schneider dos Santos",
           "venc": "09/08/2026",
-          "dias": -18,
+          "dias": -30,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Kellen de Assis",
-          "venc": "12/08/2026",
-          "dias": -15,
-          "plano": "TRIMESTRAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Igor Luiz Boaventura",
           "venc": "12/08/2026",
-          "dias": -15,
+          "dias": -27,
           "plano": "TRIMESTRAL",
           "valor": 397,
           "vend": "OUTROS"
@@ -32201,23 +32064,15 @@
         {
           "nome": "Louise Catugy Rocha",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Kezia Otilia Almeida Balardino",
+          "nome": "Marco Sobreira",
           "venc": "13/08/2026",
-          "dias": -14,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "João Paulo Vieira Marvilla Fernandes",
-          "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32225,15 +32080,23 @@
         {
           "nome": "Natalia Rabbi",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Marco Sobreira",
+          "nome": "João Paulo Vieira Marvilla Fernandes",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Kezia Otilia Almeida Balardino",
+          "venc": "13/08/2026",
+          "dias": -26,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32241,23 +32104,15 @@
         {
           "nome": "Christiane Renata de Oliveira",
           "venc": "13/08/2026",
-          "dias": -14,
+          "dias": -26,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Danyela reis de Oliveira",
-          "venc": "15/08/2026",
-          "dias": -12,
-          "plano": "TRIMESTRAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Cláudia Couto do Rosário Ferraz",
           "venc": "15/08/2026",
-          "dias": -12,
+          "dias": -24,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32265,15 +32120,23 @@
         {
           "nome": "Letícia Severiano Zoboli",
           "venc": "15/08/2026",
-          "dias": -12,
+          "dias": -24,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
+          "nome": "Danyela reis de Oliveira",
+          "venc": "15/08/2026",
+          "dias": -24,
+          "plano": "TRIMESTRAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
           "nome": "Lucimara da Silva Macedo",
           "venc": "15/08/2026",
-          "dias": -12,
+          "dias": -24,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32281,7 +32144,7 @@
         {
           "nome": "Marlon Christian de Oliveira santos",
           "venc": "18/08/2026",
-          "dias": -9,
+          "dias": -21,
           "plano": "TRIMESTRAL",
           "valor": 75,
           "vend": "RAFAEL"
@@ -32289,7 +32152,7 @@
         {
           "nome": "Melissa Mel Lisboa Cerqueira",
           "venc": "18/08/2026",
-          "dias": -9,
+          "dias": -21,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -32297,55 +32160,55 @@
         {
           "nome": "Larissa G L Pasolini Braz",
           "venc": "19/08/2026",
-          "dias": -8,
+          "dias": -20,
           "plano": "TRIMESTRAL",
           "valor": 567,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Bruna Assaf",
+          "nome": "Mateus fundeheller da Silva",
           "venc": "20/08/2026",
-          "dias": -7,
+          "dias": -19,
           "plano": "TRIMESTRAL",
           "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Daiany Belisario da mata",
-          "venc": "20/08/2026",
-          "dias": -7,
-          "plano": "TRIMESTRAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Livia Sales Dos Santos",
-          "venc": "20/08/2026",
-          "dias": -7,
-          "plano": "TRIMESTRAL",
-          "valor": 687,
           "vend": "OUTROS"
         },
         {
           "nome": "ana luiza pereira santana",
           "venc": "20/08/2026",
-          "dias": -7,
+          "dias": -19,
           "plano": "TRIMESTRAL",
           "valor": 797,
           "vend": "OUTROS"
         },
         {
-          "nome": "Mateus fundeheller da Silva",
+          "nome": "Livia Sales Dos Santos",
           "venc": "20/08/2026",
-          "dias": -7,
+          "dias": -19,
+          "plano": "TRIMESTRAL",
+          "valor": 687,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Daiany Belisario da mata",
+          "venc": "20/08/2026",
+          "dias": -19,
+          "plano": "TRIMESTRAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Bruna Assaf",
+          "venc": "20/08/2026",
+          "dias": -19,
           "plano": "TRIMESTRAL",
           "valor": 597,
-          "vend": "OUTROS"
+          "vend": "RAFAEL"
         },
         {
           "nome": "Pedro Henrique Lima Formentini",
           "venc": "22/08/2026",
-          "dias": -5,
+          "dias": -17,
           "plano": "SEMESTRAL",
           "valor": 1497,
           "vend": "RAFAEL"
@@ -32353,7 +32216,7 @@
         {
           "nome": "Diana Karoline Santos Marques",
           "venc": "23/08/2026",
-          "dias": -4,
+          "dias": -16,
           "plano": "MENSAL",
           "valor": 172,
           "vend": "SUPORTE"
@@ -32361,39 +32224,39 @@
         {
           "nome": "Elbiene Nascimento",
           "venc": "24/08/2026",
-          "dias": -3,
+          "dias": -15,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "SUPORTE"
         },
         {
-          "nome": "Giuliana Alves de Oliveira Venditti",
-          "venc": "25/08/2026",
-          "dias": -2,
-          "plano": "TRIMESTRAL",
-          "valor": 686,
-          "vend": "OUTROS"
-        },
-        {
           "nome": "Julia Karla da Rocha Costa",
           "venc": "25/08/2026",
-          "dias": -2,
+          "dias": -14,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Beatriz Elias de Queiroz",
+          "nome": "Giuliana Alves de Oliveira Venditti",
+          "venc": "25/08/2026",
+          "dias": -14,
+          "plano": "TRIMESTRAL",
+          "valor": 686,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Aline Sacramento dos Santos",
           "venc": "26/08/2026",
-          "dias": -1,
+          "dias": -13,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Aline Sacramento dos Santos",
+          "nome": "Beatriz Elias de Queiroz",
           "venc": "26/08/2026",
-          "dias": -1,
+          "dias": -13,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -32401,7 +32264,7 @@
         {
           "nome": "Larice Marques de Oliveira Rocha",
           "venc": "27/08/2026",
-          "dias": 0,
+          "dias": -12,
           "plano": "SEMESTRAL",
           "valor": 1198,
           "vend": "OUTROS"
@@ -32409,7 +32272,7 @@
         {
           "nome": "Jessica Dias Davel",
           "venc": "27/08/2026",
-          "dias": 0,
+          "dias": -12,
           "plano": "TRIMESTRAL",
           "valor": 568,
           "vend": "OUTROS"
@@ -32417,7 +32280,7 @@
         {
           "nome": "Bruna Abreu Pereira Stafanato",
           "venc": "27/08/2026",
-          "dias": 0,
+          "dias": -12,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32425,7 +32288,7 @@
         {
           "nome": "Gabriela Almeida Freire",
           "venc": "28/08/2026",
-          "dias": 1,
+          "dias": -11,
           "plano": "RECORRENTE",
           "valor": 150,
           "vend": "SUPORTE"
@@ -32433,7 +32296,7 @@
         {
           "nome": "Stefany Santos Cordeiro",
           "venc": "29/08/2026",
-          "dias": 2,
+          "dias": -10,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -32441,23 +32304,15 @@
         {
           "nome": "Amr Aly",
           "venc": "30/08/2026",
-          "dias": 3,
+          "dias": -9,
           "plano": "MENSAL",
           "valor": 300,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thassia Quartezani Rodrigues",
-          "venc": "01/09/2026",
-          "dias": 5,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Felipe Barros Galvão",
           "venc": "01/09/2026",
-          "dias": 5,
+          "dias": -7,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -32465,7 +32320,7 @@
         {
           "nome": "Geiza Almeida de Souza Garcia",
           "venc": "02/09/2026",
-          "dias": 6,
+          "dias": -6,
           "plano": "SEMESTRAL",
           "valor": 1497,
           "vend": "OUTROS"
@@ -32473,7 +32328,7 @@
         {
           "nome": "Daniela Moreira Thuler",
           "venc": "03/09/2026",
-          "dias": 7,
+          "dias": -5,
           "plano": "SEMESTRAL",
           "valor": 150,
           "vend": "RAFAEL"
@@ -32481,7 +32336,7 @@
         {
           "nome": "Bruno Jadielson Soares Oliveira",
           "venc": "04/09/2026",
-          "dias": 8,
+          "dias": -4,
           "plano": "SEMESTRAL",
           "valor": 686,
           "vend": "OUTROS"
@@ -32489,7 +32344,7 @@
         {
           "nome": "Thainara Emilly Andrade",
           "venc": "04/09/2026",
-          "dias": 8,
+          "dias": -4,
           "plano": "MENSAL",
           "valor": 150,
           "vend": "SUPORTE"
@@ -32497,7 +32352,7 @@
         {
           "nome": "Vitória Ferreira Cosmo",
           "venc": "06/09/2026",
-          "dias": 10,
+          "dias": -2,
           "plano": "SEMESTRAL",
           "valor": 687,
           "vend": "OUTROS"
@@ -32505,7 +32360,7 @@
         {
           "nome": "Lilian Rosa Ribeiro Nunes Costa",
           "venc": "07/09/2026",
-          "dias": 11,
+          "dias": -1,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32513,7 +32368,7 @@
         {
           "nome": "Isabelle Estanislau Rezende",
           "venc": "07/09/2026",
-          "dias": 11,
+          "dias": -1,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "SUPORTE"
@@ -32521,7 +32376,7 @@
         {
           "nome": "Ana Carolina Carvalho",
           "venc": "08/09/2026",
-          "dias": 12,
+          "dias": 0,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32529,7 +32384,7 @@
         {
           "nome": "Emanuel Cordeiro",
           "venc": "08/09/2026",
-          "dias": 12,
+          "dias": 0,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32537,7 +32392,7 @@
         {
           "nome": "Tatiana Toniato",
           "venc": "08/09/2026",
-          "dias": 12,
+          "dias": 0,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -32545,7 +32400,7 @@
         {
           "nome": "Mateus Barbosa",
           "venc": "09/09/2026",
-          "dias": 13,
+          "dias": 1,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
@@ -32553,7 +32408,7 @@
         {
           "nome": "Juan de Lacerda S.",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32561,7 +32416,7 @@
         {
           "nome": "Eduardo de Jesus",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32569,7 +32424,7 @@
         {
           "nome": "Luzimara Oliveira",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "SEMESTRAL",
           "valor": 1000,
           "vend": "OUTROS"
@@ -32577,23 +32432,15 @@
         {
           "nome": "Guilherme Mattos",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "SEMESTRAL",
           "valor": 2695,
           "vend": "OUTROS"
         },
         {
-          "nome": "Adrieli da Silva",
+          "nome": "Layne Lara Rodrigues Ferreira",
           "venc": "10/09/2026",
-          "dias": 14,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Bruna Marcal De Oliveira",
-          "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32601,31 +32448,39 @@
         {
           "nome": "Maria Eduarda Nascimento",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
           "plano": "TRIMESTRAL",
           "valor": 687,
           "vend": "OUTROS"
         },
         {
-          "nome": "Layne Lara Rodrigues Ferreira",
+          "nome": "Adrieli da Silva",
           "venc": "10/09/2026",
-          "dias": 14,
+          "dias": 2,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Bruna Marcal De Oliveira",
+          "venc": "10/09/2026",
+          "dias": 2,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Michelle Vasconcelos",
+          "nome": "Lojoancy Paranho Cintra Vasconcelos",
           "venc": "11/09/2026",
-          "dias": 15,
+          "dias": 3,
           "plano": "TRIMESTRAL",
           "valor": 507,
           "vend": "OUTROS"
         },
         {
-          "nome": "Lojoancy Paranho Cintra Vasconcelos",
+          "nome": "Michelle Vasconcelos",
           "venc": "11/09/2026",
-          "dias": 15,
+          "dias": 3,
           "plano": "TRIMESTRAL",
           "valor": 507,
           "vend": "OUTROS"
@@ -32633,7 +32488,7 @@
         {
           "nome": "Hadassa Jennifer",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32641,23 +32496,15 @@
         {
           "nome": "Valeska Mendonça Calmon",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "TRIMESTRAL",
           "valor": 1197,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Aline Barbosa Peixoto Schwarzt",
-          "venc": "13/09/2026",
-          "dias": 17,
-          "plano": "MENSAL",
-          "valor": 497,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Lucas Girelli Ribeiro de Oliveira",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "MENSAL",
           "valor": 497,
           "vend": "RAFAEL"
@@ -32665,7 +32512,7 @@
         {
           "nome": "Rafaela do Nascimento Rosa Duarte",
           "venc": "13/09/2026",
-          "dias": 17,
+          "dias": 5,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "RAFAEL"
@@ -32673,7 +32520,7 @@
         {
           "nome": "Jonathan Guimarães C Okwuonye",
           "venc": "14/09/2026",
-          "dias": 18,
+          "dias": 6,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -32681,7 +32528,7 @@
         {
           "nome": "Viviane Cristina Da Silva Reis B",
           "venc": "14/09/2026",
-          "dias": 18,
+          "dias": 6,
           "plano": "TRIMESTRAL",
           "valor": 397,
           "vend": "RAFAEL"
@@ -32689,39 +32536,7 @@
         {
           "nome": "Ariany Alves Muniz",
           "venc": "14/09/2026",
-          "dias": 18,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Jessica Thamara Santana Leroy",
-          "venc": "15/09/2026",
-          "dias": 19,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Alice Martins Carvalho",
-          "venc": "15/09/2026",
-          "dias": 19,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Leticia Pereira Lucio",
-          "venc": "15/09/2026",
-          "dias": 19,
-          "plano": "RECORRENTE",
-          "valor": 257,
-          "vend": "RAFAEL"
-        },
-        {
-          "nome": "Daiane Souza Fonseca Pereira",
-          "venc": "15/09/2026",
-          "dias": 19,
+          "dias": 6,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -32729,7 +32544,7 @@
         {
           "nome": "Mariana Oliveira",
           "venc": "15/09/2026",
-          "dias": 19,
+          "dias": 7,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -32737,7 +32552,39 @@
         {
           "nome": "Ana Beatriz Simoes",
           "venc": "15/09/2026",
-          "dias": 19,
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Daiane Souza Fonseca Pereira",
+          "venc": "15/09/2026",
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Alice Martins Carvalho",
+          "venc": "15/09/2026",
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Jessica Thamara Santana Leroy",
+          "venc": "15/09/2026",
+          "dias": 7,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Leticia Pereira Lucio",
+          "venc": "15/09/2026",
+          "dias": 7,
           "plano": "RECORRENTE",
           "valor": 257,
           "vend": "RAFAEL"
@@ -32745,23 +32592,23 @@
         {
           "nome": "Adriana Lima",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Tayanne Francelle Maia de Oliveira",
+          "nome": "Thamires Kleim",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thamires Kleim",
+          "nome": "Tayanne Francelle Maia de Oliveira",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32769,7 +32616,7 @@
         {
           "nome": "Marcelo Lobão Martins de Oliveira",
           "venc": "16/09/2026",
-          "dias": 20,
+          "dias": 8,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32777,23 +32624,23 @@
         {
           "nome": "Carlos de Jesus Silva",
           "venc": "17/09/2026",
-          "dias": 21,
+          "dias": 9,
           "plano": "ANUAL",
-          "valor": 897,
-          "vend": "OUTROS"
-        },
-        {
-          "nome": "Juciara Correa Occhiena",
-          "venc": "17/09/2026",
-          "dias": 21,
-          "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
           "nome": "Marcos Paulino",
           "venc": "17/09/2026",
-          "dias": 21,
+          "dias": 9,
+          "plano": "TRIMESTRAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Juciara Correa Occhiena",
+          "venc": "17/09/2026",
+          "dias": 9,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32801,7 +32648,7 @@
         {
           "nome": "Breno Gon Zortea",
           "venc": "18/09/2026",
-          "dias": 22,
+          "dias": 10,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32809,7 +32656,7 @@
         {
           "nome": "Daniel Arruda",
           "venc": "18/09/2026",
-          "dias": 22,
+          "dias": 10,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32817,7 +32664,7 @@
         {
           "nome": "Thais Faustino Arruda",
           "venc": "18/09/2026",
-          "dias": 22,
+          "dias": 10,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "SUPORTE"
@@ -32825,7 +32672,7 @@
         {
           "nome": "Ana Clara de Souza S",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32833,7 +32680,7 @@
         {
           "nome": "Tamires Oliveira Pessoa",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32841,7 +32688,7 @@
         {
           "nome": "Heloisa Katharina Lacerda Caló",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32849,7 +32696,7 @@
         {
           "nome": "Jeane Martins da Penha Silva",
           "venc": "19/09/2026",
-          "dias": 23,
+          "dias": 11,
           "plano": "MENSAL",
           "valor": 257,
           "vend": "CHRISTOFER"
@@ -32857,23 +32704,23 @@
         {
           "nome": "Kedma de Vasconcelos",
           "venc": "20/09/2026",
-          "dias": 24,
+          "dias": 12,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Jacqueline Cruz da Silva",
+          "nome": "Camila Freitas",
           "venc": "21/09/2026",
-          "dias": 25,
+          "dias": 13,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "MICAELLY"
         },
         {
-          "nome": "Camila Freitas",
+          "nome": "Jacqueline Cruz da Silva",
           "venc": "21/09/2026",
-          "dias": 25,
+          "dias": 13,
           "plano": "MENSAL",
           "valor": 297,
           "vend": "MICAELLY"
@@ -32881,7 +32728,7 @@
         {
           "nome": "Mariana Pereira de Souza",
           "venc": "22/09/2026",
-          "dias": 26,
+          "dias": 14,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32889,7 +32736,7 @@
         {
           "nome": "Thainá Pereira Barbosa Nunes",
           "venc": "22/09/2026",
-          "dias": 26,
+          "dias": 14,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32897,7 +32744,7 @@
         {
           "nome": "Thaiz Fiorim de Almeida",
           "venc": "22/09/2026",
-          "dias": 26,
+          "dias": 14,
           "plano": "MENSAL",
           "valor": 440,
           "vend": "CHRISTOFER"
@@ -32905,7 +32752,7 @@
         {
           "nome": "Maria Crisitane",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32913,23 +32760,23 @@
         {
           "nome": "Jessica Stefany Santana",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "SEMESTRAL",
           "valor": 997,
           "vend": "OUTROS"
         },
         {
-          "nome": "Caio César Chagas Frederico",
+          "nome": "Catia Da Silva Costa",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
-          "nome": "Catia Da Silva Costa",
+          "nome": "Caio César Chagas Frederico",
           "venc": "23/09/2026",
-          "dias": 27,
+          "dias": 15,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -32937,7 +32784,7 @@
         {
           "nome": "Hyago Diego Ferreira Paixão",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "SEMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
@@ -32945,15 +32792,15 @@
         {
           "nome": "Luana Couto Lemos Carvalho",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "SEMESTRAL",
           "valor": 687,
           "vend": "OUTROS"
         },
         {
-          "nome": "Carla Sayra Madureira Alves Loureiro",
+          "nome": "Thayná Campos De Carvalho",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32961,15 +32808,15 @@
         {
           "nome": "Jucilene de Araújo Costa Anacleto",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Thayná Campos De Carvalho",
+          "nome": "Carla Sayra Madureira Alves Loureiro",
           "venc": "24/09/2026",
-          "dias": 28,
+          "dias": 16,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -32977,7 +32824,7 @@
         {
           "nome": "Vinicius S. Barbosa",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32985,7 +32832,7 @@
         {
           "nome": "Erik Reis de Araujo",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -32993,7 +32840,7 @@
         {
           "nome": "Debora Sian",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33001,7 +32848,7 @@
         {
           "nome": "Inayá Nascimento Santos",
           "venc": "25/09/2026",
-          "dias": 29,
+          "dias": 17,
           "plano": "SEMESTRAL",
           "valor": 847,
           "vend": "OUTROS"
@@ -33009,7 +32856,7 @@
         {
           "nome": "Karen Pereira Rodrigues Lyro",
           "venc": "26/09/2026",
-          "dias": 30,
+          "dias": 18,
           "plano": "SEMESTRAL",
           "valor": 1497,
           "vend": "OUTROS"
@@ -33017,7 +32864,7 @@
         {
           "nome": "Gustavo Simões Souza",
           "venc": "27/09/2026",
-          "dias": 31,
+          "dias": 19,
           "plano": "SEMESTRAL",
           "valor": 798,
           "vend": "OUTROS"
@@ -33025,7 +32872,7 @@
         {
           "nome": "Ana Paula de Souza Brito",
           "venc": "27/09/2026",
-          "dias": 31,
+          "dias": 19,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33033,7 +32880,7 @@
         {
           "nome": "Brenda Melo",
           "venc": "29/09/2026",
-          "dias": 33,
+          "dias": 21,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33041,7 +32888,7 @@
         {
           "nome": "Ana Carolina A.",
           "venc": "29/09/2026",
-          "dias": 33,
+          "dias": 21,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33049,23 +32896,39 @@
         {
           "nome": "Ana Carolina Moura Nascimento",
           "venc": "30/09/2026",
-          "dias": 34,
+          "dias": 22,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "OUTROS"
         },
         {
+          "nome": "Moisés Guerra dos Santos",
+          "venc": "30/09/2026",
+          "dias": 22,
+          "plano": "RECORRENTE",
+          "valor": 257,
+          "vend": "RAFAEL"
+        },
+        {
           "nome": "Marcela Caroline Alves",
           "venc": "01/10/2026",
-          "dias": 35,
+          "dias": 23,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
+          "nome": "Laís Moreira de Araújo",
+          "venc": "01/10/2026",
+          "dias": 23,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "SUPORTE"
+        },
+        {
           "nome": "Larissa Fernandes Pimenta",
           "venc": "01/10/2026",
-          "dias": 35,
+          "dias": 23,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33073,23 +32936,15 @@
         {
           "nome": "Aline de Paula Franco da Silva V",
           "venc": "01/10/2026",
-          "dias": 35,
+          "dias": 23,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Laís Moreira de Araújo",
-          "venc": "01/10/2026",
-          "dias": 35,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "SUPORTE"
-        },
-        {
           "nome": "Karolayne Rodrigues",
           "venc": "02/10/2026",
-          "dias": 36,
+          "dias": 24,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33097,7 +32952,7 @@
         {
           "nome": "Regina Celia Oliveira Santos Zeni",
           "venc": "03/10/2026",
-          "dias": 37,
+          "dias": 25,
           "plano": "SEMESTRAL",
           "valor": 1997,
           "vend": "RAFAEL"
@@ -33105,7 +32960,7 @@
         {
           "nome": "Leonardo Gall",
           "venc": "03/10/2026",
-          "dias": 37,
+          "dias": 25,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33113,7 +32968,7 @@
         {
           "nome": "Lara Polyana dos Santos",
           "venc": "03/10/2026",
-          "dias": 37,
+          "dias": 25,
           "plano": "TRIMESTRAL",
           "valor": 997,
           "vend": "RAFAEL"
@@ -33121,7 +32976,7 @@
         {
           "nome": "Guilherme Carvalho",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33129,7 +32984,7 @@
         {
           "nome": "Thaís Caroline",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "SEMESTRAL",
           "valor": 884,
           "vend": "OUTROS"
@@ -33137,31 +32992,15 @@
         {
           "nome": "Larissa Valbão poleti",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "TRIMESTRAL",
           "valor": 1197,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Emilly Moreira Pereira",
-          "venc": "06/10/2026",
-          "dias": 40,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "SUPORTE"
-        },
-        {
-          "nome": "Cristiana Maria de oliveira",
-          "venc": "06/10/2026",
-          "dias": 40,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Ramina Ferreira Xavier",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "TRIMESTRAL",
           "valor": 958,
           "vend": "RAFAEL"
@@ -33169,23 +33008,39 @@
         {
           "nome": "Samira Cardoso Correia",
           "venc": "06/10/2026",
-          "dias": 40,
+          "dias": 28,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
+          "nome": "Cristiana Maria de oliveira",
+          "venc": "06/10/2026",
+          "dias": 28,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Emilly Moreira Pereira",
+          "venc": "06/10/2026",
+          "dias": 28,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "SUPORTE"
+        },
+        {
           "nome": "Vitória Gleton Jesus dos Santos",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "SEMESTRAL",
           "valor": 1671,
           "vend": "OUTROS"
         },
         {
-          "nome": "Julia Souza da Silva Louzada",
+          "nome": "Nivaldo Louzada Queiroz",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 537,
           "vend": "RAFAEL"
@@ -33193,15 +33048,23 @@
         {
           "nome": "Max Pereira Santos",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Nivaldo Louzada Queiroz",
+          "nome": "Angela Nascimento Costa",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Julia Souza da Silva Louzada",
+          "venc": "07/10/2026",
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 537,
           "vend": "RAFAEL"
@@ -33209,23 +33072,23 @@
         {
           "nome": "Thayná Thomaz bonfim",
           "venc": "07/10/2026",
-          "dias": 41,
+          "dias": 29,
           "plano": "TRIMESTRAL",
           "valor": 300,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Angela Nascimento Costa",
+          "nome": "Nadson da Paixão de Jesus P.",
           "venc": "07/10/2026",
-          "dias": 41,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
+          "dias": 29,
+          "plano": "MENSAL",
+          "valor": 297,
           "vend": "RAFAEL"
         },
         {
           "nome": "Thainara de Oliveira Amaral",
           "venc": "08/10/2026",
-          "dias": 42,
+          "dias": 30,
           "plano": "SEMESTRAL",
           "valor": 604,
           "vend": "OUTROS"
@@ -33233,7 +33096,7 @@
         {
           "nome": "Maria Cristina Nolasco Mendes",
           "venc": "08/10/2026",
-          "dias": 42,
+          "dias": 30,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33241,7 +33104,7 @@
         {
           "nome": "Mayara Pereira da Rocha",
           "venc": "08/10/2026",
-          "dias": 42,
+          "dias": 30,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33249,7 +33112,7 @@
         {
           "nome": "Bárbara Carine Soares Pinheiro",
           "venc": "09/10/2026",
-          "dias": 43,
+          "dias": 31,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33257,7 +33120,7 @@
         {
           "nome": "Carla Samira",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33265,7 +33128,7 @@
         {
           "nome": "Daniely Santos Reis",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33273,7 +33136,7 @@
         {
           "nome": "Mariana Melo Pereira",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "SEMESTRAL",
           "valor": 105,
           "vend": "OUTROS"
@@ -33281,7 +33144,7 @@
         {
           "nome": "Scheila da Vitória Lopes",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33289,7 +33152,15 @@
         {
           "nome": "Bruna Azevedo dos Santos",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Barbara Gabriela Melo de Oliveira",
+          "venc": "10/10/2026",
+          "dias": 32,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33297,39 +33168,31 @@
         {
           "nome": "Lázaro Bertolini Da Rós",
           "venc": "10/10/2026",
-          "dias": 44,
+          "dias": 32,
           "plano": "TRIMESTRAL",
           "valor": 1197,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Barbara Gabriela Melo de Oliveira",
-          "venc": "10/10/2026",
-          "dias": 44,
-          "plano": "TRIMESTRAL",
-          "valor": 597,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Amanda Ronconi",
           "venc": "14/10/2026",
-          "dias": 48,
+          "dias": 36,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
         },
         {
-          "nome": "Luís Guilherme de Almeida Ferreira",
+          "nome": "Danilo Toledo",
           "venc": "14/10/2026",
-          "dias": 48,
+          "dias": 36,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Danilo Toledo",
+          "nome": "Luís Guilherme de Almeida Ferreira",
           "venc": "14/10/2026",
-          "dias": 48,
+          "dias": 36,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33337,7 +33200,7 @@
         {
           "nome": "Maria Luiza Silva Souza Sagrilo",
           "venc": "15/10/2026",
-          "dias": 49,
+          "dias": 37,
           "plano": "SEMESTRAL",
           "valor": 1077,
           "vend": "OUTROS"
@@ -33345,7 +33208,7 @@
         {
           "nome": "Bianca Burigo",
           "venc": "16/10/2026",
-          "dias": 50,
+          "dias": 38,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "OUTROS"
@@ -33353,7 +33216,7 @@
         {
           "nome": "Thais Vieira de Souza",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "ANUAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -33361,15 +33224,23 @@
         {
           "nome": "Rafaela Anselmo",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "SEMESTRAL",
           "valor": 1997,
           "vend": "RAFAEL"
         },
         {
+          "nome": "Isabelli Vieira Pereira Araújo",
+          "venc": "17/10/2026",
+          "dias": 39,
+          "plano": "TRIMESTRAL",
+          "valor": 397,
+          "vend": "RAFAEL"
+        },
+        {
           "nome": "Gabriel Miranda",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33377,23 +33248,15 @@
         {
           "nome": "Steffany Tavares",
           "venc": "17/10/2026",
-          "dias": 51,
+          "dias": 39,
           "plano": "TRIMESTRAL",
           "valor": 90,
           "vend": "RAFAEL"
         },
         {
-          "nome": "Isabelli Vieira Pereira Araújo",
-          "venc": "17/10/2026",
-          "dias": 51,
-          "plano": "TRIMESTRAL",
-          "valor": 397,
-          "vend": "RAFAEL"
-        },
-        {
           "nome": "Agnes Vitoria da Silva",
           "venc": "19/10/2026",
-          "dias": 53,
+          "dias": 41,
           "plano": "TRIMESTRAL",
           "valor": 897,
           "vend": "RAFAEL"
@@ -33401,7 +33264,7 @@
         {
           "nome": "Thayná do Rosário Gomes",
           "venc": "20/10/2026",
-          "dias": 54,
+          "dias": 42,
           "plano": "TRIMESTRAL",
           "valor": 597,
           "vend": "RAFAEL"
@@ -33409,7 +33272,7 @@
         {
           "nome": "Júlia Arjona Pinheiro",
           "venc": "23/10/2026",
-          "dias": 57,
+          "dias": 45,
           "plano": "ANUAL",
           "valor": 797,
           "vend": "OUTROS"
@@ -33417,10 +33280,242 @@
         {
           "nome": "Bianca Catharino",
           "venc": "24/10/2026",
-          "dias": 58,
+          "dias": 46,
           "plano": "TRIMESTRAL",
           "valor": 697,
           "vend": "RAFAEL"
+        },
+        {
+          "nome": "Jamile Fonseca Martins",
+          "venc": "27/10/2026",
+          "dias": 49,
+          "plano": "SEMESTRAL",
+          "valor": 1197,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Ana Luisa Khoury",
+          "venc": "28/10/2026",
+          "dias": 50,
+          "plano": "SEMESTRAL",
+          "valor": 997,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Gabriela Goncalves Rocha",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Patricia Pessoa",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Natálie Pereira Lomes",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "TRIMESTRAL",
+          "valor": 697,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Carlos Eduardo Oliveira Nunes",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "TRIMESTRAL",
+          "valor": 1037,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Ilma Santos Cunha",
+          "venc": "29/10/2026",
+          "dias": 51,
+          "plano": "TRIMESTRAL",
+          "valor": 697,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Leticia Leal",
+          "venc": "30/10/2026",
+          "dias": 52,
+          "plano": "SEMESTRAL",
+          "valor": 1997,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Agatta Luciana de Brito Lima",
+          "venc": "30/10/2026",
+          "dias": 52,
+          "plano": "TRIMESTRAL",
+          "valor": 847,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Liliane theobaldo Rezende",
+          "venc": "30/10/2026",
+          "dias": 52,
+          "plano": "TRIMESTRAL",
+          "valor": 697,
+          "vend": "RAFAEL"
+        },
+        {
+          "nome": "Bruna Rodrigues dos Santos",
+          "venc": "04/11/2026",
+          "dias": 57,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Isadora Pimenta",
+          "venc": "04/11/2026",
+          "dias": 57,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Bruno Samuel de Almeida",
+          "venc": "04/11/2026",
+          "dias": 57,
+          "plano": "TRIMESTRAL",
+          "valor": 597,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Cleidson da Silva",
+          "venc": "05/11/2026",
+          "dias": 58,
+          "plano": "TRIMESTRAL",
+          "valor": 1197,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Glauciane Demoner Niero",
+          "venc": "05/11/2026",
+          "dias": 58,
+          "plano": "TRIMESTRAL",
+          "valor": 1197,
+          "vend": "SUPORTE"
+        },
+        {
+          "nome": "Higo Viganor Camporez",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Cristina Gonçalves Barcelos",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Ana Carla Goncalves Borges",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Milena Alves Rovetta Rocha",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Raquel Rodrigues Teles",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Tamires Cyrino de Oliveira",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Raiany Araújo de Souza",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Thiago Almeida",
+          "venc": "06/11/2026",
+          "dias": 59,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Williams Silva dos Santos P",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Isabelly Russo",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 897,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Everton Carvalho Barbosa",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Caio Henrique Andrela",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Jessica Alessandra Barbosa",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
+        },
+        {
+          "nome": "Carlos Leandro de Pádua G",
+          "venc": "07/11/2026",
+          "dias": 60,
+          "plano": "ANUAL",
+          "valor": 599,
+          "vend": "OUTROS"
         }
       ]
     },
@@ -33569,14 +33664,14 @@
         "ago": {
           "fat": {
             "v25": 0,
-            "v26": 58466,
-            "delta": 58466,
+            "v26": 68599,
+            "delta": 68599,
             "pct": null
           },
           "n": {
             "v25": 0,
-            "v26": 75,
-            "delta": 75,
+            "v26": 88,
+            "delta": 88,
             "pct": null
           },
           "tkt": {
@@ -33589,21 +33684,21 @@
         "set": {
           "fat": {
             "v25": 50382,
-            "v26": 0,
-            "delta": -50382,
-            "pct": -100
+            "v26": 19083,
+            "delta": -31299,
+            "pct": -62
           },
           "n": {
             "v25": 102,
-            "v26": 0,
-            "delta": -102,
-            "pct": -100
+            "v26": 17,
+            "delta": -85,
+            "pct": -83
           },
           "tkt": {
             "v25": 494,
-            "v26": 0,
-            "delta": -494,
-            "pct": -100
+            "v26": 1123,
+            "delta": 629,
+            "pct": 127
           }
         },
         "out": {
@@ -33670,73 +33765,73 @@
       "total": {
         "fat": {
           "v25": 199845,
-          "v26": 564347,
-          "delta": 364502,
-          "pct": 182
+          "v26": 593563,
+          "delta": 393718,
+          "pct": 197
         },
         "n": {
           "v25": 476,
-          "v26": 854,
-          "delta": 378,
-          "pct": 79
+          "v26": 884,
+          "delta": 408,
+          "pct": 86
         },
         "tkt": {
           "v25": 420,
-          "v26": 661,
-          "delta": 241,
-          "pct": 57
+          "v26": 671,
+          "delta": 251,
+          "pct": 60
         },
         "cvend": {
           "v25": 4959,
-          "v26": 14502,
-          "delta": 9543,
-          "pct": 192
+          "v26": 15301,
+          "delta": 10342,
+          "pct": 209
         },
         "ctreino": {
           "v25": 18928,
-          "v26": 21718,
-          "delta": 2790,
-          "pct": 15
+          "v26": 22468,
+          "delta": 3540,
+          "pct": 19
         }
       },
       "vend": {
         "RAFAEL": {
           "fat": {
             "v25": 30683,
-            "v26": 222873,
-            "delta": 192190,
-            "pct": 626
+            "v26": 246002,
+            "delta": 215319,
+            "pct": 702
           },
           "n": {
             "v25": 72,
-            "v26": 271,
-            "delta": 199,
-            "pct": 276
+            "v26": 294,
+            "delta": 222,
+            "pct": 308
           },
           "tkt": {
             "v25": 426,
-            "v26": 822,
-            "delta": 396,
-            "pct": 93
+            "v26": 837,
+            "delta": 411,
+            "pct": 96
           }
         },
         "SUPORTE": {
           "fat": {
             "v25": 0,
-            "v26": 18046,
-            "delta": 18046,
+            "v26": 21339,
+            "delta": 21339,
             "pct": null
           },
           "n": {
             "v25": 0,
-            "v26": 29,
-            "delta": 29,
+            "v26": 34,
+            "delta": 34,
             "pct": null
           },
           "tkt": {
             "v25": 0,
-            "v26": 622,
-            "delta": 622,
+            "v26": 628,
+            "delta": 628,
             "pct": null
           }
         },
@@ -33763,20 +33858,20 @@
         "-": {
           "fat": {
             "v25": 0,
-            "v26": 600,
-            "delta": 600,
+            "v26": 2397,
+            "delta": 2397,
             "pct": null
           },
           "n": {
             "v25": 0,
-            "v26": 2,
-            "delta": 2,
+            "v26": 3,
+            "delta": 3,
             "pct": null
           },
           "tkt": {
             "v25": 0,
-            "v26": 300,
-            "delta": 300,
+            "v26": 799,
+            "delta": 799,
             "pct": null
           }
         },
@@ -33803,47 +33898,47 @@
         "MICAELLY": {
           "fat": {
             "v25": 0,
-            "v26": 8223,
-            "delta": 8223,
+            "v26": 9220,
+            "delta": 9220,
             "pct": null
           },
           "n": {
             "v25": 0,
-            "v26": 9,
-            "delta": 9,
+            "v26": 10,
+            "delta": 10,
             "pct": null
           },
           "tkt": {
             "v25": 0,
-            "v26": 914,
-            "delta": 914,
+            "v26": 922,
+            "delta": 922,
             "pct": null
           }
         }
       }
     },
     "all": {
-      "n": 854,
-      "fat": 564347,
-      "tkt": 661,
-      "cvend": 14502,
-      "ctreino": 21718,
+      "n": 884,
+      "fat": 593563,
+      "tkt": 671,
+      "cvend": 15301,
+      "ctreino": 22468,
       "modal": {
         "MENSAL": {
           "c": 249,
-          "v": 56185
+          "v": 55985
         },
         "TRIMESTRAL": {
-          "c": 300,
-          "v": 182442
+          "c": 319,
+          "v": 196610
         },
         "SEMESTRAL": {
-          "c": 131,
-          "v": 127656
+          "c": 134,
+          "v": 131197
         },
         "ANUAL": {
-          "c": 136,
-          "v": 181265
+          "c": 143,
+          "v": 192715
         },
         "DESAFIO": {
           "c": 1,
@@ -33864,18 +33959,18 @@
       },
       "vend": {
         "RAFAEL": {
-          "c": 271,
-          "v": 222873,
-          "tkt": 822,
-          "cv": 5716,
-          "ct": 4876
+          "c": 294,
+          "v": 246002,
+          "tkt": 837,
+          "cv": 6365,
+          "ct": 5476
         },
         "SUPORTE": {
-          "c": 29,
-          "v": 18046,
-          "tkt": 622,
-          "cv": 504,
-          "ct": 290
+          "c": 34,
+          "v": 21339,
+          "tkt": 628,
+          "cv": 624,
+          "ct": 440
         },
         "OUTROS": {
           "c": 535,
@@ -33885,9 +33980,9 @@
           "ct": 16552
         },
         "-": {
-          "c": 2,
-          "v": 600,
-          "tkt": 300,
+          "c": 3,
+          "v": 2397,
+          "tkt": 799,
           "cv": 15,
           "ct": 0
         },
@@ -33899,10 +33994,10 @@
           "ct": 0
         },
         "MICAELLY": {
-          "c": 9,
-          "v": 8223,
-          "tkt": 914,
-          "cv": 366,
+          "c": 10,
+          "v": 9220,
+          "tkt": 922,
+          "cv": 396,
           "ct": 0
         }
       },
@@ -33936,12 +34031,12 @@
           "v": 82192
         },
         "ago": {
-          "c": 75,
-          "v": 58466
+          "c": 88,
+          "v": 68599
         },
         "set": {
-          "c": 0,
-          "v": 0
+          "c": 17,
+          "v": 19083
         },
         "out": {
           "c": 0,
@@ -33958,17 +34053,17 @@
       },
       "oper": {
         "Renovação": {
-          "c": 168,
-          "v": 91262
+          "c": 173,
+          "v": 96243
         },
         "Nova Venda": {
-          "c": 685,
-          "v": 472785
+          "c": 710,
+          "v": 497020
         }
       },
       "pend": {
-        "c": 0,
-        "v": 0
+        "c": 3,
+        "v": 3291
       }
     }
   }
