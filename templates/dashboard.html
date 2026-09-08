@@ -2704,12 +2704,23 @@ updateDashboard();
       title = 'Comprovante de Repasse · Personal (Gustavo)';
       beneficiario = 'Gustavo (Personal Trainer)';
 
+      // Aceita qualquer variação "Treino ..." (ex.: "Treino Trimestral",
+      // usado quando o treino dura menos que o plano)
+      const temTreino = r => /^treino/i.test((r.adic||'').trim());
+      // Duração do repasse: se o Adicional trouxer a duração do treino
+      // ("Treino Trimestral"), ela manda; senão vale a modalidade do plano
+      const durTreinoDe = function(r) {
+        const m = (r.adic||'').match(/treino\s+(mensal|trimestral|semestral|anual)/i);
+        if (m) return { mensal:1, trimestral:3, semestral:6, anual:12 }[m[1].toLowerCase()] || 1;
+        return DUR_MOD[r.mod] || 1;
+      };
+
       if (refIdx >= NOVO_MODELO_INICIO) {
         // MODELO NOVO (vendas a partir de jul/2026): pagamento INTEGRAL no mes
-        // da venda, R$ 50 por mes de vigencia do plano (Trimestral = R$ 150,
+        // da venda, R$ 50 por mes de vigencia do TREINO (Trimestral = R$ 150,
         // Semestral = R$ 300, Anual = R$ 600)
         vendas = window.VENDAS_DATA.filter(r =>
-          r.adic === 'Treino' &&
+          temTreino(r) &&
           r.valor > 0 &&
           r.mes === mes &&
           r.ano === ano &&
@@ -2719,7 +2730,7 @@ updateDashboard();
         let totalCom = 0, nRenovN = 0;
         let rowsHtml = '';
         vendas.forEach((r, i) => {
-          const dur = DUR_MOD[r.mod] || 1;
+          const dur = durTreinoDe(r);
           const rep = REPASSE_MENSAL * dur;
           totalCom += rep;
           if (/renova/i.test(r.operacao||'')) nRenovN++;
@@ -2745,7 +2756,7 @@ updateDashboard();
       } else {
         // MODELO ANTIGO (referencia ate jun/2026): 15% sobre cada venda do mes
         vendas = window.VENDAS_DATA.filter(r =>
-          r.adic === 'Treino' &&
+          temTreino(r) &&
           r.valor > 0 &&
           r.mes === mes &&
           r.ano === ano &&
