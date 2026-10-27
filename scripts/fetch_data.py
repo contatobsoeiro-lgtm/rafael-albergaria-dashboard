@@ -304,6 +304,12 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     df["vendedor"]   = df["vendedor"].map(lambda v: "OUTROS" if v in VENDORS_QUE_SAIRAM else v)
     df["modalidade"] = df["modalidade"].astype(str).str.upper().str.strip().apply(lambda s: unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode('ascii'))
 
+    # Ano impossivel (ex.: "22/10/0206") vira data ilegivel e cai no alerta,
+    # senao o dashboard ganha um ano fantasma e a venda some do mes certo
+    _ano_impossivel = df["data"].notna() & (~df["data"].dt.year.between(2020, 2035))
+    if _ano_impossivel.any():
+        df.loc[_ano_impossivel, "data"] = pd.NaT
+
     # Linhas que serao descartadas por erro de digitacao: alertar em vez de sumir em silencio.
     # Valor 0 e legitimo (planos Wellts), por isso nao entra no alerta.
     _sem_data  = df["data"].isna()
