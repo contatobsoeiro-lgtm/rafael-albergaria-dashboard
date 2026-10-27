@@ -22472,11 +22472,21 @@ window.addEventListener('resize', function() {
     const porDia = {};
     Object.values(primeiro).forEach(ts => { const k = chaveDia(ts); porDia[k] = (porDia[k]||0)+1; });
 
+    // Dia com entrada em massa (ex.: religação do WaLeads em 16/10/2026
+    // reindexou centenas de chats antigos) não é captação real: fica fora
+    // do KPI do mês e aparece cinza no gráfico
+    const LIMITE_DIA_NORMAL = 40;
+    const ehBulk = k => (porDia[k] || 0) > LIMITE_DIA_NORMAL;
+
     const hoje = new Date();
     const mesAtual = chaveDia(hoje).slice(0, 7);
-    let leadsMes = 0;
-    Object.entries(porDia).forEach(([k, v]) => { if (k.slice(0, 7) === mesAtual) leadsMes += v; });
-    const leadsHoje = porDia[chaveDia(hoje)] || 0;
+    let leadsMes = 0, diasBulkMes = 0;
+    Object.entries(porDia).forEach(([k, v]) => {
+      if (k.slice(0, 7) !== mesAtual) return;
+      if (ehBulk(k)) { diasBulkMes++; return; }
+      leadsMes += v;
+    });
+    const leadsHoje = ehBulk(chaveDia(hoje)) ? 0 : (porDia[chaveDia(hoje)] || 0);
 
     // Vendas novas do mês (planilha de vendas já carregada em VENDAS_DATA)
     let vn = null;
@@ -22496,7 +22506,8 @@ window.addEventListener('resize', function() {
     document.getElementById('leads-mes').textContent = leadsMes;
     document.getElementById('leads-hoje').textContent = leadsHoje;
     document.getElementById('leads-media-sub').textContent =
-      'média diária do mês: ' + (leadsMes > 0 ? (leadsMes / hoje.getDate()).toFixed(1) : '0');
+      'média diária do mês: ' + (leadsMes > 0 ? (leadsMes / hoje.getDate()).toFixed(1) : '0') +
+      (diasBulkMes > 0 ? ' · ' + diasBulkMes + ' dia(s) de reindexação fora da conta' : '');
     document.getElementById('leads-vendas').textContent = (vn == null ? '—' : vn);
     document.getElementById('leads-conv').textContent =
       (vn != null && leadsMes > 0) ? Math.round(vn / leadsMes * 100) + '%' : (leadsMes === 0 ? '0%' : '—');
@@ -22514,20 +22525,25 @@ window.addEventListener('resize', function() {
       }
     }
 
-    const labels = [], dados = [];
+    const labels = [], dados = [], cores = [], bulkFlags = [];
     for (let i = 29; i >= 0; i--) {
       const d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - i);
+      const k = chaveDia(d);
       labels.push(('0'+d.getDate()).slice(-2) + '/' + ('0'+(d.getMonth()+1)).slice(-2));
-      dados.push(porDia[chaveDia(d)] || 0);
+      dados.push(porDia[k] || 0);
+      const bulk = ehBulk(k);
+      bulkFlags.push(bulk);
+      cores.push(bulk ? 'rgba(148,163,184,.55)' : 'rgba(20,184,166,.8)');
     }
     const ctx = document.getElementById('chartLeadsDia');
     if (ctx && typeof Chart !== 'undefined') {
       if (chartLeads) chartLeads.destroy();
       chartLeads = new Chart(ctx.getContext('2d'), {
         type: 'bar',
-        data: { labels: labels, datasets: [{ label: 'Leads novos', data: dados, backgroundColor: 'rgba(20,184,166,.8)', borderRadius: 4 }]},
+        data: { labels: labels, datasets: [{ label: 'Leads novos', data: dados, backgroundColor: cores, borderRadius: 4 }]},
         options: { responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + c.parsed.y + ' lead(s)' } } },
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c =>
+            ' ' + c.parsed.y + ' lead(s)' + (bulkFlags[c.dataIndex] ? ' · reindexação, fora do KPI' : '') } } },
           scales: { y: { beginAtZero: true, ticks: { precision: 0, font: { size: 11 } }, grid: { color: '#f1f5f9' } },
                     x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 0, autoSkip: true } } }
         }
