@@ -71,15 +71,22 @@ def send_whatsapp(message):
     url = f"https://api.callmebot.com/whatsapp.php?phone={WA_PHONE}&text={quote(plain)}&apikey={WA_APIKEY}"
     try:
         resp = requests.get(url, timeout=30)
-        corpo = (resp.text or "")[:200].replace("\n", " ")
+        corpo = (resp.text or "").replace("\n", " ")
+        # O inicio da resposta e so o eco da mensagem; o veredito vem no FIM.
+        # Guardamos a cauda pra diagnostico e classificamos pelo corpo, nao
+        # pelo codigo HTTP (o CallMeBot usa 200 e 203 de forma inconsistente).
+        cauda = corpo[-250:]
+        corpo_min = corpo.lower()
+        if any(p in corpo_min for p in ("invalid", "error", "not registered", "blocked")):
+            _registra_status(f"FALHA: CallMeBot respondeu erro (HTTP {resp.status_code}) · {cauda}")
+            return False
+        if any(p in corpo_min for p in ("queued", "message sent", "will be delivered")):
+            _registra_status(f"OK: mensagem aceita pelo CallMeBot (HTTP {resp.status_code}) · {cauda}")
+            return True
         if resp.status_code != 200:
-            _registra_status(f"FALHA: CallMeBot HTTP {resp.status_code} · {corpo}")
+            _registra_status(f"FALHA: CallMeBot HTTP {resp.status_code} sem confirmacao · {cauda}")
             return False
-        # O CallMeBot devolve 200 mesmo em erro logico (ex.: apikey invalida)
-        if any(p in corpo.lower() for p in ("invalid", "error", "not registered", "blocked")):
-            _registra_status(f"FALHA: CallMeBot respondeu erro · {corpo}")
-            return False
-        _registra_status(f"OK: mensagem aceita pelo CallMeBot · {corpo}")
+        _registra_status(f"OK: HTTP 200 sem veredito explicito · {cauda}")
         return True
     except Exception as e:
         _registra_status(f"FALHA: excecao no envio · {type(e).__name__}: {str(e)[:150]}")
