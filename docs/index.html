@@ -329,7 +329,7 @@
   <div class="header-right">
     <div class="update-info">
       <strong id="updateDate">29/10/2026 — dados reais</strong>
-      <span id="updateTime">1547 registros · 2025, 2026</span>
+      <span id="updateTime">1548 registros · 2025, 2026</span>
     </div>
     <button class="btn-pdf" onclick="exportPDF()" title="Exportar PDF / Imprimir">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
@@ -844,7 +844,7 @@
 <div id="rv-section" class="main" style="padding-top:0">
   <div class="section-header">
     <div class="section-header-title">💰 Remuneração Variável</div>
-    <div class="section-header-sub">Meta R$ 70.000 · Comissão escalonada do Vendedor · Bônus do Suporte</div>
+    <div class="section-header-sub">Meta R$ 70.000 · Comissão da vendedora (Micaelly) · Bônus do Suporte</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
@@ -853,8 +853,8 @@
       <div id="rv-status"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Comissão do Vendedor (estimada)</div>
-      <div class="chart-sub">Fixo + escalonada por faixa</div>
+      <div class="chart-title">Comissão da Vendedora (estimada)</div>
+      <div class="chart-sub">Micaelly: fixo R$ 2.300 + % definido pela casa e pelo nível</div>
       <div id="rv-vendedor"></div>
     </div>
     <div class="chart-card">
@@ -864,8 +864,8 @@
     </div>
   </div>
   <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Estrutura escalonada de comissão (Vendedor)</div>
-    <div class="chart-sub">Faixa atual em destaque</div>
+    <div class="chart-title">Matriz de comissão da vendedora</div>
+    <div class="chart-sub">Linha: nível na carreira · Coluna: onde a casa fecha o mês · célula atual em destaque</div>
     <div id="rv-faixas"></div>
   </div>
 </div>
@@ -927,7 +927,7 @@
 
 <div class="footer">
   Dados extraídos diretamente de <strong>Controle de Vendas e Pós-Venda.xlsx</strong> via OneDrive &nbsp;·&nbsp;
-  <strong id="footer-records">1547 registros · 2025 + 2026</strong> &nbsp;·&nbsp;
+  <strong id="footer-records">1548 registros · 2025 + 2026</strong> &nbsp;·&nbsp;
   Última atualização: <strong>29/10/2026</strong>
 </div>
 
@@ -9811,7 +9811,12 @@ const DATA = {
   "dias":-19,
   "plano":"TRIMESTRAL",
   "valor":597,
-  "vend":"RAFAEL"},{"nome":"Ulisses da silva Gonçalves",
+  "vend":"RAFAEL"},{"nome":"Iara Passos da Silva",
+  "venc":"10/10/2026",
+  "dias":-19,
+  "plano":"MENSAL",
+  "valor":297,
+  "vend":"MICAELLY"},{"nome":"Ulisses da silva Gonçalves",
   "venc":"10/10/2026",
   "dias":-19,
   "plano":"MENSAL",
@@ -9821,12 +9826,7 @@ const DATA = {
   "dias":-19,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"CHRISTOFER"},{"nome":"Iara Passos da Silva",
-  "venc":"10/10/2026",
-  "dias":-19,
-  "plano":"MENSAL",
-  "valor":297,
-  "vend":"MICAELLY"},{"nome":"Isabelle Estanislau Rezende",
+  "vend":"CHRISTOFER"},{"nome":"Isabelle Estanislau Rezende",
   "venc":"13/10/2026",
   "dias":-16,
   "plano":"RECORRENTE",
@@ -9936,17 +9936,22 @@ const DATA = {
   "dias":-9,
   "plano":"TRIMESTRAL",
   "valor":597,
-  "vend":"RAFAEL"},{"nome":"Verônica Andrião Pereira",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"RECORRENTE",
-  "valor":399,
-  "vend":"CHRISTOFER"},{"nome":"Jeane martins da penha silva",
+  "vend":"RAFAEL"},{"nome":"Jeane martins da penha silva",
   "venc":"22/10/2026",
   "dias":-7,
   "plano":"RECORRENTE",
   "valor":257,
+  "vend":"CHRISTOFER"},{"nome":"Verônica Andrião Pereira",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"RECORRENTE",
+  "valor":399,
   "vend":"CHRISTOFER"},{"nome":"Leticia Maioli da Silva Gramlich",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"MENSAL",
+  "valor":497,
+  "vend":"RAFAEL"},{"nome":"Nathália Araújo S",
   "venc":"22/10/2026",
   "dias":-7,
   "plano":"MENSAL",
@@ -9956,27 +9961,22 @@ const DATA = {
   "dias":-7,
   "plano":"RECORRENTE",
   "valor":150,
-  "vend":"RAFAEL"},{"nome":"Nathália Araújo S",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"MENSAL",
-  "valor":497,
-  "vend":"RAFAEL"},{"nome":"Gabriela fontana de Castro",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"MENSAL",
-  "valor":250,
-  "vend":"RAFAEL"},{"nome":"Marllos Fernando Teixeira F",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"MENSAL",
-  "valor":250,
   "vend":"RAFAEL"},{"nome":"Andrew Bibiano",
   "venc":"22/10/2026",
   "dias":-7,
   "plano":"RECORRENTE",
   "valor":200,
-  "vend":"MICAELLY"},{"nome":"Júlia Arjona Pinheiro",
+  "vend":"MICAELLY"},{"nome":"Marllos Fernando Teixeira F",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"MENSAL",
+  "valor":250,
+  "vend":"RAFAEL"},{"nome":"Gabriela fontana de Castro",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"MENSAL",
+  "valor":250,
+  "vend":"RAFAEL"},{"nome":"Júlia Arjona Pinheiro",
   "venc":"23/10/2026",
   "dias":-6,
   "plano":"ANUAL",
@@ -10071,12 +10071,12 @@ const DATA = {
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"RAFAEL"},{"nome":"Alice Martins",
+  "vend":"RAFAEL"},{"nome":"Mariana Oliveira",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"RAFAEL"},{"nome":"Mariana Oliveira",
+  "vend":"RAFAEL"},{"nome":"Alice Martins",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
@@ -10086,17 +10086,17 @@ const DATA = {
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
+  "vend":"RAFAEL"},{"nome":"Igor Luiz Boaventura",
+  "venc":"29/10/2026",
+  "dias":0,
+  "plano":"RECORRENTE",
+  "valor":150,
   "vend":"RAFAEL"},{"nome":"Ana Beatriz Simões",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
   "vend":"RAFAEL"},{"nome":"Ketly Silva",
-  "venc":"29/10/2026",
-  "dias":0,
-  "plano":"RECORRENTE",
-  "valor":150,
-  "vend":"RAFAEL"},{"nome":"Igor Luiz Boaventura",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
@@ -10521,17 +10521,17 @@ const DATA = {
   "dias":30,
   "plano":"TRIMESTRAL",
   "valor":600,
+  "vend":"RAFAEL"},{"nome":"Rithielly Pereira dos Santos",
+  "venc":"28/11/2026",
+  "dias":30,
+  "plano":"RECORRENTE",
+  "valor":257,
   "vend":"RAFAEL"},{"nome":"Filipe Douglas Ferreira Frazão",
   "venc":"28/11/2026",
   "dias":30,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"MICAELLY"},{"nome":"Rithielly Pereira dos Santos",
-  "venc":"28/11/2026",
-  "dias":30,
-  "plano":"RECORRENTE",
-  "valor":257,
-  "vend":"RAFAEL"},{"nome":"Roberta Dias Machado",
+  "vend":"MICAELLY"},{"nome":"Roberta Dias Machado",
   "venc":"29/11/2026",
   "dias":31,
   "plano":"TRIMESTRAL",
@@ -10606,6 +10606,11 @@ const DATA = {
   "dias":39,
   "plano":"TRIMESTRAL",
   "valor":850,
+  "vend":"RAFAEL"},{"nome":"Mayco Ribeiro",
+  "venc":"07/12/2026",
+  "dias":39,
+  "plano":"TRIMESTRAL",
+  "valor":1000,
   "vend":"RAFAEL"},{"nome":"Raiane Freitas dos Santos",
   "venc":"07/12/2026",
   "dias":39,
@@ -10616,11 +10621,6 @@ const DATA = {
   "dias":39,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"RAFAEL"},{"nome":"Mayco Ribeiro",
-  "venc":"07/12/2026",
-  "dias":39,
-  "plano":"TRIMESTRAL",
-  "valor":1000,
   "vend":"RAFAEL"},{"nome":"Hiorana dos Santos Monteiro",
   "venc":"08/12/2026",
   "dias":40,
@@ -10666,12 +10666,12 @@ const DATA = {
   "dias":42,
   "plano":"SEMESTRAL",
   "valor":997,
-  "vend":"OUTROS"},{"nome":"Danielle Silva Braga Ramos",
+  "vend":"OUTROS"},{"nome":"Bárbara de Paula Benha",
   "venc":"10/12/2026",
   "dias":42,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"CHRISTOFER"},{"nome":"Bárbara de Paula Benha",
+  "vend":"CHRISTOFER"},{"nome":"Danielle Silva Braga Ramos",
   "venc":"10/12/2026",
   "dias":42,
   "plano":"TRIMESTRAL",
@@ -10761,16 +10761,16 @@ const DATA = {
   "dias":51,
   "plano":"TRIMESTRAL",
   "valor":1197,
-  "vend":"RAFAEL"},{"nome":"Murilo Dias de Oliveira",
-  "venc":"19/12/2026",
-  "dias":51,
-  "plano":"TRIMESTRAL",
-  "valor":497,
   "vend":"RAFAEL"},{"nome":"Rechiele Nunes dos Santos",
   "venc":"19/12/2026",
   "dias":51,
   "plano":"TRIMESTRAL",
   "valor":1197,
+  "vend":"RAFAEL"},{"nome":"Murilo Dias de Oliveira",
+  "venc":"19/12/2026",
+  "dias":51,
+  "plano":"TRIMESTRAL",
+  "valor":497,
   "vend":"RAFAEL"},{"nome":"Luiz Fernando junio Sales dos Reis",
   "venc":"20/12/2026",
   "dias":52,
@@ -10791,22 +10791,22 @@ const DATA = {
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":150,
-  "vend":"SUPORTE"},{"nome":"Daiana Marx de Lyrio Magdalon",
+  "vend":"SUPORTE"},{"nome":"Luana Ornellas Sperotto",
   "venc":"22/12/2026",
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"RAFAEL"},{"nome":"Sérgio Henrique Oliveira de Souza Magalhães",
+  "vend":"-"},{"nome":"Sérgio Henrique Oliveira de Souza Magalhães",
   "venc":"22/12/2026",
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"RAFAEL"},{"nome":"Luana Ornellas Sperotto",
+  "vend":"RAFAEL"},{"nome":"Daiana Marx de Lyrio Magdalon",
   "venc":"22/12/2026",
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"-"},{"nome":"Henrique Cola Rodrigues Rosa",
+  "vend":"RAFAEL"},{"nome":"Henrique Cola Rodrigues Rosa",
   "venc":"23/12/2026",
   "dias":55,
   "plano":"TRIMESTRAL",
@@ -10836,11 +10836,6 @@ const DATA = {
   "dias":59,
   "plano":"SEMESTRAL",
   "valor":958,
-  "vend":"RAFAEL"},{"nome":"Marimar Silva Franthesca",
-  "venc":"28/12/2026",
-  "dias":60,
-  "plano":"TRIMESTRAL",
-  "valor":1197,
   "vend":"RAFAEL"},{"nome":"Bernardo Battestin",
   "venc":"28/12/2026",
   "dias":60,
@@ -10851,17 +10846,22 @@ const DATA = {
   "dias":60,
   "plano":"TRIMESTRAL",
   "valor":747,
+  "vend":"RAFAEL"},{"nome":"Marimar Silva Franthesca",
+  "venc":"28/12/2026",
+  "dias":60,
+  "plano":"TRIMESTRAL",
+  "valor":1197,
   "vend":"RAFAEL"}]},
-  "2026":{"all":{"n":1071,
-  "fat":743204,
-  "fat_pago":726089,
+  "2026":{"all":{"n":1072,
+  "fat":744001,
+  "fat_pago":726886,
   "tkt":694,
-  "cvend":10231,
+  "cvend":10255,
   "ctreino":23918,
   "modal":{"MENSAL":{"c":273,
   "v":63730},
-  "TRIMESTRAL":{"c":389,
-  "v":250511},
+  "TRIMESTRAL":{"c":390,
+  "v":251308},
   "SEMESTRAL":{"c":174,
   "v":177626},
   "ANUAL":{"c":160,
@@ -10904,11 +10904,11 @@ const DATA = {
   "tkt":802,
   "cv":746,
   "ct":0},
-  "MICAELLY":{"c":54,
-  "v":47167,
-  "vp":38796,
-  "tkt":873,
-  "cv":947,
+  "MICAELLY":{"c":55,
+  "v":47964,
+  "vp":39593,
+  "tkt":872,
+  "cv":971,
   "ct":0}},
   "mes":{"jan":{"c":163,
   "v":119457},
@@ -10928,16 +10928,16 @@ const DATA = {
   "v":67645},
   "set":{"c":133,
   "v":106062},
-  "out":{"c":76,
-  "v":66504},
+  "out":{"c":77,
+  "v":67301},
   "nov":{"c":0,
   "v":0},
   "dez":{"c":0,
   "v":0}},
   "oper":{"Renovação":{"c":183,
   "v":102442},
-  "Nova Venda":{"c":887,
-  "v":640462}},
+  "Nova Venda":{"c":888,
+  "v":641259}},
   "pend":{"c":24,
   "v":17115}},
   "jan":{"n":163,
@@ -11732,16 +11732,16 @@ const DATA = {
   "v":101810}},
   "pend":{"c":12,
   "v":8143}},
-  "out":{"n":76,
-  "fat":66504,
-  "fat_pago":58423,
-  "tkt":875,
-  "cvend":662,
+  "out":{"n":77,
+  "fat":67301,
+  "fat_pago":59220,
+  "tkt":874,
+  "cvend":686,
   "ctreino":800,
   "modal":{"MENSAL":{"c":9,
   "v":3239},
-  "TRIMESTRAL":{"c":37,
-  "v":28951},
+  "TRIMESTRAL":{"c":38,
+  "v":29748},
   "SEMESTRAL":{"c":17,
   "v":21090},
   "ANUAL":{"c":6,
@@ -11784,11 +11784,11 @@ const DATA = {
   "tkt":297,
   "cv":9,
   "ct":0},
-  "MICAELLY":{"c":38,
-  "v":34653,
-  "vp":27626,
-  "tkt":912,
-  "cv":488,
+  "MICAELLY":{"c":39,
+  "v":35450,
+  "vp":28423,
+  "tkt":909,
+  "cv":512,
   "ct":0}},
   "mes":{"jan":{"c":0,
   "v":0},
@@ -11808,16 +11808,16 @@ const DATA = {
   "v":0},
   "set":{"c":0,
   "v":0},
-  "out":{"c":76,
-  "v":66504},
+  "out":{"c":77,
+  "v":67301},
   "nov":{"c":0,
   "v":0},
   "dez":{"c":0,
   "v":0}},
   "oper":{"Renovação":{"c":8,
   "v":6089},
-  "Nova Venda":{"c":68,
-  "v":60415}},
+  "Nova Venda":{"c":69,
+  "v":61212}},
   "pend":{"c":9,
   "v":8081}},
   "nov":{"n":0,
@@ -12436,16 +12436,16 @@ const DATA = {
   "v":24857}},
   "pend":{"c":0,
   "v":0}},
-  "micaelly":{"n":54,
-  "fat":47167,
-  "fat_pago":38796,
-  "tkt":873,
-  "cvend":947,
+  "micaelly":{"n":55,
+  "fat":47964,
+  "fat_pago":39593,
+  "tkt":872,
+  "cvend":971,
   "ctreino":0,
   "modal":{"MENSAL":{"c":7,
   "v":2039},
-  "TRIMESTRAL":{"c":27,
-  "v":21544},
+  "TRIMESTRAL":{"c":28,
+  "v":22341},
   "SEMESTRAL":{"c":12,
   "v":13145},
   "ANUAL":{"c":6,
@@ -12488,11 +12488,11 @@ const DATA = {
   "tkt":0,
   "cv":0,
   "ct":0},
-  "MICAELLY":{"c":54,
-  "v":47167,
-  "vp":38796,
-  "tkt":873,
-  "cv":947,
+  "MICAELLY":{"c":55,
+  "v":47964,
+  "vp":39593,
+  "tkt":872,
+  "cv":971,
   "ct":0}},
   "mes":{"jan":{"c":0,
   "v":0},
@@ -12512,16 +12512,16 @@ const DATA = {
   "v":8523},
   "set":{"c":6,
   "v":3991},
-  "out":{"c":38,
-  "v":34653},
+  "out":{"c":39,
+  "v":35450},
   "nov":{"c":0,
   "v":0},
   "dez":{"c":0,
   "v":0}},
   "oper":{"Renovação":{"c":1,
   "v":797},
-  "Nova Venda":{"c":53,
-  "v":46370}},
+  "Nova Venda":{"c":54,
+  "v":47167}},
   "pend":{"c":9,
   "v":8371}},
   "rafael_jan":{"n":5,
@@ -18596,16 +18596,16 @@ const DATA = {
   "v":3991}},
   "pend":{"c":1,
   "v":1197}},
-  "micaelly_out":{"n":38,
-  "fat":34653,
-  "fat_pago":27626,
-  "tkt":912,
-  "cvend":488,
+  "micaelly_out":{"n":39,
+  "fat":35450,
+  "fat_pago":28423,
+  "tkt":909,
+  "cvend":512,
   "ctreino":0,
   "modal":{"MENSAL":{"c":3,
   "v":851},
-  "TRIMESTRAL":{"c":23,
-  "v":17703},
+  "TRIMESTRAL":{"c":24,
+  "v":18500},
   "SEMESTRAL":{"c":8,
   "v":9851},
   "ANUAL":{"c":3,
@@ -18648,11 +18648,11 @@ const DATA = {
   "tkt":0,
   "cv":0,
   "ct":0},
-  "MICAELLY":{"c":38,
-  "v":34653,
-  "vp":27626,
-  "tkt":912,
-  "cv":488,
+  "MICAELLY":{"c":39,
+  "v":35450,
+  "vp":28423,
+  "tkt":909,
+  "cv":512,
   "ct":0}},
   "mes":{"jan":{"c":0,
   "v":0},
@@ -18672,16 +18672,16 @@ const DATA = {
   "v":0},
   "set":{"c":0,
   "v":0},
-  "out":{"c":38,
-  "v":34653},
+  "out":{"c":39,
+  "v":35450},
   "nov":{"c":0,
   "v":0},
   "dez":{"c":0,
   "v":0}},
   "oper":{"Renovação":{"c":1,
   "v":797},
-  "Nova Venda":{"c":37,
-  "v":33856}},
+  "Nova Venda":{"c":38,
+  "v":34653}},
   "pend":{"c":7,
   "v":7027}},
   "micaelly_nov":{"n":0,
@@ -19650,9 +19650,9 @@ const DATA = {
   "v":514,
   "vd":{"MICAELLY":257,
   "RAFAEL":257}},{"d":29,
-  "n":4,
-  "v":3888,
-  "vd":{"MICAELLY":2594,
+  "n":5,
+  "v":4685,
+  "vd":{"MICAELLY":3391,
   "RAFAEL":1294}}]},
   "carteira":[{"nome":"Amr Aly",
   "venc":"30/08/2026",
@@ -20184,7 +20184,12 @@ const DATA = {
   "dias":-19,
   "plano":"TRIMESTRAL",
   "valor":597,
-  "vend":"RAFAEL"},{"nome":"Ulisses da silva Gonçalves",
+  "vend":"RAFAEL"},{"nome":"Iara Passos da Silva",
+  "venc":"10/10/2026",
+  "dias":-19,
+  "plano":"MENSAL",
+  "valor":297,
+  "vend":"MICAELLY"},{"nome":"Ulisses da silva Gonçalves",
   "venc":"10/10/2026",
   "dias":-19,
   "plano":"MENSAL",
@@ -20194,12 +20199,7 @@ const DATA = {
   "dias":-19,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"CHRISTOFER"},{"nome":"Iara Passos da Silva",
-  "venc":"10/10/2026",
-  "dias":-19,
-  "plano":"MENSAL",
-  "valor":297,
-  "vend":"MICAELLY"},{"nome":"Isabelle Estanislau Rezende",
+  "vend":"CHRISTOFER"},{"nome":"Isabelle Estanislau Rezende",
   "venc":"13/10/2026",
   "dias":-16,
   "plano":"RECORRENTE",
@@ -20309,17 +20309,22 @@ const DATA = {
   "dias":-9,
   "plano":"TRIMESTRAL",
   "valor":597,
-  "vend":"RAFAEL"},{"nome":"Verônica Andrião Pereira",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"RECORRENTE",
-  "valor":399,
-  "vend":"CHRISTOFER"},{"nome":"Jeane martins da penha silva",
+  "vend":"RAFAEL"},{"nome":"Jeane martins da penha silva",
   "venc":"22/10/2026",
   "dias":-7,
   "plano":"RECORRENTE",
   "valor":257,
+  "vend":"CHRISTOFER"},{"nome":"Verônica Andrião Pereira",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"RECORRENTE",
+  "valor":399,
   "vend":"CHRISTOFER"},{"nome":"Leticia Maioli da Silva Gramlich",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"MENSAL",
+  "valor":497,
+  "vend":"RAFAEL"},{"nome":"Nathália Araújo S",
   "venc":"22/10/2026",
   "dias":-7,
   "plano":"MENSAL",
@@ -20329,27 +20334,22 @@ const DATA = {
   "dias":-7,
   "plano":"RECORRENTE",
   "valor":150,
-  "vend":"RAFAEL"},{"nome":"Nathália Araújo S",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"MENSAL",
-  "valor":497,
-  "vend":"RAFAEL"},{"nome":"Gabriela fontana de Castro",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"MENSAL",
-  "valor":250,
-  "vend":"RAFAEL"},{"nome":"Marllos Fernando Teixeira F",
-  "venc":"22/10/2026",
-  "dias":-7,
-  "plano":"MENSAL",
-  "valor":250,
   "vend":"RAFAEL"},{"nome":"Andrew Bibiano",
   "venc":"22/10/2026",
   "dias":-7,
   "plano":"RECORRENTE",
   "valor":200,
-  "vend":"MICAELLY"},{"nome":"Júlia Arjona Pinheiro",
+  "vend":"MICAELLY"},{"nome":"Marllos Fernando Teixeira F",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"MENSAL",
+  "valor":250,
+  "vend":"RAFAEL"},{"nome":"Gabriela fontana de Castro",
+  "venc":"22/10/2026",
+  "dias":-7,
+  "plano":"MENSAL",
+  "valor":250,
+  "vend":"RAFAEL"},{"nome":"Júlia Arjona Pinheiro",
   "venc":"23/10/2026",
   "dias":-6,
   "plano":"ANUAL",
@@ -20444,12 +20444,12 @@ const DATA = {
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"RAFAEL"},{"nome":"Alice Martins",
+  "vend":"RAFAEL"},{"nome":"Mariana Oliveira",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"RAFAEL"},{"nome":"Mariana Oliveira",
+  "vend":"RAFAEL"},{"nome":"Alice Martins",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
@@ -20459,17 +20459,17 @@ const DATA = {
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
+  "vend":"RAFAEL"},{"nome":"Igor Luiz Boaventura",
+  "venc":"29/10/2026",
+  "dias":0,
+  "plano":"RECORRENTE",
+  "valor":150,
   "vend":"RAFAEL"},{"nome":"Ana Beatriz Simões",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
   "valor":257,
   "vend":"RAFAEL"},{"nome":"Ketly Silva",
-  "venc":"29/10/2026",
-  "dias":0,
-  "plano":"RECORRENTE",
-  "valor":150,
-  "vend":"RAFAEL"},{"nome":"Igor Luiz Boaventura",
   "venc":"29/10/2026",
   "dias":0,
   "plano":"RECORRENTE",
@@ -20894,17 +20894,17 @@ const DATA = {
   "dias":30,
   "plano":"TRIMESTRAL",
   "valor":600,
+  "vend":"RAFAEL"},{"nome":"Rithielly Pereira dos Santos",
+  "venc":"28/11/2026",
+  "dias":30,
+  "plano":"RECORRENTE",
+  "valor":257,
   "vend":"RAFAEL"},{"nome":"Filipe Douglas Ferreira Frazão",
   "venc":"28/11/2026",
   "dias":30,
   "plano":"RECORRENTE",
   "valor":257,
-  "vend":"MICAELLY"},{"nome":"Rithielly Pereira dos Santos",
-  "venc":"28/11/2026",
-  "dias":30,
-  "plano":"RECORRENTE",
-  "valor":257,
-  "vend":"RAFAEL"},{"nome":"Roberta Dias Machado",
+  "vend":"MICAELLY"},{"nome":"Roberta Dias Machado",
   "venc":"29/11/2026",
   "dias":31,
   "plano":"TRIMESTRAL",
@@ -20979,6 +20979,11 @@ const DATA = {
   "dias":39,
   "plano":"TRIMESTRAL",
   "valor":850,
+  "vend":"RAFAEL"},{"nome":"Mayco Ribeiro",
+  "venc":"07/12/2026",
+  "dias":39,
+  "plano":"TRIMESTRAL",
+  "valor":1000,
   "vend":"RAFAEL"},{"nome":"Raiane Freitas dos Santos",
   "venc":"07/12/2026",
   "dias":39,
@@ -20989,11 +20994,6 @@ const DATA = {
   "dias":39,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"RAFAEL"},{"nome":"Mayco Ribeiro",
-  "venc":"07/12/2026",
-  "dias":39,
-  "plano":"TRIMESTRAL",
-  "valor":1000,
   "vend":"RAFAEL"},{"nome":"Hiorana dos Santos Monteiro",
   "venc":"08/12/2026",
   "dias":40,
@@ -21039,12 +21039,12 @@ const DATA = {
   "dias":42,
   "plano":"SEMESTRAL",
   "valor":997,
-  "vend":"OUTROS"},{"nome":"Danielle Silva Braga Ramos",
+  "vend":"OUTROS"},{"nome":"Bárbara de Paula Benha",
   "venc":"10/12/2026",
   "dias":42,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"CHRISTOFER"},{"nome":"Bárbara de Paula Benha",
+  "vend":"CHRISTOFER"},{"nome":"Danielle Silva Braga Ramos",
   "venc":"10/12/2026",
   "dias":42,
   "plano":"TRIMESTRAL",
@@ -21134,16 +21134,16 @@ const DATA = {
   "dias":51,
   "plano":"TRIMESTRAL",
   "valor":1197,
-  "vend":"RAFAEL"},{"nome":"Murilo Dias de Oliveira",
-  "venc":"19/12/2026",
-  "dias":51,
-  "plano":"TRIMESTRAL",
-  "valor":497,
   "vend":"RAFAEL"},{"nome":"Rechiele Nunes dos Santos",
   "venc":"19/12/2026",
   "dias":51,
   "plano":"TRIMESTRAL",
   "valor":1197,
+  "vend":"RAFAEL"},{"nome":"Murilo Dias de Oliveira",
+  "venc":"19/12/2026",
+  "dias":51,
+  "plano":"TRIMESTRAL",
+  "valor":497,
   "vend":"RAFAEL"},{"nome":"Luiz Fernando junio Sales dos Reis",
   "venc":"20/12/2026",
   "dias":52,
@@ -21164,22 +21164,22 @@ const DATA = {
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":150,
-  "vend":"SUPORTE"},{"nome":"Daiana Marx de Lyrio Magdalon",
+  "vend":"SUPORTE"},{"nome":"Luana Ornellas Sperotto",
   "venc":"22/12/2026",
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"RAFAEL"},{"nome":"Sérgio Henrique Oliveira de Souza Magalhães",
+  "vend":"-"},{"nome":"Sérgio Henrique Oliveira de Souza Magalhães",
   "venc":"22/12/2026",
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"RAFAEL"},{"nome":"Luana Ornellas Sperotto",
+  "vend":"RAFAEL"},{"nome":"Daiana Marx de Lyrio Magdalon",
   "venc":"22/12/2026",
   "dias":54,
   "plano":"TRIMESTRAL",
   "valor":747,
-  "vend":"-"},{"nome":"Henrique Cola Rodrigues Rosa",
+  "vend":"RAFAEL"},{"nome":"Henrique Cola Rodrigues Rosa",
   "venc":"23/12/2026",
   "dias":55,
   "plano":"TRIMESTRAL",
@@ -21209,11 +21209,6 @@ const DATA = {
   "dias":59,
   "plano":"SEMESTRAL",
   "valor":958,
-  "vend":"RAFAEL"},{"nome":"Marimar Silva Franthesca",
-  "venc":"28/12/2026",
-  "dias":60,
-  "plano":"TRIMESTRAL",
-  "valor":1197,
   "vend":"RAFAEL"},{"nome":"Bernardo Battestin",
   "venc":"28/12/2026",
   "dias":60,
@@ -21224,6 +21219,11 @@ const DATA = {
   "dias":60,
   "plano":"TRIMESTRAL",
   "valor":747,
+  "vend":"RAFAEL"},{"nome":"Marimar Silva Franthesca",
+  "venc":"28/12/2026",
+  "dias":60,
+  "plano":"TRIMESTRAL",
+  "valor":1197,
   "vend":"RAFAEL"}]},
   "compare":{"mensal":{"jan":{"fat":{"v25":0,
   "v26":119457,
@@ -21334,16 +21334,16 @@ const DATA = {
   "delta":303,
   "pct":61}},
   "out":{"fat":{"v25":63152,
-  "v26":66504,
-  "delta":3352,
-  "pct":5},
+  "v26":67301,
+  "delta":4149,
+  "pct":7},
   "n":{"v25":154,
-  "v26":76,
-  "delta":-78,
-  "pct":-51},
+  "v26":77,
+  "delta":-77,
+  "pct":-50},
   "tkt":{"v25":410,
-  "v26":875,
-  "delta":465,
+  "v26":874,
+  "delta":464,
   "pct":113}},
   "nov":{"fat":{"v25":48679,
   "v26":0,
@@ -21370,21 +21370,21 @@ const DATA = {
   "delta":-362,
   "pct":-100}}},
   "total":{"fat":{"v25":199845,
-  "v26":743204,
-  "delta":543359,
+  "v26":744001,
+  "delta":544156,
   "pct":272},
   "n":{"v25":476,
-  "v26":1071,
-  "delta":595,
+  "v26":1072,
+  "delta":596,
   "pct":125},
   "tkt":{"v25":420,
   "v26":694,
   "delta":274,
   "pct":65},
   "cvend":{"v25":3960,
-  "v26":10231,
-  "delta":6271,
-  "pct":158},
+  "v26":10255,
+  "delta":6295,
+  "pct":159},
   "ctreino":{"v25":18928,
   "v26":23918,
   "delta":4990,
@@ -21450,27 +21450,27 @@ const DATA = {
   "delta":802,
   "pct":null}},
   "MICAELLY":{"fat":{"v25":0,
-  "v26":47167,
-  "delta":47167,
+  "v26":47964,
+  "delta":47964,
   "pct":null},
   "n":{"v25":0,
-  "v26":54,
-  "delta":54,
+  "v26":55,
+  "delta":55,
   "pct":null},
   "tkt":{"v25":0,
-  "v26":873,
-  "delta":873,
+  "v26":872,
+  "delta":872,
   "pct":null}}}},
-  "all":{"n":1071,
-  "fat":743204,
-  "fat_pago":726089,
+  "all":{"n":1072,
+  "fat":744001,
+  "fat_pago":726886,
   "tkt":694,
-  "cvend":10231,
+  "cvend":10255,
   "ctreino":23918,
   "modal":{"MENSAL":{"c":273,
   "v":63730},
-  "TRIMESTRAL":{"c":389,
-  "v":250511},
+  "TRIMESTRAL":{"c":390,
+  "v":251308},
   "SEMESTRAL":{"c":174,
   "v":177626},
   "ANUAL":{"c":160,
@@ -21513,11 +21513,11 @@ const DATA = {
   "tkt":802,
   "cv":746,
   "ct":0},
-  "MICAELLY":{"c":54,
-  "v":47167,
-  "vp":38796,
-  "tkt":873,
-  "cv":947,
+  "MICAELLY":{"c":55,
+  "v":47964,
+  "vp":39593,
+  "tkt":872,
+  "cv":971,
   "ct":0}},
   "mes":{"jan":{"c":163,
   "v":119457},
@@ -21537,16 +21537,16 @@ const DATA = {
   "v":67645},
   "set":{"c":133,
   "v":106062},
-  "out":{"c":76,
-  "v":66504},
+  "out":{"c":77,
+  "v":67301},
   "nov":{"c":0,
   "v":0},
   "dez":{"c":0,
   "v":0}},
   "oper":{"Renovação":{"c":183,
   "v":102442},
-  "Nova Venda":{"c":887,
-  "v":640462}},
+  "Nova Venda":{"c":888,
+  "v":641259}},
   "pend":{"c":24,
   "v":17115}}
 };
@@ -21562,16 +21562,32 @@ let activeVend = 'all';
 const ANOS_DISPONIVEIS = ["2025", "2026"];
 const LATEST_ANO = '2026';
 const META_MENSAL = 70000;
-const VENDEDOR_FIXO = 2000;
 function calcComissaoVendedor(receita) {
-  // Regra vigente desde 01/08/2026. A faixa define uma aliquota unica
-  // aplicada sobre o TOTAL do mes (nao e progressiva por fatia).
+  // Regra antiga (01/08/2026), segue valendo pros demais vendedores: aliquota
+  // unica sobre o total que o proprio vendedor vendeu no mes (nao progressiva).
   if (!receita || receita <= 0) return 0;
   if (receita <= 50000)  return receita * 0.03;
   if (receita <= 75000)  return receita * 0.035;
   if (receita <= 100000) return receita * 0.04;
   if (receita <= 125000) return receita * 0.045;
   return receita * 0.05;
+}
+
+// Regra da Micaelly (proposta de setembro/2026): fixo R$ 2.300 e comissao
+// sobre o que ELA vendeu (so o pago). O percentual e definido por onde a
+// casa fecha o mes (tambem so o pago) e pelo nivel dela na carreira.
+const MICA_FIXO  = 2300;
+const MICA_NIVEL = 'Júnior';
+const MICA_TIERS = { 'Júnior':[3,3.5,4.5,5.5], 'Pleno':[3.5,4,5,6], 'Sênior':[4,4.5,5.5,6.5] };
+function faixaCasa(casa) {
+  if (casa >= 100000) return 3;
+  if (casa >= 70000)  return 2;
+  if (casa >= 50000)  return 1;
+  return 0;
+}
+function pctMica(casa, nivel) {
+  const t = MICA_TIERS[nivel] || MICA_TIERS['Júnior'];
+  return t[faixaCasa(casa)];
 }
 
 let chartDiario = null;
@@ -21719,21 +21735,6 @@ function renderRenovacao() {
       (cart.length > 60 ? '<div style="margin-top:8px;font-size:12px;color:#94a3b8">Mostrando 60 de ' + cart.length + ' pacientes.</div>' : '');
   }
 }
-function calcComissaoTime(d) {
-  // A faixa e por vendedor. Somar a receita da casa e aplicar uma faixa unica
-  // superestima sempre que a casa passa de um degrau que ninguem passou sozinho.
-  // Comissao so sobre o que esta PAGO (vp); venda pendente nao gera comissao
-  const vend = (d && d.vend) || null;
-  const basePago = d ? ((d.fat_pago != null) ? d.fat_pago : (d.fat || 0)) : 0;
-  if (!vend) return calcComissaoVendedor(basePago);
-  let tot = 0, achou = false;
-  for (const k in vend) {
-    if (k === '-' || k === 'OUTROS') continue;  // buckets sem dono, nao geram comissao
-    const v = (vend[k] && (vend[k].vp != null ? vend[k].vp : vend[k].v)) || 0;
-    if (v > 0) { tot += calcComissaoVendedor(v); achou = true; }
-  }
-  return achou ? tot : calcComissaoVendedor(basePago);
-}
 function renderRemuneracao() {
   const anoData = (typeof getAnoData === 'function') ? getAnoData() : {};
   const key = (typeof getKey === 'function') ? getKey() : 'all';
@@ -21744,9 +21745,22 @@ function renderRemuneracao() {
   const aReceber = Math.max(receita - recebido, 0);
   const pct = Math.round(recebido / META_MENSAL * 100);
   const bateu = recebido >= META_MENSAL;
-  const comVendedor = calcComissaoTime(d);
-  const totalVendedor = VENDEDOR_FIXO + comVendedor;
   const corPct = bateu ? '#10b981' : pct >= 80 ? '#f59e0b' : '#ef4444';
+  // Comissao da Micaelly: o degrau vem de onde a CASA fecha o mes (so o pago),
+  // por isso a base e o bloco do mes, ignorando o filtro de vendedor.
+  const casaD = anoData[activeMes === 'all' ? 'all' : activeMes] || d;
+  const casaPago = (casaD.fat_pago != null) ? casaD.fat_pago : (casaD.fat || 0);
+  const vendCasa = casaD.vend || {};
+  const vpDe = k => (vendCasa[k] && (vendCasa[k].vp != null ? vendCasa[k].vp : vendCasa[k].v)) || 0;
+  const micaV   = vpDe('MICAELLY');
+  const micaPct = pctMica(casaPago, MICA_NIVEL);
+  const micaCom = Math.round(micaV * micaPct) / 100;
+  // Demais vendedores comissionados seguem a regra antiga, sobre a propria venda paga
+  const outros = [];
+  for (const k of ['CHRISTOFER', 'JUNIO']) {
+    const v = vpDe(k);
+    if (v > 0) outros.push({ nome: (typeof VEND_NAMES !== 'undefined' && VEND_NAMES[k]) || k, com: calcComissaoVendedor(v) });
+  }
   const elStatus = document.getElementById('rv-status');
   if (elStatus) elStatus.innerHTML = '<div style="text-align:center;padding:12px">' +
     '<div style="font-size:36px;font-weight:700;color:' + corPct + '">' + pct + '%</div>' +
@@ -21755,12 +21769,22 @@ function renderRemuneracao() {
     (aReceber > 0 ? '<div style="margin-top:4px;font-size:12px;color:#f59e0b">+ R$ ' + fmt(aReceber) + ' vendido aguardando pagamento (fora da conta)</div>' : '') +
     '<div style="margin-top:6px;color:#64748b;font-size:13px">' +
     (bateu ? '✅ Meta batida' : 'Faltam R$ ' + fmt(META_MENSAL - recebido)) + '</div></div>';
-  const elJunio = document.getElementById('rv-vendedor');
-  if (elJunio) elJunio.innerHTML = '<div style="padding:14px">' +
-    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ ' + fmt(VENDEDOR_FIXO) + '</strong></div>' +
-    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Comissão sobre vendas</span><strong>R$ ' + fmt(comVendedor) + '</strong></div>' +
-    '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">' +
-    '<span><strong>Total estimado</strong></span><strong style="color:#10b981;font-size:22px">R$ ' + fmt(totalVendedor) + '</strong></div></div>';
+  const elVend = document.getElementById('rv-vendedor');
+  if (elVend) {
+    let vh = '<div style="padding:14px">' +
+      '<div style="font-size:12px;color:#94a3b8;margin-bottom:8px">Micaelly · nível ' + MICA_NIVEL + ' · casa em R$ ' + fmt(casaPago) + '</div>' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ ' + fmt(MICA_FIXO) + '</strong></div>' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Comissão (' + String(micaPct).replace('.', ',') + '% de R$ ' + fmt(micaV) + ')</span><strong>R$ ' + fmt(micaCom) + '</strong></div>' +
+      '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">' +
+      '<span><strong>Total estimado</strong></span><strong style="color:#10b981;font-size:22px">R$ ' + fmt(MICA_FIXO + micaCom) + '</strong></div>';
+    for (const o of outros) {
+      vh += '<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#64748b"><span>' + o.nome + ' (regra antiga)</span><span>comissão R$ ' + fmt(o.com) + '</span></div>';
+    }
+    if (activeMes === 'all') {
+      vh += '<div style="margin-top:8px;font-size:11px;color:#94a3b8">Visão do ano inteiro: a regra é mensal, selecione um mês pra ver o valor real.</div>';
+    }
+    elVend.innerHTML = vh + '</div>';
+  }
   const elSup = document.getElementById('rv-suporte');
   if (elSup) {
     if (!bateu) {
@@ -21773,27 +21797,25 @@ function renderRemuneracao() {
         '<div style="font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:8px">2 pessoas → total R$ 600 a R$ 1.200/mês</div></div>';
     }
   }
-  let vBase = recebido;
-  if (d && d.vend) {
-    vBase = 0;
-    for (const k in d.vend) {
-      if (k === '-' || k === 'OUTROS') continue;
-      const v = (d.vend[k] && (d.vend[k].vp != null ? d.vend[k].vp : d.vend[k].v)) || 0;
-      if (v > vBase) vBase = v;
-    }
-    if (!vBase) vBase = recebido;
-  }
   const elFx = document.getElementById('rv-faixas');
-  if (elFx) elFx.innerHTML = '<table class="yoy-table" style="width:100%">' +
-    '<thead><tr><th>Faixa de vendas no mês</th><th>Comissão</th><th>Vendedor recebe</th></tr></thead>' +
-    '<tbody>' +
-    '<tr' + (vBase > 0 && vBase <= 50000 ? ' style="background:#fef9c3"' : '') + '><td>Até R$ 50.000</td><td>3% sobre o total</td><td>até R$ 1.500 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 50000 && vBase <= 75000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 50.001 a R$ 75.000</td><td>3,5% sobre o total</td><td>até R$ 2.625 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 75000 && vBase <= 100000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 75.001 a R$ 100.000</td><td>4% sobre o total</td><td>até R$ 4.000 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 100000 && vBase <= 125000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 100.001 a R$ 125.000</td><td>4,5% sobre o total</td><td>até R$ 5.625 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 125000 ? ' style="background:#fef9c3"' : '') + '><td>Acima de R$ 125.000</td><td>5% sobre o total</td><td>5% do total + fixo R$ 2.000</td></tr>' +
-    '</tbody></table>' +
-    '<div style="margin-top:8px;font-size:12px;color:#94a3b8">A faixa define uma alíquota única sobre o total do mês do vendedor. Não é progressiva por fatia. Vigente desde 01/08/2026.</div>';
+  if (elFx) {
+    const colAtiva = faixaCasa(casaPago);
+    const cols = ['Casa abaixo de R$ 50 mil', 'R$ 50 mil', 'R$ 70 mil · a meta', 'R$ 100 mil'];
+    let fx = '<table class="yoy-table" style="width:100%"><thead><tr><th>Nível</th>';
+    cols.forEach((c, i) => { fx += '<th' + (i === colAtiva ? ' style="background:#fef9c3"' : '') + '>' + c + '</th>'; });
+    fx += '</tr></thead><tbody>';
+    for (const nv of ['Júnior', 'Pleno', 'Sênior']) {
+      fx += '<tr><td>' + nv + (nv === MICA_NIVEL ? ' <span style="font-size:11px;color:#ec4899;font-weight:700">· atual</span>' : '') + '</td>';
+      MICA_TIERS[nv].forEach((p, i) => {
+        const on = (nv === MICA_NIVEL && i === colAtiva);
+        fx += '<td' + (on ? ' style="background:#fef9c3;font-weight:700"' : '') + '>' + String(p).replace('.', ',') + '%</td>';
+      });
+      fx += '</tr>';
+    }
+    fx += '</tbody></table>' +
+      '<div style="margin-top:8px;font-size:12px;color:#94a3b8">O percentual incide sobre o que a própria vendedora vendeu no mês (só vendas pagas). O degrau é definido por onde a casa fecha o mês, também só com vendas pagas. Vigente desde setembro/2026. Demais vendedores seguem a regra antiga: 3% a 5% sobre a própria venda paga, alíquota única.</div>';
+    elFx.innerHTML = fx;
+  }
 }
 
 function setAno(ano) {
@@ -22903,8 +22925,27 @@ window.addEventListener('resize', function() {
         return (v === 'junio' || v === 'duda' || v === 'raquel' || v === 'bia') ? 'outros' : v;
       })((r[8]||'').trim().toLowerCase()),
       consulta: (r[11]||'').trim(),
-      operacao: (r[12]||'').trim()
+      operacao: (r[12]||'').trim(),
+      obs: (r[14]||'').trim(),
+      status: (r[15]||'').trim(),
+      recebido: recebidoDe(parseBRL(r[7]), (r[15]||'').trim(), (r[14]||'').trim())
     }));
+  }
+  // Quanto da venda realmente entrou: status Pago vale cheio, Pendente vale 0,
+  // e a Obs. corrige parciais ("so pagou 200" em linha paga; "FALTA 197" em pendente)
+  function recebidoDe(valor, status, obs) {
+    const st = (status||'').trim().toLowerCase();
+    const ob = (obs||'').toLowerCase();
+    const NUM = '(\\d{1,3}(?:\\.\\d{3})*(?:,\\d{1,2})?|\\d+(?:,\\d{1,2})?)';
+    if (st === 'reembolsado') return 0;
+    if (st === 'pendente') {
+      const m = ob.match(new RegExp('falta\\s*(?:r\\$)?\\s*' + NUM + '(?!\\s*[/\\d])'));
+      if (m) { const f = parseBRL(m[1]); if (f > 0 && f < valor) return valor - f; }
+      return 0;
+    }
+    const m = ob.match(new RegExp('pagou\\s*(?:r\\$)?\\s*' + NUM + '(?!\\s*[/\\d])'));
+    if (m) { const p = parseBRL(m[1]); if (p >= 0 && p < valor) return p; }
+    return valor;
   }
   async function fetchVendas() {
     try { const r = await fetch(VENDAS_URL); const txt = await r.text(); window.VENDAS_DATA = parseCSV(txt); renderMixTipo(); }
@@ -23037,7 +23078,7 @@ window.addEventListener('resize', function() {
     const pct = totVal > 0 ? Math.round(top5Val/totVal*100) : 0;
     let html = '<div class="opp-summary good"><div class="opp-summary-num">'+pct+'%</div><div class="opp-summary-lbl">do faturamento veio do top 5 · R$ '+Math.round(top5Val).toLocaleString('pt-BR')+'</div></div>';
     html += '<div class="opp-list">';
-    const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda' };
+    const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda', micaelly:'Micaelly', christofer:'Christofer' };
     top.forEach((r, i) => {
       const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor ? r.vendedor.charAt(0).toUpperCase()+r.vendedor.slice(1) : '');
       html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">#'+(i+1)+' · '+r.paciente+'</div><div class="opp-row-meta">'+(r.mod||'')+' · '+vendNome+'</div></div><div class="opp-row-val">R$ '+Math.round(r.valor).toLocaleString('pt-BR')+'</div></div>';
@@ -23387,7 +23428,7 @@ window.addEventListener('resize', function() {
 (function() {
   const MES_LBL_FULL = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
   const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
-  const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda' };
+  const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda', micaelly:'Micaelly', christofer:'Christofer' };
 
   // Lista de renovações do mês: pacientes cujo plano termina no mês de
   // referência (data da venda + duração da modalidade), pulando quem já
@@ -23477,7 +23518,7 @@ window.addEventListener('resize', function() {
       if (lista.length === 0) selV.innerHTML = '<option value="">Nenhum plano de parceiro encontrado</option>';
     } else {
       title.textContent = '📄 Comprovante de Comissão do Vendedor';
-      desc.textContent = 'Lista TODAS as vendas do vendedor no mês selecionado, com comissão de 3% sobre cada uma.';
+      desc.textContent = 'Lista TODAS as vendas do vendedor no mês selecionado, com comissão só sobre o valor pago. Micaelly: % pela regra de set/2026 (fechamento da casa + nível). Demais vendedores: 3%.';
       vendGroup.style.display = '';
       if (vendLabel) vendLabel.textContent = 'Vendedor';
       // Vendedores únicos com vendas
@@ -23739,23 +23780,37 @@ window.addEventListener('resize', function() {
       // VENDEDOR: 3% sobre TODAS as vendas do vendedor
       // NAO mostra valor/faturamento — so a comissao que o vendedor vai receber
       const vend = document.getElementById('comm-vendedor').value;
-      const vendName = VEND_DISPLAY[vend] || vend;
-      vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano);
+      const vendName = VEND_DISPLAY[vend] || (vend ? vend.charAt(0).toUpperCase() + vend.slice(1) : vend);
+      vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano &&
+        (r.status||'').toLowerCase() !== 'reembolsado');
       title = 'Comprovante de Comissão · ' + vendName + ' (Vendedor)';
       beneficiario = vendName + ' (Vendedor)';
-      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Operação</th><th>Comissão (3%)</th></tr>';
+      // Comissao so sobre o que esta PAGO (status + Obs. de parcial).
+      // Micaelly (set/2026): o % vem de onde a CASA fecha o mes, nivel Junior.
+      const casaPagoMes = window.VENDAS_DATA
+        .filter(r => r.mes === mes && r.ano === ano && r.valor > 0)
+        .reduce((s, r) => s + (r.recebido != null ? r.recebido : r.valor), 0);
+      const isMica = (vend === 'micaelly');
+      const pctVend = isMica
+        ? (casaPagoMes >= 100000 ? 0.055 : casaPagoMes >= 70000 ? 0.045 : casaPagoMes >= 50000 ? 0.035 : 0.03)
+        : COM_VEND_PCT;
+      const pctLabel = String(pctVend * 100).replace('.', ',') + '%';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Operação</th><th>Comissão (' + pctLabel + ')</th></tr>';
       let totalCom = 0;
       let nRenovV = 0;
       let rowsHtml = '';
       vendas.forEach((r, i) => {
-        const com = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
+        const base = (r.recebido != null ? r.recebido : r.valor);
+        const com = Math.round(base * pctVend * 100) / 100;
         totalCom += com;
         if (/renova/i.test(r.operacao||'')) nRenovV++;
+        const marca = base <= 0 ? ' <span style="font-size:10px;color:#b45309">· pendente</span>'
+                    : base < r.valor ? ' <span style="font-size:10px;color:#b45309">· parcial</span>' : '';
         rowsHtml += '<tr>' +
           '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
           '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td>' +
           '<td>' + opBadgeDe(r) + '</td>' +
-          '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
+          '<td style="text-align:right">' + fmtBR(com) + marca + '</td></tr>';
       });
       makeRow = rowsHtml;
       totalLabel = '<tr><td colspan="7" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
@@ -23766,7 +23821,11 @@ window.addEventListener('resize', function() {
         '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenovV + '</div></div>' +
         '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
         '</div>';
-      footer = '<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de 3% sobre cada venda paga no mês de referência.';
+      footer = isMica
+        ? ('<strong>Total a pagar pra ' + vendName + ': ' + fmtBR(total) + '</strong> · Regra de setembro/2026, nível Júnior: comissão de ' + pctLabel +
+           ' sobre cada venda paga dela, com o percentual definido por onde a casa fechou o mês (' + fmtBR(casaPagoMes) + ' em vendas pagas).' +
+           ' Venda pendente entra com comissão zero até a planilha marcar como Pago. O fixo de R$ 2.300,00 não está incluído neste total.')
+        : ('<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de ' + pctLabel + ' sobre cada venda paga no mês de referência. Venda pendente entra com comissão zero até a planilha marcar como Pago.');
     }
 
     const html = '<div class="header-print">' +

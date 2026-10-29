@@ -1987,8 +1987,27 @@ updateDashboard();
         return (v === 'junio' || v === 'duda' || v === 'raquel' || v === 'bia') ? 'outros' : v;
       })((r[8]||'').trim().toLowerCase()),
       consulta: (r[11]||'').trim(),
-      operacao: (r[12]||'').trim()
+      operacao: (r[12]||'').trim(),
+      obs: (r[14]||'').trim(),
+      status: (r[15]||'').trim(),
+      recebido: recebidoDe(parseBRL(r[7]), (r[15]||'').trim(), (r[14]||'').trim())
     }));
+  }
+  // Quanto da venda realmente entrou: status Pago vale cheio, Pendente vale 0,
+  // e a Obs. corrige parciais ("so pagou 200" em linha paga; "FALTA 197" em pendente)
+  function recebidoDe(valor, status, obs) {
+    const st = (status||'').trim().toLowerCase();
+    const ob = (obs||'').toLowerCase();
+    const NUM = '(\\d{1,3}(?:\\.\\d{3})*(?:,\\d{1,2})?|\\d+(?:,\\d{1,2})?)';
+    if (st === 'reembolsado') return 0;
+    if (st === 'pendente') {
+      const m = ob.match(new RegExp('falta\\s*(?:r\\$)?\\s*' + NUM + '(?!\\s*[/\\d])'));
+      if (m) { const f = parseBRL(m[1]); if (f > 0 && f < valor) return valor - f; }
+      return 0;
+    }
+    const m = ob.match(new RegExp('pagou\\s*(?:r\\$)?\\s*' + NUM + '(?!\\s*[/\\d])'));
+    if (m) { const p = parseBRL(m[1]); if (p >= 0 && p < valor) return p; }
+    return valor;
   }
   async function fetchVendas() {
     try { const r = await fetch(VENDAS_URL); const txt = await r.text(); window.VENDAS_DATA = parseCSV(txt); renderMixTipo(); }
@@ -2121,7 +2140,7 @@ updateDashboard();
     const pct = totVal > 0 ? Math.round(top5Val/totVal*100) : 0;
     let html = '<div class="opp-summary good"><div class="opp-summary-num">'+pct+'%</div><div class="opp-summary-lbl">do faturamento veio do top 5 · R$ '+Math.round(top5Val).toLocaleString('pt-BR')+'</div></div>';
     html += '<div class="opp-list">';
-    const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda' };
+    const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda', micaelly:'Micaelly', christofer:'Christofer' };
     top.forEach((r, i) => {
       const vendNome = VEND_DISPLAY[r.vendedor] || (r.vendedor ? r.vendedor.charAt(0).toUpperCase()+r.vendedor.slice(1) : '');
       html += '<div class="opp-row"><div><div class="opp-row-name" title="'+r.paciente+'">#'+(i+1)+' · '+r.paciente+'</div><div class="opp-row-meta">'+(r.mod||'')+' · '+vendNome+'</div></div><div class="opp-row-val">R$ '+Math.round(r.valor).toLocaleString('pt-BR')+'</div></div>';
@@ -2471,7 +2490,7 @@ updateDashboard();
 (function() {
   const MES_LBL_FULL = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'};
   const MES_LBL_NUM  = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
-  const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda' };
+  const VEND_DISPLAY = { rafael:'Rafael', suporte:'Suporte', outros:'Outros', bia:'Bia', junio:'Junio', raquel:'Raquel', duda:'Duda', micaelly:'Micaelly', christofer:'Christofer' };
 
   // Lista de renovações do mês: pacientes cujo plano termina no mês de
   // referência (data da venda + duração da modalidade), pulando quem já
@@ -2561,7 +2580,7 @@ updateDashboard();
       if (lista.length === 0) selV.innerHTML = '<option value="">Nenhum plano de parceiro encontrado</option>';
     } else {
       title.textContent = '📄 Comprovante de Comissão do Vendedor';
-      desc.textContent = 'Lista TODAS as vendas do vendedor no mês selecionado, com comissão de 3% sobre cada uma.';
+      desc.textContent = 'Lista TODAS as vendas do vendedor no mês selecionado, com comissão só sobre o valor pago. Micaelly: % pela regra de set/2026 (fechamento da casa + nível). Demais vendedores: 3%.';
       vendGroup.style.display = '';
       if (vendLabel) vendLabel.textContent = 'Vendedor';
       // Vendedores únicos com vendas
@@ -2823,23 +2842,37 @@ updateDashboard();
       // VENDEDOR: 3% sobre TODAS as vendas do vendedor
       // NAO mostra valor/faturamento — so a comissao que o vendedor vai receber
       const vend = document.getElementById('comm-vendedor').value;
-      const vendName = VEND_DISPLAY[vend] || vend;
-      vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano);
+      const vendName = VEND_DISPLAY[vend] || (vend ? vend.charAt(0).toUpperCase() + vend.slice(1) : vend);
+      vendas = window.VENDAS_DATA.filter(r => r.vendedor === vend && r.valor > 0 && r.mes === mes && r.ano === ano &&
+        (r.status||'').toLowerCase() !== 'reembolsado');
       title = 'Comprovante de Comissão · ' + vendName + ' (Vendedor)';
       beneficiario = vendName + ' (Vendedor)';
-      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Operação</th><th>Comissão (3%)</th></tr>';
+      // Comissao so sobre o que esta PAGO (status + Obs. de parcial).
+      // Micaelly (set/2026): o % vem de onde a CASA fecha o mes, nivel Junior.
+      const casaPagoMes = window.VENDAS_DATA
+        .filter(r => r.mes === mes && r.ano === ano && r.valor > 0)
+        .reduce((s, r) => s + (r.recebido != null ? r.recebido : r.valor), 0);
+      const isMica = (vend === 'micaelly');
+      const pctVend = isMica
+        ? (casaPagoMes >= 100000 ? 0.055 : casaPagoMes >= 70000 ? 0.045 : casaPagoMes >= 50000 ? 0.035 : 0.03)
+        : COM_VEND_PCT;
+      const pctLabel = String(pctVend * 100).replace('.', ',') + '%';
+      headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Operação</th><th>Comissão (' + pctLabel + ')</th></tr>';
       let totalCom = 0;
       let nRenovV = 0;
       let rowsHtml = '';
       vendas.forEach((r, i) => {
-        const com = Math.round(r.valor * COM_VEND_PCT * 100) / 100;
+        const base = (r.recebido != null ? r.recebido : r.valor);
+        const com = Math.round(base * pctVend * 100) / 100;
         totalCom += com;
         if (/renova/i.test(r.operacao||'')) nRenovV++;
+        const marca = base <= 0 ? ' <span style="font-size:10px;color:#b45309">· pendente</span>'
+                    : base < r.valor ? ' <span style="font-size:10px;color:#b45309">· parcial</span>' : '';
         rowsHtml += '<tr>' +
           '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
           '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td><td>' + (r.adic||'Nenhum') + '</td>' +
           '<td>' + opBadgeDe(r) + '</td>' +
-          '<td style="text-align:right">' + fmtBR(com) + '</td></tr>';
+          '<td style="text-align:right">' + fmtBR(com) + marca + '</td></tr>';
       });
       makeRow = rowsHtml;
       totalLabel = '<tr><td colspan="7" style="text-align:right">TOTAL A RECEBER</td><td style="text-align:right">' + fmtBR(totalCom) + '</td></tr>';
@@ -2850,7 +2883,11 @@ updateDashboard();
         '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenovV + '</div></div>' +
         '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
         '</div>';
-      footer = '<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de 3% sobre cada venda paga no mês de referência.';
+      footer = isMica
+        ? ('<strong>Total a pagar pra ' + vendName + ': ' + fmtBR(total) + '</strong> · Regra de setembro/2026, nível Júnior: comissão de ' + pctLabel +
+           ' sobre cada venda paga dela, com o percentual definido por onde a casa fechou o mês (' + fmtBR(casaPagoMes) + ' em vendas pagas).' +
+           ' Venda pendente entra com comissão zero até a planilha marcar como Pago. O fixo de R$ 2.300,00 não está incluído neste total.')
+        : ('<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de ' + pctLabel + ' sobre cada venda paga no mês de referência. Venda pendente entra com comissão zero até a planilha marcar como Pago.');
     }
 
     const html = '<div class="header-print">' +

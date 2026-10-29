@@ -175,16 +175,32 @@ let activeVend = 'all';
 const ANOS_DISPONIVEIS = {json.dumps(sorted(anos))};
 const LATEST_ANO = '{latest}';
 const META_MENSAL = 70000;
-const VENDEDOR_FIXO = 2000;
 function calcComissaoVendedor(receita) {{
-  // Regra vigente desde 01/08/2026. A faixa define uma aliquota unica
-  // aplicada sobre o TOTAL do mes (nao e progressiva por fatia).
+  // Regra antiga (01/08/2026), segue valendo pros demais vendedores: aliquota
+  // unica sobre o total que o proprio vendedor vendeu no mes (nao progressiva).
   if (!receita || receita <= 0) return 0;
   if (receita <= 50000)  return receita * 0.03;
   if (receita <= 75000)  return receita * 0.035;
   if (receita <= 100000) return receita * 0.04;
   if (receita <= 125000) return receita * 0.045;
   return receita * 0.05;
+}}
+
+// Regra da Micaelly (proposta de setembro/2026): fixo R$ 2.300 e comissao
+// sobre o que ELA vendeu (so o pago). O percentual e definido por onde a
+// casa fecha o mes (tambem so o pago) e pelo nivel dela na carreira.
+const MICA_FIXO  = 2300;
+const MICA_NIVEL = 'Júnior';
+const MICA_TIERS = {{ 'Júnior':[3,3.5,4.5,5.5], 'Pleno':[3.5,4,5,6], 'Sênior':[4,4.5,5.5,6.5] }};
+function faixaCasa(casa) {{
+  if (casa >= 100000) return 3;
+  if (casa >= 70000)  return 2;
+  if (casa >= 50000)  return 1;
+  return 0;
+}}
+function pctMica(casa, nivel) {{
+  const t = MICA_TIERS[nivel] || MICA_TIERS['Júnior'];
+  return t[faixaCasa(casa)];
 }}
 
 let chartDiario = null;
@@ -332,21 +348,6 @@ function renderRenovacao() {{
       (cart.length > 60 ? '<div style="margin-top:8px;font-size:12px;color:#94a3b8">Mostrando 60 de ' + cart.length + ' pacientes.</div>' : '');
   }}
 }}
-function calcComissaoTime(d) {{
-  // A faixa e por vendedor. Somar a receita da casa e aplicar uma faixa unica
-  // superestima sempre que a casa passa de um degrau que ninguem passou sozinho.
-  // Comissao so sobre o que esta PAGO (vp); venda pendente nao gera comissao
-  const vend = (d && d.vend) || null;
-  const basePago = d ? ((d.fat_pago != null) ? d.fat_pago : (d.fat || 0)) : 0;
-  if (!vend) return calcComissaoVendedor(basePago);
-  let tot = 0, achou = false;
-  for (const k in vend) {{
-    if (k === '-' || k === 'OUTROS') continue;  // buckets sem dono, nao geram comissao
-    const v = (vend[k] && (vend[k].vp != null ? vend[k].vp : vend[k].v)) || 0;
-    if (v > 0) {{ tot += calcComissaoVendedor(v); achou = true; }}
-  }}
-  return achou ? tot : calcComissaoVendedor(basePago);
-}}
 function renderRemuneracao() {{
   const anoData = (typeof getAnoData === 'function') ? getAnoData() : {{}};
   const key = (typeof getKey === 'function') ? getKey() : 'all';
@@ -357,9 +358,22 @@ function renderRemuneracao() {{
   const aReceber = Math.max(receita - recebido, 0);
   const pct = Math.round(recebido / META_MENSAL * 100);
   const bateu = recebido >= META_MENSAL;
-  const comVendedor = calcComissaoTime(d);
-  const totalVendedor = VENDEDOR_FIXO + comVendedor;
   const corPct = bateu ? '#10b981' : pct >= 80 ? '#f59e0b' : '#ef4444';
+  // Comissao da Micaelly: o degrau vem de onde a CASA fecha o mes (so o pago),
+  // por isso a base e o bloco do mes, ignorando o filtro de vendedor.
+  const casaD = anoData[activeMes === 'all' ? 'all' : activeMes] || d;
+  const casaPago = (casaD.fat_pago != null) ? casaD.fat_pago : (casaD.fat || 0);
+  const vendCasa = casaD.vend || {{}};
+  const vpDe = k => (vendCasa[k] && (vendCasa[k].vp != null ? vendCasa[k].vp : vendCasa[k].v)) || 0;
+  const micaV   = vpDe('MICAELLY');
+  const micaPct = pctMica(casaPago, MICA_NIVEL);
+  const micaCom = Math.round(micaV * micaPct) / 100;
+  // Demais vendedores comissionados seguem a regra antiga, sobre a propria venda paga
+  const outros = [];
+  for (const k of ['CHRISTOFER', 'JUNIO']) {{
+    const v = vpDe(k);
+    if (v > 0) outros.push({{ nome: (typeof VEND_NAMES !== 'undefined' && VEND_NAMES[k]) || k, com: calcComissaoVendedor(v) }});
+  }}
   const elStatus = document.getElementById('rv-status');
   if (elStatus) elStatus.innerHTML = '<div style="text-align:center;padding:12px">' +
     '<div style="font-size:36px;font-weight:700;color:' + corPct + '">' + pct + '%</div>' +
@@ -368,12 +382,22 @@ function renderRemuneracao() {{
     (aReceber > 0 ? '<div style="margin-top:4px;font-size:12px;color:#f59e0b">+ R$ ' + fmt(aReceber) + ' vendido aguardando pagamento (fora da conta)</div>' : '') +
     '<div style="margin-top:6px;color:#64748b;font-size:13px">' +
     (bateu ? '✅ Meta batida' : 'Faltam R$ ' + fmt(META_MENSAL - recebido)) + '</div></div>';
-  const elJunio = document.getElementById('rv-vendedor');
-  if (elJunio) elJunio.innerHTML = '<div style="padding:14px">' +
-    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ ' + fmt(VENDEDOR_FIXO) + '</strong></div>' +
-    '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Comissão sobre vendas</span><strong>R$ ' + fmt(comVendedor) + '</strong></div>' +
-    '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">' +
-    '<span><strong>Total estimado</strong></span><strong style="color:#10b981;font-size:22px">R$ ' + fmt(totalVendedor) + '</strong></div></div>';
+  const elVend = document.getElementById('rv-vendedor');
+  if (elVend) {{
+    let vh = '<div style="padding:14px">' +
+      '<div style="font-size:12px;color:#94a3b8;margin-bottom:8px">Micaelly · nível ' + MICA_NIVEL + ' · casa em R$ ' + fmt(casaPago) + '</div>' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ ' + fmt(MICA_FIXO) + '</strong></div>' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Comissão (' + String(micaPct).replace('.', ',') + '% de R$ ' + fmt(micaV) + ')</span><strong>R$ ' + fmt(micaCom) + '</strong></div>' +
+      '<div style="border-top:1px solid #e2e8f0;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">' +
+      '<span><strong>Total estimado</strong></span><strong style="color:#10b981;font-size:22px">R$ ' + fmt(MICA_FIXO + micaCom) + '</strong></div>';
+    for (const o of outros) {{
+      vh += '<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:#64748b"><span>' + o.nome + ' (regra antiga)</span><span>comissão R$ ' + fmt(o.com) + '</span></div>';
+    }}
+    if (activeMes === 'all') {{
+      vh += '<div style="margin-top:8px;font-size:11px;color:#94a3b8">Visão do ano inteiro: a regra é mensal, selecione um mês pra ver o valor real.</div>';
+    }}
+    elVend.innerHTML = vh + '</div>';
+  }}
   const elSup = document.getElementById('rv-suporte');
   if (elSup) {{
     if (!bateu) {{
@@ -386,27 +410,25 @@ function renderRemuneracao() {{
         '<div style="font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:8px">2 pessoas → total R$ 600 a R$ 1.200/mês</div></div>';
     }}
   }}
-  let vBase = recebido;
-  if (d && d.vend) {{
-    vBase = 0;
-    for (const k in d.vend) {{
-      if (k === '-' || k === 'OUTROS') continue;
-      const v = (d.vend[k] && (d.vend[k].vp != null ? d.vend[k].vp : d.vend[k].v)) || 0;
-      if (v > vBase) vBase = v;
-    }}
-    if (!vBase) vBase = recebido;
-  }}
   const elFx = document.getElementById('rv-faixas');
-  if (elFx) elFx.innerHTML = '<table class="yoy-table" style="width:100%">' +
-    '<thead><tr><th>Faixa de vendas no mês</th><th>Comissão</th><th>Vendedor recebe</th></tr></thead>' +
-    '<tbody>' +
-    '<tr' + (vBase > 0 && vBase <= 50000 ? ' style="background:#fef9c3"' : '') + '><td>Até R$ 50.000</td><td>3% sobre o total</td><td>até R$ 1.500 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 50000 && vBase <= 75000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 50.001 a R$ 75.000</td><td>3,5% sobre o total</td><td>até R$ 2.625 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 75000 && vBase <= 100000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 75.001 a R$ 100.000</td><td>4% sobre o total</td><td>até R$ 4.000 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 100000 && vBase <= 125000 ? ' style="background:#fef9c3"' : '') + '><td>R$ 100.001 a R$ 125.000</td><td>4,5% sobre o total</td><td>até R$ 5.625 + fixo R$ 2.000</td></tr>' +
-    '<tr' + (vBase > 125000 ? ' style="background:#fef9c3"' : '') + '><td>Acima de R$ 125.000</td><td>5% sobre o total</td><td>5% do total + fixo R$ 2.000</td></tr>' +
-    '</tbody></table>' +
-    '<div style="margin-top:8px;font-size:12px;color:#94a3b8">A faixa define uma alíquota única sobre o total do mês do vendedor. Não é progressiva por fatia. Vigente desde 01/08/2026.</div>';
+  if (elFx) {{
+    const colAtiva = faixaCasa(casaPago);
+    const cols = ['Casa abaixo de R$ 50 mil', 'R$ 50 mil', 'R$ 70 mil · a meta', 'R$ 100 mil'];
+    let fx = '<table class="yoy-table" style="width:100%"><thead><tr><th>Nível</th>';
+    cols.forEach((c, i) => {{ fx += '<th' + (i === colAtiva ? ' style="background:#fef9c3"' : '') + '>' + c + '</th>'; }});
+    fx += '</tr></thead><tbody>';
+    for (const nv of ['Júnior', 'Pleno', 'Sênior']) {{
+      fx += '<tr><td>' + nv + (nv === MICA_NIVEL ? ' <span style="font-size:11px;color:#ec4899;font-weight:700">· atual</span>' : '') + '</td>';
+      MICA_TIERS[nv].forEach((p, i) => {{
+        const on = (nv === MICA_NIVEL && i === colAtiva);
+        fx += '<td' + (on ? ' style="background:#fef9c3;font-weight:700"' : '') + '>' + String(p).replace('.', ',') + '%</td>';
+      }});
+      fx += '</tr>';
+    }}
+    fx += '</tbody></table>' +
+      '<div style="margin-top:8px;font-size:12px;color:#94a3b8">O percentual incide sobre o que a própria vendedora vendeu no mês (só vendas pagas). O degrau é definido por onde a casa fecha o mês, também só com vendas pagas. Vigente desde setembro/2026. Demais vendedores seguem a regra antiga: 3% a 5% sobre a própria venda paga, alíquota única.</div>';
+    elFx.innerHTML = fx;
+  }}
 }}
 
 function setAno(ano) {{
@@ -546,7 +568,7 @@ if (window.ChartDataLabels) {{
 <div id="rv-section" class="main" style="padding-top:0">
   <div class="section-header">
     <div class="section-header-title">💰 Remuneração Variável</div>
-    <div class="section-header-sub">Meta R$ 70.000 · Comissão escalonada do Vendedor · Bônus do Suporte</div>
+    <div class="section-header-sub">Meta R$ 70.000 · Comissão da vendedora (Micaelly) · Bônus do Suporte</div>
   </div>
   <div class="charts-row charts-row-3" style="margin-bottom:16px">
     <div class="chart-card">
@@ -555,8 +577,8 @@ if (window.ChartDataLabels) {{
       <div id="rv-status"></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">Comissão do Vendedor (estimada)</div>
-      <div class="chart-sub">Fixo + escalonada por faixa</div>
+      <div class="chart-title">Comissão da Vendedora (estimada)</div>
+      <div class="chart-sub">Micaelly: fixo R$ 2.300 + % definido pela casa e pelo nível</div>
       <div id="rv-vendedor"></div>
     </div>
     <div class="chart-card">
@@ -566,8 +588,8 @@ if (window.ChartDataLabels) {{
     </div>
   </div>
   <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Estrutura escalonada de comissão (Vendedor)</div>
-    <div class="chart-sub">Faixa atual em destaque</div>
+    <div class="chart-title">Matriz de comissão da vendedora</div>
+    <div class="chart-sub">Linha: nível na carreira · Coluna: onde a casa fecha o mês · célula atual em destaque</div>
     <div id="rv-faixas"></div>
   </div>
 </div>
