@@ -91,6 +91,11 @@ COL_MAP = {
     "com. treino":             "com_treino",
     "personal":                "com_treino",
     "adicional":               "adicional",
+    # Observacao: corrige pagamento parcial ("so pagou 200", "FALTA 197,00")
+    "obs.":                    "obs",
+    "obs":                     "obs",
+    "observacao":              "obs",
+    "observacoes":             "obs",
     # Google Sheets: colunas com sufixo "(R$)"
     "valor (r$)":              "valor",
     "comissao vendedor (r$)":  "com_vend",
@@ -336,6 +341,42 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     else:
         print("[fetch] AVISO: coluna de Status ausente, reembolsos nao serao descartados")
 
+    # Valor efetivamente RECEBIDO por linha. Regra da Bia (29-10-2026): o
+    # deficit comercial (meta do mes) so conta pagamento com status Pago,
+    # e a Obs. corrige pagamento parcial.
+    #   - Pendente: nada entrou, salvo Obs. "FALTA X" (entrou valor - X)
+    #   - Pago com Obs. "pagou X" / "so pagou X": entrou so X
+    #   - Status vazio (linhas antigas, de antes da coluna existir): vale como pago
+    if "obs" not in df.columns:
+        df["obs"] = ""
+    df["obs"] = df["obs"].fillna("").astype(str)
+    _NUM_RE = r"(\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?|\d+(?:,\d{1,2})?)"
+
+    def _recebido(row):
+        valor = float(row.get("valor") or 0)
+        st    = str(row.get("status") or "").strip().lower()
+        obs   = str(row.get("obs") or "").strip().lower()
+        if st == "pendente":
+            m = re.search(r"falta\s*(?:r\$)?\s*" + _NUM_RE + r"(?!\s*[/\d])", obs)
+            if m:
+                falta = parse_valor_flex(m.group(1))
+                if falta is not None and 0 < falta < valor:
+                    return valor - falta
+            return 0.0
+        m = re.search(r"\bpagou\s*(?:r\$)?\s*" + _NUM_RE + r"(?!\s*[/\d])", obs)
+        if m:
+            pago = parse_valor_flex(m.group(1))
+            if pago is not None and 0 <= pago < valor:
+                return pago
+        return valor
+
+    df["recebido"] = df.apply(_recebido, axis=1)
+    _nao_recebido = df["valor"].fillna(0) - df["recebido"]
+    _qtd_aberto = int((_nao_recebido > 0.005).sum())
+    if _qtd_aberto:
+        print(f"[fetch] {_qtd_aberto} venda(s) com valor em aberto "
+              f"(R$ {_nao_recebido[_nao_recebido > 0.005].sum():,.0f} fora da meta)")
+
     df = df.dropna(subset=["data"]).query("valor > 0").copy()
     df.attrs["problemas"] = problemas
 
@@ -355,9 +396,9 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
     """Calcula KPIs e distribuiÃÂÃÂ§ÃÂÃÂµes para um subconjunto de dados."""
     if sub.empty:
         return {
-            "n": 0, "fat": 0, "tkt": 0, "cvend": 0, "ctreino": 0,
+            "n": 0, "fat": 0, "fat_pago": 0, "tkt": 0, "cvend": 0, "ctreino": 0,
             "modal": {m: {"c":0,"v":0} for m in MODAIS_EXPECTED},
-            "vend":  {v: {"c":0,"v":0,"tkt":0,"cv":0,"ct":0} for v in VENDORS_EXPECTED},
+            "vend":  {v: {"c":0,"v":0,"vp":0,"tkt":0,"cv":0,"ct":0} for v in VENDORS_EXPECTED},
             "mes":   {m: {"c":0,"v":0} for m in MES_ORDER},
             "oper":  {"Renovação": {"c":0,"v":0}, "Nova Venda": {"c":0,"v":0}},
             "pend":  {"c":0,"v":0},
@@ -365,6 +406,9 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
 
     n       = len(sub)
     fat     = round(sub["valor"].sum())
+    # fat_pago: so o que ja ENTROU (status Pago + ajuste da Obs.); e a base
+    # da meta mensal e do deficit comercial
+    fat_pago = round(sub["recebido"].sum()) if "recebido" in sub.columns else fat
     tkt     = round(fat / n) if n > 0 else 0
     cvend   = round(sub["com_vend"].sum())
     # Custo Personal: planos com Adicional começando em "Treino" (inclui Treino, Treino Mensal,
@@ -392,7 +436,9 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
             (s["adicional"].astype(str).str.upper().str.strip().str.startswith("TREINO")) &
             (s["tipo"].astype(str).str.strip().str.lower() != "plano gustavo")
         )
-        vend[v] = {"c":sc,"v":sv,"tkt":round(sv/sc) if sc>0 else 0,
+        vend[v] = {"c":sc,"v":sv,
+                   "vp":round(s["recebido"].sum()) if "recebido" in s.columns else sv,
+                   "tkt":round(sv/sc) if sc>0 else 0,
                    "cv":round(s["com_vend"].sum()),"ct":round(s[_ct_mask]["com_treino"].sum())}
 
     mes = {}
@@ -410,15 +456,20 @@ def calc_block(sub: pd.DataFrame, ref_df: pd.DataFrame) -> dict:
     else:
         oper = {"Renovação": {"c":0,"v":0}, "Nova Venda": {"c":0,"v":0}}
 
-    # Vendas ainda nao pagas (receita ja conta, comissao nao)
-    if "status" in sub.columns:
+    # Valores ainda nao recebidos: pendentes inteiros + parciais da Obs.
+    # (a receita total ja conta; a meta e a comissao, nao)
+    if "recebido" in sub.columns:
+        _dif = (sub["valor"] - sub["recebido"]).clip(lower=0)
+        _tem = _dif > 0.005
+        pend = {"c": int(_tem.sum()), "v": round(float(_dif.sum()))}
+    elif "status" in sub.columns:
         _st = sub["status"].astype(str).str.strip().str.lower()
         sp = sub[_st == "pendente"]
         pend = {"c": len(sp), "v": round(sp["valor"].sum())}
     else:
         pend = {"c": 0, "v": 0}
 
-    return {"n":n,"fat":fat,"tkt":tkt,"cvend":cvend,"ctreino":ctreino,
+    return {"n":n,"fat":fat,"fat_pago":fat_pago,"tkt":tkt,"cvend":cvend,"ctreino":ctreino,
             "modal":modal,"vend":vend,"mes":mes,"oper":oper,"pend":pend}
 
 

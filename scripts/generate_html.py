@@ -302,8 +302,8 @@ function renderRenovacao() {{
   const el2 = document.getElementById('renov-pend');
   if (el2) el2.innerHTML = (p.c ?
     '<div style="padding:14px"><div style="font-size:32px;font-weight:700;color:#f59e0b">R$ ' + fmt(p.v) + '</div>' +
-    '<div style="color:#64748b;font-size:13px;margin-top:4px">' + p.c + ' venda(s) aguardando pagamento</div>' +
-    '<div style="margin-top:10px;font-size:12px;color:#94a3b8">Enquanto não constam como pagas, a comissão do vendedor sobre elas fica zerada.</div></div>'
+    '<div style="color:#64748b;font-size:13px;margin-top:4px">' + p.c + ' venda(s) com valor ainda não recebido (status Pendente ou parcial anotado na Obs.)</div>' +
+    '<div style="margin-top:10px;font-size:12px;color:#94a3b8">Esse valor fica fora da meta e da comissão do vendedor até a planilha marcar como Pago.</div></div>'
     : '<div style="text-align:center;padding:30px 12px;color:#94a3b8">✅<br><strong>Nada pendente</strong></div>');
 
   // carteira
@@ -335,33 +335,39 @@ function renderRenovacao() {{
 function calcComissaoTime(d) {{
   // A faixa e por vendedor. Somar a receita da casa e aplicar uma faixa unica
   // superestima sempre que a casa passa de um degrau que ninguem passou sozinho.
+  // Comissao so sobre o que esta PAGO (vp); venda pendente nao gera comissao
   const vend = (d && d.vend) || null;
-  if (!vend) return calcComissaoVendedor((d && d.fat) || 0);
+  const basePago = d ? ((d.fat_pago != null) ? d.fat_pago : (d.fat || 0)) : 0;
+  if (!vend) return calcComissaoVendedor(basePago);
   let tot = 0, achou = false;
   for (const k in vend) {{
     if (k === '-' || k === 'OUTROS') continue;  // buckets sem dono, nao geram comissao
-    const v = (vend[k] && vend[k].v) || 0;
+    const v = (vend[k] && (vend[k].vp != null ? vend[k].vp : vend[k].v)) || 0;
     if (v > 0) {{ tot += calcComissaoVendedor(v); achou = true; }}
   }}
-  return achou ? tot : calcComissaoVendedor((d && d.fat) || 0);
+  return achou ? tot : calcComissaoVendedor(basePago);
 }}
 function renderRemuneracao() {{
   const anoData = (typeof getAnoData === 'function') ? getAnoData() : {{}};
   const key = (typeof getKey === 'function') ? getKey() : 'all';
   const d = anoData[key] || anoData['all'] || {{}};
-  const receita = d.fat || 0;
-  const pct = Math.round(receita / META_MENSAL * 100);
-  const bateu = receita >= META_MENSAL;
+  const receita  = d.fat || 0;
+  // Meta e deficit comercial: so conta o que esta PAGO (status + Obs. de parcial)
+  const recebido = (d.fat_pago != null) ? d.fat_pago : receita;
+  const aReceber = Math.max(receita - recebido, 0);
+  const pct = Math.round(recebido / META_MENSAL * 100);
+  const bateu = recebido >= META_MENSAL;
   const comVendedor = calcComissaoTime(d);
   const totalVendedor = VENDEDOR_FIXO + comVendedor;
   const corPct = bateu ? '#10b981' : pct >= 80 ? '#f59e0b' : '#ef4444';
   const elStatus = document.getElementById('rv-status');
   if (elStatus) elStatus.innerHTML = '<div style="text-align:center;padding:12px">' +
     '<div style="font-size:36px;font-weight:700;color:' + corPct + '">' + pct + '%</div>' +
-    '<div style="color:#64748b;font-size:13px">da meta de R$ 70.000</div>' +
-    '<div style="margin-top:14px;font-size:18px"><strong>R$ ' + fmt(receita) + '</strong></div>' +
+    '<div style="color:#64748b;font-size:13px">da meta de R$ 70.000 · só vendas pagas</div>' +
+    '<div style="margin-top:14px;font-size:18px"><strong>R$ ' + fmt(recebido) + '</strong> <span style="font-size:13px;color:#64748b">recebido</span></div>' +
+    (aReceber > 0 ? '<div style="margin-top:4px;font-size:12px;color:#f59e0b">+ R$ ' + fmt(aReceber) + ' vendido aguardando pagamento (fora da conta)</div>' : '') +
     '<div style="margin-top:6px;color:#64748b;font-size:13px">' +
-    (bateu ? '✅ Meta batida' : 'Faltam R$ ' + fmt(META_MENSAL - receita)) + '</div></div>';
+    (bateu ? '✅ Meta batida' : 'Faltam R$ ' + fmt(META_MENSAL - recebido)) + '</div></div>';
   const elJunio = document.getElementById('rv-vendedor');
   if (elJunio) elJunio.innerHTML = '<div style="padding:14px">' +
     '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Fixo</span><strong>R$ ' + fmt(VENDEDOR_FIXO) + '</strong></div>' +
@@ -380,15 +386,15 @@ function renderRemuneracao() {{
         '<div style="font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:8px">2 pessoas → total R$ 600 a R$ 1.200/mês</div></div>';
     }}
   }}
-  let vBase = receita;
+  let vBase = recebido;
   if (d && d.vend) {{
     vBase = 0;
     for (const k in d.vend) {{
       if (k === '-' || k === 'OUTROS') continue;
-      const v = (d.vend[k] && d.vend[k].v) || 0;
+      const v = (d.vend[k] && (d.vend[k].vp != null ? d.vend[k].vp : d.vend[k].v)) || 0;
       if (v > vBase) vBase = v;
     }}
-    if (!vBase) vBase = receita;
+    if (!vBase) vBase = recebido;
   }}
   const elFx = document.getElementById('rv-faixas');
   if (elFx) elFx.innerHTML = '<table class="yoy-table" style="width:100%">' +
