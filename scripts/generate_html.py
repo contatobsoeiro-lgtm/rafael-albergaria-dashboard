@@ -429,6 +429,30 @@ function renderRemuneracao() {{
       '<div style="margin-top:8px;font-size:12px;color:#94a3b8">O percentual incide sobre o que a própria vendedora vendeu no mês (só vendas pagas). O degrau é definido por onde a casa fecha o mês, também só com vendas pagas. Vigente desde setembro/2026. Demais vendedores seguem a regra antiga: 3% a 5% sobre a própria venda paga, alíquota única.</div>';
     elFx.innerHTML = fx;
   }}
+  // Placar do mes no topo da pagina: sempre MENSAL (no "Todos", usa o mes
+  // mais recente com venda), porque a meta de R$ 70 mil e por mes
+  const elHero = document.getElementById('hero-placar');
+  if (elHero) {{
+    const mesPlacar = (activeMes !== 'all') ? activeMes
+      : ((typeof diarioMesAtivo === 'function') ? diarioMesAtivo() : null);
+    const dP = (mesPlacar && anoData[mesPlacar]) ? anoData[mesPlacar] : d;
+    const recP  = (dP.fat_pago != null) ? dP.fat_pago : (dP.fat || 0);
+    const abertoP = Math.max((dP.fat || 0) - recP, 0);
+    const pctP  = Math.round(recP / META_MENSAL * 100);
+    const okP   = recP >= META_MENSAL;
+    const corP  = okP ? '#10b981' : pctP >= 80 ? '#f59e0b' : '#ef4444';
+    const nomeMes = {{jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'}}[mesPlacar] || 'Mês atual';
+    elHero.style.display = 'block';
+    elHero.innerHTML =
+      '<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;justify-content:space-between">' +
+      '<div><div style="font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em">Placar de ' + nomeMes + ' · só vendas pagas</div>' +
+      '<div style="font-size:30px;font-weight:800;color:' + corP + '">R$ ' + fmt(recP) + ' <span style="font-size:14px;color:#64748b;font-weight:600">de R$ ' + fmt(META_MENSAL) + '</span></div></div>' +
+      '<div style="text-align:right"><div style="font-size:22px;font-weight:800;color:' + corP + '">' + pctP + '%</div>' +
+      '<div style="font-size:12px;color:#64748b">' + (okP ? '✅ Meta batida' : 'faltam R$ ' + fmt(META_MENSAL - recP)) +
+      (abertoP > 0 ? ' · R$ ' + fmt(abertoP) + ' aguardando pagamento' : '') + '</div></div></div>' +
+      '<div style="margin-top:10px;height:10px;background:#f1f5f9;border-radius:999px;overflow:hidden">' +
+      '<div style="height:100%;width:' + Math.min(pctP, 100) + '%;background:' + corP + ';border-radius:999px"></div></div>';
+  }}
 }}
 
 function setAno(ano) {{
@@ -592,9 +616,51 @@ if (window.ChartDataLabels) {{
     <div class="chart-sub">Linha: nível na carreira · Coluna: onde a casa fecha o mês · célula atual em destaque</div>
     <div id="rv-faixas"></div>
   </div>
+  <div class="charts-row" style="grid-template-columns:1fr;margin-bottom:16px">
+    <div class="chart-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+        <div>
+          <div class="chart-title">Comissões & Cobranças</div>
+          <div class="chart-sub">A pagar (vendedor / personal) + A cobrar (parceiros)</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn-pdf" onclick="openCommissionPDF('vendedor')" style="flex-shrink:0" title="Comprovante de comissão do vendedor (regra vigente de cada um)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Vendedor
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Repasse do personal: R$ 50 x meses do plano, pago integral no mês da venda (jul/2026+); antes, 15%">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
+            Personal
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('parceiro')" style="flex-shrink:0;border-color:rgba(139,92,246,.3);color:#7c3aed" title="Cobrança de parceiros: Plano Gustavo repassa R$ 50 x meses do plano, integral no mês da venda (jul/2026+); demais parceiros extrato do mês">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Parceiros
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('renovacao')" style="flex-shrink:0;border-color:rgba(20,184,166,.35);color:#0f766e" title="Lista de pacientes com plano vencendo no mês escolhido, pra equipe de renovação trabalhar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+            Renovações
+          </button>
+        </div>
+      </div>
+      <table class="comissoes-table">
+        <thead>
+          <tr>
+            <th>Vendedor</th>
+            <th>Vendas</th>
+            <th>Faturamento</th>
+            <th>Com. Vendedor</th>
+            <th>Com. Treino</th>
+            <th>Total Com.</th>
+          </tr>
+        </thead>
+        <tbody id="comissoes-tbody"></tbody>
+        <tfoot id="comissoes-tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
 </div>
 """
-    html = html.replace('<div class="footer">', rv_section + '\n<div class="footer">', 1)
+    html = html.replace('<!-- bloco:pos-captacao -->', rv_section + chr(10) + '<!-- bloco:pos-captacao -->', 1)
 
     # Secao de Vendas Diarias
     diario_section = """
@@ -622,7 +688,7 @@ if (window.ChartDataLabels) {{
   </div>
 </div>
 """
-    html = html.replace('<div class="footer">', diario_section + '\n<div class="footer">', 1)
+    html = html.replace('<!-- bloco:pos-visao -->', diario_section + chr(10) + '<!-- bloco:pos-visao -->', 1)
 
     # Secao de Renovacao, carteira e pendencias
     renov_section = """
@@ -655,7 +721,7 @@ if (window.ChartDataLabels) {{
   </div>
 </div>
 """
-    html = html.replace('<div class="footer">', renov_section + '\n<div class="footer">', 1)
+    html = html.replace('<!-- bloco:pos-captacao -->', renov_section + chr(10) + '<!-- bloco:pos-captacao -->', 1)
 
 
 
@@ -1098,7 +1164,278 @@ def generate(data: dict, records: int, timestamp: str) -> Path:
     size_kb = OUTPUT_PATH.stat().st_size / 1024
     print(f"[generate] â HTML gerado: {OUTPUT_PATH.name} ({size_kb:.1f} KB)")
 
+    gerar_paginas_equipe(data, timestamp)
+
     return OUTPUT_PATH
+
+
+# =====================================================================
+# PAGINAS DA EQUIPE (links separados, so com o que cada time pode ver)
+# Transparencia do processo sem expor margem, custos e repasses:
+# o dado sensivel NEM ENTRA no arquivo dessas paginas.
+# =====================================================================
+MES_ORDEM = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
+MES_NOME = {"jan": "Janeiro", "fev": "Fevereiro", "mar": "Março", "abr": "Abril", "mai": "Maio",
+            "jun": "Junho", "jul": "Julho", "ago": "Agosto", "set": "Setembro", "out": "Outubro",
+            "nov": "Novembro", "dez": "Dezembro"}
+VEND_NOME = {"MICAELLY": "Micaelly", "CHRISTOFER": "Christofer", "RAFAEL": "Rafael",
+             "SUPORTE": "Suporte", "OUTROS": "Outros", "JUNIO": "Junio"}
+EQUIPE_CSS = """
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#0f172a;padding-bottom:40px}
+.topo{background:#0f172a;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
+.logo{width:38px;height:38px;border-radius:10px;background:#10b981;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0}
+.topo h1{font-size:16px;font-weight:800}.topo p{font-size:12px;color:#94a3b8}
+.main{max-width:760px;margin:0 auto;padding:16px 14px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+h2{font-size:12px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.num{font-size:28px;font-weight:800}
+.sub{font-size:12px;color:#64748b}
+.bar{height:10px;background:#f1f5f9;border-radius:999px;overflow:hidden;margin-top:10px}
+.bar>div{height:100%;border-radius:999px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#64748b;padding:6px;border-bottom:2px solid #e2e8f0}
+td{padding:7px 6px;border-bottom:1px solid #f1f5f9}
+tr:last-child td{border-bottom:none}
+.dir{text-align:right}th.dir{text-align:right}
+.chip{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.chip-verde{background:#dcfce7;color:#15803d}.chip-amarela{background:#fef9c3;color:#a16207}
+.chip-vermelha{background:#fee2e2;color:#b91c1c}.chip-azul{background:#dbeafe;color:#1d4ed8}
+.destaque{background:#fdf2f8}
+.regras li{font-size:12.5px;color:#475569;margin:6px 0 6px 16px}
+.rodape{text-align:center;font-size:11px;color:#94a3b8;padding:18px 14px}
+.celula-atual{background:#fef9c3;font-weight:800}
+@media(max-width:480px){.num{font-size:24px}td,th{padding:6px 4px}}
+"""
+
+
+def _brl(n, cents=False):
+    s = f"{n:,.2f}" if cents else f"{round(n):,.0f}"
+    return s.replace(",", "@").replace(".", ",").replace("@", ".")
+
+
+def _pct_mica(casa):
+    return 5.5 if casa >= 100000 else 4.5 if casa >= 70000 else 3.5 if casa >= 50000 else 3.0
+
+
+def _com_antiga(v):
+    if v <= 0:
+        return 0.0
+    if v <= 50000:
+        return v * 0.03
+    if v <= 75000:
+        return v * 0.035
+    if v <= 100000:
+        return v * 0.04
+    if v <= 125000:
+        return v * 0.045
+    return v * 0.05
+
+
+def _pagina(titulo, sub, corpo, gerado_em):
+    return f"""<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>{titulo}</title><style>{EQUIPE_CSS}</style></head>
+<body>
+<div class="topo"><div class="logo">RA</div><div><h1>{titulo}</h1><p>{sub}</p></div></div>
+<div class="main">
+{corpo}
+</div>
+<div class="rodape">Atualizado automaticamente em {gerado_em} · Venda só conta quando está <strong>paga</strong> na planilha (a Obs. corrige pagamento parcial).</div>
+</body></html>"""
+
+
+def gerar_paginas_equipe(data: dict, timestamp: str) -> None:
+    from datetime import datetime as _dt
+    try:
+        gerado_em = _dt.fromisoformat(timestamp).strftime("%d/%m/%Y %H:%M")
+    except ValueError:
+        gerado_em = timestamp
+
+    anos = sorted(k for k in data.keys() if k.isdigit())
+    if not anos:
+        return
+    ano = anos[-1]
+    ano_d = data[ano]
+    mes = None
+    for m in MES_ORDEM:
+        b = ano_d.get(m)
+        if isinstance(b, dict) and b.get("n"):
+            mes = m
+    if not mes:
+        return
+    bloco = ano_d[mes]
+    casa = bloco.get("fat_pago", bloco.get("fat", 0))
+    fat = bloco.get("fat", 0)
+    aberto = max(fat - casa, 0)
+    meta = 70000
+    pct = round(casa / meta * 100)
+    bateu = casa >= meta
+    cor = "#10b981" if bateu else "#f59e0b" if pct >= 80 else "#ef4444"
+    nome_mes = MES_NOME[mes]
+
+    # ---------- PAGINA DO COMERCIAL ----------
+    placar = (
+        f'<div class="card"><h2>Placar de {nome_mes} · só vendas pagas</h2>'
+        f'<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">'
+        f'<div class="num" style="color:{cor}">R$ {_brl(casa)} <span class="sub">de R$ {_brl(meta)}</span></div>'
+        f'<div style="text-align:right"><div style="font-size:20px;font-weight:800;color:{cor}">{pct}%</div>'
+        f'<div class="sub">{"✅ Meta batida" if bateu else "faltam R$ " + _brl(meta - casa)}</div></div></div>'
+        f'<div class="bar"><div style="width:{min(pct, 100)}%;background:{cor}"></div></div>'
+        + (f'<div class="sub" style="margin-top:8px">+ R$ {_brl(aberto)} vendidos aguardando pagamento (entram quando a planilha marcar Pago)</div>' if aberto > 0 else "")
+        + "</div>"
+    )
+
+    vend = bloco.get("vend", {})
+    linhas = []
+    ordem_v = sorted(
+        ((k, v) for k, v in vend.items() if k != "-" and (v.get("v") or 0) > 0),
+        key=lambda kv: -(kv[1].get("vp", kv[1].get("v", 0)) or 0),
+    )
+    for k, v in ordem_v:
+        vp = v.get("vp", v.get("v", 0)) or 0
+        destaque = ' class="destaque"' if k == "MICAELLY" else ""
+        linhas.append(
+            f'<tr{destaque}><td><strong>{VEND_NOME.get(k, k.title())}</strong></td>'
+            f'<td class="dir">{v.get("c", 0)}</td><td class="dir">R$ {_brl(v.get("v", 0))}</td>'
+            f'<td class="dir"><strong>R$ {_brl(vp)}</strong></td></tr>'
+        )
+    ranking = (
+        f'<div class="card"><h2>Quem vendeu em {nome_mes}</h2>'
+        '<table><thead><tr><th>Vendedor</th><th class="dir">Vendas</th><th class="dir">Vendido</th><th class="dir">Pago</th></tr></thead>'
+        f'<tbody>{"".join(linhas)}</tbody></table></div>'
+    )
+
+    pm = _pct_mica(casa)
+    mica = vend.get("MICAELLY", {})
+    mica_vp = mica.get("vp", mica.get("v", 0)) or 0
+    mica_com = mica_vp * pm / 100
+    tiers = {"Júnior": [3, 3.5, 4.5, 5.5], "Pleno": [3.5, 4, 5, 6], "Sênior": [4, 4.5, 5.5, 6.5]}
+    col_atual = 3 if casa >= 100000 else 2 if casa >= 70000 else 1 if casa >= 50000 else 0
+    cab = ["abaixo de R$ 50 mil", "R$ 50 mil", "R$ 70 mil · a meta", "R$ 100 mil"]
+    mt = '<table><thead><tr><th>Nível</th>' + "".join(
+        f'<th class="dir{" celula-atual" if i == col_atual else ""}">{c}</th>' for i, c in enumerate(cab)
+    ) + "</tr></thead><tbody>"
+    for nv, ts in tiers.items():
+        mt += f'<tr><td><strong>{nv}</strong>{" · atual" if nv == "Júnior" else ""}</td>' + "".join(
+            f'<td class="dir{" celula-atual" if nv == "Júnior" and i == col_atual else ""}">{str(p).replace(".", ",")}%</td>'
+            for i, p in enumerate(ts)
+        ) + "</tr>"
+    mt += "</tbody></table>"
+    chris = vend.get("CHRISTOFER", {})
+    chris_vp = chris.get("vp", chris.get("v", 0)) or 0
+    chris_com = _com_antiga(chris_vp)
+    comissao = (
+        '<div class="card"><h2>Comissão · como funciona</h2>'
+        f'<div style="margin-bottom:12px"><strong>Micaelly</strong> <span class="chip chip-azul">nível Júnior</span><br>'
+        '<span class="sub">O percentual vale sobre TUDO que ela vendeu e está pago no mês, e o degrau sobe quando a CASA cruza 50, 70 e 100 mil (só vendas pagas).</span><br>'
+        f'<span style="font-size:15px">Agora: <strong>{str(pm).replace(".", ",")}%</strong> de R$ {_brl(mica_vp)} = '
+        f'<strong style="color:#10b981">R$ {_brl(mica_com, cents=True)}</strong> <span class="sub">+ fixo R$ 2.300</span></span></div>'
+        + mt +
+        '<div style="margin-top:14px"><strong>Christofer</strong> <span class="sub">· regra própria: 3% a 5% sobre a própria venda paga</span><br>'
+        f'<span style="font-size:15px">Estimativa do mês: <strong style="color:#10b981">R$ {_brl(chris_com, cents=True)}</strong></span></div></div>'
+    )
+
+    dias = (ano_d.get("diario", {}) or {}).get(mes, [])
+    vmax = max((d.get("v", 0) for d in dias), default=0) or 1
+    ritmo_linhas = "".join(
+        f'<tr><td style="width:34px">{d["d"]:02d}</td>'
+        f'<td><div class="bar" style="margin:0"><div style="width:{max(round(d["v"] / vmax * 100), 2)}%;background:#10b981"></div></div></td>'
+        f'<td class="dir" style="width:90px">R$ {_brl(d["v"])}</td><td class="dir sub" style="width:64px">{d["n"]} venda{"s" if d["n"] != 1 else ""}</td></tr>'
+        for d in dias
+    )
+    ritmo = (
+        f'<div class="card"><h2>Ritmo de {nome_mes} · dia a dia</h2>'
+        f'<table><tbody>{ritmo_linhas or "<tr><td class=sub>Sem vendas no mês ainda.</td></tr>"}</tbody></table>'
+        '<div class="sub" style="margin-top:8px">Aqui é o valor VENDIDO no dia (pago ou não), pra acompanhar o ritmo.</div></div>'
+    )
+
+    regras = (
+        '<div class="card"><h2>Regras do jogo</h2><ul class="regras">'
+        '<li>A meta da casa é <strong>R$ 70.000/mês</strong> e só conta venda com status <strong>Pago</strong> na planilha.</li>'
+        '<li>Pagamento parcial anotado na Obs. ("só pagou 200", "FALTA 197") conta só o que entrou.</li>'
+        '<li>Venda pendente não gera comissão até virar Pago, e fica fora do placar da meta.</li>'
+        '<li>O percentual da Micaelly sobe pra TODAS as vendas pagas dela no mês quando a casa cruza um degrau: vale puxar as últimas vendas do mês.</li>'
+        '</ul></div>'
+    )
+
+    corpo_c = placar + ranking + comissao + ritmo + regras
+    pagina_c = _pagina("Placar Comercial", f"Nutri Rafael Albergaria · {nome_mes}/{ano}", corpo_c, gerado_em)
+    out_c = OUTPUT_PATH.parent / "equipe-comercial.html"
+    out_c.write_text(pagina_c, encoding="utf-8")
+    print(f"[generate] Pagina da equipe comercial: {out_c.name} ({out_c.stat().st_size / 1024:.1f} KB)")
+
+    # ---------- PAGINA DA RENOVACAO ----------
+    oper = bloco.get("oper", {}) or {}
+    ren = oper.get("Renovação", {"c": 0, "v": 0})
+    nova = oper.get("Nova Venda", {"c": 0, "v": 0})
+    tiles = (
+        f'<div class="card"><h2>{nome_mes} até agora</h2>'
+        '<div style="display:flex;gap:16px;flex-wrap:wrap">'
+        f'<div style="flex:1;min-width:140px"><div class="sub">Renovações</div><div class="num" style="color:#1d4ed8">{ren.get("c", 0)}</div><div class="sub">R$ {_brl(ren.get("v", 0))}</div></div>'
+        f'<div style="flex:1;min-width:140px"><div class="sub">Vendas novas</div><div class="num" style="color:#15803d">{nova.get("c", 0)}</div><div class="sub">R$ {_brl(nova.get("v", 0))}</div></div>'
+        '</div></div>'
+    )
+
+    bonus = (
+        '<div class="card"><h2>Bônus do suporte</h2>'
+        f'<div class="sub" style="margin-bottom:8px">Libera quando a casa bate R$ 70.000 no mês (só vendas pagas). Status de {nome_mes}:</div>'
+        f'<div style="font-size:15px;font-weight:700;color:{cor}">{"✅ Meta batida: bônus liberado" if bateu else "🔒 R$ " + _brl(casa) + " de R$ " + _brl(meta) + " (" + str(pct) + "%)"}</div>'
+        '<table style="margin-top:10px"><thead><tr><th>Taxa de renovação no mês</th><th class="dir">Bônus por pessoa</th></tr></thead>'
+        '<tbody><tr><td>60% a 79%</td><td class="dir"><strong>R$ 300</strong></td></tr>'
+        '<tr><td>80% ou mais</td><td class="dir"><strong>R$ 600</strong></td></tr></tbody></table></div>'
+    )
+
+    carteira = ano_d.get("carteira", []) or []
+    venc_prox = [c for c in carteira if 0 <= c["dias"] <= 30]
+    venc_rec = sorted([c for c in carteira if -30 <= c["dias"] < 0], key=lambda c: -c["dias"])
+    venc_antigo = len([c for c in carteira if c["dias"] < -30])
+
+    def tabela_carteira(lista, titulo, vazio):
+        if not lista:
+            linhas_t = f'<tr><td class="sub" colspan="4">{vazio}</td></tr>'
+        else:
+            linhas_t = ""
+            for c in lista:
+                di = c["dias"]
+                if di < 0:
+                    chip = f'<span class="chip chip-vermelha">venceu há {-di} dia{"s" if di != -1 else ""}</span>'
+                elif di == 0:
+                    chip = '<span class="chip chip-amarela">vence hoje</span>'
+                elif di <= 7:
+                    chip = f'<span class="chip chip-amarela">vence em {di} dia{"s" if di != 1 else ""}</span>'
+                else:
+                    chip = f'<span class="chip chip-verde">vence em {di} dias</span>'
+                linhas_t += (
+                    f'<tr><td><strong>{c["nome"]}</strong></td><td>{c["plano"].title()}</td>'
+                    f'<td>{c["venc"][:5]}</td><td class="dir">{chip}</td></tr>'
+                )
+        return (
+            f'<div class="card"><h2>{titulo}</h2>'
+            '<table><thead><tr><th>Paciente</th><th>Plano</th><th>Vence</th><th class="dir">Situação</th></tr></thead>'
+            f'<tbody>{linhas_t}</tbody></table></div>'
+        )
+
+    cart_html = tabela_carteira(venc_prox, f"Pra trabalhar agora · vence nos próximos 30 dias ({len(venc_prox)})", "Ninguém vencendo nos próximos 30 dias 🎉")
+    cart_html += tabela_carteira(venc_rec, f"Venceu há pouco · últimos 30 dias ({len(venc_rec)})", "Ninguém vencido nos últimos 30 dias 🎉")
+    if venc_antigo:
+        cart_html += f'<div class="sub" style="margin:-6px 2px 14px">+ {venc_antigo} paciente(s) vencidos há mais de 30 dias ficam na rotina de vencidos, fora desta lista.</div>'
+
+    regras_r = (
+        '<div class="card"><h2>Como essa lista é montada</h2><ul class="regras">'
+        '<li>Vencimento = data da última compra + duração do plano (Mensal 1, Trimestral 3, Semestral 6, Anual 12 meses).</li>'
+        '<li>Quem já comprou de novo sai da lista sozinho na próxima atualização.</li>'
+        '<li>Renovação conta no placar quando a venda entra na planilha como Renovação e é paga.</li>'
+        '</ul></div>'
+    )
+
+    corpo_r = tiles + bonus + cart_html + regras_r
+    pagina_r = _pagina("Renovação & Carteira", f"Nutri Rafael Albergaria · {nome_mes}/{ano}", corpo_r, gerado_em)
+    out_r = OUTPUT_PATH.parent / "equipe-renovacao.html"
+    out_r.write_text(pagina_r, encoding="utf-8")
+    print(f"[generate] Pagina da equipe de renovacao: {out_r.name} ({out_r.stat().st_size / 1024:.1f} KB)")
 
 
 if __name__ == "__main__":

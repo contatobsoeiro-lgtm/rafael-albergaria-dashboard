@@ -327,7 +327,28 @@
   </div>
 </div>
 
-<div class="main">
+<style>
+  .bloco-nav { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--cinza-border); padding: 8px 28px; display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .bloco-nav a { flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--text-muted); text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--cinza-border); background: #fff; white-space: nowrap; }
+  .bloco-nav a:hover { color: var(--text); background: var(--cinza); }
+  html { scroll-behavior: smooth; }
+  #sec-visao, #sec-captacao, #sec-oport, #sec-previsao, #sec-analises, #rv-section, #renov-section, #diario-section, #compare-section { scroll-margin-top: 56px; }
+  .badge-live { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: #0f766e; background: #ccfbf1; border-radius: 999px; padding: 3px 9px; margin-left: 8px; vertical-align: middle; text-transform: uppercase; letter-spacing: .03em; }
+  .badge-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; }
+  @media print { .bloco-nav { display: none; } }
+</style>
+
+<div class="bloco-nav" id="bloco-nav">
+  <a href="#sec-visao">📊 Pulso do mês</a>
+  <a href="#diario-section">📅 Dia a dia</a>
+  <a href="#sec-captacao">🧲 Captação</a>
+  <a href="#rv-section">💰 Time comercial</a>
+  <a href="#renov-section">🔄 Carteira & Renovação</a>
+  <a href="#sec-oport">🎯 Oportunidades</a>
+  <a href="#sec-previsao">📈 Estratégico</a>
+</div>
+
+<div class="main" id="sec-visao">
 
   <div class="filters-section">
     <div class="filter-group">
@@ -376,10 +397,12 @@
   <div class="section-header section-toggle" data-section="overview">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     <div class="section-header-title">📊 Visão Geral</div>
-    <div class="section-header-sub">KPIs · Faturamento · Modalidade · Vendedor · Comissões · Ticket</div>
+    <div class="section-header-sub">Placar do mês · KPIs · Faturamento · Modalidade · Vendedor · Ticket</div>
   </div>
 
   <div class="section-body" data-section="overview">
+
+  <div class="chart-card" id="hero-placar" style="margin-bottom:16px;display:none"></div>
 
   <div class="kpi-grid">
     <div class="kpi-card green kpi-hero">
@@ -436,60 +459,21 @@
     </div>
   </div>
 
-  <div class="charts-row charts-row-2">
+  <div class="charts-row charts-row-3">
     <div class="chart-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">
-        <div>
-          <div class="chart-title">Comissões & Cobranças</div>
-          <div class="chart-sub">A pagar (vendedor / personal) + A cobrar (parceiros)</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn-pdf" onclick="openCommissionPDF('vendedor')" style="flex-shrink:0" title="Comprovante de comissão do vendedor (3%)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Vendedor
-          </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Repasse do personal: R$ 50 x meses do plano, pago integral no mês da venda (jul/2026+); antes, 15%">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
-            Personal
-          </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('parceiro')" style="flex-shrink:0;border-color:rgba(139,92,246,.3);color:#7c3aed" title="Cobrança de parceiros: Plano Gustavo repassa R$ 50 x meses do plano, integral no mês da venda (jul/2026+); demais parceiros extrato do mês">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            Parceiros
-          </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('renovacao')" style="flex-shrink:0;border-color:rgba(20,184,166,.35);color:#0f766e" title="Lista de pacientes com plano vencendo no mês escolhido, pra equipe de renovação trabalhar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-            Renovações
-          </button>
-        </div>
-      </div>
-      <table class="comissoes-table">
-        <thead>
-          <tr>
-            <th>Vendedor</th>
-            <th>Vendas</th>
-            <th>Faturamento</th>
-            <th>Com. Vendedor</th>
-            <th>Com. Treino</th>
-            <th>Total Com.</th>
-          </tr>
-        </thead>
-        <tbody id="comissoes-tbody"></tbody>
-        <tfoot id="comissoes-tfoot"></tfoot>
-      </table>
-    </div>
-    <div class="chart-card">
+
       <div class="chart-title">Ticket Médio por Vendedor</div>
       <div class="chart-sub">Valor médio por venda (R$) no período</div>
       <div class="chart-wrap h260"><canvas id="chartTicket"></canvas></div>
     </div>
-  </div>
-
-  <div class="charts-row charts-row-2" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Mix por Tipo de Serviço</div>
+      <div class="chart-title">Mix por Tipo de Serviço<span class="badge-live">ao vivo</span></div>
       <div class="chart-sub" id="sub-tipo">Distribuição de vendas por tipo · estratégia: foco em escalável (Sem Vídeo)</div>
       <div class="chart-wrap h260"><canvas id="chartTipo"></canvas></div>
     </div>
+  </div>
+
+  <div class="charts-row" style="grid-template-columns:1fr;margin-bottom:16px">
     <div class="chart-card">
       <div class="chart-title">Ticket Médio por Tipo</div>
       <div class="chart-sub">Quanto cada tipo de serviço rende em média (R$ por venda paga)</div>
@@ -499,21 +483,23 @@
       </table>
     </div>
   </div>
-
-  </div><!-- /section-body overview -->
+  </div>
+<!-- /section-body overview -->
 
 </div>
+
+<!-- bloco:pos-visao -->
 
 <!-- ══════════════════════════════════════════════════════════════════
      CAPTAÇÃO DE LEADS (dados live da planilha de eventos do WaLeads)
      Conta o PRIMEIRO contato de cada lead no WhatsApp comercial, sem
      depender de ninguém mover card no funil.
      ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
+<div class="main" style="padding-top:0" id="sec-captacao">
 
   <div class="section-header section-toggle" data-section="captacao">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-    <div class="section-header-title">🧲 Captação de Leads</div>
+    <div class="section-header-title">🧲 Captação de Leads<span class="badge-live">ao vivo</span></div>
     <div class="section-header-sub" id="leads-sub">Carregando eventos do WhatsApp comercial...</div>
   </div>
 
@@ -553,14 +539,62 @@
   </div>
 </div>
 
+<!-- bloco:pos-captacao -->
+
+<!-- ══════════════════════════════════════════════════════════════════
+     OPORTUNIDADES & AÇÕES
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="main" style="padding-top:0" id="sec-oport">
+
+  <div class="section-header section-toggle" data-section="oportunidades">
+    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="section-header-title">🎯 Oportunidades & Ações</div>
+    <div class="section-header-sub">Consultas pendentes · Top vendas · Clientes em risco de churn</div>
+  </div>
+
+  <div class="section-body" data-section="oportunidades">
+
+  <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px">
+
+    <div class="chart-card">
+      <div class="chart-title">📞 Consultas Online Pendentes</div>
+      <div class="chart-sub" id="cons-sub">Pacientes com plano que inclui consulta · ainda não agendaram</div>
+      <div id="cons-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">🏆 Top Vendas do Período</div>
+      <div class="chart-sub" id="topv-sub">Maiores tickets · respeita filtros</div>
+      <div id="topv-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">⚠️ Clientes em Risco</div>
+      <div class="chart-sub" id="churn-sub">Mensais sem renovação há 30+ dias</div>
+      <div id="churn-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+  </div>
+
+  </div><!-- /section-body oportunidades -->
+
+</div>
+
+
 <!-- ══════════════════════════════════════════════════════════════════
      PREVISIBILIDADE & METAS (dados live da aba Previsão do Sheets)
      ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
+<div class="main" style="padding-top:0" id="sec-previsao">
 
   <div class="section-header section-toggle" data-section="previsibilidade">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-    <div class="section-header-title">📅 Previsibilidade & Metas</div>
+    <div class="section-header-title">📅 Previsibilidade & Metas<span class="badge-live">ao vivo</span></div>
     <div class="section-header-sub" id="prev-sub">Carregando dados do controle de vendas...</div>
   </div>
 
@@ -638,54 +672,9 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     OPORTUNIDADES & AÇÕES
-     ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
-
-  <div class="section-header section-toggle" data-section="oportunidades">
-    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-    <div class="section-header-title">🎯 Oportunidades & Ações</div>
-    <div class="section-header-sub">Consultas pendentes · Top vendas · Clientes em risco de churn</div>
-  </div>
-
-  <div class="section-body" data-section="oportunidades">
-
-  <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px">
-
-    <div class="chart-card">
-      <div class="chart-title">📞 Consultas Online Pendentes</div>
-      <div class="chart-sub" id="cons-sub">Pacientes com plano que inclui consulta · ainda não agendaram</div>
-      <div id="cons-content" style="margin-top:8px">
-        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title">🏆 Top Vendas do Período</div>
-      <div class="chart-sub" id="topv-sub">Maiores tickets · respeita filtros</div>
-      <div id="topv-content" style="margin-top:8px">
-        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title">⚠️ Clientes em Risco</div>
-      <div class="chart-sub" id="churn-sub">Mensais sem renovação há 30+ dias</div>
-      <div id="churn-content" style="margin-top:8px">
-        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
-      </div>
-    </div>
-
-  </div>
-
-  </div><!-- /section-body oportunidades -->
-
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════════
      ANÁLISES ESTRATÉGICAS
      ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
+<div class="main" style="padding-top:0" id="sec-analises">
 
   <div class="section-header section-toggle" data-section="estrategicas">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>

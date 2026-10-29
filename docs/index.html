@@ -342,7 +342,28 @@
   </div>
 </div>
 
-<div class="main">
+<style>
+  .bloco-nav { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--cinza-border); padding: 8px 28px; display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .bloco-nav a { flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--text-muted); text-decoration: none; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--cinza-border); background: #fff; white-space: nowrap; }
+  .bloco-nav a:hover { color: var(--text); background: var(--cinza); }
+  html { scroll-behavior: smooth; }
+  #sec-visao, #sec-captacao, #sec-oport, #sec-previsao, #sec-analises, #rv-section, #renov-section, #diario-section, #compare-section { scroll-margin-top: 56px; }
+  .badge-live { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: #0f766e; background: #ccfbf1; border-radius: 999px; padding: 3px 9px; margin-left: 8px; vertical-align: middle; text-transform: uppercase; letter-spacing: .03em; }
+  .badge-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #14b8a6; }
+  @media print { .bloco-nav { display: none; } }
+</style>
+
+<div class="bloco-nav" id="bloco-nav">
+  <a href="#sec-visao">📊 Pulso do mês</a>
+  <a href="#diario-section">📅 Dia a dia</a>
+  <a href="#sec-captacao">🧲 Captação</a>
+  <a href="#rv-section">💰 Time comercial</a>
+  <a href="#renov-section">🔄 Carteira & Renovação</a>
+  <a href="#sec-oport">🎯 Oportunidades</a>
+  <a href="#sec-previsao">📈 Estratégico</a>
+</div>
+
+<div class="main" id="sec-visao">
 
   <div class="filters-section">
     <div class="filter-group">
@@ -391,10 +412,12 @@
   <div class="section-header section-toggle" data-section="overview">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     <div class="section-header-title">📊 Visão Geral</div>
-    <div class="section-header-sub">KPIs · Faturamento · Modalidade · Vendedor · Comissões · Ticket</div>
+    <div class="section-header-sub">Placar do mês · KPIs · Faturamento · Modalidade · Vendedor · Ticket</div>
   </div>
 
   <div class="section-body" data-section="overview">
+
+  <div class="chart-card" id="hero-placar" style="margin-bottom:16px;display:none"></div>
 
   <div class="kpi-grid">
     <div class="kpi-card green kpi-hero">
@@ -451,60 +474,21 @@
     </div>
   </div>
 
-  <div class="charts-row charts-row-2">
+  <div class="charts-row charts-row-3">
     <div class="chart-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">
-        <div>
-          <div class="chart-title">Comissões & Cobranças</div>
-          <div class="chart-sub">A pagar (vendedor / personal) + A cobrar (parceiros)</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn-pdf" onclick="openCommissionPDF('vendedor')" style="flex-shrink:0" title="Comprovante de comissão do vendedor (3%)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Vendedor
-          </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Repasse do personal: R$ 50 x meses do plano, pago integral no mês da venda (jul/2026+); antes, 15%">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
-            Personal
-          </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('parceiro')" style="flex-shrink:0;border-color:rgba(139,92,246,.3);color:#7c3aed" title="Cobrança de parceiros: Plano Gustavo repassa R$ 50 x meses do plano, integral no mês da venda (jul/2026+); demais parceiros extrato do mês">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            Parceiros
-          </button>
-          <button class="btn-pdf" onclick="openCommissionPDF('renovacao')" style="flex-shrink:0;border-color:rgba(20,184,166,.35);color:#0f766e" title="Lista de pacientes com plano vencendo no mês escolhido, pra equipe de renovação trabalhar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-            Renovações
-          </button>
-        </div>
-      </div>
-      <table class="comissoes-table">
-        <thead>
-          <tr>
-            <th>Vendedor</th>
-            <th>Vendas</th>
-            <th>Faturamento</th>
-            <th>Com. Vendedor</th>
-            <th>Com. Treino</th>
-            <th>Total Com.</th>
-          </tr>
-        </thead>
-        <tbody id="comissoes-tbody"></tbody>
-        <tfoot id="comissoes-tfoot"></tfoot>
-      </table>
-    </div>
-    <div class="chart-card">
+
       <div class="chart-title">Ticket Médio por Vendedor</div>
       <div class="chart-sub">Valor médio por venda (R$) no período</div>
       <div class="chart-wrap h260"><canvas id="chartTicket"></canvas></div>
     </div>
-  </div>
-
-  <div class="charts-row charts-row-2" style="margin-bottom:16px">
     <div class="chart-card">
-      <div class="chart-title">Mix por Tipo de Serviço</div>
+      <div class="chart-title">Mix por Tipo de Serviço<span class="badge-live">ao vivo</span></div>
       <div class="chart-sub" id="sub-tipo">Distribuição de vendas por tipo · estratégia: foco em escalável (Sem Vídeo)</div>
       <div class="chart-wrap h260"><canvas id="chartTipo"></canvas></div>
     </div>
+  </div>
+
+  <div class="charts-row" style="grid-template-columns:1fr;margin-bottom:16px">
     <div class="chart-card">
       <div class="chart-title">Ticket Médio por Tipo</div>
       <div class="chart-sub">Quanto cada tipo de serviço rende em média (R$ por venda paga)</div>
@@ -514,21 +498,48 @@
       </table>
     </div>
   </div>
-
-  </div><!-- /section-body overview -->
+  </div>
+<!-- /section-body overview -->
 
 </div>
+
+
+<div id="diario-section" class="main" style="padding-top:0">
+  <div class="section-header">
+    <div class="section-header-title">📅 Vendas por Dia</div>
+    <div class="section-header-sub">Ritmo diário do mês · acompanha o filtro de mês e vendedor</div>
+  </div>
+  <div class="charts-row charts-row-3" style="margin-bottom:16px">
+    <div class="chart-card" style="grid-column:span 2">
+      <div class="chart-title">Faturamento por dia</div>
+      <div class="chart-sub" id="diario-sub">Barras: receita do dia · Linha: meta diária</div>
+      <div class="chart-wrap h260"><canvas id="chartDiario"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Resumo do ritmo</div>
+      <div class="chart-sub">Dias com venda no recorte</div>
+      <div id="diario-resumo"></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-bottom:16px">
+    <div class="chart-title">Detalhe dia a dia</div>
+    <div class="chart-sub">Mais recente primeiro</div>
+    <div id="diario-tabela"></div>
+  </div>
+</div>
+
+<!-- bloco:pos-visao -->
 
 <!-- ══════════════════════════════════════════════════════════════════
      CAPTAÇÃO DE LEADS (dados live da planilha de eventos do WaLeads)
      Conta o PRIMEIRO contato de cada lead no WhatsApp comercial, sem
      depender de ninguém mover card no funil.
      ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
+<div class="main" style="padding-top:0" id="sec-captacao">
 
   <div class="section-header section-toggle" data-section="captacao">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-    <div class="section-header-title">🧲 Captação de Leads</div>
+    <div class="section-header-title">🧲 Captação de Leads<span class="badge-live">ao vivo</span></div>
     <div class="section-header-sub" id="leads-sub">Carregando eventos do WhatsApp comercial...</div>
   </div>
 
@@ -568,14 +579,164 @@
   </div>
 </div>
 
+
+<div id="rv-section" class="main" style="padding-top:0">
+  <div class="section-header">
+    <div class="section-header-title">💰 Remuneração Variável</div>
+    <div class="section-header-sub">Meta R$ 70.000 · Comissão da vendedora (Micaelly) · Bônus do Suporte</div>
+  </div>
+  <div class="charts-row charts-row-3" style="margin-bottom:16px">
+    <div class="chart-card">
+      <div class="chart-title">Status do Mês</div>
+      <div class="chart-sub">Receita atual vs meta</div>
+      <div id="rv-status"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Comissão da Vendedora (estimada)</div>
+      <div class="chart-sub">Micaelly: fixo R$ 2.300 + % definido pela casa e pelo nível</div>
+      <div id="rv-vendedor"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Bônus Suporte (renovação)</div>
+      <div class="chart-sub">Libera apenas se meta de receita batida</div>
+      <div id="rv-suporte"></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-bottom:16px">
+    <div class="chart-title">Matriz de comissão da vendedora</div>
+    <div class="chart-sub">Linha: nível na carreira · Coluna: onde a casa fecha o mês · célula atual em destaque</div>
+    <div id="rv-faixas"></div>
+  </div>
+  <div class="charts-row" style="grid-template-columns:1fr;margin-bottom:16px">
+    <div class="chart-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+        <div>
+          <div class="chart-title">Comissões & Cobranças</div>
+          <div class="chart-sub">A pagar (vendedor / personal) + A cobrar (parceiros)</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn-pdf" onclick="openCommissionPDF('vendedor')" style="flex-shrink:0" title="Comprovante de comissão do vendedor (regra vigente de cada um)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Vendedor
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('personal')" style="flex-shrink:0;border-color:rgba(239,68,68,.3);color:#b91c1c" title="Repasse do personal: R$ 50 x meses do plano, pago integral no mês da venda (jul/2026+); antes, 15%">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2h12v6h2v12H4V8h2V2z"/><path d="M9 12h6M9 16h6"/></svg>
+            Personal
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('parceiro')" style="flex-shrink:0;border-color:rgba(139,92,246,.3);color:#7c3aed" title="Cobrança de parceiros: Plano Gustavo repassa R$ 50 x meses do plano, integral no mês da venda (jul/2026+); demais parceiros extrato do mês">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Parceiros
+          </button>
+          <button class="btn-pdf" onclick="openCommissionPDF('renovacao')" style="flex-shrink:0;border-color:rgba(20,184,166,.35);color:#0f766e" title="Lista de pacientes com plano vencendo no mês escolhido, pra equipe de renovação trabalhar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+            Renovações
+          </button>
+        </div>
+      </div>
+      <table class="comissoes-table">
+        <thead>
+          <tr>
+            <th>Vendedor</th>
+            <th>Vendas</th>
+            <th>Faturamento</th>
+            <th>Com. Vendedor</th>
+            <th>Com. Treino</th>
+            <th>Total Com.</th>
+          </tr>
+        </thead>
+        <tbody id="comissoes-tbody"></tbody>
+        <tfoot id="comissoes-tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div id="renov-section" class="main" style="padding-top:0">
+  <div class="section-header">
+    <div class="section-header-title">🔄 Renovação e Carteira</div>
+    <div class="section-header-sub">Renovação x venda nova · quem vence agora · o que ainda não foi pago</div>
+  </div>
+  <div class="charts-row charts-row-3" style="margin-bottom:16px">
+    <div class="chart-card">
+      <div class="chart-title">Renovação x Venda Nova</div>
+      <div class="chart-sub">No recorte selecionado</div>
+      <div id="renov-split"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Vendas não pagas</div>
+      <div class="chart-sub">Contam na receita, não geram comissão</div>
+      <div id="renov-pend"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Carteira de renovação</div>
+      <div class="chart-sub">Vencidos e a vencer em 60 dias</div>
+      <div id="renov-carteira-resumo"></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-bottom:16px">
+    <div class="chart-title">Quem precisa de contato</div>
+    <div class="chart-sub">Vencidos primeiro, do mais antigo para o mais recente</div>
+    <div id="renov-carteira-tabela"></div>
+  </div>
+</div>
+
+<!-- bloco:pos-captacao -->
+
+<!-- ══════════════════════════════════════════════════════════════════
+     OPORTUNIDADES & AÇÕES
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="main" style="padding-top:0" id="sec-oport">
+
+  <div class="section-header section-toggle" data-section="oportunidades">
+    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="section-header-title">🎯 Oportunidades & Ações</div>
+    <div class="section-header-sub">Consultas pendentes · Top vendas · Clientes em risco de churn</div>
+  </div>
+
+  <div class="section-body" data-section="oportunidades">
+
+  <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px">
+
+    <div class="chart-card">
+      <div class="chart-title">📞 Consultas Online Pendentes</div>
+      <div class="chart-sub" id="cons-sub">Pacientes com plano que inclui consulta · ainda não agendaram</div>
+      <div id="cons-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">🏆 Top Vendas do Período</div>
+      <div class="chart-sub" id="topv-sub">Maiores tickets · respeita filtros</div>
+      <div id="topv-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">⚠️ Clientes em Risco</div>
+      <div class="chart-sub" id="churn-sub">Mensais sem renovação há 30+ dias</div>
+      <div id="churn-content" style="margin-top:8px">
+        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
+      </div>
+    </div>
+
+  </div>
+
+  </div><!-- /section-body oportunidades -->
+
+</div>
+
+
 <!-- ══════════════════════════════════════════════════════════════════
      PREVISIBILIDADE & METAS (dados live da aba Previsão do Sheets)
      ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
+<div class="main" style="padding-top:0" id="sec-previsao">
 
   <div class="section-header section-toggle" data-section="previsibilidade">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-    <div class="section-header-title">📅 Previsibilidade & Metas</div>
+    <div class="section-header-title">📅 Previsibilidade & Metas<span class="badge-live">ao vivo</span></div>
     <div class="section-header-sub" id="prev-sub">Carregando dados do controle de vendas...</div>
   </div>
 
@@ -653,54 +814,9 @@
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     OPORTUNIDADES & AÇÕES
-     ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
-
-  <div class="section-header section-toggle" data-section="oportunidades">
-    <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-    <div class="section-header-title">🎯 Oportunidades & Ações</div>
-    <div class="section-header-sub">Consultas pendentes · Top vendas · Clientes em risco de churn</div>
-  </div>
-
-  <div class="section-body" data-section="oportunidades">
-
-  <div class="charts-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px">
-
-    <div class="chart-card">
-      <div class="chart-title">📞 Consultas Online Pendentes</div>
-      <div class="chart-sub" id="cons-sub">Pacientes com plano que inclui consulta · ainda não agendaram</div>
-      <div id="cons-content" style="margin-top:8px">
-        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title">🏆 Top Vendas do Período</div>
-      <div class="chart-sub" id="topv-sub">Maiores tickets · respeita filtros</div>
-      <div id="topv-content" style="margin-top:8px">
-        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-title">⚠️ Clientes em Risco</div>
-      <div class="chart-sub" id="churn-sub">Mensais sem renovação há 30+ dias</div>
-      <div id="churn-content" style="margin-top:8px">
-        <div style="color:#94a3b8;font-size:12px;padding:10px;text-align:center">Carregando…</div>
-      </div>
-    </div>
-
-  </div>
-
-  </div><!-- /section-body oportunidades -->
-
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════════
      ANÁLISES ESTRATÉGICAS
      ══════════════════════════════════════════════════════════════════ -->
-<div class="main" style="padding-top:0">
+<div class="main" style="padding-top:0" id="sec-analises">
 
   <div class="section-header section-toggle" data-section="estrategicas">
     <button class="section-collapse-btn" type="button" aria-label="Recolher/expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -837,91 +953,6 @@
       <div class="chart-sub">Totais consolidados dos dois anos</div>
       <div id="yoy-kpi-wrap"></div>
     </div>
-  </div>
-</div>
-
-
-<div id="rv-section" class="main" style="padding-top:0">
-  <div class="section-header">
-    <div class="section-header-title">💰 Remuneração Variável</div>
-    <div class="section-header-sub">Meta R$ 70.000 · Comissão da vendedora (Micaelly) · Bônus do Suporte</div>
-  </div>
-  <div class="charts-row charts-row-3" style="margin-bottom:16px">
-    <div class="chart-card">
-      <div class="chart-title">Status do Mês</div>
-      <div class="chart-sub">Receita atual vs meta</div>
-      <div id="rv-status"></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Comissão da Vendedora (estimada)</div>
-      <div class="chart-sub">Micaelly: fixo R$ 2.300 + % definido pela casa e pelo nível</div>
-      <div id="rv-vendedor"></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Bônus Suporte (renovação)</div>
-      <div class="chart-sub">Libera apenas se meta de receita batida</div>
-      <div id="rv-suporte"></div>
-    </div>
-  </div>
-  <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Matriz de comissão da vendedora</div>
-    <div class="chart-sub">Linha: nível na carreira · Coluna: onde a casa fecha o mês · célula atual em destaque</div>
-    <div id="rv-faixas"></div>
-  </div>
-</div>
-
-
-<div id="diario-section" class="main" style="padding-top:0">
-  <div class="section-header">
-    <div class="section-header-title">📅 Vendas por Dia</div>
-    <div class="section-header-sub">Ritmo diário do mês · acompanha o filtro de mês e vendedor</div>
-  </div>
-  <div class="charts-row charts-row-3" style="margin-bottom:16px">
-    <div class="chart-card" style="grid-column:span 2">
-      <div class="chart-title">Faturamento por dia</div>
-      <div class="chart-sub" id="diario-sub">Barras: receita do dia · Linha: meta diária</div>
-      <div class="chart-wrap h260"><canvas id="chartDiario"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Resumo do ritmo</div>
-      <div class="chart-sub">Dias com venda no recorte</div>
-      <div id="diario-resumo"></div>
-    </div>
-  </div>
-  <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Detalhe dia a dia</div>
-    <div class="chart-sub">Mais recente primeiro</div>
-    <div id="diario-tabela"></div>
-  </div>
-</div>
-
-
-<div id="renov-section" class="main" style="padding-top:0">
-  <div class="section-header">
-    <div class="section-header-title">🔄 Renovação e Carteira</div>
-    <div class="section-header-sub">Renovação x venda nova · quem vence agora · o que ainda não foi pago</div>
-  </div>
-  <div class="charts-row charts-row-3" style="margin-bottom:16px">
-    <div class="chart-card">
-      <div class="chart-title">Renovação x Venda Nova</div>
-      <div class="chart-sub">No recorte selecionado</div>
-      <div id="renov-split"></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Vendas não pagas</div>
-      <div class="chart-sub">Contam na receita, não geram comissão</div>
-      <div id="renov-pend"></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Carteira de renovação</div>
-      <div class="chart-sub">Vencidos e a vencer em 60 dias</div>
-      <div id="renov-carteira-resumo"></div>
-    </div>
-  </div>
-  <div class="chart-card" style="margin-bottom:16px">
-    <div class="chart-title">Quem precisa de contato</div>
-    <div class="chart-sub">Vencidos primeiro, do mais antigo para o mais recente</div>
-    <div id="renov-carteira-tabela"></div>
   </div>
 </div>
 
@@ -10854,7 +10885,7 @@ const DATA = {
   "vend":"RAFAEL"}]},
   "2026":{"all":{"n":1072,
   "fat":744001,
-  "fat_pago":726886,
+  "fat_pago":727083,
   "tkt":694,
   "cvend":10255,
   "ctreino":23918,
@@ -10906,7 +10937,7 @@ const DATA = {
   "ct":0},
   "MICAELLY":{"c":55,
   "v":47964,
-  "vp":39593,
+  "vp":39790,
   "tkt":872,
   "cv":971,
   "ct":0}},
@@ -10938,8 +10969,8 @@ const DATA = {
   "v":102442},
   "Nova Venda":{"c":888,
   "v":641259}},
-  "pend":{"c":24,
-  "v":17115}},
+  "pend":{"c":23,
+  "v":16918}},
   "jan":{"n":163,
   "fat":119457,
   "fat_pago":119457,
@@ -11734,7 +11765,7 @@ const DATA = {
   "v":8143}},
   "out":{"n":77,
   "fat":67301,
-  "fat_pago":59220,
+  "fat_pago":59417,
   "tkt":874,
   "cvend":686,
   "ctreino":800,
@@ -11786,7 +11817,7 @@ const DATA = {
   "ct":0},
   "MICAELLY":{"c":39,
   "v":35450,
-  "vp":28423,
+  "vp":28620,
   "tkt":909,
   "cv":512,
   "ct":0}},
@@ -11818,8 +11849,8 @@ const DATA = {
   "v":6089},
   "Nova Venda":{"c":69,
   "v":61212}},
-  "pend":{"c":9,
-  "v":8081}},
+  "pend":{"c":8,
+  "v":7884}},
   "nov":{"n":0,
   "fat":0,
   "fat_pago":0,
@@ -12438,7 +12469,7 @@ const DATA = {
   "v":0}},
   "micaelly":{"n":55,
   "fat":47964,
-  "fat_pago":39593,
+  "fat_pago":39790,
   "tkt":872,
   "cvend":971,
   "ctreino":0,
@@ -12490,7 +12521,7 @@ const DATA = {
   "ct":0},
   "MICAELLY":{"c":55,
   "v":47964,
-  "vp":39593,
+  "vp":39790,
   "tkt":872,
   "cv":971,
   "ct":0}},
@@ -12522,8 +12553,8 @@ const DATA = {
   "v":797},
   "Nova Venda":{"c":54,
   "v":47167}},
-  "pend":{"c":9,
-  "v":8371}},
+  "pend":{"c":8,
+  "v":8174}},
   "rafael_jan":{"n":5,
   "fat":9726,
   "fat_pago":9726,
@@ -18598,7 +18629,7 @@ const DATA = {
   "v":1197}},
   "micaelly_out":{"n":39,
   "fat":35450,
-  "fat_pago":28423,
+  "fat_pago":28620,
   "tkt":909,
   "cvend":512,
   "ctreino":0,
@@ -18650,7 +18681,7 @@ const DATA = {
   "ct":0},
   "MICAELLY":{"c":39,
   "v":35450,
-  "vp":28423,
+  "vp":28620,
   "tkt":909,
   "cv":512,
   "ct":0}},
@@ -18682,8 +18713,8 @@ const DATA = {
   "v":797},
   "Nova Venda":{"c":38,
   "v":34653}},
-  "pend":{"c":7,
-  "v":7027}},
+  "pend":{"c":6,
+  "v":6830}},
   "micaelly_nov":{"n":0,
   "fat":0,
   "fat_pago":0,
@@ -21463,7 +21494,7 @@ const DATA = {
   "pct":null}}}},
   "all":{"n":1072,
   "fat":744001,
-  "fat_pago":726886,
+  "fat_pago":727083,
   "tkt":694,
   "cvend":10255,
   "ctreino":23918,
@@ -21515,7 +21546,7 @@ const DATA = {
   "ct":0},
   "MICAELLY":{"c":55,
   "v":47964,
-  "vp":39593,
+  "vp":39790,
   "tkt":872,
   "cv":971,
   "ct":0}},
@@ -21547,8 +21578,8 @@ const DATA = {
   "v":102442},
   "Nova Venda":{"c":888,
   "v":641259}},
-  "pend":{"c":24,
-  "v":17115}}
+  "pend":{"c":23,
+  "v":16918}}
 };
 
 
@@ -21815,6 +21846,30 @@ function renderRemuneracao() {
     fx += '</tbody></table>' +
       '<div style="margin-top:8px;font-size:12px;color:#94a3b8">O percentual incide sobre o que a própria vendedora vendeu no mês (só vendas pagas). O degrau é definido por onde a casa fecha o mês, também só com vendas pagas. Vigente desde setembro/2026. Demais vendedores seguem a regra antiga: 3% a 5% sobre a própria venda paga, alíquota única.</div>';
     elFx.innerHTML = fx;
+  }
+  // Placar do mes no topo da pagina: sempre MENSAL (no "Todos", usa o mes
+  // mais recente com venda), porque a meta de R$ 70 mil e por mes
+  const elHero = document.getElementById('hero-placar');
+  if (elHero) {
+    const mesPlacar = (activeMes !== 'all') ? activeMes
+      : ((typeof diarioMesAtivo === 'function') ? diarioMesAtivo() : null);
+    const dP = (mesPlacar && anoData[mesPlacar]) ? anoData[mesPlacar] : d;
+    const recP  = (dP.fat_pago != null) ? dP.fat_pago : (dP.fat || 0);
+    const abertoP = Math.max((dP.fat || 0) - recP, 0);
+    const pctP  = Math.round(recP / META_MENSAL * 100);
+    const okP   = recP >= META_MENSAL;
+    const corP  = okP ? '#10b981' : pctP >= 80 ? '#f59e0b' : '#ef4444';
+    const nomeMes = {jan:'Janeiro',fev:'Fevereiro',mar:'Março',abr:'Abril',mai:'Maio',jun:'Junho',jul:'Julho',ago:'Agosto',set:'Setembro',out:'Outubro',nov:'Novembro',dez:'Dezembro'}[mesPlacar] || 'Mês atual';
+    elHero.style.display = 'block';
+    elHero.innerHTML =
+      '<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;justify-content:space-between">' +
+      '<div><div style="font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em">Placar de ' + nomeMes + ' · só vendas pagas</div>' +
+      '<div style="font-size:30px;font-weight:800;color:' + corP + '">R$ ' + fmt(recP) + ' <span style="font-size:14px;color:#64748b;font-weight:600">de R$ ' + fmt(META_MENSAL) + '</span></div></div>' +
+      '<div style="text-align:right"><div style="font-size:22px;font-weight:800;color:' + corP + '">' + pctP + '%</div>' +
+      '<div style="font-size:12px;color:#64748b">' + (okP ? '✅ Meta batida' : 'faltam R$ ' + fmt(META_MENSAL - recP)) +
+      (abertoP > 0 ? ' · R$ ' + fmt(abertoP) + ' aguardando pagamento' : '') + '</div></div></div>' +
+      '<div style="margin-top:10px;height:10px;background:#f1f5f9;border-radius:999px;overflow:hidden">' +
+      '<div style="height:100%;width:' + Math.min(pctP, 100) + '%;background:' + corP + ';border-radius:999px"></div></div>';
   }
 }
 
