@@ -2895,9 +2895,21 @@ updateDashboard();
 
     closeCommissionModal();
     document.body.classList.add('printing-commission');
+
+    // Nome sugerido pro "Salvar como PDF": tira o cargo entre parênteses do
+    // beneficiário (ex: "Gustavo (Personal Trainer)" -> "Gustavo") e usa
+    // Nome_Mês_Ano como título da página só durante a impressão, porque o
+    // diálogo de impressão sugere o <title> como nome de arquivo.
+    const origTitle = document.title;
+    const nomeArquivo = 'Recibo_' +
+      beneficiario.replace(/\s*\([^)]*\)\s*/g, '').trim().replace(/\s+/g, '_') +
+      '_' + mesName + '_' + ano;
+    document.title = nomeArquivo;
+
     setTimeout(() => {
       window.print();
       setTimeout(() => {
+        document.title = origTitle;
         document.body.classList.remove('printing-commission');
         view.classList.remove('show');
         view.innerHTML = '';
