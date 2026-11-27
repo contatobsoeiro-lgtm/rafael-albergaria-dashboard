@@ -10983,7 +10983,7 @@ const DATA = {
   "fat_pago":840602,
   "tkt":671,
   "cvend":11027,
-  "ctreino":43268,
+  "ctreino":37418,
   "modal":{"MENSAL":{"c":273,
   "v":63130},
   "TRIMESTRAL":{"c":467,
@@ -11005,7 +11005,7 @@ const DATA = {
   "vp":425504,
   "tkt":755,
   "cv":0,
-  "ct":25126},
+  "ct":19276},
   "SUPORTE":{"c":47,
   "v":25387,
   "vp":25387,
@@ -11951,7 +11951,7 @@ const DATA = {
   "fat_pago":100545,
   "tkt":551,
   "cvend":360,
-  "ctreino":17350,
+  "ctreino":11500,
   "modal":{"MENSAL":{"c":2,
   "v":347},
   "TRIMESTRAL":{"c":74,
@@ -11973,7 +11973,7 @@ const DATA = {
   "vp":88547,
   "tkt":553,
   "cv":0,
-  "ct":17100},
+  "ct":11250},
   "SUPORTE":{"c":5,
   "v":807,
   "vp":807,
@@ -12127,7 +12127,7 @@ const DATA = {
   "fat_pago":425504,
   "tkt":755,
   "cvend":0,
-  "ctreino":25126,
+  "ctreino":19276,
   "modal":{"MENSAL":{"c":43,
   "v":15016},
   "TRIMESTRAL":{"c":220,
@@ -12149,7 +12149,7 @@ const DATA = {
   "vp":425504,
   "tkt":755,
   "cv":0,
-  "ct":25126},
+  "ct":19276},
   "SUPORTE":{"c":0,
   "v":0,
   "vp":0,
@@ -13535,7 +13535,7 @@ const DATA = {
   "fat_pago":88547,
   "tkt":553,
   "cvend":0,
-  "ctreino":17100,
+  "ctreino":11250,
   "modal":{"MENSAL":{"c":0,
   "v":0},
   "TRIMESTRAL":{"c":59,
@@ -13557,7 +13557,7 @@ const DATA = {
   "vp":88547,
   "tkt":553,
   "cv":0,
-  "ct":17100},
+  "ct":11250},
   "SUPORTE":{"c":0,
   "v":0,
   "vp":0,
@@ -21695,9 +21695,9 @@ const DATA = {
   "delta":7067,
   "pct":178},
   "ctreino":{"v25":18928,
-  "v26":43268,
-  "delta":24340,
-  "pct":129}},
+  "v26":37418,
+  "delta":18490,
+  "pct":98}},
   "vend":{"RAFAEL":{"fat":{"v25":30683,
   "v26":429739,
   "delta":399056,
@@ -21775,7 +21775,7 @@ const DATA = {
   "fat_pago":840602,
   "tkt":671,
   "cvend":11027,
-  "ctreino":43268,
+  "ctreino":37418,
   "modal":{"MENSAL":{"c":273,
   "v":63130},
   "TRIMESTRAL":{"c":467,
@@ -21797,7 +21797,7 @@ const DATA = {
   "vp":425504,
   "tkt":755,
   "cv":0,
-  "ct":25126},
+  "ct":19276},
   "SUPORTE":{"c":47,
   "v":25387,
   "vp":25387,
@@ -23241,28 +23241,46 @@ window.addEventListener('resize', function() {
   }
   function parseCSV(text) {
     const lines = text.split(/\r?\n/);
+    const splitLine = ln => ln.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(c => c.replace(/^"|"$/g,''));
+    if (!lines.length || !lines[0].trim()) return [];
+    // Le o cabecalho de verdade em vez de posicao fixa: a planilha ja ganhou
+    // colunas novas (Origem, Campanha) uma vez e deslocou tudo que vinha
+    // depois, quebrando Obs./Status silenciosamente (Status virava sempre
+    // "-" e todo mundo era tratado como pago em cheio). Buscar pelo nome
+    // resolve isso e sobrevive a proxima coluna que inserirem.
+    const headerCols = splitLine(lines[0].trim()).map(h => h.trim().toLowerCase());
+    const idx = name => headerCols.indexOf(name);
+    const iData = idx('data'), iAno = idx('ano'), iMes = idx('mês'), iPaciente = idx('paciente'),
+          iTipo = idx('tipo'), iMod = idx('modalidade'), iAdic = idx('adicional'), iValor = idx('valor (r$)'),
+          iVend = idx('vendedor'), iConsulta = idx('controle de consultas'), iOp = idx('operação'),
+          iCampanha = idx('campanha'), iObs = idx('obs.'), iStatus = idx('status de pagamento');
     const rows = [];
     for (let i = 1; i < lines.length; i++) {
       const ln = lines[i].trim(); if (!ln) continue;
-      const cols = ln.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(c => c.replace(/^"|"$/g,''));
-      rows.push(cols);
+      rows.push(splitLine(ln));
     }
-    return rows.map(r => ({
-      data: (r[0]||'').trim(),
-      ano: (r[1]||'').trim(),
-      mes: ((r[2]||'').toLowerCase().match(/^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)||[])[1]||'',
-      paciente: (r[3]||'').trim(),
-      tipo: (r[4]||'').trim(), mod: (r[5]||'').trim(), adic: (r[6]||'').trim(), valor: parseBRL(r[7]),
-      vendedor: (function(v){
-        // Junio, Duda e Raquel sairam da equipe: historico unificado
-        return (v === 'junio' || v === 'duda' || v === 'raquel' || v === 'bia') ? 'outros' : v;
-      })((r[8]||'').trim().toLowerCase()),
-      consulta: (r[11]||'').trim(),
-      operacao: (r[12]||'').trim(),
-      obs: (r[14]||'').trim(),
-      status: (r[15]||'').trim(),
-      recebido: recebidoDe(parseBRL(r[7]), (r[15]||'').trim(), (r[14]||'').trim())
-    }));
+    return rows.map(r => {
+      const obs = (r[iObs]||'').trim();
+      const status = (r[iStatus]||'').trim();
+      const valor = parseBRL(r[iValor]);
+      return {
+        data: (r[iData]||'').trim(),
+        ano: (r[iAno]||'').trim(),
+        mes: ((r[iMes]||'').toLowerCase().match(/^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)||[])[1]||'',
+        paciente: (r[iPaciente]||'').trim(),
+        tipo: (r[iTipo]||'').trim(), mod: (r[iMod]||'').trim(), adic: (r[iAdic]||'').trim(), valor: valor,
+        vendedor: (function(v){
+          // Junio, Duda e Raquel sairam da equipe: historico unificado
+          return (v === 'junio' || v === 'duda' || v === 'raquel' || v === 'bia') ? 'outros' : v;
+        })((r[iVend]||'').trim().toLowerCase()),
+        consulta: (r[iConsulta]||'').trim(),
+        operacao: (r[iOp]||'').trim(),
+        campanha: (r[iCampanha]||'').trim(),
+        obs: obs,
+        status: status,
+        recebido: recebidoDe(valor, status, obs)
+      };
+    });
   }
   // Quanto da venda realmente entrou: status Pago vale cheio, Pendente vale 0,
   // e a Obs. corrige parciais ("so pagou 200" em linha paga; "FALTA 197" em pendente)
@@ -23895,6 +23913,12 @@ window.addEventListener('resize', function() {
     const COM_VEND_PCT = 0.03;
     const COM_TREINO_PCT = 0.15;
 
+    // Regra especial Black Friday (campanha "Black 2026" na planilha): o
+    // vendedor nao fez esforco de conversao, entao nao leva comissao; o
+    // Personal leva valor fixo por venda com Treino, nao R$50/mes de vigencia.
+    const isBlackFriday = r => /black/i.test(r.campanha||'');
+    const REPASSE_BLACK_FRIDAY = 100;
+
     // Helpers do modelo recorrente (R$ 50/mês por vigência, vendas jul/2026+),
     // usados no comprovante do personal e na cobrança do Plano Gustavo
     const DUR_MOD = { 'Mensal': 1, 'Trimestral': 3, 'Semestral': 6, 'Anual': 12 };
@@ -24017,18 +24041,21 @@ window.addEventListener('resize', function() {
           r.tipo !== 'Plano Gustavo'
         );
         headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Operação</th><th>Meses</th><th>Repasse</th></tr>';
-        let totalCom = 0, nRenovN = 0;
+        let totalCom = 0, nRenovN = 0, nBlackN = 0;
         let rowsHtml = '';
         vendas.forEach((r, i) => {
+          const black = isBlackFriday(r);
           const dur = durTreinoDe(r);
-          const rep = REPASSE_MENSAL * dur;
+          const rep = black ? REPASSE_BLACK_FRIDAY : (REPASSE_MENSAL * dur);
           totalCom += rep;
+          if (black) nBlackN++;
           if (/renova/i.test(r.operacao||'')) nRenovN++;
+          const blackBadge = black ? ' <span style="font-size:10px;color:#b45309">· Black Friday</span>' : '';
           rowsHtml += '<tr>' +
             '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
             '<td>' + (r.tipo||'') + '</td><td>' + (r.mod||'') + '</td>' +
             '<td>' + opBadgeDe(r) + '</td>' +
-            '<td>' + dur + ' x ' + fmtBR(REPASSE_MENSAL) + '</td>' +
+            '<td>' + (black ? 'fixo' : (dur + ' x ' + fmtBR(REPASSE_MENSAL))) + blackBadge + '</td>' +
             '<td style="text-align:right"><strong>' + fmtBR(rep) + '</strong></td></tr>';
         });
         makeRow = rowsHtml;
@@ -24042,7 +24069,8 @@ window.addEventListener('resize', function() {
           '</div>';
         footer = '<strong>Total a pagar pro Personal: ' + fmtBR(total) + '</strong> · Pagamento integral no mês da venda: ' + fmtBR(REPASSE_MENSAL) +
           ' por mês de vigência do plano com adicional "Treino" (Mensal ' + fmtBR(50) + ', Trimestral ' + fmtBR(150) + ', Semestral ' + fmtBR(300) + ', Anual ' + fmtBR(600) + ').' +
-          ' Válido para vendas feitas a partir de julho/2026; comprovantes até junho/2026 seguem o modelo antigo de 15%.';
+          ' Válido para vendas feitas a partir de julho/2026; comprovantes até junho/2026 seguem o modelo antigo de 15%.' +
+          (nBlackN ? (' ' + nBlackN + ' venda(s) da campanha Black Friday entram com valor fixo de ' + fmtBR(REPASSE_BLACK_FRIDAY) + ' cada, independente da duração do treino.') : '');
       } else {
         // MODELO ANTIGO (referencia ate jun/2026): 15% sobre cada venda do mes
         vendas = window.VENDAS_DATA.filter(r =>
@@ -24131,13 +24159,17 @@ window.addEventListener('resize', function() {
       headers = '<tr><th>#</th><th>Data</th><th>Paciente</th><th>Tipo</th><th>Modalidade</th><th>Adicional</th><th>Operação</th><th>Comissão (' + pctLabel + ')</th></tr>';
       let totalCom = 0;
       let nRenovV = 0;
+      let nBlackV = 0;
       let rowsHtml = '';
       vendas.forEach((r, i) => {
+        const black = isBlackFriday(r);
         const base = (r.recebido != null ? r.recebido : r.valor);
-        const com = Math.round(base * pctVend * 100) / 100;
+        const com = black ? 0 : Math.round(base * pctVend * 100) / 100;
         totalCom += com;
+        if (black) nBlackV++;
         if (/renova/i.test(r.operacao||'')) nRenovV++;
-        const marca = base <= 0 ? ' <span style="font-size:10px;color:#b45309">· pendente</span>'
+        const marca = black ? ' <span style="font-size:10px;color:#b45309">· Black Friday, sem comissão</span>'
+                    : base <= 0 ? ' <span style="font-size:10px;color:#b45309">· pendente</span>'
                     : base < r.valor ? ' <span style="font-size:10px;color:#b45309">· parcial</span>' : '';
         rowsHtml += '<tr>' +
           '<td>' + (i+1) + '</td><td>' + (r.data||'') + '</td><td>' + r.paciente + '</td>' +
@@ -24154,11 +24186,12 @@ window.addEventListener('resize', function() {
         '<div class="summary-item"><div class="lbl">Renovações</div><div class="val" style="color:#1d4ed8">' + nRenovV + '</div></div>' +
         '<div class="summary-item"><div class="lbl">Total da comissão</div><div class="val" style="color:#15803d">' + fmtBR(totalCom) + '</div></div>' +
         '</div>';
-      footer = isMica
+      footer = (isMica
         ? ('<strong>Total a pagar pra ' + vendName + ': ' + fmtBR(total) + '</strong> · Regra de setembro/2026, nível Júnior: comissão de ' + pctLabel +
            ' sobre cada venda paga dela, com o percentual definido por onde a casa fechou o mês (' + fmtBR(casaPagoMes) + ' em vendas pagas).' +
            ' Venda pendente entra com comissão zero até a planilha marcar como Pago. O fixo de R$ 2.300,00 não está incluído neste total.')
-        : ('<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de ' + pctLabel + ' sobre cada venda paga no mês de referência. Venda pendente entra com comissão zero até a planilha marcar como Pago.');
+        : ('<strong>Total a pagar pro ' + vendName + ': ' + fmtBR(total) + '</strong> · Comissão de ' + pctLabel + ' sobre cada venda paga no mês de referência. Venda pendente entra com comissão zero até a planilha marcar como Pago.')) +
+        (nBlackV ? (' ' + nBlackV + ' venda(s) da campanha Black Friday entram sem comissão de vendedor, por não terem esforço de conversão.') : '');
     }
 
     const html = '<div class="header-print">' +
